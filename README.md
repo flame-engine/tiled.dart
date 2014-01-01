@@ -18,6 +18,10 @@ Then run the [Pub Package Manager](http://pub.dartlang.org/doc) in Dart Editor (
 
 ##Usage
 
+Import the package like this:
+
+    import 'package:tmx/tmx.dart'
+
 Load a TMX file into a string by any means, and then pass the string to an instance of TileMapParser.parse:
 
     string tmxBody = /* ... */;

@@ -1,5 +1,5 @@
 import 'package:unittest/unittest.dart';
-import 'package:citadel/tilemap.dart';
+import 'package:tmx/tmx.dart';
 import 'dart:io';
 
 main() {

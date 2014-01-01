@@ -1,5 +1,5 @@
 import 'package:unittest/unittest.dart';
-import 'package:citadel/tilemap.dart' as tmx;
+import 'package:tmx/tmx.dart' as tmx;
 
 main() {
   // GID is 1-based

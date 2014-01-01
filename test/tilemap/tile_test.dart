@@ -1,5 +1,5 @@
 import 'package:unittest/unittest.dart';
-import 'package:citadel/tilemap.dart';
+import 'package:tmx/tmx.dart';
 
 main() {
   group('Tile.emptyTile()', () {

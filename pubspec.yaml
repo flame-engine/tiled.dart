@@ -1,4 +1,4 @@
-name: citadel
+name: tmx
 author: Arron Washington
 description: A library for parsing TMX files.
 dependencies:

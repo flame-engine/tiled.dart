@@ -1,11 +1,11 @@
 part of tmx;
 
 class Tile {
-  // Tile IDs are 1-based
+  // Tile IDs are 0-based, to conform with TMX documentation.
   int tileId;
   Tileset tileset;
 
-  // Tile global IDs are 1-based
+  // Tile global IDs aren't 1-based, but start from "1" (0 being an "null tile").
   int gid;
 
   int width;
@@ -22,7 +22,7 @@ class Tile {
   Tile(this.tileId, this.tileset) {
     width = tileset.width;
     height = tileset.height;
-    gid = tileId + (tileset.gid - 1);
+    gid = tileId + tileset.gid;
     properties = tileset.tileProperties[gid];
   }
 

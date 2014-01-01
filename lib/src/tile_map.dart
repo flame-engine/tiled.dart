@@ -17,7 +17,7 @@ class TileMap {
   Tile getTileByGID(int gid) {
     if (gid == 0) { return new Tile.emptyTile(); }
     var ts = tilesets.lastWhere((tileset) => tileset.gid <= gid);
-    return new Tile(gid - (ts.gid - 1), ts);
+    return new Tile(gid - ts.gid, ts);
   }
 
   // Returns a tileset based on its name

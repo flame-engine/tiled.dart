@@ -36,7 +36,7 @@ main() {
   test('Tile.properties queries Tileset.tileProperties correctly', () {
     var ts = new Tileset(1)..tileProperties[1] = { 'tile_property': 'tile_value' };
 
-    var tile = new Tile(1, ts);
+    var tile = new Tile(0, ts);
 
     expect(tile.properties, equals({ 'tile_property': 'tile_value' }));
   });

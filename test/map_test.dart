@@ -25,8 +25,8 @@ main() {
     });
 
     group('returns a valid Tile for GID 4', () {
-      test('with tileId = 3', () {
-        expect(tile.tileId, equals(3));
+      test('with tileId = 2', () {
+        expect(tile.tileId, equals(2));
       });
 
       test('with width = 32', () {

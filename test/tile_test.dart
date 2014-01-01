@@ -32,4 +32,12 @@ main() {
     var tile = new Tile.emptyTile();
     expect(tile.properties, new isInstanceOf<Map>());
   });
+
+  test('Tile.properties queries Tileset.tileProperties correctly', () {
+    var ts = new Tileset(1)..tileProperties[1] = { 'tile_property': 'tile_value' };
+
+    var tile = new Tile(1, ts);
+
+    expect(tile.properties, equals({ 'tile_property': 'tile_value' }));
+  });
 }

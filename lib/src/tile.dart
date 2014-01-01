@@ -11,6 +11,7 @@ class Tile {
   int width;
   int height;
 
+
   Map<String, String> properties = new Map();
 
   // Optional X / Y locations for the tile.
@@ -22,6 +23,7 @@ class Tile {
     width = tileset.width;
     height = tileset.height;
     gid = tileId + (tileset.gid - 1);
+    properties = tileset.tileProperties[gid];
   }
 
   Tile.emptyTile() {

@@ -1,7 +1,7 @@
 part of tmx;
 
 class Tileset {
-  int gid;
+  int firstgid;
   int width;
   int height;
   String name;
@@ -12,5 +12,5 @@ class Tileset {
   Map<String, String> properties = new Map<String, String>();
   Map<int, Map<String, String>> tileProperties = new Map();
 
-  Tileset(this.gid);
+  Tileset(this.firstgid);
 }

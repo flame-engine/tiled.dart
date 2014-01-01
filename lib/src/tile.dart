@@ -22,7 +22,7 @@ class Tile {
   Tile(this.tileId, this.tileset) {
     width = tileset.width;
     height = tileset.height;
-    gid = tileId + tileset.gid;
+    gid = tileId + tileset.firstgid;
     properties = tileset.tileProperties[gid];
   }
 

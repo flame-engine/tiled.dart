@@ -40,7 +40,7 @@ class TileMapParser {
     // Parse tile properties, if present.
     node.queryAll('tile').forEach((XmlElement tileNode) {
       int tileId = int.parse(tileNode.attributes['id']);
-      int tileGid = tileId + ts.gid;
+      int tileGid = tileId + ts.firstgid;
       ts.tileProperties[tileGid] = _parseProperties(tileNode.query('properties').queryAll('property'));
     });
 

@@ -16,8 +16,8 @@ class TileMap {
   // A GID of 0 is always an "empty" tile
   Tile getTileByGID(int gid) {
     if (gid == 0) { return new Tile.emptyTile(); }
-    var ts = tilesets.lastWhere((tileset) => tileset.gid <= gid);
-    return new Tile(gid - ts.gid, ts);
+    var ts = tilesets.lastWhere((tileset) => tileset.firstgid <= gid);
+    return new Tile(gid - ts.firstgid, ts);
   }
 
   // Returns a tileset based on its name

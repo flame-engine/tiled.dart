@@ -37,7 +37,7 @@ main() {
       var tileset;
       setUp( ()=> tileset = map.tilesets[0] );
 
-      test('has its firstgid = 1', ()=> expect(tileset.gid, equals(1)) );
+      test('has its firstgid = 1', ()=> expect(tileset.firstgid, equals(1)) );
       test('has its name = "basketball"', ()=> expect(tileset.name, equals('basketball')));
       test('has its tilewidth = 32', ()=> expect(tileset.width, equals(32)));
       test('has its tileheight = 32', ()=> expect(tileset.height, equals(32)));

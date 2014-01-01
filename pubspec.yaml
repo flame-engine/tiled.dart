@@ -1,0 +1,17 @@
+name: citadel
+author: Arron Washington
+description: A sample web application
+dependencies:
+  browser: any
+  crypto: any
+  game_loop: any
+  js: any
+  json: any
+  logging: any
+  route: any
+  stagexl:
+    git:
+      ref: master
+      url: https://github.com/bp74/StageXL.git
+  unittest: any
+  xml: any

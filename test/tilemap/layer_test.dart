@@ -3,7 +3,7 @@ import 'package:citadel/tilemap.dart';
 import 'dart:io';
 
 main() {
-  var parser = new Parser();
+  var parser = new TileMapParser();
   var map, layer;
 
   // Urgh. var xml = File.read(/* ... */); >:/

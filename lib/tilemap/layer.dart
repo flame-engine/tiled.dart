@@ -9,7 +9,7 @@ class Layer {
   int width;
   int height;
 
-  TiledMap map;
+  TileMap map;
   List<List<int>> tileMatrix;
 
   List<Tile> _tiles;

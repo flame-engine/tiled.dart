@@ -7,7 +7,7 @@ main() {
   var map;
   // Urgh. var xml = File.read(/* ... */); >:/
   setUp( () {
-    return new File('../fixtures/test.tmx').readAsString().then((xml) {
+    return new File('./fixtures/test.tmx').readAsString().then((xml) {
       map = parser.parse(xml);
     });
   });

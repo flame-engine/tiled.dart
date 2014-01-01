@@ -5,6 +5,16 @@
   <properties>
     <property name="test_property" value="test_value"/>
   </properties>
+  <tile id="0">
+     <properties>
+      <property name="tile_0_property_name" value="tile_0_property_value"/>
+     </properties>
+    </tile>
+    <tile id="1">
+     <properties>
+      <property name="tile_1_property_name" value="tile_1_property_value"/>
+     </properties>
+    </tile>
  </tileset>
  <layer name="Tile Layer 1" width="10" height="10">
   <data encoding="base64" compression="zlib">

@@ -10,5 +10,7 @@ class Tileset {
 
   List<Image> images = new List<Image>();
   Map<String, String> properties = new Map<String, String>();
+  Map<int, Map<String, String>> tileProperties = new Map();
+
   Tileset(this.gid);
 }

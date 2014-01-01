@@ -60,6 +60,16 @@ main() {
           expect(properties, equals({ 'test_property': 'test_value'}));
         });
       });
+
+      group('populates its child tile properties correctly by', () {
+        var tileProperties;
+        setUp( ()=> tileProperties = tileset.tileProperties);
+
+        test('inserting properties into tileProperties based on Tile GID', () {
+          expect(tileProperties[1], equals({ 'tile_0_property_name': 'tile_0_property_value' }));
+          expect(tileProperties[2], equals({ 'tile_1_property_name': 'tile_1_property_value' }));
+        });
+      });
     });
 
   });

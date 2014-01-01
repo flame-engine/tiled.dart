@@ -11,6 +11,8 @@ class Tile {
   int width;
   int height;
 
+  Map<String, String> properties = new Map();
+
   // Optional X / Y locations for the tile.
   int x, y;
 

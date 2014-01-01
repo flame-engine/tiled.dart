@@ -27,4 +27,9 @@ main() {
       expect(tile.isEmpty, isFalse);
     });
   });
+
+  test('Tile.properties is present', () {
+    var tile = new Tile.emptyTile();
+    expect(tile.properties, new isInstanceOf<Map>());
+  });
 }

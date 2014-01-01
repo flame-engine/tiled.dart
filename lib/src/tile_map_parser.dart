@@ -30,13 +30,21 @@ class TileMapParser {
 
   static Tileset _parseTileset(XmlElement node) {
     var attrs = node.attributes;
-    return new Tileset(int.parse(attrs['firstgid']))
+    var ts = new Tileset(int.parse(attrs['firstgid']))
       ..name = attrs['name']
       ..width = int.parse(attrs['tilewidth'])
       ..height = int.parse(attrs['tileheight'])
       ..images.addAll(node.query('image').map((XmlElement node)=> _parseImage(node)))
-      ..properties = _parseProperties(node.queryAll('property'));
+      ..properties = _parseProperties(node.query('properties').queryAll('property'));
 
+    // Parse tile properties, if present.
+    node.queryAll('tile').forEach((XmlElement tileNode) {
+      int tileId = int.parse(tileNode.attributes['id']);
+      int tileGid = tileId + ts.gid;
+      ts.tileProperties[tileGid] = _parseProperties(tileNode.query('properties').queryAll('property'));
+    });
+
+    return ts;
   }
 
   static Image _parseImage(XmlElement node) {

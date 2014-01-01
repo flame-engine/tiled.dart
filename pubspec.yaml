@@ -2,7 +2,9 @@ name: tmx
 author: Arron Washington
 description: A library for parsing TMX files.
 dependencies:
-  crypto: any
-  unittest: any
-  xml: any
+  crypto: ">= 0.8.10+3"
+  xml: ">= 0.9.5"
   archive: 1.0.0
+
+dev_dependencies:
+  unittest: ">= 0.8.10+3"

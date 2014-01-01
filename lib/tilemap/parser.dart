@@ -1,8 +1,7 @@
 part of tilemap;
 
 class Parser {
-  DecompressionFunction decompressor;
-  Parser(this.decompressor);
+  Parser();
 
   TiledMap parse(String xml) {
     var xmlElement = XML.parse(xml);
@@ -21,7 +20,7 @@ class Parser {
           map.tilesets.add(_parseTileset(node)..map = map);
           break;
         case 'layer':
-          map.layers.add(_parseLayer(node, decompressor)..map = map);
+          map.layers.add(_parseLayer(node)..map = map);
           break;
       }
     });
@@ -55,7 +54,7 @@ class Parser {
     return map;
   }
 
-  static Layer _parseLayer(XmlElement node, decompressor) {
+  static Layer _parseLayer(XmlElement node) {
     var attrs = node.attributes;
     var layer = new Layer(attrs['name'], int.parse(attrs['width']), int.parse(attrs['height']));
 
@@ -65,7 +64,7 @@ class Parser {
         throw 'Incompatible data node found';
       }
       var decodedString = _decodeBase64(dataElement.text);
-      var inflatedString = decompressor(decodedString);
+      var inflatedString = new ZLibDecoder().decode(decodedString);
 
       layer.assembleTileMatrix(inflatedString);
     }

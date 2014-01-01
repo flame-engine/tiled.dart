@@ -3,8 +3,7 @@ import 'package:citadel/tilemap.dart';
 import 'dart:io';
 
 main() {
-  var inflateZlib = (List<int> bytes) => new ZLibDecoder().convert(bytes);
-  var parser = new Parser(inflateZlib);
+  var parser = new Parser();
   var map;
   // Urgh. var xml = File.read(/* ... */); >:/
   setUp( () {

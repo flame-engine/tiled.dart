@@ -1,7 +1,8 @@
 name: citadel
 author: Arron Washington
-description: A sample web application
+description: A library for parsing TMX files.
 dependencies:
   crypto: any
   unittest: any
   xml: any
+  archive: 1.0.0

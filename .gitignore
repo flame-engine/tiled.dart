@@ -1,5 +1,7 @@
 /packages
 /build
 
+pubspec.lock
+
 # IDEs
 /.idea

@@ -24,6 +24,7 @@ class Tile {
     height = tileset.height;
     gid = tileId + tileset.firstgid;
     properties = tileset.tileProperties[gid];
+    if (properties == null) { properties = {}; }
   }
 
   Tile.emptyTile() {

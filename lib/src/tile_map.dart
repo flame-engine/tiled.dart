@@ -22,6 +22,8 @@ class TileMap {
 
   // Returns a tileset based on its name
   Tileset getTileset(String name) {
-    return tilesets.firstWhere((tileset) => tileset.name == name);
+    return tilesets.firstWhere((tileset) => tileset.name == name,
+      orElse: () => throw new ArgumentError('Tileset $name not found')
+    );
   }
 }

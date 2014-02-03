@@ -54,9 +54,9 @@ main() {
       map.tilesets.add(tileset);
     });
 
-    test('raises an exception if tileset is not present', () {
+    test('raises an ArgumentError if tileset is not present', () {
       expect( () => map.getTileset('Quackers'),
-          throwsA(new isInstanceOf<StateError>()));
+          throwsA(new isInstanceOf<ArgumentError>()));
     });
 
     test('returns the expected tileset', () {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:unittest/unittest.dart';
 import 'tileset_test.dart' as tileset_test;
 import 'layer_test.dart' as layer_test;
@@ -6,6 +8,7 @@ import 'parser_test.dart' as parser_test;
 import 'map_test.dart' as map_test;
 
 void main() {
+  Directory.current = './test';
   group('Parser Tests:', parser_test.main);
   group('Map Tests', map_test.main);
   group('Tile Tests', tile_test.main);

@@ -26,4 +26,12 @@ class TileMap {
       orElse: () => throw new ArgumentError('Tileset $name not found')
     );
   }
+
+  /**
+  * Looks up a tile by its tileset and local tile id.
+  */
+  Tile getTileByLocalID(String tilesetName, int localTileId) {
+    var tileset = getTileset(tilesetName);
+    return new Tile(localTileId, tileset);
+  }
 }

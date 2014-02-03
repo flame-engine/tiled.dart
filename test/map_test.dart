@@ -46,6 +46,33 @@ main() {
     });
   });
 
+  group('Map.getTileByLocalID', () {
+    tmx.TileMap map;
+    tmx.Tileset tileset = new tmx.Tileset(1)
+      ..name = 'Humans'
+      ..height = 64
+      ..width = 32;
+    setUp(() {
+      map = new tmx.TileMap();
+      map.tilesets.add(tileset);
+    });
+
+    test('raises an ArgumentError if tileset is not present', () {
+      expect( () => map.getTileByLocalID('Nonexistant Tile', 0),
+        throwsA(new isInstanceOf<ArgumentError>())
+      );
+    });
+
+    group('returns a tile', () {
+      var tile;
+      setUp(() => tile = map.getTileByLocalID('Humans', 0));
+
+      test('with the expected Tileset', () => expect(tile.tileset, equals(tileset)));
+      test('with the expected local tile ID', () => expect(tile.tileId, equals(0)));
+    });
+
+  });
+
   group('Map.getTileset', () {
     tmx.TileMap map;
     tmx.Tileset tileset = new tmx.Tileset(1)..name = 'Humans';

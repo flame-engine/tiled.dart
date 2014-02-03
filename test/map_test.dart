@@ -73,6 +73,42 @@ main() {
 
   });
 
+  group('Map.getTileByPhrase', () {
+    tmx.TileMap map;
+    tmx.Tileset tileset = new tmx.Tileset(1)
+      ..name = 'Humans'
+      ..height = 64
+      ..width = 32;
+    setUp(() {
+      map = new tmx.TileMap();
+      map.tilesets.add(tileset);
+    });
+
+    test('raises an ArgumentError if tile phrase is not in the correct format', () {
+      expect( () => map.getTileByPhrase('Nonexistant Tile'),
+        throwsArgumentError
+      );
+    });
+
+    test('raises an ArgumentError if tileset is not present', () {
+      expect( () => map.getTileByPhrase('Nonexistant Tile|0'),
+        throwsArgumentError);
+    });
+
+    test('raises an ArgumentError if tile id is not a parsable integer', () {
+      expect( () => map.getTileByPhrase('Humans|cupcake'),
+        throwsArgumentError);
+    });
+
+    group('returns a tile', () {
+      var tile;
+      setUp(() => tile = map.getTileByPhrase('Humans|0'));
+
+      test('with the expected Tileset', () => expect(tile.tileset, equals(tileset)));
+      test('with the expected local tile ID', () => expect(tile.tileId, equals(0)));
+    });
+  });
+
   group('Map.getTileset', () {
     tmx.TileMap map;
     tmx.Tileset tileset = new tmx.Tileset(1)..name = 'Humans';

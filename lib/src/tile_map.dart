@@ -34,4 +34,27 @@ class TileMap {
     var tileset = getTileset(tilesetName);
     return new Tile(localTileId, tileset);
   }
+
+  /**
+  * Looks up a tile by a 'tile phrase.'
+  *
+  * A tile phrase is simply a string with the tileset name and local tile id concated by the pipe character ('|').
+  * It is a short-hand way of calling [getTileByLocalID], and exists to faciliate a specifying
+  * a tile by its tileset and local tile ID without relying on a tile GID, which may change if tilesets are re-ordered.
+  *
+  * EX:
+  *   // returns the first tile in the tileset 'trees'
+  *   getTileByPhrase('Trees|0');
+  *
+  */
+  Tile getTileByPhrase(String tilePhrase) {
+    var split = tilePhrase.split('|');
+    if (split.length != 2) { throw new ArgumentError("$tilePhrase not in the format of 'TilesetName|LocalTileID"); }
+
+    var tilesetName = split.first;
+    var tileId = int.parse(split.last,
+      onError: (src) => throw new ArgumentError('Local tile ID $src is not an integer.') );
+
+    return getTileByLocalID(tilesetName, tileId);
+  }
 }

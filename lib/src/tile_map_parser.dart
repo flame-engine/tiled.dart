@@ -4,18 +4,18 @@ class TileMapParser {
   TileMapParser();
 
   TileMap parse(String xml) {
-    var xmlElement = XML.parse(xml);
+    var xmlElement = _parseXml(xml).rootElement;
 
-    if (xmlElement.name != 'map') {
+    if (xmlElement.name.local != 'map') {
       throw 'XML is not in TMX format';
     }
 
     var map = new TileMap();
-    map.tileWidth = int.parse(xmlElement.attributes['tilewidth']);
-    map.tileHeight = int.parse(xmlElement.attributes['tileheight']);
+    map.tileWidth = int.parse(xmlElement.getAttribute('tilewidth'));
+    map.tileHeight = int.parse(xmlElement.getAttribute('tileheight'));
 
-    xmlElement.children.forEach( (XmlElement node) {
-      switch(node.name) {
+    xmlElement.children.where((node) => node is XmlElement).forEach( (XmlElement node) {
+      switch(node.name.local) {
         case 'tileset':
           map.tilesets.add(_parseTileset(node)..map = map);
           break;
@@ -29,46 +29,46 @@ class TileMapParser {
   }
 
   static Tileset _parseTileset(XmlElement node) {
-    var attrs = node.attributes;
-    var ts = new Tileset(int.parse(attrs['firstgid']))
-      ..name = attrs['name']
-      ..width = int.parse(attrs['tilewidth'])
-      ..height = int.parse(attrs['tileheight'])
-      ..images.addAll(node.query('image').map((XmlElement node)=> _parseImage(node)))
-      ..properties = _parseProperties(node.query('properties').queryAll('property'));
+    var attrs = node.getAttribute;
+    var ts = new Tileset(int.parse(attrs('firstgid')))
+      ..name = attrs('name')
+      ..width = int.parse(attrs('tilewidth'))
+      ..height = int.parse(attrs('tileheight'))
+      ..images.addAll(node.findElements('image').map((XmlElement node)=> _parseImage(node)))
+      ..properties = _parseProperties(_getPropertyNodes(node));
 
     // Parse tile properties, if present.
-    node.queryAll('tile').forEach((XmlElement tileNode) {
-      int tileId = int.parse(tileNode.attributes['id']);
+    node.findElements('tile').forEach((XmlElement tileNode) {
+      int tileId = int.parse(tileNode.getAttribute('id'));
       int tileGid = tileId + ts.firstgid;
-      ts.tileProperties[tileGid] = _parseProperties(tileNode.query('properties').queryAll('property'));
+      ts.tileProperties[tileGid] = _parseProperties(_getPropertyNodes(tileNode));
     });
 
     return ts;
   }
 
   static Image _parseImage(XmlElement node) {
-    var attrs = node.attributes;
-    return new Image(attrs['source'], int.parse(attrs['width']), int.parse(attrs['height']));
+    var attrs = node.getAttribute;
+    return new Image(attrs('source'), int.parse(attrs('width')), int.parse(attrs('height')));
   }
 
   static Map<String, String> _parseProperties(nodes) {
     var map = new Map();
     nodes.forEach( (property) {
-      var attrs = property.attributes;
-      map[attrs['name']] = attrs['value'];
+      var attrs = property.getAttribute;
+      map[attrs('name')] = attrs('value');
     });
 
     return map;
   }
 
   static Layer _parseLayer(XmlElement node) {
-    var attrs = node.attributes;
-    var layer = new Layer(attrs['name'], int.parse(attrs['width']), int.parse(attrs['height']));
+    var attrs = node.getAttribute;
+    var layer = new Layer(attrs('name'), int.parse(attrs('width')), int.parse(attrs('height')));
 
-    var dataElement = node.query('data')[0];
+    var dataElement = node.children.firstWhere((node) => node is XmlElement && node.name.local == 'data', orElse: () => null);
     if (dataElement is XmlElement) {
-      if (dataElement.attributes['encoding'] != 'base64' || dataElement.attributes['compression'] != 'zlib') {
+      if (dataElement.getAttribute('encoding') != 'base64' || dataElement.getAttribute('compression') != 'zlib') {
         throw 'Incompatible data node found';
       }
       var decodedString = _decodeBase64(dataElement.text);
@@ -85,7 +85,16 @@ class TileMapParser {
   // Manual test: CryptoUtils.base65StringToBytes has the same output as
   // Ruby's Base64.decode64. This function is working as expected.
   // Can't be tested; Dart won't let you test private methods (LOL)
-  static List<int> _decodeBase64(var input) {
-    return CryptoUtils.base64StringToBytes(input);
+  static List<int> _decodeBase64(String input) {
+    var sanitized = input.trim();
+    return CryptoUtils.base64StringToBytes(sanitized);
+  }
+
+  static List<XmlElement> _getPropertyNodes(XmlElement node) {
+    var propertyNode = node.children
+        .where((node) => node is XmlElement)
+        .firstWhere((node) => node.name.local == 'properties', orElse: () => null);
+    if (propertyNode == null) { return []; }
+    return propertyNode.findElements('property');
   }
 }

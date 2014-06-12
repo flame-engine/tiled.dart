@@ -1,12 +1,11 @@
 name: tmx
-author: Arron Washington <arron@theradicaledwards.com>
 version: 0.11.0
-homepage: https://github.com/radicaled/tmx.dart
+author: Arron Washington <arron@theradicaledwards.com>
 description: A library for parsing TMX files.
+homepage: https://github.com/radicaled/tmx.dart
 dependencies:
-  crypto: ">= 0.8.10+3"
-  xml: ">= 0.9.5"
-  archive: 1.0.0
-
+  archive: '>=1.0.0 <2.0.0'
+  crypto: '>=0.9.0 <0.10.0'
+  xml: '>=2.0.0 <3.0.0'
 dev_dependencies:
-  unittest: ">= 0.8.10+3"
+  unittest: '>= 0.8.10+3'

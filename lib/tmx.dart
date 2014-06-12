@@ -10,3 +10,5 @@ part 'src/tileset.dart';
 part 'src/image.dart';
 part 'src/layer.dart';
 part 'src/tile.dart';
+
+XmlDocument _parseXml(String input) => parse(input);

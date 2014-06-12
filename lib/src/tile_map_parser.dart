@@ -90,7 +90,7 @@ class TileMapParser {
     return CryptoUtils.base64StringToBytes(sanitized);
   }
 
-  static List<XmlElement> _getPropertyNodes(XmlElement node) {
+  static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
     var propertyNode = node.children
         .where((node) => node is XmlElement)
         .firstWhere((node) => node.name.local == 'properties', orElse: () => null);

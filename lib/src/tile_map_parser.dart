@@ -72,7 +72,7 @@ class TileMapParser {
         throw 'Incompatible data node found';
       }
       var decodedString = _decodeBase64(dataElement.text);
-      var inflatedString = new ZLibDecoder().decode(decodedString);
+      var inflatedString = new ZLibDecoder().decodeBytes(decodedString);
 
       layer.assembleTileMatrix(inflatedString);
     }

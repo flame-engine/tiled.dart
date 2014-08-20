@@ -22,6 +22,9 @@ class TileMapParser {
         case 'layer':
           map.layers.add(_parseLayer(node)..map = map);
           break;
+        case 'objectgroup':
+          map.objectGroups.add(new ObjectGroup.fromXML(node)..map = map);
+          break;
       }
     });
 
@@ -99,7 +102,7 @@ class TileMapParser {
   }
 
   static List<Point> _getPoints(XmlElement node) {
-    // Format: points="0,0 -5,98 -49,42"    
+    // Format: points="0,0 -5,98 -49,42"
     var points = node.getAttribute('points').split(' ');
     return points.map((point) {
       var arr = point.split(',');

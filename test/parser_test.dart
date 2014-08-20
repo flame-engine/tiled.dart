@@ -103,7 +103,26 @@ main() {
 
     });
   });
+
+  group('Parser.parse populates Map with objectgroups', () {
+    setUp( () {
+      return new File('./fixtures/objectgroup.tmx').readAsString().then((xml) {
+        map = parser.parse(xml);
+      });
+    });
+
+    test('and objectGroups is the correct length',
+      () => expect(map.objectGroups.length, equals(2)));
+
+    group('and the first objectGroup', () {
+      var og;
+      setUp( ()=> og = map.objectGroups[0] );
+
+      test('has the right #map',
+        () => expect(og.map, equals(map)));
+
+      test('has the right #name',
+        () => expect(og.name, equals('Test Object Layer 1')));
+    });
+  });
 }
-
-
-

@@ -7,6 +7,8 @@ class ObjectGroup {
   double opacity = 1;
   bool visible = true;
 
+  TileMap map;
+
   Map<String, String> properties = {};
   List<TmxObject> tmxObjects = [];
 

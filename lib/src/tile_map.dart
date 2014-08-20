@@ -6,6 +6,7 @@ class TileMap {
 
   List<Tileset> tilesets = new List<Tileset>();
   List<Layer> layers = new List<Layer>();
+  List<ObjectGroup> objectGroups = [];
 
   /**
    * Retrieve a tile based on its GID

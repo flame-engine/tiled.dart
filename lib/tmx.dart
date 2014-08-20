@@ -1,5 +1,7 @@
 library tmx;
 
+import 'dart:math';
+
 import 'package:crypto/crypto.dart';
 import 'package:xml/xml.dart';
 import 'package:archive/archive.dart';
@@ -10,5 +12,8 @@ part 'src/tileset.dart';
 part 'src/image.dart';
 part 'src/layer.dart';
 part 'src/tile.dart';
+part 'src/object_group.dart';
+part 'src/tmx_object.dart';
+part 'src/node_dsl.dart';
 
 XmlDocument _parseXml(String input) => parse(input);

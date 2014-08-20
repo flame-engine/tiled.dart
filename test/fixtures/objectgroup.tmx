@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <layer name="Tile Layer 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <objectgroup color="#555500" name="Test Object Layer 1" width="100" height="100" opacity="0.7">
+  <properties>
+   <property name="objectgroup_property_name" value="objectgroup_property_value"/>
+  </properties>
+  <object name="Circle" x="344" y="179" width="55" height="53">
+   <properties>
+    <property name="property_name" value="property_value"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="Rectangle" x="541" y="271" width="46" height="43"/>
+  <object name="Polygon" x="752" y="216">
+   <polygon points="0,0 -4,81 -78,19"/>
+  </object>
+  <object name="Polyline" x="1016" y="141">
+   <polyline points="0,0 -5,98 -49,42"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="EmptyLayer" width="100" height="100" visible="0"/>
+</map>

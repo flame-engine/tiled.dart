@@ -97,4 +97,14 @@ class TileMapParser {
     if (propertyNode == null) { return []; }
     return propertyNode.findElements('property');
   }
+
+  static List<Point> _getPoints(XmlElement node) {
+    // Format: points="0,0 -5,98 -49,42"    
+    var points = node.getAttribute('points').split(' ');
+    return points.map((point) {
+      var arr = point.split(',');
+      var p = (str) => int.parse(str);
+      return new Point(p(arr.first), p(arr.last));
+    }).toList();
+  }
 }

@@ -4,7 +4,7 @@ class ObjectGroup {
   String name;
   String color;
 
-  double opacity = 1;
+  double opacity = 1.0;
   bool visible = true;
 
   TileMap map;

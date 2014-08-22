@@ -8,6 +8,7 @@ class NodeDSL {
   static NodeDSL on(XmlElement element, Function fxn) {
     var node = new NodeDSL(element);
     fxn(node);
+    return node;
   }
 
   String strOr(String attrName, String defaultValue) {

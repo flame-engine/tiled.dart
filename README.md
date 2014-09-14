@@ -30,5 +30,4 @@ Load a TMX file into a string by any means, and then pass the string to an insta
 
 ##Important Notes
 
-* Only zlib compression is supported for now.
 * The API grew out of another codebase, so if anything looks screwy / strange, drop us a line using Github Issues.

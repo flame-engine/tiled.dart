@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="basketball" tilewidth="32" tileheight="32">
-  <image source="../icons/obj/basketball.png" width="96" height="64"/>
+  <image source="icons.png" width="96" height="64"/>
   <properties>
     <property name="test_property" value="test_value"/>
   </properties>

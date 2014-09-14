@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="basketball" tilewidth="32" tileheight="32">
+  <properties>
+   <property name="test_property" value="test_value"/>
+  </properties>
+  <tile id="0">
+   <properties>
+    <property name="tile_0_property_name" value="tile_0_property_value"/>
+   </properties>
+   <image format="png">
+    <data encoding="base64">iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAApNJREFUSIm1lt9Lk1EYxz87vpsbNtMuNESW3RhFP8hSrxICQUgl6EYIJhFYF9lFP27ysv+hC+lGCjK7C4WoFpVZTIowwRhexMiS6KLeTTe38fqeLra9e91025nty3tznp3z+T5nD+ecxyGlpLjMMMYsRoDNeczvAMJHTTdaL1oPoq34asfOBklSU2xchURRghvPOK4hqFUxMGaIDRZPLV9102gDhWFREEkSH1amA7FB4sOQzAtv3YGMst6JuaxMtyTa2fMRR/22BknWju+Kbnl4F62S2P6i+IhFdzRkvnKUP9lcJj6S+zWzA1tV87hSL0HffnK25mmDJBF36TVKBsDeBNQKgNRUMUbFSk2R2UHEk3earLyKp19qspu9GxpmuPCslsMtY3ICMywwZhVgqjJmBUagmgYBweZ8FQ025x1Sd5e6L3NyNKiVB9yFl91/lkD4qon3CWq6VVeVeUcB1HQLtN5q0QGtV0PrUTJQK7LWIxBtkLvp3gf5/KVCumEQ2vKauBFtAsAzbsVevObZS5UcbZoLcnnUNvaMk3lwXENWcH8T38IVGrx6y9kztrFrKGtALXXT6WB/HzPPiUSV6akUDyY5fy47rptOv5rZg6YN4PQDvlYuDDJ2V9lg4hGHD9F1CgCnP9fCyJwSMtoudf6EOXaEOzcx/yL1sr7FDzQ3sTCH1JHRdikTFtRuIKUZSXushjh9kv4+Vr6WpgcDtLbwZCJLNyN25FaD9D5ifqmT/M3YLRobGL3CUnB79M8Qt6/T3MTTSaSOjPntuadVonVc/cW9+zx8jNfLiaMcPEC9FyAW5807lkJcusiNa7S27Ng6ltX8miahZT4tsPKDtXWcTvY10tlBVwcuV2XNr127a9//AXi1mCEu4b6fAAAAAElFTkSuQmCC</data>
+   </image>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="tile_1_property_name" value="tile_1_property_value"/>
+   </properties>
+   <image format="png">
+    <data encoding="base64"></data>
+   </image>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="10" height="10">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NkIB4wjqqluVoA5p1VqZABAAA=
+  </data>
+ </layer>
+</map>

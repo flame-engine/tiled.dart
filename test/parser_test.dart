@@ -50,7 +50,7 @@ main() {
 
         test('has its width = 96', ()=> expect(image.width, equals(96)));
         test('has its height = 64', ()=> expect(image.height, equals(64)));
-        test('has its source = "../icons/obj/basketball.png"', ()=> expect(image.source, equals('../icons/obj/basketball.png')));
+        test('has its source = "icons.png"', ()=> expect(image.source, equals('icons.png')));
       });
 
       group('populates its properties correctly and', () {

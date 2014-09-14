@@ -10,7 +10,6 @@ import 'object_group_test.dart' as object_group_test;
 import 'tmx_object_test.dart' as tmx_object_test;
 
 void main() {
-  Directory.current = './test';
   group('Parser Tests:', parser_test.main);
   group('Map Tests', map_test.main);
   group('Tile Tests', tile_test.main);

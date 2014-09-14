@@ -7,7 +7,7 @@ main() {
   var map;
   // Urgh. var xml = File.read(/* ... */); >:/
   setUp( () {
-    return new File('./fixtures/test.tmx').readAsString().then((xml) {
+    return new File('./test/fixtures/test.tmx').readAsString().then((xml) {
       map = parser.parse(xml);
     });
   });
@@ -106,7 +106,7 @@ main() {
 
   group('Parser.parse populates Map with objectgroups', () {
     setUp( () {
-      return new File('./fixtures/objectgroup.tmx').readAsString().then((xml) {
+      return new File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
         map = parser.parse(xml);
       });
     });

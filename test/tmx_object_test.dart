@@ -7,7 +7,7 @@ import 'dart:math';
 void main() {
   XmlElement xmlRoot;
   setUp( () {
-    return new File('./fixtures/objectgroup.tmx').readAsString().then((xml) {
+    return new File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
       xmlRoot = parse(xml).rootElement;
     });
   });

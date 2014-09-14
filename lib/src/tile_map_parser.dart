@@ -71,11 +71,11 @@ class TileMapParser {
 
     var dataElement = node.children.firstWhere((node) => node is XmlElement && node.name.local == 'data', orElse: () => null);
     if (dataElement is XmlElement) {
-      if (dataElement.getAttribute('encoding') != 'base64' || dataElement.getAttribute('compression') != 'zlib') {
-        throw 'Incompatible data node found';
-      }
-      var decodedString = _decodeBase64(dataElement.text);
-      var inflatedString = new ZLibDecoder().decodeBytes(decodedString);
+      var decoder = _getDecoder(dataElement.getAttribute('encoding'));
+      var decompressor = _getDecompressor(dataElement.getAttribute('compression'));
+
+      var decodedString = decoder(dataElement.text);
+      var inflatedString = decompressor(decodedString);
 
       layer.assembleTileMatrix(inflatedString);
     }
@@ -109,5 +109,26 @@ class TileMapParser {
       var p = (str) => int.parse(str);
       return new Point(p(arr.first), p(arr.last));
     }).toList();
+  }
+
+  static Function _getDecoder(String encodingType) {
+    switch(encodingType) {
+      case 'base64':
+        return _decodeBase64;
+      default:
+        throw 'Incompatible encoding found: $encodingType';
+    }
+
+  }
+
+  static Function _getDecompressor(String compressionType) {
+    switch(compressionType) {
+      case 'zlib':
+        return new ZLibDecoder().decodeBytes;
+      case 'gzip':
+        return new GZipDecoder().decodeBytes;
+      default:
+        throw 'Incompatible compression type found: $compressionType';
+    }
   }
 }

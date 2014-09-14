@@ -20,7 +20,7 @@ class TileMapParser {
           map.tilesets.add(_parseTileset(node)..map = map);
           break;
         case 'layer':
-          map.layers.add(_parseLayer(node)..map = map);
+          map.layers.add(new Layer.fromXML(node)..map = map);
           break;
         case 'objectgroup':
           map.objectGroups.add(new ObjectGroup.fromXML(node)..map = map);
@@ -63,24 +63,7 @@ class TileMapParser {
     });
 
     return map;
-  }
-
-  static Layer _parseLayer(XmlElement node) {
-    var attrs = node.getAttribute;
-    var layer = new Layer(attrs('name'), int.parse(attrs('width')), int.parse(attrs('height')));
-
-    var dataElement = node.children.firstWhere((node) => node is XmlElement && node.name.local == 'data', orElse: () => null);
-    if (dataElement is XmlElement) {
-      var decoder = _getDecoder(dataElement.getAttribute('encoding'));
-      var decompressor = _getDecompressor(dataElement.getAttribute('compression'));
-
-      var decodedString = decoder(dataElement.text);
-      var inflatedString = decompressor(decodedString);
-
-      layer.assembleTileMatrix(inflatedString);
-    }
-    return layer;
-  }
+  }  
 
   // The following helpers are a bit ham-handed; they're extracted into separate methods, even though they call
   // 3rd party packages, so that I can swap out replacement implementations as they grow and mature.

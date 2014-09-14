@@ -21,6 +21,28 @@ class Layer {
 
   Layer(this.name, this.width, this.height);
 
+  Layer.fromXML(XmlElement element) {
+    if (element == null) { throw 'arg "element" cannot be null'; }
+
+
+    NodeDSL.on(element, (dsl) {
+      name   = dsl.strOr('name', name);
+      width  = dsl.intOr('width', width);
+      height = dsl.intOr('height', height);
+    });
+
+    var dataElement = element.children.firstWhere((node) => node is XmlElement && node.name.local == 'data', orElse: () => null);
+    if (dataElement is XmlElement) {
+      var decoder = TileMapParser._getDecoder(dataElement.getAttribute('encoding'));
+      var decompressor = TileMapParser._getDecompressor(dataElement.getAttribute('compression'));
+
+      var decodedString = decoder(dataElement.text);
+      var inflatedString = decompressor(decodedString);
+
+      assembleTileMatrix(inflatedString);
+    }
+  }
+
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
   assembleTileMatrix(var bytes) {
     tileMatrix = new List<List<int>>(height);

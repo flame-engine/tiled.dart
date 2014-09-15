@@ -17,7 +17,7 @@ class TileMapParser {
     xmlElement.children.where((node) => node is XmlElement).forEach( (XmlElement node) {
       switch(node.name.local) {
         case 'tileset':
-          map.tilesets.add(_parseTileset(node)..map = map);
+          map.tilesets.add(new Tileset.fromXML(node)..map = map);
           break;
         case 'layer':
           map.layers.add(new Layer.fromXML(node)..map = map);
@@ -29,25 +29,6 @@ class TileMapParser {
     });
 
     return map;
-  }
-
-  static Tileset _parseTileset(XmlElement node) {
-    var attrs = node.getAttribute;
-    var ts = new Tileset(int.parse(attrs('firstgid')))
-      ..name = attrs('name')
-      ..width = int.parse(attrs('tilewidth'))
-      ..height = int.parse(attrs('tileheight'))
-      ..images.addAll(node.findElements('image').map((XmlElement node)=> _parseImage(node)))
-      ..properties = _parseProperties(_getPropertyNodes(node));
-
-    // Parse tile properties, if present.
-    node.findElements('tile').forEach((XmlElement tileNode) {
-      int tileId = int.parse(tileNode.getAttribute('id'));
-      int tileGid = tileId + ts.firstgid;
-      ts.tileProperties[tileGid] = _parseProperties(_getPropertyNodes(tileNode));
-    });
-
-    return ts;
   }
 
   static Image _parseImage(XmlElement node) {
@@ -63,7 +44,7 @@ class TileMapParser {
     });
 
     return map;
-  }  
+  }
 
   // The following helpers are a bit ham-handed; they're extracted into separate methods, even though they call
   // 3rd party packages, so that I can swap out replacement implementations as they grow and mature.

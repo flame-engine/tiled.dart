@@ -26,6 +26,7 @@ class TmxObject {
 
     NodeDSL.on(element, (dsl) {
       name = dsl.strOr('name', name);
+      type = dsl.strOr('type', type);
       x = dsl.intOr('x', x);
       y = dsl.intOr('y', y);
       width = dsl.intOr('width', width);

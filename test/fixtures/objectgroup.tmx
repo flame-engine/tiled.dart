@@ -9,14 +9,14 @@
   <properties>
    <property name="objectgroup_property_name" value="objectgroup_property_value"/>
   </properties>
-  <object name="Circle" x="344" y="179" width="55" height="53">
+  <object name="Circle" type="circle" x="344" y="179" width="55" height="53">
    <properties>
     <property name="property_name" value="property_value"/>
    </properties>
    <ellipse/>
   </object>
-  <object name="Rectangle" x="541" y="271" width="46" height="43"/>
-  <object name="Polygon" x="752" y="216">
+  <object name="Rectangle" type="rectangle" x="541" y="271" width="46" height="43"/>
+  <object name="Polygon" type="polygon" x="752" y="216">
    <polygon points="0,0 -4,81 -78,19"/>
   </object>
   <object name="Polyline" x="1016" y="141">

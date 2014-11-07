@@ -26,6 +26,10 @@ void main() {
         expect(tmxObject.name, equals("Circle"));
       });
 
+      test('sets type to "circle"', () {
+        expect(tmxObject.type, equals("circle"));
+      });
+
       test('sets x to 344', () {
         expect(tmxObject.x, equals(344));
       });
@@ -60,6 +64,10 @@ void main() {
         expect(tmxObject.name, equals("Rectangle"));
       });
 
+      test('sets type to "rectangle"', () {
+        expect(tmxObject.type, equals("rectangle"));
+      });
+
       test('sets x to 541', () {
         expect(tmxObject.x, equals(541));
       });
@@ -87,6 +95,10 @@ void main() {
 
       test('sets name to "Polygon"', () {
         expect(tmxObject.name, equals("Polygon"));
+      });
+
+      test('sets type to "polygon"', () {
+        expect(tmxObject.type, equals("polygon"));
       });
 
       test('sets x to 752', () {

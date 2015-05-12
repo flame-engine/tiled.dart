@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'tileset_test.dart' as tileset_test;
 import 'layer_test.dart' as layer_test;
 import 'tile_test.dart' as tile_test;

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:xml/xml.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:tmx/tmx.dart';
 
 void main() {

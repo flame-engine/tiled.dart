@@ -4,6 +4,8 @@ tmx.dart parses [TMX files](https://github.com/bjorn/tiled/wiki/TMX-Map-Format) 
 
 tmx.dart works on both the client and server (dartvm) platforms.
 
+tmx.dart isn't currently maintained (contact me if you want the glory and honor!), but using this package should be fine. ... Probably.
+
 ##Install from Dart Pub Repository
 
 Include the following in your `pubspec.yaml`:

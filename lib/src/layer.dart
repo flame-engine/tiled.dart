@@ -85,6 +85,9 @@ class Layer {
         var tile = map.getTileByGID(tileId)
             ..x = x
             ..y = y;
+
+        // compute imageX,imageY
+
         _tiles.add(tile);
 
         x += map.tileWidth;

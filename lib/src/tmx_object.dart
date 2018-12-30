@@ -43,10 +43,10 @@ class TmxObject {
     // <polygon />, or <polyline />
     var xmlElements = element.children
       .where((node) => node is XmlElement)
-      .where((node) => (node as XmlElement).name.local != 'properties') as List<XmlElement>;
+      .where((node) => (node as XmlElement).name.local != 'properties');
 
     if (xmlElements.length > 0) {
-      var node = xmlElements.first;
+      var node = xmlElements.first as XmlElement;
 
       switch(node.name.local) {
         case 'ellipse':

@@ -30,4 +30,7 @@ class Tile {
   Tile.emptyTile() {
     gid = 0;
   }
+
+  Rectangle getX() {}
+
 }

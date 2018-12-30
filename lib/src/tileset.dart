@@ -21,7 +21,6 @@ class Tileset {
       firstgid = dsl.intOr('firstgid', firstgid);
       name  = dsl.strOr('name', name);
       width = dsl.intOr('tilewidth', width);
-      print('width: $width');
       height = dsl.intOr('tileheight', height);
       spacing = dsl.intOr('spacing', spacing);
       margin = dsl.intOr('margin', margin);

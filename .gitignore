@@ -6,3 +6,6 @@ pubspec.lock
 
 # IDEs
 /.idea
+
+.packages
+.dart_tool

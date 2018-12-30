@@ -26,7 +26,7 @@ class ObjectGroup {
 
     var objectNodes = element.children
         .where((node) => node is XmlElement)
-        .where((node) => node.name.local == 'object');
+        .where((node) => (node as XmlElement).name.local == 'object');
     tmxObjects = objectNodes.map((objectNode)
       =>  new TmxObject.fromXML(objectNode)).toList();
   }

@@ -43,7 +43,7 @@ class TmxObject {
     // <polygon />, or <polyline />
     var xmlElements = element.children
       .where((node) => node is XmlElement)
-      .where((node) => node.name.local != 'properties');
+      .where((node) => (node as XmlElement).name.local != 'properties') as List<XmlElement>;
 
     if (xmlElements.length > 0) {
       var node = xmlElements.first;

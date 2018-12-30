@@ -2,7 +2,7 @@ library tmx;
 
 import 'dart:math';
 
-import 'package:crypto/crypto.dart';
+import 'dart:convert';
 import 'package:xml/xml.dart';
 import 'package:archive/archive.dart';
 

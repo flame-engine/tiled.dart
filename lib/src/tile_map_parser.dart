@@ -4,6 +4,7 @@ class TileMapParser {
   TileMapParser();
 
   TileMap parse(String xml) {
+
     var xmlElement = _parseXml(xml).rootElement;
 
     if (xmlElement.name.local != 'map') {
@@ -14,16 +15,20 @@ class TileMapParser {
     map.tileWidth = int.parse(xmlElement.getAttribute('tilewidth'));
     map.tileHeight = int.parse(xmlElement.getAttribute('tileheight'));
 
-    xmlElement.children.where((node) => node is XmlElement).forEach( (XmlElement node) {
-      switch(node.name.local) {
+    xmlElement.children.where((node) => node is XmlNode).forEach( (XmlNode node) {
+      if (!(node is XmlElement)) {
+        return;
+      }
+      var element = node as XmlElement;
+      switch(element.name.local) {
         case 'tileset':
-          map.tilesets.add(new Tileset.fromXML(node)..map = map);
+          map.tilesets.add(new Tileset.fromXML(element)..map = map);
           break;
         case 'layer':
-          map.layers.add(new Layer.fromXML(node)..map = map);
+          map.layers.add(new Layer.fromXML(element)..map = map);
           break;
         case 'objectgroup':
-          map.objectGroups.add(new ObjectGroup.fromXML(node)..map = map);
+          map.objectGroups.add(new ObjectGroup.fromXML(element)..map = map);
           break;
       }
     });
@@ -37,7 +42,7 @@ class TileMapParser {
   }
 
   static Map<String, String> _parseProperties(nodes) {
-    var map = new Map();
+    var map = new Map<String, String>();
     nodes.forEach( (property) {
       var attrs = property.getAttribute;
       map[attrs('name')] = attrs('value');
@@ -54,13 +59,13 @@ class TileMapParser {
   // Can't be tested; Dart won't let you test private methods (LOL)
   static List<int> _decodeBase64(String input) {
     var sanitized = input.trim();
-    return CryptoUtils.base64StringToBytes(sanitized);
+    return base64.decode(sanitized);
   }
 
   static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
     var propertyNode = node.children
         .where((node) => node is XmlElement)
-        .firstWhere((node) => node.name.local == 'properties', orElse: () => null);
+        .firstWhere((node) => (node as XmlElement).name.local == 'properties', orElse: () => null) as XmlElement;
     if (propertyNode == null) { return []; }
     return propertyNode.findElements('property');
   }
@@ -92,7 +97,7 @@ class TileMapParser {
       case 'gzip':
         return new GZipDecoder().decodeBytes;
       default:
-        throw 'Incompatible compression type found: $compressionType';
+        return null;
     }
   }
 }

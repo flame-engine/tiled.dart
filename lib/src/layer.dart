@@ -37,7 +37,7 @@ class Layer {
       var decompressor = TileMapParser._getDecompressor(dataElement.getAttribute('compression'));
 
       var decodedString = decoder(dataElement.text);
-      var inflatedString = decompressor(decodedString);
+      var inflatedString = decompressor?.call(decodedString) ?? decodedString;
 
       assembleTileMatrix(inflatedString);
     }

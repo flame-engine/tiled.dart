@@ -4,9 +4,9 @@ import 'dart:io';
 
 main() {
   var parser = new TileMapParser();
-  var map;
+  TileMap map;
   // Urgh. var xml = File.read(/* ... */); >:/
-  setUp( () {
+  setUp(() {
     return new File('./test/fixtures/test.tmx').readAsString().then((xml) {
       map = parser.parse(xml);
     });
@@ -15,8 +15,7 @@ main() {
   test('Parser.parse raises an error when the XML is not in TMX format', () {
     var wrongXml = '<xml></xml>';
 
-    expect( ()=> parser.parse(wrongXml),
-        throwsA('XML is not in TMX format'));
+    expect(() => parser.parse(wrongXml), throwsA('XML is not in TMX format'));
   });
 
   test('Parser.parse returns a Map object', () {
@@ -35,56 +34,61 @@ main() {
 
     group('and the first tileset', () {
       var tileset;
-      setUp( ()=> tileset = map.tilesets[0] );
+      setUp(() => tileset = map.tilesets[0]);
 
-      test('has its firstgid = 1', ()=> expect(tileset.firstgid, equals(1)) );
-      test('has its name = "basketball"', ()=> expect(tileset.name, equals('basketball')));
-      test('has its tilewidth = 32', ()=> expect(tileset.width, equals(32)));
-      test('has its tileheight = 32', ()=> expect(tileset.height, equals(32)));
-      test('has its map = map', ()=> expect(tileset.map, equals(map)));
-      test('has its image', ()=> expect(tileset.image, isNotNull));
+      test('has its firstgid = 1', () => expect(tileset.firstgid, equals(1)));
+      test('has its name = "basketball"',
+          () => expect(tileset.name, equals('basketball')));
+      test('has its tilewidth = 32', () => expect(tileset.width, equals(32)));
+      test('has its tileheight = 32', () => expect(tileset.height, equals(32)));
+      test('has its map = map', () => expect(tileset.map, equals(map)));
+      test('has its image', () => expect(tileset.image, isNotNull));
 
       group('populates its first image correctly and', () {
         var image;
-        setUp( ()=> image = tileset.image);
+        setUp(() => image = tileset.image);
 
-        test('has its width = 96', ()=> expect(image.width, equals(96)));
-        test('has its height = 64', ()=> expect(image.height, equals(64)));
-        test('has its source = "icons.png"', ()=> expect(image.source, equals('icons.png')));
+        test('has its width = 96', () => expect(image.width, equals(96)));
+        test('has its height = 64', () => expect(image.height, equals(64)));
+        test('has its source = "icons.png"',
+            () => expect(image.source, equals('icons.png')));
       });
 
       group('populates its properties correctly and', () {
         var properties;
-        setUp( () => properties = tileset.properties);
+        setUp(() => properties = tileset.properties);
         test('has a key of "test_property" = "test_value"', () {
-          expect(properties, equals({ 'test_property': 'test_value'}));
+          expect(properties, equals({'test_property': 'test_value'}));
         });
       });
 
       group('populates its child tile properties correctly by', () {
         var tileProperties;
-        setUp( ()=> tileProperties = tileset.tileProperties);
+        setUp(() => tileProperties = tileset.tileProperties);
 
         test('inserting properties into tileProperties based on Tile GID', () {
-          expect(tileProperties[1], equals({ 'tile_0_property_name': 'tile_0_property_value' }));
-          expect(tileProperties[2], equals({ 'tile_1_property_name': 'tile_1_property_value' }));
+          expect(tileProperties[1],
+              equals({'tile_0_property_name': 'tile_0_property_value'}));
+          expect(tileProperties[2],
+              equals({'tile_1_property_name': 'tile_1_property_value'}));
         });
       });
     });
-
   });
 
   group('Parser.parse populates Map with layers', () {
-    test('and Map.layers is the correct length', ()=> expect(map.layers.length, equals(1)));
+    test('and Map.layers is the correct length',
+        () => expect(map.layers.length, equals(1)));
 
     group('and the first layer', () {
       var layer;
-      setUp( ()=> layer = map.layers[0] );
+      setUp(() => layer = map.layers[0]);
 
-      test('has its name = "Tile Layer 1"', ()=> expect(layer.name, equals('Tile Layer 1')));
-      test('has its width  = 10', ()=> expect(layer.width, equals(10)));
-      test('has its height = 10', ()=> expect(layer.height, equals(10)));
-      test('has its map = parent map', ()=> expect(layer.map, equals(map)));
+      test('has its name = "Tile Layer 1"',
+          () => expect(layer.name, equals('Tile Layer 1')));
+      test('has its width  = 10', () => expect(layer.width, equals(10)));
+      test('has its height = 10', () => expect(layer.height, equals(10)));
+      test('has its map = parent map', () => expect(layer.map, equals(map)));
 
       // This test is very simple. Theoretically, if this case works, they should all work.
       // It's a 10x10 matrix because anything smaller seems to default to gzip in Tiled (bug?).
@@ -100,29 +104,56 @@ main() {
         expect(layer.tileMatrix[8], equals([0, 0, 0, 0, 0, 0, 0, 0, 1, 0]));
         expect(layer.tileMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
       });
-
     });
   });
 
   group('Parser.parse populates Map with objectgroups', () {
-    setUp( () {
-      return new File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
+    setUp(() {
+      return new File('./test/fixtures/objectgroup.tmx')
+          .readAsString()
+          .then((xml) {
         map = parser.parse(xml);
       });
     });
 
     test('and objectGroups is the correct length',
-      () => expect(map.objectGroups.length, equals(2)));
+        () => expect(map.objectGroups.length, equals(2)));
 
     group('and the first objectGroup', () {
       var og;
-      setUp( ()=> og = map.objectGroups[0] );
+      setUp(() => og = map.objectGroups[0]);
 
-      test('has the right #map',
-        () => expect(og.map, equals(map)));
+      test('has the right #map', () => expect(og.map, equals(map)));
 
       test('has the right #name',
-        () => expect(og.name, equals('Test Object Layer 1')));
+          () => expect(og.name, equals('Test Object Layer 1')));
+    });
+  });
+
+  group('Parser.parse populates Map with tileset and different image configs',
+      () {
+    setUp(() {
+      return new File('./test/fixtures/map_images.tmx')
+          .readAsString()
+          .then((xml) {
+        map = parser.parse(xml);
+      });
+    });
+
+    test('global tileset image', () {
+      var tileset = map.tilesets[0];
+      var tile1 = map.getTileByGID(1);
+      expect(tileset.image.source, equals('icons.png'));
+      expect(tile1.image.source, equals('icons.png'));      
+    });
+
+    test('image per tile', () {
+      var tileset = map.tilesets[1];
+      var tile1 = map.getTileByGID(100);
+      var tile2 = map.getTileByGID(101);
+      expect(tileset.image, isNull);
+      expect(tile1.image.source, equals('x.png'));
+      expect(tile2.image.source, equals('y.png'));
     });
   });
 }

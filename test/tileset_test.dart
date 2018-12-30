@@ -28,24 +28,4 @@ void main() {
     test('margin = 2', () => expect(tileset.margin, equals(2)));
   });
 
-  group('Tileset Images', () {
-    XmlElement xmlRoot;
-    setUp(() {
-      return new File('./test/fixtures/map_images.tmx')
-          .readAsString()
-          .then((xml) {
-        xmlRoot = parse(xml).rootElement;
-      });
-    });
-
-    test('tile with one image', () {
-      var tilesetXml = xmlRoot.findAllElements('tileset').last;
-      var tileset = new Tileset.fromXML(tilesetXml);
-      var tile = new Tile(0, tileset);
-      print(tile.image.source);
-      // print(tile.tileset.images[1].width);
-    });
-
-    // TODO: support multiple image tileset
-  });
 }

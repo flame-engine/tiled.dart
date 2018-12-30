@@ -47,7 +47,7 @@ class Tile {
     if (_image != null) {
       return new Rectangle(0, 0, _image.width, _image.height);
     }
-    var tilesPerRow = tileset.image.width / width;
+    var tilesPerRow = tileset.image.width ~/ width;
     var row = tileId ~/ tilesPerRow;
     var column = tileId % tilesPerRow;
     var x = column * width;

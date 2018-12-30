@@ -10,7 +10,6 @@ class Tileset {
 
   TileMap map;
 
-  // List<Image> images = new List<Image>();
   Image image;
   Map<String, String> properties = new Map<String, String>();
   Map<int, Map<String, String>> tileProperties = new Map();

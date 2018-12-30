@@ -47,12 +47,11 @@ class Tile {
     if (_image != null) {
       return new Rectangle(0, 0, _image.width, _image.height);
     }
-    return null;
-    // var tilesPerRow = tile.tileset.images[0].width / tile.width;
-    // var row = (tile.tileId / tilesPerRow) as int;
-    // var column = tile.tileId % tilesPerRow;
-    // var x = column * tile.width;
-    // var y = (row * tile.height) as double;
-    // return new Rect.fromLTWH(x, y, tile.width as double, tile.height as double);
+    var tilesPerRow = tileset.image.width / width;
+    var row = tileId ~/ tilesPerRow;
+    var column = tileId % tilesPerRow;
+    var x = column * width;
+    var y = row * height;
+    return new Rectangle(x, y, width, height);
   }
 }

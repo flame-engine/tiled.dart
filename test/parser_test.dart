@@ -147,7 +147,7 @@ main() {
       var tile1 = map.getTileByGID(1);
       expect(tileset.image.source, equals('icons.png'));
       expect(tile1.image.source, equals('icons.png'));
-      // expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 16, 16)));
+      expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
     });
 
     test('image per tile', () {

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:test/test.dart';
 import 'package:tmx/tmx.dart';
 import 'dart:io';
@@ -144,7 +146,8 @@ main() {
       var tileset = map.tilesets[0];
       var tile1 = map.getTileByGID(1);
       expect(tileset.image.source, equals('icons.png'));
-      expect(tile1.image.source, equals('icons.png'));      
+      expect(tile1.image.source, equals('icons.png'));
+      // expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 16, 16)));
     });
 
     test('image per tile', () {
@@ -153,7 +156,9 @@ main() {
       var tile2 = map.getTileByGID(101);
       expect(tileset.image, isNull);
       expect(tile1.image.source, equals('x.png'));
+      expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 272, 128)));
       expect(tile2.image.source, equals('y.png'));
+      expect(tile2.computeDrawRect(), equals(new Rectangle(0, 0, 640, 1024)));
     });
   });
 }

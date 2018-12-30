@@ -46,9 +46,5 @@ main() {
     var tile = new Tile(2, ts);
     expect(tile.properties, equals({}));
   });
-
-  test('Tile.getImageRect', () {
-
-  });
   
 }

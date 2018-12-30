@@ -13,6 +13,7 @@ class Tile {
 
 
   Map<String, String> properties = new Map();
+  Image image;
 
   // Optional X / Y locations for the tile.
   int x, y;
@@ -25,12 +26,11 @@ class Tile {
     gid = tileId + tileset.firstgid;
     properties = tileset.tileProperties[gid];
     if (properties == null) { properties = {}; }
+    image = tileset.tileImage[gid];
   }
 
   Tile.emptyTile() {
     gid = 0;
   }
-
-  Rectangle getX() {}
 
 }

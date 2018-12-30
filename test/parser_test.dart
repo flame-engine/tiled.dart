@@ -42,11 +42,11 @@ main() {
       test('has its tilewidth = 32', ()=> expect(tileset.width, equals(32)));
       test('has its tileheight = 32', ()=> expect(tileset.height, equals(32)));
       test('has its map = map', ()=> expect(tileset.map, equals(map)));
-      test('has its images.length = 1', ()=> expect(tileset.images.length, equals(1)));
+      test('has its image', ()=> expect(tileset.image, isNotNull));
 
       group('populates its first image correctly and', () {
         var image;
-        setUp( ()=> image = tileset.images[0]);
+        setUp( ()=> image = tileset.image);
 
         test('has its width = 96', ()=> expect(image.width, equals(96)));
         test('has its height = 64', ()=> expect(image.height, equals(64)));

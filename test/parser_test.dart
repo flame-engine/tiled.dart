@@ -144,10 +144,14 @@ main() {
 
     test('global tileset image', () {
       var tileset = map.tilesets[0];
+
       var tile1 = map.getTileByGID(1);
       expect(tileset.image.source, equals('icons.png'));
       expect(tile1.image.source, equals('icons.png'));
       expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
+
+      var tile2 = map.getTileByGID(30);
+      expect(tile2.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
     });
 
     test('image per tile', () {

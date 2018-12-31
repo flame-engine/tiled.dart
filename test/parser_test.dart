@@ -5,10 +5,10 @@ import 'package:tmx/tmx.dart';
 import 'dart:io';
 
 main() {
-  var parser = new TileMapParser();
+  TileMapParser parser;
   TileMap map;
-  // Urgh. var xml = File.read(/* ... */); >:/
   setUp(() {
+    parser = new TileMapParser();
     return new File('./test/fixtures/test.tmx').readAsString().then((xml) {
       map = parser.parse(xml);
     });
@@ -18,10 +18,6 @@ main() {
     var wrongXml = '<xml></xml>';
 
     expect(() => parser.parse(wrongXml), throwsA('XML is not in TMX format'));
-  });
-
-  test('Parser.parse returns a Map object', () {
-    expect(map, new isInstanceOf<TileMap>());
   });
 
   group('Parser.parse returns a populated Map that', () {
@@ -142,7 +138,7 @@ main() {
       });
     });
 
-    test('global tileset image', () {
+    test('and global tileset image', () {
       var tileset = map.tilesets[0];
       var tile1 = map.getTileByGID(1);
       expect(tileset.image.source, equals('icons.png'));
@@ -156,7 +152,7 @@ main() {
           equals(new Rectangle(32, 32, 32, 32)));
     });
 
-    test('image per tile', () {
+    test('and image per tile', () {
       var tileset = map.tilesets[1];
       var tile1 = map.getTileByGID(100);
       var tile2 = map.getTileByGID(101);
@@ -173,8 +169,8 @@ main() {
       return new File('./test/fixtures/map_images.tmx')
           .readAsString()
           .then((xml) {
-        map = parser.parse(xml, tsx: new CustomTsxProvider());
-        // expect(map.tilesets[2].image.source, equals('image.png'));
+        map = new TileMapParser().parse(xml, tsx: new CustomTsxProvider());        
+        expect(map.getTileset('external').image.source, equals('external.png'));
       });
     });
   });
@@ -182,7 +178,7 @@ main() {
 
 class CustomTsxProvider extends TsxProvider {
   @override
-  Future<String> getSource(String key) {
-    return new File('./test/fixtures/tileset.tsx').readAsString();
+  String getSource(String key) {
+    return new File('./test/fixtures/tileset.tsx').readAsStringSync();
   }
 }

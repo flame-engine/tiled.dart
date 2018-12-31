@@ -19,6 +19,8 @@ class Tileset {
   Tileset(this.firstgid);
 
   Tileset.fromXML(XmlElement element, {TsxProvider tsx}) {
+    element = _findTilesetElement(element, tsx);
+
     NodeDSL.on(element, (dsl) {
       firstgid = dsl.intOr('firstgid', firstgid);
       name = dsl.strOr('name', name);
@@ -29,14 +31,6 @@ class Tileset {
       source = dsl.strOr('source', source);
     });
 
-    if (source == null) {
-      _parseEmbeddedTileset(element);
-    } else {
-      _parseExternalTileset(source);
-    }
-  }
-
-  void _parseEmbeddedTileset(XmlElement element) {
     image = _findImage(element);
 
     properties = TileMapParser._parseProperties(
@@ -52,6 +46,14 @@ class Tileset {
     });
   }
 
+  _findTilesetElement(XmlElement element, TsxProvider tsx) {
+    var filename = element.getAttribute('source');
+    if (tsx != null && filename != null) {
+      return _parseXml(tsx.getSource(filename)).rootElement;
+    }
+    return element;
+  }
+
   Image _findImage(XmlElement element) {
     var list = element
         .findElements('image')
@@ -61,6 +63,4 @@ class Tileset {
     }
     return null;
   }
-
-  void _parseExternalTileset(String source) {}
 }

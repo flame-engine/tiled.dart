@@ -22,7 +22,7 @@ class TileMapParser {
       var element = node as XmlElement;
       switch(element.name.local) {
         case 'tileset':
-          map.tilesets.add(new Tileset.fromXML(element)..map = map);
+          map.tilesets.add(new Tileset.fromXML(element, tsx: tsx)..map = map);
           break;
         case 'layer':
           map.layers.add(new Layer.fromXML(element)..map = map);

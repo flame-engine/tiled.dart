@@ -3,7 +3,7 @@ part of tmx;
 class TileMapParser {
   TileMapParser();
 
-  TileMap parse(String xml) {
+  TileMap parse(String xml, {TsxProvider tsx}) {
 
     var xmlElement = _parseXml(xml).rootElement;
 

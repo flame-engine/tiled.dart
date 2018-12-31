@@ -148,9 +148,12 @@ main() {
       expect(tileset.image.source, equals('icons.png'));
       expect(tile1.image.source, equals('icons.png'));
       expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
-      expect(map.getTileByGID(2).computeDrawRect(), equals(new Rectangle(32, 0, 32, 32)));
-      expect(map.getTileByGID(4).computeDrawRect(), equals(new Rectangle(0, 32, 32, 32)));      
-      expect(map.getTileByGID(5).computeDrawRect(), equals(new Rectangle(32, 32, 32, 32)));      
+      expect(map.getTileByGID(2).computeDrawRect(),
+          equals(new Rectangle(32, 0, 32, 32)));
+      expect(map.getTileByGID(4).computeDrawRect(),
+          equals(new Rectangle(0, 32, 32, 32)));
+      expect(map.getTileByGID(5).computeDrawRect(),
+          equals(new Rectangle(32, 32, 32, 32)));
     });
 
     test('image per tile', () {
@@ -164,4 +167,22 @@ main() {
       expect(tile2.computeDrawRect(), equals(new Rectangle(0, 0, 640, 1024)));
     });
   });
+
+  group('Parser.parse with tsx provider', () {
+    test('it loads external tsx', () {
+      return new File('./test/fixtures/map_images.tmx')
+          .readAsString()
+          .then((xml) {
+        map = parser.parse(xml, tsx: new CustomTsxProvider());
+        // expect(map.tilesets[2].image.source, equals('image.png'));
+      });
+    });
+  });
+}
+
+class CustomTsxProvider extends TsxProvider {
+  @override
+  Future<String> getSource(String key) {
+    return new File('./test/fixtures/tileset.tsx').readAsString();
+  }
 }

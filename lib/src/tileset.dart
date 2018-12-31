@@ -7,6 +7,7 @@ class Tileset {
   int spacing = 0;
   int margin = 0;
   String name;
+  String source;
 
   TileMap map;
 
@@ -17,7 +18,7 @@ class Tileset {
 
   Tileset(this.firstgid);
 
-  Tileset.fromXML(XmlElement element) {
+  Tileset.fromXML(XmlElement element, {TsxProvider tsx}) {
     NodeDSL.on(element, (dsl) {
       firstgid = dsl.intOr('firstgid', firstgid);
       name = dsl.strOr('name', name);
@@ -25,9 +26,18 @@ class Tileset {
       height = dsl.intOr('tileheight', height);
       spacing = dsl.intOr('spacing', spacing);
       margin = dsl.intOr('margin', margin);
+      source = dsl.strOr('source', source);
     });
 
-    image = findImage(element);
+    if (source == null) {
+      _parseEmbeddedTileset(element);
+    } else {
+      _parseExternalTileset(source);
+    }
+  }
+
+  void _parseEmbeddedTileset(XmlElement element) {
+    image = _findImage(element);
 
     properties = TileMapParser._parseProperties(
         TileMapParser._getPropertyNodes(element));
@@ -38,11 +48,11 @@ class Tileset {
       int tileGid = tileId + firstgid;
       tileProperties[tileGid] = TileMapParser._parseProperties(
           TileMapParser._getPropertyNodes(tileNode));
-      tileImage[tileGid] = findImage(tileNode);
+      tileImage[tileGid] = _findImage(tileNode);
     });
   }
 
-  Image findImage(XmlElement element) {
+  Image _findImage(XmlElement element) {
     var list = element
         .findElements('image')
         .map((XmlElement node) => TileMapParser._parseImage(node));
@@ -51,4 +61,6 @@ class Tileset {
     }
     return null;
   }
+
+  void _parseExternalTileset(String source) {}
 }

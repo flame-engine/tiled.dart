@@ -15,5 +15,6 @@ part 'src/tile.dart';
 part 'src/object_group.dart';
 part 'src/tmx_object.dart';
 part 'src/node_dsl.dart';
+part 'src/tsx_provider.dart';
 
 XmlDocument _parseXml(String input) => parse(input);

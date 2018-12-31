@@ -25,6 +25,7 @@
        <image width="640" height="1024" source="y.png"/>
     </tile>
  </tileset> 
+ <tileset firstgid="1000" source="tileset.tsx"/>
  <layer name="Tile Layer 1" width="10" height="10">
   <data encoding="base64" compression="zlib">
    eJxjZCAeMI6qpblaAAl0AAs=

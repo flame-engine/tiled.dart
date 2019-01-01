@@ -1,4 +1,4 @@
-library tmx;
+library tiled;
 
 import 'dart:math';
 

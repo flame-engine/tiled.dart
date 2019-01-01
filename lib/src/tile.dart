@@ -1,4 +1,4 @@
-part of tmx;
+part of tiled;
 
 class Tile {
   // Tile IDs are 0-based, to conform with TMX documentation.

@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:tmx/tmx.dart';
+import 'package:tiled/tiled.dart';
 
 main() {
   group('Tile.emptyTile()', () {

@@ -1,20 +1,20 @@
 import 'package:test/test.dart';
-import 'package:tmx/tmx.dart' as tmx;
+import 'package:tiled/tiled.dart' as tiled;
 
 main() {
   // GID is 1-based
   group('Map.getTileByGID', () {
-    tmx.Tile tile;
-    tmx.TileMap map;
+    tiled.Tile tile;
+    tiled.TileMap map;
     setUp(() {
-      map = new tmx.TileMap();
+      map = new tiled.TileMap();
       // 2 tilesets:
       // 1 tileset with 1 tile
       // 1 tileset with 3 tiles
       // 1 tileset with 1 tile
-      map.tilesets.add(new tmx.Tileset(1));
-      map.tilesets.add(new tmx.Tileset(2)..height = 64..width = 32);
-      map.tilesets.add(new tmx.Tileset(5));
+      map.tilesets.add(new tiled.Tileset(1));
+      map.tilesets.add(new tiled.Tileset(2)..height = 64..width = 32);
+      map.tilesets.add(new tiled.Tileset(5));
       // The last tile of the second tileset has a gid = 4
       tile =  map.getTileByGID(4);
     });
@@ -47,13 +47,13 @@ main() {
   });
 
   group('Map.getTileByLocalID', () {
-    tmx.TileMap map;
-    tmx.Tileset tileset = new tmx.Tileset(1)
+    tiled.TileMap map;
+    tiled.Tileset tileset = new tiled.Tileset(1)
       ..name = 'Humans'
       ..height = 64
       ..width = 32;
     setUp(() {
-      map = new tmx.TileMap();
+      map = new tiled.TileMap();
       map.tilesets.add(tileset);
     });
 
@@ -74,13 +74,13 @@ main() {
   });
 
   group('Map.getTileByPhrase', () {
-    tmx.TileMap map;
-    tmx.Tileset tileset = new tmx.Tileset(1)
+    tiled.TileMap map;
+    tiled.Tileset tileset = new tiled.Tileset(1)
       ..name = 'Humans'
       ..height = 64
       ..width = 32;
     setUp(() {
-      map = new tmx.TileMap();
+      map = new tiled.TileMap();
       map.tilesets.add(tileset);
     });
 
@@ -110,10 +110,10 @@ main() {
   });
 
   group('Map.getTileset', () {
-    tmx.TileMap map;
-    tmx.Tileset tileset = new tmx.Tileset(1)..name = 'Humans';
+    tiled.TileMap map;
+    tiled.Tileset tileset = new tiled.Tileset(1)..name = 'Humans';
     setUp(() {
-      map = new tmx.TileMap();
+      map = new tiled.TileMap();
       map.tilesets.add(tileset);
     });
 

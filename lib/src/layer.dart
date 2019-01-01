@@ -1,4 +1,4 @@
-part of tmx;
+part of tiled;
 
 class Layer {
   static const int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;

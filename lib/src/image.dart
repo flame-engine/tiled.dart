@@ -1,4 +1,4 @@
-part of tmx;
+part of tiled;
 
 class Image {
   String source;

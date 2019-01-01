@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:test/test.dart';
-import 'package:tmx/tmx.dart';
+import 'package:tiled/tiled.dart';
 import 'dart:io';
 
 main() {

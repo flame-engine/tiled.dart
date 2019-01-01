@@ -1,13 +1,15 @@
 name: tmx
-version: 0.11.7
-author: Arron Washington <arron@theradicaledwards.com>
-description: A library for parsing TMX files.
-homepage: https://github.com/radicaled/tmx.dart
+version: 0.1.0
+authors:
+- Fernando Ultremare <feroult@gmail.com>
+- Arron Washington (legacy TMX code) <arron@theradicaledwards.com> 
+description: A Dart Tiled library.
+homepage: https://github.com/feroult/tiled.dart
 dependencies:
-  convert: any
-  archive: any
-  crypto: any
-  xml: any
+  convert: ^2.1.1
+  archive: ^2.0.5
+  crypto: ^2.0.6
+  xml: ^3.2.3
 dev_dependencies:
   test: any
 

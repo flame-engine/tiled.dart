@@ -23,4 +23,4 @@ Load a TMX file into a string by any means, and then pass the string to an insta
 
 ## Credits
 
-TMX support is work of @radicaled and we have got his code from [tmx.dart lib](https://github.com/radicaled/tmx.dart)
+TMX support is work of @radicaled and we have got his code from [tmx.dart](https://github.com/radicaled/tmx.dart) lib.

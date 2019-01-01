@@ -141,7 +141,8 @@ main() {
       var tileset = map.getTileset('default');
       var tile1 = map.getTileByGID(tileset.firstgid);
       expect(tileset.image.source, equals('level1.png'));
-      expect(tile1.image.source, equals('level1.png'));
+      expect(tileset.images.length, equals(1));
+      expect(tile1.image.source, equals('level1.png'));      
       expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 16, 16)));
       expect(map.getTileByGID(tileset.firstgid + 1).computeDrawRect(),
           equals(new Rectangle(16, 0, 16, 16)));
@@ -156,6 +157,8 @@ main() {
       var tile1 = map.getTileByGID(tileset.firstgid);
       var tile2 = map.getTileByGID(tileset.firstgid + 1);
       expect(tileset.image, isNull);
+      expect(tileset.images.length, equals(2));
+      expect(tileset.images[0].source, equals('image1.png'));
       expect(tile1.image.source, equals('image1.png'));
       expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
       expect(tile2.image.source, equals('image2.png'));

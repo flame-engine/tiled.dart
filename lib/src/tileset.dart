@@ -12,6 +12,7 @@ class Tileset {
   TileMap map;
 
   Image image;
+  List<Image> images = new List<Image>();
   Map<String, String> properties = new Map<String, String>();
   Map<int, Map<String, String>> tileProperties = new Map();
   Map<int, Image> tileImage = new Map();
@@ -24,6 +25,7 @@ class Tileset {
     _parseTilesetAttributes(element);
 
     image = _findImage(element);
+    _addImage(image);
 
     properties = TileMapParser._parseProperties(
         TileMapParser._getPropertyNodes(element));
@@ -34,7 +36,9 @@ class Tileset {
       int tileGid = tileId + firstgid;
       tileProperties[tileGid] = TileMapParser._parseProperties(
           TileMapParser._getPropertyNodes(tileNode));
-      tileImage[tileGid] = _findImage(tileNode);
+      var image = _findImage(tileNode);
+      tileImage[tileGid] = image;
+      _addImage(image);
     });
   }
 
@@ -66,5 +70,11 @@ class Tileset {
       return list.first;
     }
     return null;
+  }
+
+  void _addImage(image) {
+    if (image != null) {
+      images.add(image);
+    }
   }
 }

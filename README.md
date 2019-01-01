@@ -1,17 +1,15 @@
-# Tiled.Dart
+# Tiled Dart
 
 A Dart Tiled library.
 
-TMX support is work of @radicaled and we have got his code from [tmx.dart lib](https://github.com/radicaled/tmx.dart)
-
-##Install from Dart Pub Repository
+## Install from Dart Pub Repository
 
 Include the following in your `pubspec.yaml`:
 
     dependencies:
       tiled: any
 
-##Usage
+## Usage
 
 Import the package like this:
 
@@ -22,3 +20,7 @@ Load a TMX file into a string by any means, and then pass the string to an insta
     string tmxBody = /* ... */;
     var parser = new TileMapParser();
     TileMap map = parser.parse(tmxBody);
+
+## Credits
+
+TMX support is work of @radicaled and we have got his code from [tmx.dart lib](https://github.com/radicaled/tmx.dart)

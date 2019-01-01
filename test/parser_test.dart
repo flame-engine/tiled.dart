@@ -5,10 +5,9 @@ import 'package:tmx/tmx.dart';
 import 'dart:io';
 
 main() {
-  TileMapParser parser;
+  TileMapParser parser = new TileMapParser();
   TileMap map;
   setUp(() {
-    parser = new TileMapParser();
     return new File('./test/fixtures/test.tmx').readAsString().then((xml) {
       map = parser.parse(xml);
     });
@@ -139,28 +138,28 @@ main() {
     });
 
     test('and global tileset image', () {
-      var tileset = map.tilesets[0];
-      var tile1 = map.getTileByGID(1);
-      expect(tileset.image.source, equals('icons.png'));
-      expect(tile1.image.source, equals('icons.png'));
-      expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
-      expect(map.getTileByGID(2).computeDrawRect(),
-          equals(new Rectangle(32, 0, 32, 32)));
-      expect(map.getTileByGID(4).computeDrawRect(),
-          equals(new Rectangle(0, 32, 32, 32)));
-      expect(map.getTileByGID(5).computeDrawRect(),
-          equals(new Rectangle(32, 32, 32, 32)));
+      var tileset = map.getTileset('default');
+      var tile1 = map.getTileByGID(tileset.firstgid);
+      expect(tileset.image.source, equals('level1.png'));
+      expect(tile1.image.source, equals('level1.png'));
+      expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 16, 16)));
+      expect(map.getTileByGID(tileset.firstgid + 1).computeDrawRect(),
+          equals(new Rectangle(16, 0, 16, 16)));
+      expect(map.getTileByGID(tileset.firstgid + 17).computeDrawRect(),
+          equals(new Rectangle(0, 16, 16, 16)));
+      expect(map.getTileByGID(tileset.firstgid + 19).computeDrawRect(),
+          equals(new Rectangle(32, 16, 16, 16)));
     });
 
     test('and image per tile', () {
-      var tileset = map.tilesets[1];
-      var tile1 = map.getTileByGID(100);
-      var tile2 = map.getTileByGID(101);
+      var tileset = map.getTileset('other');
+      var tile1 = map.getTileByGID(tileset.firstgid);
+      var tile2 = map.getTileByGID(tileset.firstgid + 1);
       expect(tileset.image, isNull);
-      expect(tile1.image.source, equals('x.png'));
-      expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 272, 128)));
-      expect(tile2.image.source, equals('y.png'));
-      expect(tile2.computeDrawRect(), equals(new Rectangle(0, 0, 640, 1024)));
+      expect(tile1.image.source, equals('image1.png'));
+      expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
+      expect(tile2.image.source, equals('image2.png'));
+      expect(tile2.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
     });
   });
 
@@ -170,7 +169,7 @@ main() {
           .readAsString()
           .then((xml) {
         map = new TileMapParser().parse(xml, tsx: new CustomTsxProvider());
-        expect(map.getTileset('external').image.source, equals('external.png'));
+        expect(map.getTileset('external').image.source, equals('level1.png'));
       });
     });
   });
@@ -182,12 +181,6 @@ main() {
           .then((xml) {
         map = new TileMapParser().parse(xml, tsx: new CustomTsxProvider());
         expect(map.layers.length, equals(2));
-
-        map.layers.forEach((layer) {
-          layer.tiles.forEach((tile) {
-            print(tile.tileId);
-          });
-        });
       });
     });
   });

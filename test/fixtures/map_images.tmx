@@ -1,39 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="basketball" tilewidth="32" tileheight="32" spacing="1" margin="2">
-  <image source="icons.png" width="96" height="64"/>
-  <properties>
-    <property name="test_property" value="test_value"/>
-  </properties>
+<map version="1.2" tiledversion="2018.11.29" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="tileset.tsx"/>
+ <tileset firstgid="137" name="other" tilewidth="32" tileheight="32" tilecount="2" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
-     <properties>
-      <property name="tile_0_property_name" value="tile_0_property_value"/>
-     </properties>
-    </tile>
-    <tile id="1">
-     <properties>
-      <property name="tile_1_property_name" value="tile_1_property_value"/>
-     </properties>
-    </tile>
+   <image width="32" height="32" source="image1.png"/>
+  </tile>
+  <tile id="1">
+   <image width="32" height="32" source="image2.png"/>
+  </tile>
  </tileset>
- <tileset firstgid="100" name="level3" tilewidth="640" tileheight="1024" tilecount="2" columns="0">
-    <grid orientation="orthogonal" width="1" height="1"/>
-    <tile id="0">
-       <image width="272" height="128" source="x.png"/>
-    </tile>
-    <tile id="1">
-       <image width="640" height="1024" source="y.png"/>
-    </tile>
- </tileset> 
- <tileset firstgid="1000" source="tileset.tsx"/>
- <layer name="Tile Layer 1" width="10" height="10">
+ <tileset firstgid="139" name="default" tilewidth="16" tileheight="16" tilecount="136" columns="17">
+  <image source="level1.png" width="272" height="128"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="10" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjZCAeMI6qpblaAAl0AAs=
+   eJw7yjAKBhMAADVvAMY=
   </data>
  </layer>
  <layer id="2" name="Tile Layer 2" width="10" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFgwkAAAGQAAE=
+   eJw7zcDAcHoQ4wVE4oF2J7UwACI3TZ8=
   </data>
-</layer>
+ </layer>
 </map>

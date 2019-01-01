@@ -1,35 +1,24 @@
-#tmx.dart
+# Tiled.Dart
 
-tmx.dart parses [TMX files](https://github.com/bjorn/tiled/wiki/TMX-Map-Format) produced by the [Tiled map editor](http://www.mapeditor.org/).
+A Dart Tiled library.
 
-tmx.dart works on both the client and server (dartvm) platforms.
-
-tmx.dart isn't currently maintained (contact me if you want the glory and honor!), but using this package should be fine. ... Probably.
+TMX support is work of @radicaled and we have got his code from [tmx.dart lib](https://github.com/radicaled/tmx.dart)
 
 ##Install from Dart Pub Repository
 
 Include the following in your `pubspec.yaml`:
 
     dependencies:
-      tmx: any
-
-Then run the [Pub Package Manager](http://pub.dartlang.org/doc) in Dart Editor (Tool > Pub Install). If you are using a different editor, run the command
-(comes with the Dart SDK):
-
-    pub install
+      tiled: any
 
 ##Usage
 
 Import the package like this:
 
-    import 'package:tmx/tmx.dart'
+    import 'package:tiled/tiled.dart'
 
 Load a TMX file into a string by any means, and then pass the string to an instance of TileMapParser.parse:
 
     string tmxBody = /* ... */;
     var parser = new TileMapParser();
     TileMap map = parser.parse(tmxBody);
-
-##Important Notes
-
-* The API grew out of another codebase, so if anything looks screwy / strange, drop us a line using Github Issues.

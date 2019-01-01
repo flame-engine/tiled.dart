@@ -2,7 +2,7 @@ name: tiled
 version: 0.1.0
 authors:
 - Fernando Ultremare <feroult@gmail.com>
-- Arron Washington (legacy TMX code) <arron@theradicaledwards.com> 
+- Arron Washington (previous TMX code) <arron@theradicaledwards.com> 
 description: A Dart Tiled library.
 homepage: https://github.com/feroult/tiled.dart
 dependencies:

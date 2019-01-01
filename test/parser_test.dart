@@ -169,8 +169,25 @@ main() {
       return new File('./test/fixtures/map_images.tmx')
           .readAsString()
           .then((xml) {
-        map = new TileMapParser().parse(xml, tsx: new CustomTsxProvider());        
+        map = new TileMapParser().parse(xml, tsx: new CustomTsxProvider());
         expect(map.getTileset('external').image.source, equals('external.png'));
+      });
+    });
+  });
+
+  group('Parser.parse with multiple layers', () {
+    test('it has 2 layers', () {
+      return new File('./test/fixtures/map_images.tmx')
+          .readAsString()
+          .then((xml) {
+        map = new TileMapParser().parse(xml, tsx: new CustomTsxProvider());
+        expect(map.layers.length, equals(2));
+
+        map.layers.forEach((layer) {
+          layer.tiles.forEach((tile) {
+            print(tile.tileId);
+          });
+        });
       });
     });
   });

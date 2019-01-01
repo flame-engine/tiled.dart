@@ -19,17 +19,9 @@ class Tileset {
   Tileset(this.firstgid);
 
   Tileset.fromXML(XmlElement element, {TsxProvider tsx}) {
-    element = _findTilesetElement(element, tsx);
-
-    NodeDSL.on(element, (dsl) {
-      firstgid = dsl.intOr('firstgid', firstgid);
-      name = dsl.strOr('name', name);
-      width = dsl.intOr('tilewidth', width);
-      height = dsl.intOr('tileheight', height);
-      spacing = dsl.intOr('spacing', spacing);
-      margin = dsl.intOr('margin', margin);
-      source = dsl.strOr('source', source);
-    });
+    _parseTilesetAttributes(element);
+    element = _checkIfExtenalTsx(element, tsx);
+    _parseTilesetAttributes(element);
 
     image = _findImage(element);
 
@@ -46,7 +38,19 @@ class Tileset {
     });
   }
 
-  _findTilesetElement(XmlElement element, TsxProvider tsx) {
+  void _parseTilesetAttributes(XmlElement element) {
+    NodeDSL.on(element, (dsl) {
+      firstgid = dsl.intOr('firstgid', firstgid);
+      name = dsl.strOr('name', name);
+      width = dsl.intOr('tilewidth', width);
+      height = dsl.intOr('tileheight', height);
+      spacing = dsl.intOr('spacing', spacing);
+      margin = dsl.intOr('margin', margin);
+      source = dsl.strOr('source', source);
+    });
+  }
+
+  _checkIfExtenalTsx(XmlElement element, TsxProvider tsx) {
     var filename = element.getAttribute('source');
     if (tsx != null && filename != null) {
       return _parseXml(tsx.getSource(filename)).rootElement;

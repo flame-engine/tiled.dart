@@ -6,7 +6,7 @@ authors:
 description: A Dart Tiled library.
 homepage: https://github.com/feroult/tiled.dart
 dependencies:
-  convert: ^2.1.1
+  convert: ^2.0.1
   archive: ^2.0.5
   crypto: ^2.0.6
   xml: ^3.2.3

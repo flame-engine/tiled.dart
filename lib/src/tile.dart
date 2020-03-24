@@ -23,6 +23,7 @@ class Tile {
 
   // Optional X / Y locations for the tile.
   int x, y;
+  int px, py;
 
   bool get isEmpty {
     return gid == 0;

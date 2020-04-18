@@ -18,11 +18,12 @@ class TmxObject {
   bool isPolyline = false;
 
   List<Point> points = [];
-  Map<String, String> properties = {};
-
+  var properties = <String, dynamic>{};
 
   TmxObject.fromXML(XmlElement element) {
-    if (element == null) { throw 'arg "element" cannot be null'; }
+    if (element == null) {
+      throw 'arg "element" cannot be null';
+    }
 
     NodeDSL.on(element, (dsl) {
       name = dsl.strOr('name', name);
@@ -36,19 +37,20 @@ class TmxObject {
       visible = dsl.boolOr('visible', visible);
     });
 
-    properties = TileMapParser._parseProperties(TileMapParser._getPropertyNodes(element));
+    properties = TileMapParser._parseProperties(
+        TileMapParser._getPropertyNodes(element));
 
     // TODO: it is implied by the spec that there are only two children to
     // an object node: an optional <properties /> and an optional <ellipse />,
     // <polygon />, or <polyline />
     var xmlElements = element.children
-      .where((node) => node is XmlElement)
-      .where((node) => (node as XmlElement).name.local != 'properties');
+        .where((node) => node is XmlElement)
+        .where((node) => (node as XmlElement).name.local != 'properties');
 
     if (xmlElements.length > 0) {
       var node = xmlElements.first as XmlElement;
 
-      switch(node.name.local) {
+      switch (node.name.local) {
         case 'ellipse':
           isEllipse = true;
           break;

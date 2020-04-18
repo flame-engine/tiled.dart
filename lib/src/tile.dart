@@ -11,7 +11,7 @@ class Tile {
   int width;
   int height;
 
-  Map<String, String> properties = new Map();
+  var properties = <String, dynamic>{};
   Image _image;
 
   Image get image {
@@ -33,9 +33,9 @@ class Tile {
     height = tileset.height;
     gid = tileId + tileset.firstgid;
     properties = tileset.tileProperties[gid];
-    if (properties == null) {
-      properties = {};
-    }
+
+    properties ??= {};
+
     _image = tileset.tileImage[gid];
   }
 

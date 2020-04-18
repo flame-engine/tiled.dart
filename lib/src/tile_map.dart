@@ -7,6 +7,7 @@ class TileMap {
   List<Tileset> tilesets = new List<Tileset>();
   List<Layer> layers = new List<Layer>();
   List<ObjectGroup> objectGroups = [];
+  var properties = <String, dynamic>{};
 
   /**
    * Retrieve a tile based on its GID
@@ -19,7 +20,9 @@ class TileMap {
    * A GID of 0 is always an "empty" tile
    */
   Tile getTileByGID(int gid) {
-    if (gid == 0) { return new Tile.emptyTile(); }
+    if (gid == 0) {
+      return new Tile.emptyTile();
+    }
     var ts = tilesets.lastWhere((tileset) => tileset.firstgid <= gid);
     return new Tile(gid - ts.firstgid, ts);
   }
@@ -27,8 +30,7 @@ class TileMap {
   // Returns a tileset based on its name
   Tileset getTileset(String name) {
     return tilesets.firstWhere((tileset) => tileset.name == name,
-      orElse: () => throw new ArgumentError('Tileset $name not found')
-    );
+        orElse: () => throw new ArgumentError('Tileset $name not found'));
   }
 
   /**
@@ -53,11 +55,15 @@ class TileMap {
   */
   Tile getTileByPhrase(String tilePhrase) {
     var split = tilePhrase.split('|');
-    if (split.length != 2) { throw new ArgumentError("$tilePhrase not in the format of 'TilesetName|LocalTileID"); }
+    if (split.length != 2) {
+      throw new ArgumentError(
+          "$tilePhrase not in the format of 'TilesetName|LocalTileID");
+    }
 
     var tilesetName = split.first;
     var tileId = int.parse(split.last,
-      onError: (src) => throw new ArgumentError('Local tile ID $src is not an integer.') );
+        onError: (src) =>
+            throw new ArgumentError('Local tile ID $src is not an integer.'));
 
     return getTileByLocalID(tilesetName, tileId);
   }

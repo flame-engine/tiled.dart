@@ -52,19 +52,26 @@ class TileMapParser {
     nodes.forEach((property) {
       var attrs = property.getAttribute;
       var value = attrs('value');
+      var name = attrs('name');
 
       switch (attrs('type')) {
         case 'bool':
-          map[attrs('name')] = value == 'true' ? true : false;
+          map[name] = value == 'true' ? true : false;
           break;
         case 'int':
-          map[attrs('name')] = int.parse(value);
+          map[name] = int.parse(value);
           break;
         case 'float':
-          map[attrs('name')] = double.parse(value);
+          map[name] = double.parse(value);
+          break;
+        case 'color':
+          final a = value.substring(1, 3);
+          final rgb = value.substring(3);
+
+          map[name] = '#' + rgb + a;
           break;
         default: // for types file, color, string
-          map[attrs('name')] = value;
+          map[name] = value;
           print('works');
           break;
       }

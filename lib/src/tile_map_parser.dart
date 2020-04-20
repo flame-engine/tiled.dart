@@ -14,6 +14,8 @@ class TileMapParser {
     var map = new TileMap();
     map.tileWidth = int.parse(xmlElement.getAttribute('tilewidth'));
     map.tileHeight = int.parse(xmlElement.getAttribute('tileheight'));
+    map.width = int.parse(xmlElement.getAttribute('width'));
+    map.height = int.parse(xmlElement.getAttribute('height'));
 
     xmlElement.children.where((node) => node is XmlNode).forEach( (XmlNode node) {
       if (!(node is XmlElement)) {

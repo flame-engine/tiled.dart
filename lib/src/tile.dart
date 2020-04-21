@@ -11,7 +11,7 @@ class Tile {
   int width;
   int height;
 
-  var properties = <String, dynamic>{};
+  Map<String, dynamic> properties = {};
   Image _image;
 
   Image get image {

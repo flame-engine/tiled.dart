@@ -18,7 +18,7 @@ class TmxObject {
   bool isPolyline = false;
 
   List<Point> points = [];
-  var properties = <String, dynamic>{};
+  Map<String, dynamic> properties = {};
 
   TmxObject.fromXML(XmlElement element) {
     if (element == null) {
@@ -38,7 +38,8 @@ class TmxObject {
     });
 
     properties = TileMapParser._parseProperties(
-        TileMapParser._getPropertyNodes(element));
+      TileMapParser._getPropertyNodes(element),
+    );
 
     // TODO: it is implied by the spec that there are only two children to
     // an object node: an optional <properties /> and an optional <ellipse />,

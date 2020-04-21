@@ -35,28 +35,33 @@ class TileMapParser {
     });
 
     map.properties = TileMapParser._parseProperties(
-        TileMapParser._getPropertyNodes(xmlElement));
+      TileMapParser._getPropertyNodes(xmlElement),
+    );
 
     return map;
   }
 
   static Image _parseImage(XmlElement node) {
     var attrs = node.getAttribute;
+
     return new Image(
-        attrs('source'), int.parse(attrs('width')), int.parse(attrs('height')));
+      attrs('source'),
+      int.parse(attrs('width')),
+      int.parse(attrs('height')),
+    );
   }
 
   static Map<String, dynamic> _parseProperties(nodes) {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
 
     nodes.forEach((property) {
-      var attrs = property.getAttribute;
-      var value = attrs('value');
-      var name = attrs('name');
+      final attrs = property.getAttribute;
+      final value = attrs('value');
+      final name = attrs('name');
 
       switch (attrs('type')) {
         case 'bool':
-          map[name] = value == 'true' ? true : false;
+          map[name] = value == 'true';
           break;
         case 'int':
           map[name] = int.parse(value);
@@ -64,15 +69,8 @@ class TileMapParser {
         case 'float':
           map[name] = double.parse(value);
           break;
-        case 'color':
-          final a = value.substring(1, 3);
-          final rgb = value.substring(3);
-
-          map[name] = '#' + rgb + a;
-          break;
-        default: // for types file, color, string
+        default: // for types file, color (returns ARGB), string
           map[name] = value;
-          print('works');
           break;
       }
     });

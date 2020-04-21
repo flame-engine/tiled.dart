@@ -9,7 +9,7 @@ class ObjectGroup {
 
   TileMap map;
 
-  var properties = <String, dynamic>{};
+  Map<String, dynamic> properties = {};
   List<TmxObject> tmxObjects = [];
 
   ObjectGroup.fromXML(XmlElement element) {
@@ -25,7 +25,8 @@ class ObjectGroup {
     });
 
     properties = TileMapParser._parseProperties(
-        TileMapParser._getPropertyNodes(element));
+      TileMapParser._getPropertyNodes(element),
+    );
 
     var objectNodes = element.children
         .where((node) => node is XmlElement)

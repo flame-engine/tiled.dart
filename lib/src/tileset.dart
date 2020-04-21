@@ -13,8 +13,8 @@ class Tileset {
 
   Image image;
   List<Image> images = new List<Image>();
-  var properties = <String, dynamic>{};
-  var tileProperties = <int, Map<String, dynamic>>{};
+  Map<String, dynamic> properties = {};
+  Map<int, Map<String, dynamic>> tileProperties = {};
   Map<int, Image> tileImage = new Map();
 
   Tileset(this.firstgid);

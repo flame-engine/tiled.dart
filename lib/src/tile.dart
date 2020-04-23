@@ -11,6 +11,19 @@ class Tile {
   int width;
   int height;
 
+  /*
+      Tile Rotation (Clockwise) 
+      0 => No rotation
+      1 => 90 °
+      2 => 180 °
+      3 => 270 °
+      4 => 0 ° + Vertical Flip
+      5 => 90 ° + Vertical Flip
+      6 => 0 ° + Horizontal Flip
+      7 => 90 ° + Horizontal Flip
+  */
+  int rotation;
+
   Map<String, String> properties = new Map();
   Image _image;
 
@@ -28,7 +41,7 @@ class Tile {
     return gid == 0;
   }
 
-  Tile(this.tileId, this.tileset) {
+  Tile(this.tileId, this.tileset, this.rotation) {
     width = tileset.width;
     height = tileset.height;
     gid = tileId + tileset.firstgid;

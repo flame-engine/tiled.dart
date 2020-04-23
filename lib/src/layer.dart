@@ -12,6 +12,7 @@ class Layer {
 
   TileMap map;
   List<List<int>> tileMatrix;
+  List<List<int>> tileRotation;
 
   List<Tile> _tiles;
   List<Tile> get tiles {
@@ -54,10 +55,12 @@ class Layer {
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
   assembleTileMatrix(var bytes) {
     tileMatrix = new List<List<int>>(height);
+    tileRotation = new List<List<int>>(height);
 
     var tileIndex = 0;
     for (var y = 0; y < height; ++y) {
       tileMatrix[y] = new List<int>(width);
+      tileRotation[y] = new List<int>(width);
       for (var x = 0; x < width; ++x) {
         var globalTileId = bytes[tileIndex] |
             bytes[tileIndex + 1] << 8 |
@@ -67,9 +70,54 @@ class Layer {
         tileIndex += 4;
 
         // Read out the flags
-        var flipped_horizontally = (globalTileId & FLIPPED_HORIZONTALLY_FLAG);
-        var flipped_vertically = (globalTileId & FLIPPED_VERTICALLY_FLAG);
-        var flipped_diagonally = (globalTileId & FLIPPED_DIAGONALLY_FLAG);
+        bool flippedHorizontally = (globalTileId & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
+        bool flippedVertically = (globalTileId & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
+        bool flippedDiagonally = (globalTileId & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
+
+        //Translating the flags into rotation
+        if(
+          !flippedHorizontally && 
+          !flippedVertically && 
+          !flippedDiagonally){
+            tileRotation[y][x] = 0; //no rotation
+        }else if(
+          !flippedHorizontally && 
+          flippedVertically && 
+          flippedDiagonally){
+            tileRotation[y][x] = 1; //90 °
+        }else if(
+          flippedHorizontally && 
+          flippedVertically && 
+          !flippedDiagonally){
+            tileRotation[y][x] = 2; //180 °
+        }else if(
+          flippedHorizontally && 
+          !flippedVertically && 
+          flippedDiagonally){
+            tileRotation[y][x] = 3; //270 °
+        }else if(
+          !flippedHorizontally && 
+          flippedVertically && 
+          !flippedDiagonally){
+            tileRotation[y][x] = 4; //0° + Vertical Flip
+        }else if(
+          flippedHorizontally && 
+          flippedVertically && 
+          flippedDiagonally){
+            tileRotation[y][x] = 5; //90° + Vertical Flip
+        }else if(
+          flippedHorizontally && 
+          !flippedVertically && 
+          !flippedDiagonally){
+            tileRotation[y][x] = 6; //0° + Horizontal Flip
+        }else if(
+          !flippedHorizontally && 
+          !flippedVertically && 
+          flippedDiagonally){
+            tileRotation[y][x] = 7; //90° + Horizontal Flip
+        }else{
+          tileRotation[y][x] = 0; //Just a backup if I missed something :>
+        }
 
         // Clear the flags
 
@@ -84,18 +132,23 @@ class Layer {
 
   _recalculateTiles() {
     var x, y = 0;
+    var indexX, indexY = 0;
     _tiles = new List<Tile>();
     tileMatrix.forEach((List<int> row) {
       x = 0;
+      indexX = 0;
       row.forEach((int tileId) {
         var tile = map.getTileByGID(tileId)
           ..x = x
-          ..y = y;
+          ..y = y
+          ..rotation = tileRotation[indexY][indexX];
         _tiles.add(tile);
 
         x += map.tileWidth;
+        indexX += 1;
       });
       y += map.tileHeight;
+      indexY += 1;
     });
   }
 }

@@ -1,3 +1,6 @@
+## [next]
+- Added support for rotated tiles
+
 ## 0.11.7
 
 * `<object />` tags are now parsed for their `type` attribute

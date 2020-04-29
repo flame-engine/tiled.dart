@@ -14,8 +14,8 @@ class Layer {
   List<List<int>> tileMatrix;
   List<List<int>> tileRotation;
 
-  List<Tile> _tiles;
-  List<Tile> get tiles {
+  List<List<Tile>> _tiles;
+  List<List<Tile>> get tiles {
     if (_tiles == null) {
       _recalculateTiles();
     }
@@ -77,11 +77,6 @@ class Layer {
         //Translating the flags into rotation
         if(
           !flippedHorizontally && 
-          !flippedVertically && 
-          !flippedDiagonally){
-            tileRotation[y][x] = 0; //no rotation
-        }else if(
-          !flippedHorizontally && 
           flippedVertically && 
           flippedDiagonally){
             tileRotation[y][x] = 1; //90 °
@@ -99,24 +94,29 @@ class Layer {
           !flippedHorizontally && 
           flippedVertically && 
           !flippedDiagonally){
-            tileRotation[y][x] = 4; //0° + Vertical Flip
+            tileRotation[y][x] = 4; //0° + Vertical flip
         }else if(
           flippedHorizontally && 
           flippedVertically && 
           flippedDiagonally){
-            tileRotation[y][x] = 5; //90° + Vertical Flip
+            tileRotation[y][x] = 5; //90° + Vertical flip
         }else if(
           flippedHorizontally && 
           !flippedVertically && 
           !flippedDiagonally){
-            tileRotation[y][x] = 6; //0° + Horizontal Flip
+            tileRotation[y][x] = 6; //0° + Horizontal flip
         }else if(
           !flippedHorizontally && 
           !flippedVertically && 
           flippedDiagonally){
-            tileRotation[y][x] = 7; //90° + Horizontal Flip
+            tileRotation[y][x] = 7; //90° + Horizontal flip
         }else{
-          tileRotation[y][x] = 0; //Just a backup if I missed something :>
+          tileRotation[y][x] = 0; //No rotation
+          /*
+            !flippedHorizontally && 
+            !flippedVertically && 
+            !flippedDiagonally
+          */
         }
 
         // Clear the flags
@@ -131,24 +131,35 @@ class Layer {
   }
 
   _recalculateTiles() {
-    var x, y = 0;
-    var indexX, indexY = 0;
-    _tiles = new List<Tile>();
-    tileMatrix.forEach((List<int> row) {
-      x = 0;
-      indexX = 0;
-      row.forEach((int tileId) {
-        var tile = map.getTileByGID(tileId)
-          ..x = x
-          ..y = y
-          ..rotation = tileRotation[indexY][indexX];
-        _tiles.add(tile);
+    var px = 0;
+    var py = 0;
+    var rotation;
+    var tileId;
+    var tile;
+    _tiles = new List<List<Tile>>(width);
+   
+    _tiles.asMap().forEach( (i,e){
+      _tiles[i] = new List(height);
+    } );
 
-        x += map.tileWidth;
-        indexX += 1;
+    _tiles.asMap().forEach((i, List<Tile> cols) {
+      px = 0;
+      
+      cols.asMap().forEach((j, Tile t) {
+        tileId = tileMatrix[i][j];
+        rotation = tileRotation[i][j];
+        tile = map.getTileByGID(tileId)
+        ..x = j
+        ..y = i
+        ..px = px
+        ..py = py
+        ..rotation = rotation;
+      
+        _tiles[i][j] = tile;
+        px += map.tileWidth;
       });
-      y += map.tileHeight;
-      indexY += 1;
+    
+      py += map.tileHeight;
     });
   }
 }

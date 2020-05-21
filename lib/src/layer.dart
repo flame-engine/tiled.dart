@@ -12,7 +12,7 @@ class Layer {
 
   TileMap map;
   List<List<int>> tileMatrix;
-  List<List<int>> tileRotation;
+  List<List<List<bool>>> tileRotation;
 
   List<List<Tile>> _tiles;
   List<List<Tile>> get tiles {
@@ -55,12 +55,12 @@ class Layer {
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
   assembleTileMatrix(var bytes) {
     tileMatrix = new List<List<int>>(height);
-    tileRotation = new List<List<int>>(height);
+    tileRotation = new List<List<List<bool>>>(height);
 
     var tileIndex = 0;
     for (var y = 0; y < height; ++y) {
       tileMatrix[y] = new List<int>(width);
-      tileRotation[y] = new List<int>(width);
+      tileRotation[y] = new List<List<bool>>(width);
       for (var x = 0; x < width; ++x) {
         var globalTileId = bytes[tileIndex] |
             bytes[tileIndex + 1] << 8 |
@@ -74,53 +74,14 @@ class Layer {
         bool flippedVertically = (globalTileId & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
         bool flippedDiagonally = (globalTileId & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
 
-        //Translating the flags into rotation
-        if(
-          !flippedHorizontally && 
-          flippedVertically && 
-          flippedDiagonally){
-            tileRotation[y][x] = 1; //90 °
-        }else if(
-          flippedHorizontally && 
-          flippedVertically && 
-          !flippedDiagonally){
-            tileRotation[y][x] = 2; //180 °
-        }else if(
-          flippedHorizontally && 
-          !flippedVertically && 
-          flippedDiagonally){
-            tileRotation[y][x] = 3; //270 °
-        }else if(
-          !flippedHorizontally && 
-          flippedVertically && 
-          !flippedDiagonally){
-            tileRotation[y][x] = 4; //0° + Vertical flip
-        }else if(
-          flippedHorizontally && 
-          flippedVertically && 
-          flippedDiagonally){
-            tileRotation[y][x] = 5; //90° + Vertical flip
-        }else if(
-          flippedHorizontally && 
-          !flippedVertically && 
-          !flippedDiagonally){
-            tileRotation[y][x] = 6; //0° + Horizontal flip
-        }else if(
-          !flippedHorizontally && 
-          !flippedVertically && 
-          flippedDiagonally){
-            tileRotation[y][x] = 7; //90° + Horizontal flip
-        }else{
-          tileRotation[y][x] = 0; //No rotation
-          /*
-            !flippedHorizontally && 
-            !flippedVertically && 
-            !flippedDiagonally
-          */
-        }
+        // Save rotation flags
+        tileRotation[y][x] = [
+          flippedHorizontally,
+          flippedVertically,
+          flippedDiagonally
+        ];
 
         // Clear the flags
-
         globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG |
             FLIPPED_VERTICALLY_FLAG |
             FLIPPED_DIAGONALLY_FLAG);
@@ -149,11 +110,13 @@ class Layer {
         tileId = tileMatrix[i][j];
         rotation = tileRotation[i][j];
         tile = map.getTileByGID(tileId)
-        ..x = j
-        ..y = i
+        ..x = i
+        ..y = j
         ..px = px
         ..py = py
-        ..rotation = rotation;
+        ..flippedHorizontally = rotation[0]
+        ..flippedVertically = rotation[1]
+        ..flippedDiagonally = rotation[2];
       
         _tiles[i][j] = tile;
         px += map.tileWidth;

@@ -13,18 +13,9 @@ class Tile {
   int spacing;
   int margin;
 
-  /*
-      Tile Rotation (Clockwise) 
-      0 => No rotation
-      1 => 90 °
-      2 => 180 °
-      3 => 270 °
-      4 => 0 ° + Vertical Flip
-      5 => 90 ° + Vertical Flip
-      6 => 0 ° + Horizontal Flip
-      7 => 90 ° + Horizontal Flip
-  */
-  int rotation;
+  bool flippedHorizontally;
+  bool flippedVertically;
+  bool flippedDiagonally;
 
   Map<String, String> properties = {};
   Image _image;
@@ -44,7 +35,7 @@ class Tile {
     return gid == 0;
   }
 
-  Tile(this.tileId, this.tileset, this.rotation) {
+  Tile(this.tileId, this.tileset, this.flippedHorizontally, this.flippedVertically, this.flippedDiagonally) {
     width = tileset.width;
     height = tileset.height;
     spacing = tileset.spacing;

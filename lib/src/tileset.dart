@@ -13,8 +13,8 @@ class Tileset {
 
   Image image;
   List<Image> images = new List<Image>();
-  Map<String, String> properties = new Map<String, String>();
-  Map<int, Map<String, String>> tileProperties = new Map();
+  Map<String, dynamic> properties = {};
+  Map<int, Map<String, dynamic>> tileProperties = {};
   Map<int, Image> tileImage = new Map();
 
   Tileset(this.firstgid);
@@ -27,15 +27,13 @@ class Tileset {
     image = _findImage(element);
     _addImage(image);
 
-    properties = TileMapParser._parseProperties(
-        TileMapParser._getPropertyNodes(element));
+    properties = TileMapParser._parsePropertiesFromElement(element);
 
     // Parse tile properties, if present.
     element.findElements('tile').forEach((XmlElement tileNode) {
       int tileId = int.parse(tileNode.getAttribute('id'));
       int tileGid = tileId + firstgid;
-      tileProperties[tileGid] = TileMapParser._parseProperties(
-          TileMapParser._getPropertyNodes(tileNode));
+      tileProperties[tileGid] = TileMapParser._parsePropertiesFromElement(tileNode);
       var image = _findImage(tileNode);
       tileImage[tileGid] = image;
       _addImage(image);

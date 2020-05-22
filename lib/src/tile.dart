@@ -38,9 +38,9 @@ class Tile {
     margin = tileset.margin;
     gid = tileId + tileset.firstgid;
     properties = tileset.tileProperties[gid];
-    if (properties == null) {
-      properties = {};
-    }
+
+    properties ??= {};
+
     _image = tileset.tileImage[gid];
   }
 

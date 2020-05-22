@@ -4,7 +4,6 @@ class TileMapParser {
   TileMapParser();
 
   TileMap parse(String xml, {TsxProvider tsx}) {
-
     var xmlElement = _parseXml(xml).rootElement;
 
     if (xmlElement.name.local != 'map') {
@@ -17,12 +16,11 @@ class TileMapParser {
     map.width = int.parse(xmlElement.getAttribute('width'));
     map.height = int.parse(xmlElement.getAttribute('height'));
 
-    xmlElement.children.where((node) => node is XmlNode).forEach( (XmlNode node) {
-      if (!(node is XmlElement)) {
-        return;
-      }
-      var element = node as XmlElement;
-      switch(element.name.local) {
+    xmlElement.children
+        .where((node) => node is XmlElement)
+        .cast<XmlElement>()
+        .forEach((XmlElement element) {
+      switch (element.name.local) {
         case 'tileset':
           map.tilesets.add(new Tileset.fromXML(element, tsx: tsx)..map = map);
           break;
@@ -35,19 +33,49 @@ class TileMapParser {
       }
     });
 
+    map.properties = TileMapParser._parsePropertiesFromElement(xmlElement);
+
     return map;
   }
 
   static Image _parseImage(XmlElement node) {
     var attrs = node.getAttribute;
-    return new Image(attrs('source'), int.parse(attrs('width')), int.parse(attrs('height')));
+
+    return new Image(
+      attrs('source'),
+      int.parse(attrs('width')),
+      int.parse(attrs('height')),
+    );
   }
 
-  static Map<String, String> _parseProperties(nodes) {
-    var map = new Map<String, String>();
-    nodes.forEach( (property) {
-      var attrs = property.getAttribute;
-      map[attrs('name')] = attrs('value');
+  static Map<String, dynamic> _parsePropertiesFromElement(XmlElement element) {
+    return TileMapParser._parseProperties(
+      TileMapParser._getPropertyNodes(element),
+    );
+  }
+
+  static Map<String, dynamic> _parseProperties(nodes) {
+    final map = <String, dynamic>{};
+
+    nodes.forEach((property) {
+      final attrs = property.getAttribute;
+      final value = attrs('value');
+      final name = attrs('name');
+
+      switch (attrs('type')) {
+        case 'bool':
+          map[name] = value == 'true';
+          break;
+        case 'int':
+          map[name] = int.parse(value);
+          break;
+        case 'float':
+          map[name] = double.parse(value);
+          break;
+        default: // for types file, color (returns ARGB), string
+          map[name] = value;
+          break;
+      }
     });
 
     return map;
@@ -67,8 +95,11 @@ class TileMapParser {
   static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
     var propertyNode = node.children
         .where((node) => node is XmlElement)
-        .firstWhere((node) => (node as XmlElement).name.local == 'properties', orElse: () => null) as XmlElement;
-    if (propertyNode == null) { return []; }
+        .cast<XmlElement>()
+        .firstWhere((element) => element.name.local == 'properties', orElse: () => null);
+    if (propertyNode == null) {
+      return [];
+    }
     return propertyNode.findElements('property');
   }
 
@@ -83,17 +114,16 @@ class TileMapParser {
   }
 
   static Function _getDecoder(String encodingType) {
-    switch(encodingType) {
+    switch (encodingType) {
       case 'base64':
         return _decodeBase64;
       default:
         throw 'Incompatible encoding found: $encodingType';
     }
-
   }
 
   static Function _getDecompressor(String compressionType) {
-    switch(compressionType) {
+    switch (compressionType) {
       case 'zlib':
         return new ZLibDecoder().decodeBytes;
       case 'gzip':

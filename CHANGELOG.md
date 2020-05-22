@@ -1,3 +1,7 @@
+## [next]
+
+* Added typed properties support and properties for TileMap and Layer
+
 ## 0.3.0
 
 * `Layer` using 2d list store layer's `_tiles`,useful for get tile by coordinate `x,y`

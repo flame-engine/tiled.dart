@@ -10,6 +10,8 @@ class Layer {
   int height;
   bool visible;
 
+  Map<String, dynamic> properties = {};
+
   TileMap map;
   List<List<int>> tileMatrix;
 
@@ -49,6 +51,8 @@ class Layer {
 
       assembleTileMatrix(inflatedString);
     }
+
+    properties = TileMapParser._parsePropertiesFromElement(element);
   }
 
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data

@@ -30,7 +30,7 @@ main() {
 
   test('Tile.properties is present', () {
     var tile = new Tile.emptyTile();
-    expect(tile.properties, new isInstanceOf<Map>());
+    expect(tile.properties, isA<Map>());
   });
 
   test('Tile.properties queries Tileset.tileProperties correctly', () {

@@ -13,7 +13,7 @@ class Tile {
   int spacing;
   int margin;
 
-  Map<String, String> properties = {};
+  Map<String, dynamic> properties = {};
   Image _image;
 
   Image get image {

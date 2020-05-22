@@ -37,14 +37,11 @@ class Layer {
       visible = dsl.boolOr('visible', true);
     });
 
-    var dataElement = element.children.firstWhere(
-        (node) => node is XmlElement && node.name.local == 'data',
-        orElse: () => null);
+    var dataElement =
+        element.children.firstWhere((node) => node is XmlElement && node.name.local == 'data', orElse: () => null);
     if (dataElement is XmlElement) {
-      var decoder =
-          TileMapParser._getDecoder(dataElement.getAttribute('encoding'));
-      var decompressor = TileMapParser._getDecompressor(
-          dataElement.getAttribute('compression'));
+      var decoder = TileMapParser._getDecoder(dataElement.getAttribute('encoding'));
+      var decompressor = TileMapParser._getDecompressor(dataElement.getAttribute('compression'));
 
       var decodedString = decoder(dataElement.text);
       var inflatedString = decompressor?.call(decodedString) ?? decodedString;
@@ -63,10 +60,8 @@ class Layer {
     for (var y = 0; y < height; ++y) {
       tileMatrix[y] = new List<int>(width);
       for (var x = 0; x < width; ++x) {
-        var globalTileId = bytes[tileIndex] |
-            bytes[tileIndex + 1] << 8 |
-            bytes[tileIndex + 2] << 16 |
-            bytes[tileIndex + 3] << 24;
+        var globalTileId =
+            bytes[tileIndex] | bytes[tileIndex + 1] << 8 | bytes[tileIndex + 2] << 16 | bytes[tileIndex + 3] << 24;
 
         tileIndex += 4;
 
@@ -77,9 +72,7 @@ class Layer {
 
         // Clear the flags
 
-        globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG |
-            FLIPPED_VERTICALLY_FLAG |
-            FLIPPED_DIAGONALLY_FLAG);
+        globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
 
         tileMatrix[y][x] = globalTileId;
       }
@@ -92,26 +85,26 @@ class Layer {
     var tileId;
     var tile;
     _tiles = new List<List<Tile>>(width);
-   
-    _tiles.asMap().forEach( (i,e){
+
+    _tiles.asMap().forEach((i, e) {
       _tiles[i] = new List(height);
-    } );
+    });
 
     _tiles.asMap().forEach((i, List<Tile> cols) {
       px = 0;
-      
+
       cols.asMap().forEach((j, Tile t) {
         tileId = tileMatrix[j][i];
         tile = map.getTileByGID(tileId)
-        ..x = i
-        ..y = j
-        ..px = px
-        ..py = py;
-      
+          ..x = i
+          ..y = j
+          ..px = px
+          ..py = py;
+
         _tiles[i][j] = tile;
         px += map.tileWidth;
       });
-    
+
       py += map.tileHeight;
     });
   }

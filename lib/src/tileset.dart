@@ -61,9 +61,7 @@ class Tileset {
   }
 
   Image _findImage(XmlElement element) {
-    var list = element
-        .findElements('image')
-        .map((XmlElement node) => TileMapParser._parseImage(node));
+    var list = element.findElements('image').map((XmlElement node) => TileMapParser._parseImage(node));
     if (list.length > 0) {
       return list.first;
     }

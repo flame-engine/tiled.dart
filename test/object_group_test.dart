@@ -5,7 +5,7 @@ import 'dart:io';
 
 void main() {
   XmlElement xmlRoot;
-  setUp( () {
+  setUp(() {
     return new File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
       xmlRoot = parse(xml).rootElement;
     });

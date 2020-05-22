@@ -31,8 +31,6 @@ class ObjectGroup {
         .cast<XmlElement>()
         .where((node) => node.name.local == 'object');
 
-    tmxObjects = objectNodes
-        .map((objectNode) => new TmxObject.fromXML(objectNode))
-        .toList();
+    tmxObjects = objectNodes.map((objectNode) => new TmxObject.fromXML(objectNode)).toList();
   }
 }

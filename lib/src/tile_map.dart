@@ -3,7 +3,8 @@ part of tiled;
 class TileMap {
   int tileWidth;
   int tileHeight;
-
+  int width;
+  int height;
   List<Tileset> tilesets = new List<Tileset>();
   List<Layer> layers = new List<Layer>();
   List<ObjectGroup> objectGroups = [];

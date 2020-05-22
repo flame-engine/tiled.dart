@@ -10,8 +10,10 @@ class Tile {
 
   int width;
   int height;
+  int spacing;
+  int margin;
 
-  Map<String, dynamic> properties = {};
+  Map<String, String> properties = {};
   Image _image;
 
   Image get image {
@@ -23,6 +25,7 @@ class Tile {
 
   // Optional X / Y locations for the tile.
   int x, y;
+  int px, py;
 
   bool get isEmpty {
     return gid == 0;
@@ -31,6 +34,8 @@ class Tile {
   Tile(this.tileId, this.tileset) {
     width = tileset.width;
     height = tileset.height;
+    spacing = tileset.spacing;
+    margin = tileset.margin;
     gid = tileId + tileset.firstgid;
     properties = tileset.tileProperties[gid];
 
@@ -47,11 +52,11 @@ class Tile {
     if (_image != null) {
       return new Rectangle(0, 0, _image.width, _image.height);
     }
-    var tilesPerRow = tileset.image.width ~/ width;
+    var tilesPerRow = tileset.image.width ~/ (width + spacing);
     var row = tileId ~/ tilesPerRow;
     var column = tileId % tilesPerRow;
-    var x = column * width;
-    var y = row * height;
-    return new Rectangle(x, y, width, height);
+    var x = margin + (column * (width + spacing));
+    var y = margin + (row * (height + spacing));
+    return new Rectangle(x, y, width + spacing, height + spacing);
   }
 }

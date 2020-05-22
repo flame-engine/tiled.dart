@@ -15,8 +15,8 @@ class Layer {
   TileMap map;
   List<List<int>> tileMatrix;
 
-  List<Tile> _tiles;
-  List<Tile> get tiles {
+  List<List<Tile>> _tiles;
+  List<List<Tile>> get tiles {
     if (_tiles == null) {
       _recalculateTiles();
     }
@@ -87,19 +87,32 @@ class Layer {
   }
 
   _recalculateTiles() {
-    var x, y = 0;
-    _tiles = new List<Tile>();
-    tileMatrix.forEach((List<int> row) {
-      x = 0;
-      row.forEach((int tileId) {
-        var tile = map.getTileByGID(tileId)
-          ..x = x
-          ..y = y;
-        _tiles.add(tile);
+    var px = 0;
+    var py = 0;
+    var tileId;
+    var tile;
+    _tiles = new List<List<Tile>>(width);
+   
+    _tiles.asMap().forEach( (i,e){
+      _tiles[i] = new List(height);
+    } );
 
-        x += map.tileWidth;
+    _tiles.asMap().forEach((i, List<Tile> cols) {
+      px = 0;
+      
+      cols.asMap().forEach((j, Tile t) {
+        tileId = tileMatrix[j][i];
+        tile = map.getTileByGID(tileId)
+        ..x = i
+        ..y = j
+        ..px = px
+        ..py = py;
+      
+        _tiles[i][j] = tile;
+        px += map.tileWidth;
       });
-      y += map.tileHeight;
+    
+      py += map.tileHeight;
     });
   }
 }

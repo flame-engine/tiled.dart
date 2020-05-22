@@ -1,3 +1,7 @@
+## [next]
+
+* Added typed properties support and properties for TileMap and Layer
+
 ## 0.11.7
 
 * `<object />` tags are now parsed for their `type` attribute

@@ -57,7 +57,8 @@ class TileMap {
     var split = tilePhrase.split('|');
     if (split.length != 2) {
       throw new ArgumentError(
-          "$tilePhrase not in the format of 'TilesetName|LocalTileID");
+        '$tilePhrase not in the format of "TilesetName|LocalTileID"',
+      );
     }
 
     var tilesetName = split.first;

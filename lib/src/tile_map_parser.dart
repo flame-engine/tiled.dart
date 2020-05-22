@@ -15,12 +15,9 @@ class TileMapParser {
     map.tileHeight = int.parse(xmlElement.getAttribute('tileheight'));
 
     xmlElement.children
-        .where((node) => node is XmlNode)
-        .forEach((XmlNode node) {
-      if (!(node is XmlElement)) {
-        return;
-      }
-      var element = node as XmlElement;
+        .where((node) => node is XmlElement)
+        .cast<XmlElement>()
+        .forEach((XmlElement element) {
       switch (element.name.local) {
         case 'tileset':
           map.tilesets.add(new Tileset.fromXML(element, tsx: tsx)..map = map);
@@ -92,8 +89,8 @@ class TileMapParser {
   static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
     var propertyNode = node.children
         .where((node) => node is XmlElement)
-        .firstWhere((node) => (node as XmlElement).name.local == 'properties',
-            orElse: () => null) as XmlElement;
+        .cast<XmlElement>()
+        .firstWhere((element) => element.name.local == 'properties', orElse: () => null);
     if (propertyNode == null) {
       return [];
     }

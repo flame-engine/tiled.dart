@@ -31,9 +31,7 @@ class TileMapParser {
       }
     });
 
-    map.properties = TileMapParser._parseProperties(
-      TileMapParser._getPropertyNodes(xmlElement),
-    );
+    map.properties = TileMapParser._parsePropertiesFromElement(xmlElement);
 
     return map;
   }
@@ -45,6 +43,12 @@ class TileMapParser {
       attrs('source'),
       int.parse(attrs('width')),
       int.parse(attrs('height')),
+    );
+  }
+
+  static Map<String, dynamic> _parsePropertiesFromElement(XmlElement element) {
+    return TileMapParser._parseProperties(
+      TileMapParser._getPropertyNodes(element),
     );
   }
 

@@ -24,13 +24,13 @@ class ObjectGroup {
       visible = dsl.boolOr('visible', visible);
     });
 
-    properties = TileMapParser._parseProperties(
-      TileMapParser._getPropertyNodes(element),
-    );
+    properties = TileMapParser._parsePropertiesFromElement(element);
 
     var objectNodes = element.children
         .where((node) => node is XmlElement)
-        .where((node) => (node as XmlElement).name.local == 'object');
+        .cast<XmlElement>()
+        .where((node) => node.name.local == 'object');
+
     tmxObjects = objectNodes
         .map((objectNode) => new TmxObject.fromXML(objectNode))
         .toList();

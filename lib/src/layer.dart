@@ -52,9 +52,7 @@ class Layer {
       assembleTileMatrix(inflatedString);
     }
 
-    properties = TileMapParser._parseProperties(
-      TileMapParser._getPropertyNodes(element),
-    );
+    properties = TileMapParser._parsePropertiesFromElement(element);
   }
 
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data

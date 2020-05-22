@@ -37,9 +37,7 @@ class TmxObject {
       visible = dsl.boolOr('visible', visible);
     });
 
-    properties = TileMapParser._parseProperties(
-      TileMapParser._getPropertyNodes(element),
-    );
+    properties = TileMapParser._parsePropertiesFromElement(element);
 
     // TODO: it is implied by the spec that there are only two children to
     // an object node: an optional <properties /> and an optional <ellipse />,

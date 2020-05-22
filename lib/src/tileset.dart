@@ -27,15 +27,13 @@ class Tileset {
     image = _findImage(element);
     _addImage(image);
 
-    properties = TileMapParser._parseProperties(
-        TileMapParser._getPropertyNodes(element));
+    properties = TileMapParser._parsePropertiesFromElement(element);
 
     // Parse tile properties, if present.
     element.findElements('tile').forEach((XmlElement tileNode) {
       int tileId = int.parse(tileNode.getAttribute('id'));
       int tileGid = tileId + firstgid;
-      tileProperties[tileGid] = TileMapParser._parseProperties(
-          TileMapParser._getPropertyNodes(tileNode));
+      tileProperties[tileGid] = TileMapParser._parsePropertiesFromElement(tileNode);
       var image = _findImage(tileNode);
       tileImage[tileGid] = image;
       _addImage(image);

@@ -8,7 +8,7 @@ main() {
   XmlElement xmlRoot, xmlRoot_base64_gzip;
 
   // Urgh. var xml = File.read(/* ... */); >:/
-  setUp( () {
+  setUp(() {
     Future f1 = new File('./test/fixtures/test.tmx').readAsString().then((xml) {
       xmlRoot = parse(xml).rootElement;
     });
@@ -34,7 +34,6 @@ main() {
       expect(layer.tileMatrix[7], equals([0, 0, 0, 0, 0, 0, 0, 1, 0, 0]));
       expect(layer.tileMatrix[8], equals([0, 0, 0, 0, 0, 0, 0, 0, 1, 0]));
       expect(layer.tileMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
-
     });
     test('supports zlib', () {
       XmlNode layerNode = xmlRoot.findAllElements('layer').first;
@@ -62,7 +61,6 @@ main() {
       layer = map.layers.first;
     });
 
-
     test('is the expected size of 100', () {
       expect(layer.tiles.length, equals(10));
       layer.tiles.forEach((row) {
@@ -76,8 +74,8 @@ main() {
 
       // Tileset is 32x32 in test.tmx, and the map is 10x10.
       List<List<int>> expectedCoords = [];
-      for(int x = 0; x < 10; x++) {
-        for(int y = 0; y < 10; y++) {
+      for (int x = 0; x < 10; x++) {
+        for (int y = 0; y < 10; y++) {
           expectedCoords.add([x, y]);
         }
       }

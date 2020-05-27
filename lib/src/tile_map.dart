@@ -63,9 +63,8 @@ class TileMap {
     }
 
     var tilesetName = split.first;
-    var tileId = int.parse(split.last,
-        onError: (src) =>
-            throw new ArgumentError('Local tile ID $src is not an integer.'));
+    var tileId =
+        int.parse(split.last, onError: (src) => throw new ArgumentError('Local tile ID $src is not an integer.'));
 
     return getTileByLocalID(tilesetName, tileId);
   }

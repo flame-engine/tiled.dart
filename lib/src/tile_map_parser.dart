@@ -16,10 +16,7 @@ class TileMapParser {
     map.width = int.parse(xmlElement.getAttribute('width'));
     map.height = int.parse(xmlElement.getAttribute('height'));
 
-    xmlElement.children
-        .where((node) => node is XmlElement)
-        .cast<XmlElement>()
-        .forEach((XmlElement element) {
+    xmlElement.children.where((node) => node is XmlElement).cast<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'tileset':
           map.tilesets.add(new Tileset.fromXML(element, tsx: tsx)..map = map);

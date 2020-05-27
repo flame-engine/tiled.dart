@@ -6,7 +6,7 @@ import 'dart:math';
 
 void main() {
   XmlElement xmlRoot;
-  setUp( () {
+  setUp(() {
     return new File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
       xmlRoot = parse(xml).rootElement;
     });
@@ -20,7 +20,7 @@ void main() {
 
     group('Circle', () {
       var tmxObject;
-      setUp(() => tmxObject = new TmxObject.fromXML(objects[0]) );
+      setUp(() => tmxObject = new TmxObject.fromXML(objects[0]));
 
       test('sets name to "Circle"', () {
         expect(tmxObject.name, equals("Circle"));
@@ -47,18 +47,15 @@ void main() {
       });
 
       test('sets properties', () {
-          expect(tmxObject.properties['property_name'],
-            equals('property_value'));
+        expect(tmxObject.properties['property_name'], equals('property_value'));
       });
 
-      test('sets isEllipse to true', () =>
-        expect(tmxObject.isEllipse, isTrue));
-
+      test('sets isEllipse to true', () => expect(tmxObject.isEllipse, isTrue));
     });
 
     group('Rectangle', () {
       var tmxObject;
-      setUp(() => tmxObject = new TmxObject.fromXML(objects[1]) );
+      setUp(() => tmxObject = new TmxObject.fromXML(objects[1]));
 
       test('sets name to "Rectangle"', () {
         expect(tmxObject.name, equals("Rectangle"));
@@ -84,14 +81,12 @@ void main() {
         expect(tmxObject.height, equals(43));
       });
 
-      test('sets isRectangle to true', () =>
-        expect(tmxObject.isRectangle, isTrue));
-
+      test('sets isRectangle to true', () => expect(tmxObject.isRectangle, isTrue));
     });
 
     group('Polygon', () {
       var tmxObject;
-      setUp(() => tmxObject = new TmxObject.fromXML(objects[2]) );
+      setUp(() => tmxObject = new TmxObject.fromXML(objects[2]));
 
       test('sets name to "Polygon"', () {
         expect(tmxObject.name, equals("Polygon"));
@@ -116,14 +111,12 @@ void main() {
         expect(ps[2], equals(new Point(-78, 19)));
       });
 
-      test('sets isPolygon to true', () =>
-        expect(tmxObject.isPolygon, isTrue));
-
+      test('sets isPolygon to true', () => expect(tmxObject.isPolygon, isTrue));
     });
 
     group('Polyline', () {
       var tmxObject;
-      setUp(() => tmxObject = new TmxObject.fromXML(objects[3]) );
+      setUp(() => tmxObject = new TmxObject.fromXML(objects[3]));
 
       test('sets name to "Polyline"', () {
         expect(tmxObject.name, equals("Polyline"));
@@ -144,11 +137,7 @@ void main() {
         expect(ps[2], equals(new Point(-49, 42)));
       });
 
-      test('sets isPolyline to true', () =>
-        expect(tmxObject.isPolyline, isTrue));
-
+      test('sets isPolyline to true', () => expect(tmxObject.isPolyline, isTrue));
     });
-
-
   });
 }

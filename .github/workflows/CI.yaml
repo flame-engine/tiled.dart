@@ -14,10 +14,9 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: flutter pub get
       - name: Lint
-        working-directory: .
+        run: flutter pub get
         run: ./scripts/lint.sh
-      - name: Tests
-        working-directory: .
+      - name: Test
+        run: pub get
         run: ./scripts/test.sh

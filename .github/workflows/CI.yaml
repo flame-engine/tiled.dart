@@ -16,8 +16,8 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - name: Lint
-        working-directory: /
+        working-directory: .
         run: ./scripts/lint.sh
       - name: Tests
-        working-directory: /
+        working-directory: .
         run: ./scripts/test.sh

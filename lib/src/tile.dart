@@ -34,7 +34,7 @@ class Tile {
     return gid == 0;
   }
 
-  Tile(this.tileId, this.tileset, { this.flips = const Flips.defaults() }) {
+  Tile(this.tileId, this.tileset, {this.flips = const Flips.defaults()}) {
     width = tileset.width;
     height = tileset.height;
     spacing = tileset.spacing;
@@ -53,13 +53,13 @@ class Tile {
 
   Rectangle computeDrawRect() {
     if (_image != null) {
-      return new Rectangle(0, 0, _image.width, _image.height);
+      return Rectangle(0, 0, _image.width, _image.height);
     }
-    var tilesPerRow = tileset.image.width ~/ (width + spacing);
-    var row = tileId ~/ tilesPerRow;
-    var column = tileId % tilesPerRow;
-    var x = margin + (column * (width + spacing));
-    var y = margin + (row * (height + spacing));
-    return new Rectangle(x, y, width + spacing, height + spacing);
+    final tilesPerRow = tileset.image.width ~/ (width + spacing);
+    final row = tileId ~/ tilesPerRow;
+    final column = tileId % tilesPerRow;
+    final x = margin + (column * (width + spacing));
+    final y = margin + (row * (height + spacing));
+    return Rectangle(x, y, width + spacing, height + spacing);
   }
 }

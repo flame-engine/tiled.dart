@@ -42,12 +42,12 @@ class TmxObject {
     // TODO: it is implied by the spec that there are only two children to
     // an object node: an optional <properties /> and an optional <ellipse />,
     // <polygon />, or <polyline />
-    var xmlElements = element.children
+    final xmlElements = element.children
         .where((node) => node is XmlElement)
         .where((node) => (node as XmlElement).name.local != 'properties');
 
-    if (xmlElements.length > 0) {
-      var node = xmlElements.first as XmlElement;
+    if (xmlElements.isNotEmpty) {
+      final node = xmlElements.first as XmlElement;
 
       switch (node.name.local) {
         case 'ellipse':

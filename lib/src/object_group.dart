@@ -26,11 +26,11 @@ class ObjectGroup {
 
     properties = TileMapParser._parsePropertiesFromElement(element);
 
-    var objectNodes = element.children
+    final objectNodes = element.children
         .where((node) => node is XmlElement)
         .cast<XmlElement>()
         .where((node) => node.name.local == 'object');
 
-    tmxObjects = objectNodes.map((objectNode) => new TmxObject.fromXML(objectNode)).toList();
+    tmxObjects = objectNodes.map((objectNode) => TmxObject.fromXML(objectNode)).toList();
   }
 }

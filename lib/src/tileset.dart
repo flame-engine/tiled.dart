@@ -12,10 +12,10 @@ class Tileset {
   TileMap map;
 
   Image image;
-  List<Image> images = new List<Image>();
+  List<Image> images = [];
   Map<String, dynamic> properties = {};
   Map<int, Map<String, dynamic>> tileProperties = {};
-  Map<int, Image> tileImage = new Map();
+  Map<int, Image> tileImage = {};
 
   Tileset(this.firstgid);
 
@@ -31,10 +31,10 @@ class Tileset {
 
     // Parse tile properties, if present.
     element.findElements('tile').forEach((XmlElement tileNode) {
-      int tileId = int.parse(tileNode.getAttribute('id'));
-      int tileGid = tileId + firstgid;
+      final tileId = int.parse(tileNode.getAttribute('id'));
+      final tileGid = tileId + firstgid;
       tileProperties[tileGid] = TileMapParser._parsePropertiesFromElement(tileNode);
-      var image = _findImage(tileNode);
+      final image = _findImage(tileNode);
       tileImage[tileGid] = image;
       _addImage(image);
     });
@@ -52,8 +52,8 @@ class Tileset {
     });
   }
 
-  _checkIfExtenalTsx(XmlElement element, TsxProvider tsx) {
-    var filename = element.getAttribute('source');
+  XmlElement _checkIfExtenalTsx(XmlElement element, TsxProvider tsx) {
+    final filename = element.getAttribute('source');
     if (tsx != null && filename != null) {
       return _parseXml(tsx.getSource(filename)).rootElement;
     }
@@ -61,8 +61,8 @@ class Tileset {
   }
 
   Image _findImage(XmlElement element) {
-    var list = element.findElements('image').map((XmlElement node) => TileMapParser._parseImage(node));
-    if (list.length > 0) {
+    final list = element.findElements('image').map((XmlElement node) => TileMapParser._parseImage(node));
+    if (list.isNotEmpty) {
       return list.first;
     }
     return null;

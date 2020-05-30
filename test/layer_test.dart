@@ -4,16 +4,16 @@ import 'package:xml/xml.dart';
 import 'dart:async';
 import 'dart:io';
 
-main() {
-  XmlElement xmlRoot, xmlRoot_base64_gzip;
+void main() {
+  XmlElement xmlRoot, xmlRootBase64Gzip;
 
   // Urgh. var xml = File.read(/* ... */); >:/
   setUp(() {
-    Future f1 = new File('./test/fixtures/test.tmx').readAsString().then((xml) {
+    final f1 = File('./test/fixtures/test.tmx').readAsString().then((xml) {
       xmlRoot = parse(xml).rootElement;
     });
-    Future f2 = new File('./test/fixtures/test_base64_gzip.tmx').readAsString().then((xml) {
-      xmlRoot_base64_gzip = parse(xml).rootElement;
+    final f2 = File('./test/fixtures/test_base64_gzip.tmx').readAsString().then((xml) {
+      xmlRootBase64Gzip = parse(xml).rootElement;
     });
 
     return Future.wait([f1, f2]);
@@ -21,8 +21,8 @@ main() {
 
   group('Layer.fromXML', () {
     test('supports gzip', () {
-      XmlNode layerNode = xmlRoot_base64_gzip.findAllElements('layer').first;
-      Layer layer = new Layer.fromXML(layerNode);
+      final layerNode = xmlRootBase64Gzip.findAllElements('layer').first;
+      final layer = Layer.fromXML(layerNode);
 
       expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
       expect(layer.tileMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -36,8 +36,8 @@ main() {
       expect(layer.tileMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
     });
     test('supports zlib', () {
-      XmlNode layerNode = xmlRoot.findAllElements('layer').first;
-      Layer layer = Layer.fromXML(layerNode);
+      final layerNode = xmlRoot.findAllElements('layer').first;
+      final layer = Layer.fromXML(layerNode);
 
       expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
       expect(layer.tileMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -69,11 +69,11 @@ main() {
     });
 
     test('calculates the x and y correctly for every tile', () {
-      List<List<int>> coords = [];
+      final coords = <List<int>>[];
       layer.tiles.forEach((row) => row.forEach((tile) => coords.add([tile.x, tile.y])));
 
       // Tileset is 32x32 in test.tmx, and the map is 10x10.
-      List<List<int>> expectedCoords = [];
+      final expectedCoords = <List<int>>[];
       for (int x = 0; x < 10; x++) {
         for (int y = 0; y < 10; y++) {
           expectedCoords.add([x, y]);

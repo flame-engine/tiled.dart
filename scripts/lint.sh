@@ -8,7 +8,14 @@ fi
 result=`dartanalyzer lib/`
 if ! echo "$result" | grep -q "No issues found!"; then
   echo "$result"
-  echo "dartanalyzer issue"
+  echo "dartanalyzer issue: lib"
+  exit 1
+fi
+
+result=`dartanalyzer test/`
+if ! echo "$result" | grep -q "No issues found!"; then
+  echo "$result"
+  echo "dartanalyzer issue: test"
   exit 1
 fi
 

@@ -25,7 +25,7 @@ class TileMap {
       return new Tile.emptyTile();
     }
     var ts = tilesets.lastWhere((tileset) => tileset.firstgid <= gid);
-    return new Tile(gid - ts.firstgid, ts, false, false, false);
+    return new Tile(gid - ts.firstgid, ts);
   }
 
   // Returns a tileset based on its name
@@ -39,7 +39,7 @@ class TileMap {
   */
   Tile getTileByLocalID(String tilesetName, int localTileId) {
     var tileset = getTileset(tilesetName);
-    return new Tile(localTileId, tileset, false, false, false);
+    return new Tile(localTileId, tileset);
   }
 
   /**

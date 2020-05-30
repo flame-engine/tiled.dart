@@ -36,14 +36,14 @@ main() {
   test('Tile.properties queries Tileset.tileProperties correctly', () {
     var ts = new Tileset(1)..tileProperties[1] = {'tile_property': 'tile_value'};
 
-    var tile = new Tile(0, ts, false, false, false);
+    var tile = new Tile(0, ts);
 
     expect(tile.properties, equals({'tile_property': 'tile_value'}));
   });
 
   test('Tile.properties is an empty map if Tileset.tileProperties is empty for this tile', () {
     var ts = new Tileset(1);
-    var tile = new Tile(2, ts, false, false, false);
+    var tile = new Tile(2, ts);
     expect(tile.properties, equals({}));
   });
 }

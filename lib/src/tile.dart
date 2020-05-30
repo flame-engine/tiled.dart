@@ -13,9 +13,7 @@ class Tile {
   int spacing;
   int margin;
 
-  bool flippedHorizontally;
-  bool flippedVertically;
-  bool flippedDiagonally;
+  Flips flips;
 
   Map<String, dynamic> properties = {};
 
@@ -36,7 +34,7 @@ class Tile {
     return gid == 0;
   }
 
-  Tile(this.tileId, this.tileset, this.flippedHorizontally, this.flippedVertically, this.flippedDiagonally) {
+  Tile(this.tileId, this.tileset, { this.flips = const Flips.defaults() }) {
     width = tileset.width;
     height = tileset.height;
     spacing = tileset.spacing;

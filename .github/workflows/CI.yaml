@@ -14,9 +14,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - name: Lint
-        run: flutter pub get
-        run: ./scripts/lint.sh
-      - name: Test
-        run: pub get
-        run: ./scripts/test.sh
+      - run: flutter pub get
+      - run: ./scripts/lint.sh
+      - run: pub get
+      - run: ./scripts/test.sh

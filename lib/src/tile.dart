@@ -17,7 +17,8 @@ class Tile {
   bool flippedVertically;
   bool flippedDiagonally;
 
-  Map<String, String> properties = {};
+  Map<String, dynamic> properties = {};
+
   Image _image;
 
   Image get image {
@@ -42,9 +43,9 @@ class Tile {
     margin = tileset.margin;
     gid = tileId + tileset.firstgid;
     properties = tileset.tileProperties[gid];
-    if (properties == null) {
-      properties = {};
-    }
+
+    properties ??= {};
+
     _image = tileset.tileImage[gid];
   }
 

@@ -10,6 +10,8 @@ class Layer {
   int height;
   bool visible;
 
+  Map<String, dynamic> properties = {};
+
   TileMap map;
   List<List<int>> tileMatrix;
   List<List<List<bool>>> tileRotation;
@@ -36,20 +38,19 @@ class Layer {
       visible = dsl.boolOr('visible', true);
     });
 
-    var dataElement = element.children.firstWhere(
-        (node) => node is XmlElement && node.name.local == 'data',
-        orElse: () => null);
+    var dataElement =
+        element.children.firstWhere((node) => node is XmlElement && node.name.local == 'data', orElse: () => null);
     if (dataElement is XmlElement) {
-      var decoder =
-          TileMapParser._getDecoder(dataElement.getAttribute('encoding'));
-      var decompressor = TileMapParser._getDecompressor(
-          dataElement.getAttribute('compression'));
+      var decoder = TileMapParser._getDecoder(dataElement.getAttribute('encoding'));
+      var decompressor = TileMapParser._getDecompressor(dataElement.getAttribute('compression'));
 
       var decodedString = decoder(dataElement.text);
       var inflatedString = decompressor?.call(decodedString) ?? decodedString;
 
       assembleTileMatrix(inflatedString);
     }
+
+    properties = TileMapParser._parsePropertiesFromElement(element);
   }
 
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
@@ -62,10 +63,8 @@ class Layer {
       tileMatrix[y] = new List<int>(width);
       tileRotation[y] = new List<List<bool>>(width);
       for (var x = 0; x < width; ++x) {
-        var globalTileId = bytes[tileIndex] |
-            bytes[tileIndex + 1] << 8 |
-            bytes[tileIndex + 2] << 16 |
-            bytes[tileIndex + 3] << 24;
+        var globalTileId =
+            bytes[tileIndex] | bytes[tileIndex + 1] << 8 | bytes[tileIndex + 2] << 16 | bytes[tileIndex + 3] << 24;
 
         tileIndex += 4;
 
@@ -82,9 +81,7 @@ class Layer {
         ];
 
         // Clear the flags
-        globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG |
-            FLIPPED_VERTICALLY_FLAG |
-            FLIPPED_DIAGONALLY_FLAG);
+        globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
 
         tileMatrix[y][x] = globalTileId;
       }
@@ -98,30 +95,30 @@ class Layer {
     var tileId;
     var tile;
     _tiles = new List<List<Tile>>(width);
-   
-    _tiles.asMap().forEach( (i,e){
+
+    _tiles.asMap().forEach((i, e) {
       _tiles[i] = new List(height);
-    } );
+    });
 
     _tiles.asMap().forEach((i, List<Tile> cols) {
       px = 0;
-      
+
       cols.asMap().forEach((j, Tile t) {
         tileId = tileMatrix[i][j];
         rotation = tileRotation[i][j];
         tile = map.getTileByGID(tileId)
-        ..x = i
-        ..y = j
-        ..px = px
-        ..py = py
-        ..flippedHorizontally = rotation[0]
-        ..flippedVertically = rotation[1]
-        ..flippedDiagonally = rotation[2];
-      
+          ..x = i
+          ..y = j
+          ..px = px
+          ..py = py
+          ..flippedHorizontally = rotation[0]
+          ..flippedVertically = rotation[1]
+          ..flippedDiagonally = rotation[2];
+
         _tiles[i][j] = tile;
         px += map.tileWidth;
       });
-    
+
       py += map.tileHeight;
     });
   }

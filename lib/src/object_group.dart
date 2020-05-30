@@ -9,11 +9,13 @@ class ObjectGroup {
 
   TileMap map;
 
-  Map<String, String> properties = {};
+  Map<String, dynamic> properties = {};
   List<TmxObject> tmxObjects = [];
 
   ObjectGroup.fromXML(XmlElement element) {
-    if (element == null) { throw 'arg "element" cannot be null'; }
+    if (element == null) {
+      throw 'arg "element" cannot be null';
+    }
 
     NodeDSL.on(element, (dsl) {
       name = dsl.strOr('name', name);
@@ -22,12 +24,13 @@ class ObjectGroup {
       visible = dsl.boolOr('visible', visible);
     });
 
-    properties = TileMapParser._parseProperties(TileMapParser._getPropertyNodes(element));
+    properties = TileMapParser._parsePropertiesFromElement(element);
 
     var objectNodes = element.children
         .where((node) => node is XmlElement)
-        .where((node) => (node as XmlElement).name.local == 'object');
-    tmxObjects = objectNodes.map((objectNode)
-      =>  new TmxObject.fromXML(objectNode)).toList();
+        .cast<XmlElement>()
+        .where((node) => node.name.local == 'object');
+
+    tmxObjects = objectNodes.map((objectNode) => new TmxObject.fromXML(objectNode)).toList();
   }
 }

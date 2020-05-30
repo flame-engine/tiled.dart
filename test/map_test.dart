@@ -13,10 +13,12 @@ main() {
       // 1 tileset with 3 tiles
       // 1 tileset with 1 tile
       map.tilesets.add(new tiled.Tileset(1));
-      map.tilesets.add(new tiled.Tileset(2)..height = 64..width = 32);
+      map.tilesets.add(new tiled.Tileset(2)
+        ..height = 64
+        ..width = 32);
       map.tilesets.add(new tiled.Tileset(5));
       // The last tile of the second tileset has a gid = 4
-      tile =  map.getTileByGID(4);
+      tile = map.getTileByGID(4);
     });
 
     test('returns an empty Tile if GID is 0', () {
@@ -41,8 +43,8 @@ main() {
         expect(tile.gid, equals(4));
       });
 
-      test('with x = null', ()=> expect(tile.x, isNull));
-      test('with y = null', ()=> expect(tile.y, isNull));
+      test('with x = null', () => expect(tile.x, isNull));
+      test('with y = null', () => expect(tile.y, isNull));
     });
   });
 
@@ -58,9 +60,7 @@ main() {
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect( () => map.getTileByLocalID('Nonexistant Tile', 0),
-        throwsA(new isInstanceOf<ArgumentError>())
-      );
+      expect(() => map.getTileByLocalID('Nonexistant Tile', 0), throwsA(new isInstanceOf<ArgumentError>()));
     });
 
     group('returns a tile', () {
@@ -70,7 +70,6 @@ main() {
       test('with the expected Tileset', () => expect(tile.tileset, equals(tileset)));
       test('with the expected local tile ID', () => expect(tile.tileId, equals(0)));
     });
-
   });
 
   group('Map.getTileByPhrase', () {
@@ -85,19 +84,15 @@ main() {
     });
 
     test('raises an ArgumentError if tile phrase is not in the correct format', () {
-      expect( () => map.getTileByPhrase('Nonexistant Tile'),
-        throwsArgumentError
-      );
+      expect(() => map.getTileByPhrase('Nonexistant Tile'), throwsArgumentError);
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect( () => map.getTileByPhrase('Nonexistant Tile|0'),
-        throwsArgumentError);
+      expect(() => map.getTileByPhrase('Nonexistant Tile|0'), throwsArgumentError);
     });
 
     test('raises an ArgumentError if tile id is not a parsable integer', () {
-      expect( () => map.getTileByPhrase('Humans|cupcake'),
-        throwsArgumentError);
+      expect(() => map.getTileByPhrase('Humans|cupcake'), throwsArgumentError);
     });
 
     group('returns a tile', () {
@@ -118,8 +113,7 @@ main() {
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect( () => map.getTileset('Quackers'),
-          throwsA(new isInstanceOf<ArgumentError>()));
+      expect(() => map.getTileset('Quackers'), throwsA(new isInstanceOf<ArgumentError>()));
     });
 
     test('returns the expected tileset', () {

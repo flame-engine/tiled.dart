@@ -16,7 +16,7 @@ class NodeDSL {
   }
 
   int intOr(String attrName, int defaultValue) {
-    return _safely(attrName, defaultValue, (val) => int.parse(val) );
+    return _safely(attrName, defaultValue, (val) => int.parse(val));
   }
 
   double doubleOr(String attrName, double defaultValue) {
@@ -33,7 +33,9 @@ class NodeDSL {
 
   _safely(String attrName, defaultValue, Function fxn) {
     String value = _attr(attrName);
-    if (value != null) { return fxn(value); }
+    if (value != null) {
+      return fxn(value);
+    }
     return defaultValue;
   }
 }

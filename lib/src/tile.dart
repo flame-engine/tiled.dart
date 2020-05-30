@@ -13,7 +13,10 @@ class Tile {
   int spacing;
   int margin;
 
+  Flips flips;
+
   Map<String, dynamic> properties = {};
+
   Image _image;
 
   Image get image {
@@ -31,7 +34,7 @@ class Tile {
     return gid == 0;
   }
 
-  Tile(this.tileId, this.tileset) {
+  Tile(this.tileId, this.tileset, { this.flips = const Flips.defaults() }) {
     width = tileset.width;
     height = tileset.height;
     spacing = tileset.spacing;

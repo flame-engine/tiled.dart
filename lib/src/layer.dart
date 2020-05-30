@@ -14,6 +14,7 @@ class Layer {
 
   TileMap map;
   List<List<int>> tileMatrix;
+  List<List<Flips>> tileFlips;
 
   List<List<Tile>> _tiles;
   List<List<Tile>> get tiles {
@@ -55,10 +56,12 @@ class Layer {
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
   assembleTileMatrix(var bytes) {
     tileMatrix = new List<List<int>>(height);
+    tileFlips = new List<List<Flips>>(height);
 
     var tileIndex = 0;
     for (var y = 0; y < height; ++y) {
       tileMatrix[y] = new List<int>(width);
+      tileFlips[y] = new List<Flips>(width);
       for (var x = 0; x < width; ++x) {
         var globalTileId =
             bytes[tileIndex] | bytes[tileIndex + 1] << 8 | bytes[tileIndex + 2] << 16 | bytes[tileIndex + 3] << 24;
@@ -66,12 +69,18 @@ class Layer {
         tileIndex += 4;
 
         // Read out the flags
-        var flipped_horizontally = (globalTileId & FLIPPED_HORIZONTALLY_FLAG);
-        var flipped_vertically = (globalTileId & FLIPPED_VERTICALLY_FLAG);
-        var flipped_diagonally = (globalTileId & FLIPPED_DIAGONALLY_FLAG);
+        bool flippedHorizontally = (globalTileId & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
+        bool flippedVertically = (globalTileId & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
+        bool flippedDiagonally = (globalTileId & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
+
+        // Save rotation flags
+        tileFlips[y][x] = Flips(
+          flippedHorizontally,
+          flippedVertically,
+          flippedDiagonally,
+        );
 
         // Clear the flags
-
         globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
 
         tileMatrix[y][x] = globalTileId;
@@ -82,6 +91,7 @@ class Layer {
   _recalculateTiles() {
     var px = 0;
     var py = 0;
+    var flips;
     var tileId;
     var tile;
     _tiles = new List<List<Tile>>(width);
@@ -94,12 +104,14 @@ class Layer {
       px = 0;
 
       cols.asMap().forEach((j, Tile t) {
-        tileId = tileMatrix[j][i];
+        tileId = tileMatrix[i][j];
+        flips = tileFlips[i][j];
         tile = map.getTileByGID(tileId)
           ..x = i
           ..y = j
           ..px = px
-          ..py = py;
+          ..py = py
+          ..flips = flips;
 
         _tiles[i][j] = tile;
         px += map.tileWidth;

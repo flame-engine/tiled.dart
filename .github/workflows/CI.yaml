@@ -16,3 +16,4 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: ./scripts/lint.sh
+      - run: ./scripts/test.sh

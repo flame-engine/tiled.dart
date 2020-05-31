@@ -1,17 +1,14 @@
 name: tiled
 version: 0.3.0
-authors:
-- Fernando Ultremare <feroult@gmail.com>
-- Arron Washington (previous TMX code) <arron@theradicaledwards.com> 
-description: A Dart Tiled library.
-homepage: https://github.com/feroult/tiled.dart
+description: A Dart Tiled library. Parse your TMX files into a useful representation. Compatible with Flame.
+homepage: https://github.com/flame-engine/tiled.dart
+
 dependencies:
-  convert: ^2.0.1
-  archive: ^2.0.5
-  crypto: ^2.0.6
-  xml: ^3.2.3
+  archive: ^2.0.13
+  xml: ^4.2.0
+
 dev_dependencies:
   test: any
 
 environment:
-  sdk: ">=2.0.0-dev.50.0 <3.0.0"
+  sdk: ">=2.3.0 <3.0.0"

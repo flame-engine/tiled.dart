@@ -8,7 +8,7 @@ void main() {
   XmlElement xmlRoot;
   setUp(() {
     return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
-      xmlRoot = parse(xml).rootElement;
+      xmlRoot = XmlDocument.parse(xml).rootElement;
     });
   });
 

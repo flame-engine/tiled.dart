@@ -5,7 +5,7 @@ class NodeDSL {
 
   NodeDSL(this.element);
 
-  static NodeDSL on(XmlElement element, Function(NodeDSL) fxn) {
+  static NodeDSL on(XmlElement element, void Function(NodeDSL) fxn) {
     final node = NodeDSL(element);
     fxn(node);
     return node;

@@ -1,5 +1,7 @@
 ## [next]
 
+## 0.4.0
+
 * Added typed properties support and properties for TileMap and Layer
 * Added support for rotated tiles
 * Some small API improvements (breaking)

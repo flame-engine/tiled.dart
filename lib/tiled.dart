@@ -1,8 +1,9 @@
 library tiled;
 
 import 'dart:math';
-
 import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:xml/xml.dart';
 import 'package:archive/archive.dart';
 
@@ -18,4 +19,4 @@ part 'src/node_dsl.dart';
 part 'src/tsx_provider.dart';
 part 'src/flips.dart';
 
-XmlDocument _parseXml(String input) => parse(input);
+XmlDocument _parseXml(String input) => XmlDocument.parse(input);

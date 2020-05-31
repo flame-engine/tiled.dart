@@ -8,20 +8,26 @@ A Dart Tiled library.
 
 Include the following in your `pubspec.yaml`:
 
+```yaml
     dependencies:
-      tiled: any
+      tiled: 0.3.0
+```
 
 ## Usage
 
 Import the package like this:
 
+```dart
     import 'package:tiled/tiled.dart'
+```
 
 Load a TMX file into a string by any means, and then pass the string to an instance of TileMapParser.parse:
 
-    string tmxBody = /* ... */;
-    var parser = new TileMapParser();
-    TileMap map = parser.parse(tmxBody);
+```dart
+    final String tmxBody = /* ... */;
+    final TileMapParser parser = TileMapParser();
+    final TileMap map = parser.parse(tmxBody);
+```
 
 ## Credits
 

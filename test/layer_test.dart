@@ -10,10 +10,10 @@ void main() {
   // Urgh. var xml = File.read(/* ... */); >:/
   setUp(() {
     final f1 = File('./test/fixtures/test.tmx').readAsString().then((xml) {
-      xmlRoot = parse(xml).rootElement;
+      xmlRoot = XmlDocument.parse(xml).rootElement;
     });
     final f2 = File('./test/fixtures/test_base64_gzip.tmx').readAsString().then((xml) {
-      xmlRootBase64Gzip = parse(xml).rootElement;
+      xmlRootBase64Gzip = XmlDocument.parse(xml).rootElement;
     });
 
     return Future.wait([f1, f2]);

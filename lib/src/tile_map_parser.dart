@@ -76,13 +76,7 @@ class TileMapParser {
     return map;
   }
 
-  // The following helpers are a bit ham-handed; they're extracted into separate methods, even though they call
-  // 3rd party packages, so that I can swap out replacement implementations as they grow and mature.
-
-  // Manual test: CryptoUtils.base65StringToBytes has the same output as
-  // Ruby's Base64.decode64. This function is working as expected.
-  // Can't be tested; Dart won't let you test private methods (LOL)
-  static List<int> _decodeBase64(String input) {
+  static Uint8List _decodeBase64(String input) {
     final sanitized = input.trim();
     return base64.decode(sanitized);
   }
@@ -108,7 +102,7 @@ class TileMapParser {
     }).toList();
   }
 
-  static Function _getDecoder(String encodingType) {
+  static Uint8List Function(String) _getDecoder(String encodingType) {
     switch (encodingType) {
       case 'base64':
         return _decodeBase64;
@@ -117,7 +111,7 @@ class TileMapParser {
     }
   }
 
-  static Function _getDecompressor(String compressionType) {
+  static List<int> Function(List<int>) _getDecompressor(String compressionType) {
     switch (compressionType) {
       case 'zlib':
         return ZLibDecoder().decodeBytes;

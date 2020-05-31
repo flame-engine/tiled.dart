@@ -1,6 +1,9 @@
 ## [next]
+
 * Added typed properties support and properties for TileMap and Layer
 * Added support for rotated tiles
+* Some small API improvements (breaking)
+* Added linter and formatter and tests to build
 
 ## 0.3.0
 

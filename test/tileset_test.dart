@@ -16,7 +16,7 @@ void main() {
     Tileset tileset;
     setUp(() {
       return File('./test/fixtures/map_with_spacing_margin.tmx').readAsString().then((xml) {
-        final xmlRoot = parse(xml).rootElement;
+        final xmlRoot = XmlDocument.parse(xml).rootElement;
         final tilesetXml = xmlRoot.findAllElements('tileset').first;
         tileset = Tileset.fromXML(tilesetXml);
       });

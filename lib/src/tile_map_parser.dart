@@ -4,13 +4,13 @@ class TileMapParser {
   TileMapParser();
 
   TileMap parse(String xml, {TsxProvider tsx}) {
-    var xmlElement = _parseXml(xml).rootElement;
+    final xmlElement = _parseXml(xml).rootElement;
 
     if (xmlElement.name.local != 'map') {
       throw 'XML is not in TMX format';
     }
 
-    var map = new TileMap();
+    final map = TileMap();
     map.tileWidth = int.parse(xmlElement.getAttribute('tilewidth'));
     map.tileHeight = int.parse(xmlElement.getAttribute('tileheight'));
     map.width = int.parse(xmlElement.getAttribute('width'));
@@ -19,13 +19,13 @@ class TileMapParser {
     xmlElement.children.where((node) => node is XmlElement).cast<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'tileset':
-          map.tilesets.add(new Tileset.fromXML(element, tsx: tsx)..map = map);
+          map.tilesets.add(Tileset.fromXML(element, tsx: tsx)..map = map);
           break;
         case 'layer':
-          map.layers.add(new Layer.fromXML(element)..map = map);
+          map.layers.add(Layer.fromXML(element)..map = map);
           break;
         case 'objectgroup':
-          map.objectGroups.add(new ObjectGroup.fromXML(element)..map = map);
+          map.objectGroups.add(ObjectGroup.fromXML(element)..map = map);
           break;
       }
     });
@@ -36,12 +36,10 @@ class TileMapParser {
   }
 
   static Image _parseImage(XmlElement node) {
-    var attrs = node.getAttribute;
-
-    return new Image(
-      attrs('source'),
-      int.parse(attrs('width')),
-      int.parse(attrs('height')),
+    return Image(
+      node.getAttribute('source'),
+      int.parse(node.getAttribute('width')),
+      int.parse(node.getAttribute('height')),
     );
   }
 
@@ -85,12 +83,12 @@ class TileMapParser {
   // Ruby's Base64.decode64. This function is working as expected.
   // Can't be tested; Dart won't let you test private methods (LOL)
   static List<int> _decodeBase64(String input) {
-    var sanitized = input.trim();
+    final sanitized = input.trim();
     return base64.decode(sanitized);
   }
 
   static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
-    var propertyNode = node.children
+    final propertyNode = node.children
         .where((node) => node is XmlElement)
         .cast<XmlElement>()
         .firstWhere((element) => element.name.local == 'properties', orElse: () => null);
@@ -102,11 +100,11 @@ class TileMapParser {
 
   static List<Point> _getPoints(XmlElement node) {
     // Format: points="0,0 -5,98 -49,42"
-    var points = node.getAttribute('points').split(' ');
+    final points = node.getAttribute('points').split(' ');
     return points.map((point) {
-      var arr = point.split(',');
-      var p = (str) => int.parse(str);
-      return new Point(p(arr.first), p(arr.last));
+      final arr = point.split(',');
+      final p = (str) => int.parse(str);
+      return Point(p(arr.first), p(arr.last));
     }).toList();
   }
 
@@ -122,9 +120,9 @@ class TileMapParser {
   static Function _getDecompressor(String compressionType) {
     switch (compressionType) {
       case 'zlib':
-        return new ZLibDecoder().decodeBytes;
+        return ZLibDecoder().decodeBytes;
       case 'gzip':
-        return new GZipDecoder().decodeBytes;
+        return GZipDecoder().decodeBytes;
       default:
         return null;
     }

@@ -5,10 +5,17 @@ if [[ $(flutter format --line-length=120 -n .) ]]; then
     exit 1
 fi
 
-result=`dartanalyzer lib/`
+result=$(dartanalyzer lib/)
 if ! echo "$result" | grep -q "No issues found!"; then
   echo "$result"
-  echo "dartanalyzer issue"
+  echo "dartanalyzer issue: lib"
+  exit 1
+fi
+
+result=$(dartanalyzer test/)
+if ! echo "$result" | grep -q "No issues found!"; then
+  echo "$result"
+  echo "dartanalyzer issue: test"
   exit 1
 fi
 

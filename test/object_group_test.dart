@@ -6,18 +6,18 @@ import 'dart:io';
 void main() {
   XmlElement xmlRoot;
   setUp(() {
-    return new File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
+    return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
       xmlRoot = parse(xml).rootElement;
     });
   });
 
   group('ObjectGroup.fromXML', () {
-    var objectGroup;
-    var xml;
+    ObjectGroup objectGroup;
+    XmlElement xml;
 
     setUp(() {
       xml = xmlRoot.findAllElements('objectgroup').first;
-      objectGroup = new ObjectGroup.fromXML(xml);
+      objectGroup = ObjectGroup.fromXML(xml);
     });
 
     test('sets name', () {
@@ -35,8 +35,8 @@ void main() {
     test('sets visible', () {
       expect(objectGroup.visible, equals(true));
 
-      var xml = xmlRoot.findAllElements('objectgroup').last;
-      objectGroup = new ObjectGroup.fromXML(xml);
+      final xml = xmlRoot.findAllElements('objectgroup').last;
+      objectGroup = ObjectGroup.fromXML(xml);
 
       expect(objectGroup.visible, equals(false));
     });

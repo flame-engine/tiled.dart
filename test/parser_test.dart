@@ -4,18 +4,17 @@ import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 import 'dart:io';
 
-main() {
-  TileMapParser parser = new TileMapParser();
+void main() {
+  final parser = TileMapParser();
   TileMap map;
   setUp(() {
-    return new File('./test/fixtures/test.tmx').readAsString().then((xml) {
+    return File('./test/fixtures/test.tmx').readAsString().then((xml) {
       map = parser.parse(xml);
     });
   });
 
   test('Parser.parse raises an error when the XML is not in TMX format', () {
-    var wrongXml = '<xml></xml>';
-
+    const wrongXml = '<xml></xml>';
     expect(() => parser.parse(wrongXml), throwsA('XML is not in TMX format'));
   });
 
@@ -30,7 +29,7 @@ main() {
     });
 
     group('and the first tileset', () {
-      var tileset;
+      Tileset tileset;
       setUp(() => tileset = map.tilesets[0]);
 
       test('has its firstgid = 1', () => expect(tileset.firstgid, equals(1)));
@@ -41,7 +40,7 @@ main() {
       test('has its image', () => expect(tileset.image, isNotNull));
 
       group('populates its first image correctly and', () {
-        var image;
+        Image image;
         setUp(() => image = tileset.image);
 
         test('has its width = 96', () => expect(image.width, equals(96)));
@@ -50,7 +49,7 @@ main() {
       });
 
       group('populates its properties correctly and', () {
-        var properties;
+        Map<String, dynamic> properties;
         setUp(() => properties = tileset.properties);
         test('has a key of "test_property" = "test_value"', () {
           expect(properties, equals({'test_property': 'test_value'}));
@@ -58,7 +57,7 @@ main() {
       });
 
       group('populates its child tile properties correctly by', () {
-        var tileProperties;
+        Map<int, Map<String, dynamic>> tileProperties;
         setUp(() => tileProperties = tileset.tileProperties);
 
         test('inserting properties into tileProperties based on Tile GID', () {
@@ -73,7 +72,7 @@ main() {
     test('and Map.layers is the correct length', () => expect(map.layers.length, equals(1)));
 
     group('and the first layer', () {
-      var layer;
+      Layer layer;
       setUp(() => layer = map.layers[0]);
 
       test('has its name = "Tile Layer 1"', () => expect(layer.name, equals('Tile Layer 1')));
@@ -100,7 +99,7 @@ main() {
 
   group('Parser.parse populates Map with objectgroups', () {
     setUp(() {
-      return new File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
+      return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
         map = parser.parse(xml);
       });
     });
@@ -108,7 +107,7 @@ main() {
     test('and objectGroups is the correct length', () => expect(map.objectGroups.length, equals(2)));
 
     group('and the first objectGroup', () {
-      var og;
+      ObjectGroup og;
       setUp(() => og = map.objectGroups[0]);
 
       test('has the right #map', () => expect(og.map, equals(map)));
@@ -119,41 +118,41 @@ main() {
 
   group('Parser.parse populates Map with tileset and different image configs', () {
     setUp(() {
-      return new File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
+      return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
         map = parser.parse(xml);
       });
     });
 
     test('and global tileset image', () {
-      var tileset = map.getTileset('default');
-      var tile1 = map.getTileByGID(tileset.firstgid);
+      final tileset = map.getTileset('default');
+      final tile1 = map.getTileByGID(tileset.firstgid);
       expect(tileset.image.source, equals('level1.png'));
       expect(tileset.images.length, equals(1));
       expect(tile1.image.source, equals('level1.png'));
-      expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 16, 16)));
-      expect(map.getTileByGID(tileset.firstgid + 1).computeDrawRect(), equals(new Rectangle(16, 0, 16, 16)));
-      expect(map.getTileByGID(tileset.firstgid + 17).computeDrawRect(), equals(new Rectangle(0, 16, 16, 16)));
-      expect(map.getTileByGID(tileset.firstgid + 19).computeDrawRect(), equals(new Rectangle(32, 16, 16, 16)));
+      expect(tile1.computeDrawRect(), equals(const Rectangle(0, 0, 16, 16)));
+      expect(map.getTileByGID(tileset.firstgid + 1).computeDrawRect(), equals(const Rectangle(16, 0, 16, 16)));
+      expect(map.getTileByGID(tileset.firstgid + 17).computeDrawRect(), equals(const Rectangle(0, 16, 16, 16)));
+      expect(map.getTileByGID(tileset.firstgid + 19).computeDrawRect(), equals(const Rectangle(32, 16, 16, 16)));
     });
 
     test('and image per tile', () {
-      var tileset = map.getTileset('other');
-      var tile1 = map.getTileByGID(tileset.firstgid);
-      var tile2 = map.getTileByGID(tileset.firstgid + 1);
+      final tileset = map.getTileset('other');
+      final tile1 = map.getTileByGID(tileset.firstgid);
+      final tile2 = map.getTileByGID(tileset.firstgid + 1);
       expect(tileset.image, isNull);
       expect(tileset.images.length, equals(2));
       expect(tileset.images[0].source, equals('image1.png'));
       expect(tile1.image.source, equals('image1.png'));
-      expect(tile1.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
+      expect(tile1.computeDrawRect(), equals(const Rectangle(0, 0, 32, 32)));
       expect(tile2.image.source, equals('image2.png'));
-      expect(tile2.computeDrawRect(), equals(new Rectangle(0, 0, 32, 32)));
+      expect(tile2.computeDrawRect(), equals(const Rectangle(0, 0, 32, 32)));
     });
   });
 
   group('Parser.parse with tsx provider', () {
     test('it loads external tsx', () {
-      return new File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = new TileMapParser().parse(xml, tsx: new CustomTsxProvider());
+      return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
+        map = TileMapParser().parse(xml, tsx: CustomTsxProvider());
         expect(map.getTileset('external').image.source, equals('level1.png'));
       });
     });
@@ -161,8 +160,8 @@ main() {
 
   group('Parser.parse with multiple layers', () {
     test('it has 2 layers', () {
-      return new File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = new TileMapParser().parse(xml, tsx: new CustomTsxProvider());
+      return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
+        map = TileMapParser().parse(xml, tsx: CustomTsxProvider());
         expect(map.layers.length, equals(2));
       });
     });
@@ -172,6 +171,6 @@ main() {
 class CustomTsxProvider extends TsxProvider {
   @override
   String getSource(String key) {
-    return new File('./test/fixtures/tileset.tsx').readAsStringSync();
+    return File('./test/fixtures/tileset.tsx').readAsStringSync();
   }
 }

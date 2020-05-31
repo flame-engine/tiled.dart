@@ -1,22 +1,22 @@
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart' as tiled;
 
-main() {
+void main() {
   // GID is 1-based
   group('Map.getTileByGID', () {
     tiled.Tile tile;
     tiled.TileMap map;
     setUp(() {
-      map = new tiled.TileMap();
+      map = tiled.TileMap();
       // 2 tilesets:
       // 1 tileset with 1 tile
       // 1 tileset with 3 tiles
       // 1 tileset with 1 tile
-      map.tilesets.add(new tiled.Tileset(1));
-      map.tilesets.add(new tiled.Tileset(2)
+      map.tilesets.add(tiled.Tileset(1));
+      map.tilesets.add(tiled.Tileset(2)
         ..height = 64
         ..width = 32);
-      map.tilesets.add(new tiled.Tileset(5));
+      map.tilesets.add(tiled.Tileset(5));
       // The last tile of the second tileset has a gid = 4
       tile = map.getTileByGID(4);
     });
@@ -50,21 +50,21 @@ main() {
 
   group('Map.getTileByLocalID', () {
     tiled.TileMap map;
-    tiled.Tileset tileset = new tiled.Tileset(1)
+    final tileset = tiled.Tileset(1)
       ..name = 'Humans'
       ..height = 64
       ..width = 32;
     setUp(() {
-      map = new tiled.TileMap();
+      map = tiled.TileMap();
       map.tilesets.add(tileset);
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect(() => map.getTileByLocalID('Nonexistant Tile', 0), throwsA(new isInstanceOf<ArgumentError>()));
+      expect(() => map.getTileByLocalID('Nonexistant Tile', 0), throwsA(isA<ArgumentError>()));
     });
 
     group('returns a tile', () {
-      var tile;
+      tiled.Tile tile;
       setUp(() => tile = map.getTileByLocalID('Humans', 0));
 
       test('with the expected Tileset', () => expect(tile.tileset, equals(tileset)));
@@ -74,12 +74,12 @@ main() {
 
   group('Map.getTileByPhrase', () {
     tiled.TileMap map;
-    tiled.Tileset tileset = new tiled.Tileset(1)
+    final tileset = tiled.Tileset(1)
       ..name = 'Humans'
       ..height = 64
       ..width = 32;
     setUp(() {
-      map = new tiled.TileMap();
+      map = tiled.TileMap();
       map.tilesets.add(tileset);
     });
 
@@ -96,7 +96,7 @@ main() {
     });
 
     group('returns a tile', () {
-      var tile;
+      tiled.Tile tile;
       setUp(() => tile = map.getTileByPhrase('Humans|0'));
 
       test('with the expected Tileset', () => expect(tile.tileset, equals(tileset)));
@@ -106,14 +106,14 @@ main() {
 
   group('Map.getTileset', () {
     tiled.TileMap map;
-    tiled.Tileset tileset = new tiled.Tileset(1)..name = 'Humans';
+    final tileset = tiled.Tileset(1)..name = 'Humans';
     setUp(() {
-      map = new tiled.TileMap();
+      map = tiled.TileMap();
       map.tilesets.add(tileset);
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect(() => map.getTileset('Quackers'), throwsA(new isInstanceOf<ArgumentError>()));
+      expect(() => map.getTileset('Quackers'), throwsA(isA<ArgumentError>()));
     });
 
     test('returns the expected tileset', () {

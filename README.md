@@ -1,5 +1,7 @@
 # Tiled Dart
 
+[![Pub](https://img.shields.io/pub/v/tiled.svg?style=popout)](https://pub.dartlang.org/packages/tiled) ![CI](https://github.com/flame-engine/tiled.dart/workflows/CI/badge.svg?branch=master&event=push) [![Discord](https://img.shields.io/discord/509714518008528896.svg)](https://discord.gg/pxrBmy4)
+
 A Dart Tiled library.
 
 ## Install from Dart Pub Repository

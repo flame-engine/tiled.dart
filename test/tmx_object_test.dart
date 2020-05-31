@@ -7,20 +7,18 @@ import 'dart:math';
 void main() {
   XmlElement xmlRoot;
   setUp(() {
-    return new File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
+    return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
       xmlRoot = parse(xml).rootElement;
     });
   });
 
   group('TmxObject.fromXML', () {
-    var objectGroup;
-    var objects;
-
+    List<XmlElement> objects;
     setUp(() => objects = xmlRoot.findAllElements('object').toList());
 
     group('Circle', () {
-      var tmxObject;
-      setUp(() => tmxObject = new TmxObject.fromXML(objects[0]));
+      TmxObject tmxObject;
+      setUp(() => tmxObject = TmxObject.fromXML(objects[0]));
 
       test('sets name to "Circle"', () {
         expect(tmxObject.name, equals("Circle"));
@@ -54,8 +52,8 @@ void main() {
     });
 
     group('Rectangle', () {
-      var tmxObject;
-      setUp(() => tmxObject = new TmxObject.fromXML(objects[1]));
+      TmxObject tmxObject;
+      setUp(() => tmxObject = TmxObject.fromXML(objects[1]));
 
       test('sets name to "Rectangle"', () {
         expect(tmxObject.name, equals("Rectangle"));
@@ -85,8 +83,8 @@ void main() {
     });
 
     group('Polygon', () {
-      var tmxObject;
-      setUp(() => tmxObject = new TmxObject.fromXML(objects[2]));
+      TmxObject tmxObject;
+      setUp(() => tmxObject = TmxObject.fromXML(objects[2]));
 
       test('sets name to "Polygon"', () {
         expect(tmxObject.name, equals("Polygon"));
@@ -105,18 +103,18 @@ void main() {
       });
 
       test('populates the points list', () {
-        var ps = tmxObject.points;
-        expect(ps[0], equals(new Point(0, 0)));
-        expect(ps[1], equals(new Point(-4, 81)));
-        expect(ps[2], equals(new Point(-78, 19)));
+        final ps = tmxObject.points;
+        expect(ps[0], equals(const Point(0, 0)));
+        expect(ps[1], equals(const Point(-4, 81)));
+        expect(ps[2], equals(const Point(-78, 19)));
       });
 
       test('sets isPolygon to true', () => expect(tmxObject.isPolygon, isTrue));
     });
 
     group('Polyline', () {
-      var tmxObject;
-      setUp(() => tmxObject = new TmxObject.fromXML(objects[3]));
+      TmxObject tmxObject;
+      setUp(() => tmxObject = TmxObject.fromXML(objects[3]));
 
       test('sets name to "Polyline"', () {
         expect(tmxObject.name, equals("Polyline"));
@@ -131,10 +129,10 @@ void main() {
       });
 
       test('populates the points list', () {
-        var ps = tmxObject.points;
-        expect(ps[0], equals(new Point(0, 0)));
-        expect(ps[1], equals(new Point(-5, 98)));
-        expect(ps[2], equals(new Point(-49, 42)));
+        final ps = tmxObject.points;
+        expect(ps[0], equals(const Point(0, 0)));
+        expect(ps[1], equals(const Point(-5, 98)));
+        expect(ps[2], equals(const Point(-49, 42)));
       });
 
       test('sets isPolyline to true', () => expect(tmxObject.isPolyline, isTrue));

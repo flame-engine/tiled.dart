@@ -82,9 +82,10 @@ class TileMapParser {
   }
 
   static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
-    final propertyNode = node.children
-      .whereType<XmlElement>()
-      .firstWhere((element) => element.name.local == 'properties', orElse: () => null);
+    final propertyNode = node.children.whereType<XmlElement>().firstWhere(
+          (element) => element.name.local == 'properties',
+          orElse: () => null,
+        );
     if (propertyNode == null) {
       return [];
     }

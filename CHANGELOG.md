@@ -1,5 +1,7 @@
 ## [next]
 
+## 0.5.0
+
 * Fixes bug with inconsistent indexes crashes for rectangular maps.
 * Changes indexing of `tiles` so that tiles[x] returns a line (so tiles[y][x]).
 

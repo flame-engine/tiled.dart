@@ -112,7 +112,8 @@ class TileMapParser {
   }
 
   static List<int> Function(List<int>) _getDecompressor(
-      String compressionType) {
+    String compressionType,
+  ) {
     switch (compressionType) {
       case 'zlib':
         return ZLibDecoder().decodeBytes;

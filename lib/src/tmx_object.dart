@@ -43,11 +43,11 @@ class TmxObject {
     // an object node: an optional <properties /> and an optional <ellipse />,
     // <polygon />, or <polyline />
     final xmlElements = element.children
-        .where((node) => node is XmlElement)
-        .where((node) => (node as XmlElement).name.local != 'properties');
+        .whereType<XmlElement>()
+        .where((node) => node.name.local != 'properties');
 
     if (xmlElements.isNotEmpty) {
-      final node = xmlElements.first as XmlElement;
+      final node = xmlElements.first;
 
       switch (node.name.local) {
         case 'ellipse':

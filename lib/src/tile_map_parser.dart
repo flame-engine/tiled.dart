@@ -16,7 +16,7 @@ class TileMapParser {
     map.width = int.parse(xmlElement.getAttribute('width'));
     map.height = int.parse(xmlElement.getAttribute('height'));
 
-    xmlElement.children.where((node) => node is XmlElement).cast<XmlElement>().forEach((XmlElement element) {
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'tileset':
           map.tilesets.add(Tileset.fromXML(element, tsx: tsx)..map = map);
@@ -82,10 +82,10 @@ class TileMapParser {
   }
 
   static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
-    final propertyNode = node.children
-        .where((node) => node is XmlElement)
-        .cast<XmlElement>()
-        .firstWhere((element) => element.name.local == 'properties', orElse: () => null);
+    final propertyNode = node.children.whereType<XmlElement>().firstWhere(
+          (element) => element.name.local == 'properties',
+          orElse: () => null,
+        );
     if (propertyNode == null) {
       return [];
     }
@@ -111,7 +111,9 @@ class TileMapParser {
     }
   }
 
-  static List<int> Function(List<int>) _getDecompressor(String compressionType) {
+  static List<int> Function(List<int>) _getDecompressor(
+    String compressionType,
+  ) {
     switch (compressionType) {
       case 'zlib':
         return ZLibDecoder().decodeBytes;

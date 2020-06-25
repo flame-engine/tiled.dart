@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-if [[ $(flutter format --line-length=120 -n .) ]]; then
+if [[ $(flutter format -n .) ]]; then
     echo "flutter format issue"
     exit 1
 fi

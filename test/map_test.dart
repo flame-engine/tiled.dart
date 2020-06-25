@@ -60,15 +60,23 @@ void main() {
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect(() => map.getTileByLocalID('Nonexistant Tile', 0), throwsA(isA<ArgumentError>()));
+      expect(
+        () => map.getTileByLocalID('Nonexistant Tile', 0),
+        throwsA(isA<ArgumentError>()),
+      );
     });
 
     group('returns a tile', () {
       tiled.Tile tile;
       setUp(() => tile = map.getTileByLocalID('Humans', 0));
 
-      test('with the expected Tileset', () => expect(tile.tileset, equals(tileset)));
-      test('with the expected local tile ID', () => expect(tile.tileId, equals(0)));
+      test('with the expected Tileset', () {
+        expect(tile.tileset, equals(tileset));
+      });
+
+      test('with the expected local tile ID', () {
+        expect(tile.tileId, equals(0));
+      });
     });
   });
 
@@ -83,15 +91,21 @@ void main() {
       map.tilesets.add(tileset);
     });
 
-    test('raises an ArgumentError if tile phrase is not in the correct format', () {
-      expect(() => map.getTileByPhrase('Nonexistant Tile'), throwsArgumentError);
+    test('errors if tile phrase is not in the correct format', () {
+      expect(
+        () => map.getTileByPhrase('Nonexistant Tile'),
+        throwsArgumentError,
+      );
     });
 
-    test('raises an ArgumentError if tileset is not present', () {
-      expect(() => map.getTileByPhrase('Nonexistant Tile|0'), throwsArgumentError);
+    test('errors if tileset is not present', () {
+      expect(
+        () => map.getTileByPhrase('Nonexistant Tile|0'),
+        throwsArgumentError,
+      );
     });
 
-    test('raises an ArgumentError if tile id is not a parsable integer', () {
+    test('errors if tile id is not a parsable integer', () {
       expect(() => map.getTileByPhrase('Humans|cupcake'), throwsArgumentError);
     });
 
@@ -99,8 +113,13 @@ void main() {
       tiled.Tile tile;
       setUp(() => tile = map.getTileByPhrase('Humans|0'));
 
-      test('with the expected Tileset', () => expect(tile.tileset, equals(tileset)));
-      test('with the expected local tile ID', () => expect(tile.tileId, equals(0)));
+      test('with the expected Tileset', () {
+        expect(tile.tileset, equals(tileset));
+      });
+
+      test('with the expected local tile ID', () {
+        expect(tile.tileId, equals(0));
+      });
     });
   });
 

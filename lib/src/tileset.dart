@@ -33,7 +33,8 @@ class Tileset {
     element.findElements('tile').forEach((XmlElement tileNode) {
       final tileId = int.parse(tileNode.getAttribute('id'));
       final tileGid = tileId + firstgid;
-      tileProperties[tileGid] = TileMapParser._parsePropertiesFromElement(tileNode);
+      tileProperties[tileGid] =
+          TileMapParser._parsePropertiesFromElement(tileNode);
       final image = _findImage(tileNode);
       tileImage[tileGid] = image;
       _addImage(image);
@@ -61,7 +62,9 @@ class Tileset {
   }
 
   Image _findImage(XmlElement element) {
-    final list = element.findElements('image').map((XmlElement node) => TileMapParser._parseImage(node));
+    final list = element
+        .findElements('image')
+        .map((XmlElement node) => TileMapParser._parseImage(node));
     if (list.isNotEmpty) {
       return list.first;
     }

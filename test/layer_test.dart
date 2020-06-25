@@ -12,7 +12,8 @@ void main() {
     final f1 = File('./test/fixtures/test.tmx').readAsString().then((xml) {
       xmlRoot = XmlDocument.parse(xml).rootElement;
     });
-    final f2 = File('./test/fixtures/test_base64_gzip.tmx').readAsString().then((xml) {
+    final f2 =
+        File('./test/fixtures/test_base64_gzip.tmx').readAsString().then((xml) {
       xmlRootBase64Gzip = XmlDocument.parse(xml).rootElement;
     });
 
@@ -70,7 +71,9 @@ void main() {
 
     test('calculates the x and y correctly for every tile', () {
       final coords = <List<int>>[];
-      layer.tiles.forEach((row) => row.forEach((tile) => coords.add([tile.x, tile.y])));
+      layer.tiles.forEach(
+        (row) => row.forEach((tile) => coords.add([tile.x, tile.y])),
+      );
 
       // Tileset is 32x32 in test.tmx, and the map is 10x10.
       final expectedCoords = <List<int>>[];

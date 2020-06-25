@@ -76,7 +76,7 @@ void main() {
       final expectedCoords = <List<int>>[];
       for (int x = 0; x < 10; x++) {
         for (int y = 0; y < 10; y++) {
-          expectedCoords.add([x, y]);
+          expectedCoords.add([y, x]);
         }
       }
 

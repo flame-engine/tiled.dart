@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.0" orientation="orthogonal" renderorder="right-down" width="12" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="basketball" tilewidth="32" tileheight="32" tilecount="2" columns="1">
+  <properties>
+   <property name="test_property" value="test_value"/>
+  </properties>
+  <image source="icons.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="tile_0_property_name" value="tile_0_property_value"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="tile_1_property_name" value="tile_1_property_value"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="12" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjZCAdMBKvLoFUPeTYM6oHtx4AnWAAbA==
+  </data>
+ </layer>
+</map>

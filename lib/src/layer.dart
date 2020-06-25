@@ -92,13 +92,13 @@ class Layer {
     int px = 0;
     int py = 0;
 
-    _tiles = List.generate(width, (_) => List<Tile>(height));
-    _tiles.asMap().forEach((i, List<Tile> cols) {
+    _tiles = List.generate(height, (_) => List<Tile>(width));
+    _tiles.asMap().forEach((j, List<Tile> rows) {
       px = 0;
 
-      cols.asMap().forEach((j, Tile t) {
-        final tileId = tileMatrix[i][j];
-        final flips = tileFlips[i][j];
+      rows.asMap().forEach((i, Tile t) {
+        final tileId = tileMatrix[j][i];
+        final flips = tileFlips[j][i];
         final tile = map.getTileByGID(tileId)
           ..x = i
           ..y = j
@@ -106,7 +106,7 @@ class Layer {
           ..py = py
           ..flips = flips;
 
-        _tiles[i][j] = tile;
+        _tiles[j][i] = tile;
         px += map.tileWidth;
       });
 

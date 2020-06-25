@@ -20,4 +20,9 @@ class Flips {
       diagonally ?? this.diagonally,
     );
   }
+
+  @override
+  String toString() {
+    return 'Flips { horizontally: $horizontally, vertically: $vertically, diagonally: $diagonally }';
+  }
 }

@@ -79,8 +79,9 @@ void main() {
         expect(tmxObject.height, equals(43));
       });
 
-      test('sets isRectangle to true',
-          () => expect(tmxObject.isRectangle, isTrue));
+      test('sets isRectangle to true', () {
+        expect(tmxObject.isRectangle, isTrue);
+      });
     });
 
     group('Polygon', () {

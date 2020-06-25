@@ -60,18 +60,23 @@ void main() {
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect(() => map.getTileByLocalID('Nonexistant Tile', 0),
-          throwsA(isA<ArgumentError>()));
+      expect(
+        () => map.getTileByLocalID('Nonexistant Tile', 0),
+        throwsA(isA<ArgumentError>()),
+      );
     });
 
     group('returns a tile', () {
       tiled.Tile tile;
       setUp(() => tile = map.getTileByLocalID('Humans', 0));
 
-      test('with the expected Tileset',
-          () => expect(tile.tileset, equals(tileset)));
-      test('with the expected local tile ID',
-          () => expect(tile.tileId, equals(0)));
+      test('with the expected Tileset', () {
+        expect(tile.tileset, equals(tileset));
+      });
+
+      test('with the expected local tile ID', () {
+        expect(tile.tileId, equals(0));
+      });
     });
   });
 

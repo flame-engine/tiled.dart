@@ -48,8 +48,9 @@ void main() {
 
         test('has its width = 96', () => expect(image.width, equals(96)));
         test('has its height = 64', () => expect(image.height, equals(64)));
-        test('has its source = "icons.png"',
-            () => expect(image.source, equals('icons.png')));
+        test('has its source = "icons.png"', () {
+          expect(image.source, equals('icons.png'));
+        });
       });
 
       group('populates its properties correctly and', () {
@@ -119,8 +120,9 @@ void main() {
       });
     });
 
-    test('and objectGroups is the correct length',
-        () => expect(map.objectGroups.length, equals(2)));
+    test('and objectGroups is the correct length', () {
+      expect(map.objectGroups.length, equals(2));
+    });
 
     group('and the first objectGroup', () {
       ObjectGroup og;
@@ -128,13 +130,13 @@ void main() {
 
       test('has the right #map', () => expect(og.map, equals(map)));
 
-      test('has the right #name',
-          () => expect(og.name, equals('Test Object Layer 1')));
+      test('has the right #name', () {
+        expect(og.name, equals('Test Object Layer 1'));
+      });
     });
   });
 
-  group('Parser.parse populates Map with tileset and different image configs',
-      () {
+  group('Parser.parse fills Map with tileset & different img configs', () {
     setUp(() {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
         map = parser.parse(xml);
@@ -148,12 +150,18 @@ void main() {
       expect(tileset.images.length, equals(1));
       expect(tile1.image.source, equals('level1.png'));
       expect(tile1.computeDrawRect(), equals(const Rectangle(0, 0, 16, 16)));
-      expect(map.getTileByGID(tileset.firstgid + 1).computeDrawRect(),
-          equals(const Rectangle(16, 0, 16, 16)));
-      expect(map.getTileByGID(tileset.firstgid + 17).computeDrawRect(),
-          equals(const Rectangle(0, 16, 16, 16)));
-      expect(map.getTileByGID(tileset.firstgid + 19).computeDrawRect(),
-          equals(const Rectangle(32, 16, 16, 16)));
+      expect(
+        map.getTileByGID(tileset.firstgid + 1).computeDrawRect(),
+        equals(const Rectangle(16, 0, 16, 16)),
+      );
+      expect(
+        map.getTileByGID(tileset.firstgid + 17).computeDrawRect(),
+        equals(const Rectangle(0, 16, 16, 16)),
+      );
+      expect(
+        map.getTileByGID(tileset.firstgid + 19).computeDrawRect(),
+        equals(const Rectangle(32, 16, 16, 16)),
+      );
     });
 
     test('and image per tile', () {

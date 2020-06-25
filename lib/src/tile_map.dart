@@ -52,7 +52,9 @@ class TileMap {
   Tile getTileByPhrase(String tilePhrase) {
     final split = tilePhrase.split('|');
     if (split.length != 2) {
-      throw ArgumentError('$tilePhrase not in the format of "TilesetName|LocalTileID"');
+      throw ArgumentError(
+        '$tilePhrase not in the format of "TilesetName|LocalTileID"',
+      );
     }
 
     final tilesetName = split.first;

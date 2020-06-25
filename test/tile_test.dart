@@ -40,7 +40,7 @@ void main() {
     expect(tile.properties, equals({'tile_property': 'tile_value'}));
   });
 
-  test('Tile.properties is an empty map if Tileset.tileProperties is empty for this tile', () {
+  test('Tile.properties is an empty map if Tileset.tileProperties is empty', () {
     final ts = Tileset(1);
     final tile = Tile(2, ts);
     expect(tile.properties, equals({}));

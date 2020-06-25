@@ -9,13 +9,17 @@ void main() {
     setUp(() => tileset = Tileset(1));
     test('spacing == 0', () => expect(tileset.spacing, equals(0)));
     test('margin == 0', () => expect(tileset.margin, equals(0)));
-    test('tileProperties == {}', () => expect(tileset.tileProperties, equals({})));
+    test('tileProperties == {}', () {
+      expect(tileset.tileProperties, equals({}));
+    });
   });
 
   group('Tileset.fromXML', () {
     Tileset tileset;
     setUp(() {
-      return File('./test/fixtures/map_with_spacing_margin.tmx').readAsString().then((xml) {
+      return File('./test/fixtures/map_with_spacing_margin.tmx')
+          .readAsString()
+          .then((xml) {
         final xmlRoot = XmlDocument.parse(xml).rootElement;
         final tilesetXml = xmlRoot.findAllElements('tileset').first;
         tileset = Tileset.fromXML(tilesetXml);

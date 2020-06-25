@@ -43,8 +43,12 @@ class Layer {
       orElse: () => null,
     );
     if (dataElement is XmlElement) {
-      final decoder = TileMapParser._getDecoder(dataElement.getAttribute('encoding'));
-      final decompressor = TileMapParser._getDecompressor(dataElement.getAttribute('compression'));
+      final decoder = TileMapParser._getDecoder(
+        dataElement.getAttribute('encoding'),
+      );
+      final decompressor = TileMapParser._getDecompressor(
+        dataElement.getAttribute('compression'),
+      );
 
       final decodedString = decoder(dataElement.text);
       final inflatedString = decompressor?.call(decodedString) ?? decodedString;
@@ -63,15 +67,21 @@ class Layer {
     var tileIndex = 0;
     for (var y = 0; y < height; ++y) {
       for (var x = 0; x < width; ++x) {
-        var globalTileId =
-            bytes[tileIndex] | bytes[tileIndex + 1] << 8 | bytes[tileIndex + 2] << 16 | bytes[tileIndex + 3] << 24;
+        var globalTileId = bytes[tileIndex] |
+            bytes[tileIndex + 1] << 8 |
+            bytes[tileIndex + 2] << 16 |
+            bytes[tileIndex + 3] << 24;
 
         tileIndex += 4;
 
         // Read out the flags
-        final flippedHorizontally = (globalTileId & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
-        final flippedVertically = (globalTileId & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
-        final flippedDiagonally = (globalTileId & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
+        final flippedHorizontally =
+            (globalTileId & FLIPPED_HORIZONTALLY_FLAG) ==
+                FLIPPED_HORIZONTALLY_FLAG;
+        final flippedVertically =
+            (globalTileId & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
+        final flippedDiagonally =
+            (globalTileId & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
 
         // Save rotation flags
         tileFlips[y][x] = Flips(
@@ -81,7 +91,9 @@ class Layer {
         );
 
         // Clear the flags
-        globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
+        globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG |
+            FLIPPED_VERTICALLY_FLAG |
+            FLIPPED_DIAGONALLY_FLAG);
 
         tileMatrix[y][x] = globalTileId;
       }

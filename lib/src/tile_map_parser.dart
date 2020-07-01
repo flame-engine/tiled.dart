@@ -97,7 +97,7 @@ class TileMapParser {
     final points = node.getAttribute('points').split(' ');
     return points.map((point) {
       final arr = point.split(',');
-      final p = (str) => int.parse(str);
+      final p = (str) => double.parse(str);
       return Point(p(arr.first), p(arr.last));
     }).toList();
   }

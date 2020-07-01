@@ -4,11 +4,11 @@ class TmxObject {
   String name;
   String type;
 
-  int x;
-  int y;
-  int width = 0;
-  int height = 0;
-  int rotation = 0;
+  double x;
+  double y;
+  double width = 0;
+  double height = 0;
+  double rotation = 0;
   int gid;
   bool visible = true;
 
@@ -28,11 +28,11 @@ class TmxObject {
     NodeDSL.on(element, (dsl) {
       name = dsl.strOr('name', name);
       type = dsl.strOr('type', type);
-      x = dsl.intOr('x', x);
-      y = dsl.intOr('y', y);
-      width = dsl.intOr('width', width);
-      height = dsl.intOr('height', height);
-      rotation = dsl.intOr('rotation', rotation);
+      x = dsl.doubleOr('x', x);
+      y = dsl.doubleOr('y', y);
+      width = dsl.doubleOr('width', width);
+      height = dsl.doubleOr('height', height);
+      rotation = dsl.doubleOr('rotation', rotation);
       gid = dsl.intOr('gid', gid);
       visible = dsl.boolOr('visible', visible);
     });

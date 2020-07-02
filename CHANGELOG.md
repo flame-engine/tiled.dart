@@ -1,6 +1,6 @@
 ## [next]
 
-## 0.5.1
+## 0.6.0
 * Fixes bug with int points instead of double for objects.
 
 ## 0.5.0

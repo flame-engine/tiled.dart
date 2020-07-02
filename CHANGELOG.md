@@ -1,5 +1,8 @@
 ## [next]
 
+## 0.5.1
+* Fixes bug with int points instead of double for objects.
+
 ## 0.5.0
 
 * Fixes bug with inconsistent indexes crashes for rectangular maps.

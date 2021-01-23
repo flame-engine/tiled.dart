@@ -14,7 +14,6 @@ class ObjectGroup {
 
   ObjectGroup();
 
-
   @override
   String toString() {
     return 'ObjectGroup{name: $name, color: $color, opacity: $opacity, visible: $visible, map: ${map != null}, properties: $properties, tmxObjects: $tmxObjects}';

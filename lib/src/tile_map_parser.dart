@@ -107,7 +107,7 @@ class TileMapParser {
       case 'base64':
         return _decodeBase64;
       default:
-        throw 'Incompatible encoding found: $encodingType'; //TODO Should support play text 'csv'
+        throw 'Incompatible encoding found: $encodingType'; //TODO Should support plain text 'csv'
     }
   }
 

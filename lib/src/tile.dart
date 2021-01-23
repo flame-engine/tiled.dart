@@ -26,6 +26,8 @@ class Tile {
   Image get image {
     if (_image == null) {
       return tileset.image;
+    } else {
+
     }
     return _image;
   }

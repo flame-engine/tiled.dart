@@ -7,12 +7,7 @@ class TileMapJsonParser {
     // TODO Check Filetype?
     // TODO Custom parser?
     // TODO ?.toDouble()
-
     final MapJson mapJson = MapJson.fromJson(jsonDecode(string));
-
-    TileMap m = mapJson.toTileMap();
-    //print(m);
-
     return mapJson;
   }
 }
@@ -139,7 +134,7 @@ class MapJson {
   }
 
   TileMap toTileMap(){
-    TileMap tileMap = TileMap();
+    final TileMap tileMap = TileMap();
 
     tileMap.height = height;
     tileMap.width = width;
@@ -457,7 +452,7 @@ class LayerJson {
   }
 
   ObjectGroup toObjectGroup(TileMap tileMap) {
-    final ObjectGroup objectGroup = new ObjectGroup();
+    final ObjectGroup objectGroup = ObjectGroup();
     objectGroup.name = name;
     objectGroup.opacity = opacity;
     objectGroup.properties = <String, dynamic>{};
@@ -503,7 +498,7 @@ class LayerJson {
       return json.cast<int>();
     }
     //Ok, its base64
-    Uint8List decodedString = base64.decode(json);
+    final Uint8List decodedString = base64.decode(json);
     //zlib, gzip, zstd or empty
     List<int> decompressed;
     switch (compression) {
@@ -934,7 +929,7 @@ class TilesetJson {
     tileset.tileProperties = {};
     tiles.sort((a, b) => a.id.compareTo(b.id));
     tiles.forEach((element) {tileset.tileProperties.putIfAbsent(element.id + tileset.firstgid, () {
-      var props = <String, dynamic>{};
+      final props = <String, dynamic>{};
       element.properties.forEach((element) {props.putIfAbsent(element.name, () => element.value);});
       return props;
     });});

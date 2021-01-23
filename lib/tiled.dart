@@ -7,7 +7,6 @@ import 'dart:typed_data';
 
 import 'package:xml/xml.dart';
 import 'package:archive/archive.dart';
-import 'dart:convert';
 
 part 'src/tile_map_parser.dart';
 part 'src/tile_map_json_parser.dart';

@@ -29,6 +29,17 @@ Load a TMX file into a string by any means, and then pass the string to an insta
     final TileMap map = parser.parse(tmxBody);
 ```
 
+
+Alternatively load a json file and use the json or tmx structure.
+
+```dart
+    final String jsonBody = /* ... */;
+    final TileMapJsonParser parser = TileMapJsonParser();
+    final MapJson map = parser.parse(jsonBody);
+    // To use the tmx structure
+    final TileMap map = map.toTileMap();
+```
+
 ## Credits
 
 TMX support is work of @radicaled and we have got his code from [tmx.dart](https://github.com/radicaled/tmx.dart) lib.

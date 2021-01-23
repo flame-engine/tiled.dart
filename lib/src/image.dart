@@ -6,4 +6,9 @@ class Image {
   num height;
 
   Image(this.source, this.width, this.height);
+
+  @override
+  String toString() {
+    return 'Image{source: $source, width: $width, height: $height}';
+  }
 }

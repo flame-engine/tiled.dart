@@ -1,0 +1,257 @@
+@startuml
+set namespaceSeparator ::
+
+class "tiled::tiled.dart::MapJson" {
+  +String backgroundcolor
+  +int compressionlevel
+  +EditorsettingJson editorsettings
+  +int height
+  +int hexsidelength
+  +bool infinite
+  +List<LayerJson> layers
+  +int nextlayerid
+  +int nextobjectid
+  +String orientation
+  +List<PropertyJson> properties
+  +String renderorder
+  +String staggeraxis
+  +String staggerindex
+  +String tiledversion
+  +int tileheight
+  +List<TilesetJson> tilesets
+  +int tilewidth
+  +String type
+  +num version
+  +int width
+  +Map toJson()
+}
+
+"tiled::tiled.dart::MapJson" o-- "tiled::tiled.dart::EditorsettingJson"
+"tiled::tiled.dart::MapJson" o-- "tiled::tiled.dart::LayerJson"
+"tiled::tiled.dart::MapJson" o-- "tiled::tiled.dart::PropertyJson"
+"tiled::tiled.dart::MapJson" o-- "tiled::tiled.dart::TilesetJson"
+
+class "tiled::tiled.dart::EditorsettingJson" {
+  +ChunkJson chunksize
+  +ExportJson export
+  +Map toJson()
+}
+
+"tiled::tiled.dart::EditorsettingJson" o-- "tiled::tiled.dart::ChunkJson"
+"tiled::tiled.dart::EditorsettingJson" o-- "tiled::tiled.dart::ExportJson"
+
+class "tiled::tiled.dart::ChunkJson" {
+  +String data
+  +int height
+  +int width
+  +int x
+  +int y
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::ExportJson" {
+  +String format
+  +String target
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::LayerJson" {
+  +List<ChunkJson> chunks
+  +String compression
+  +List<int> data
+  +String draworder
+  +String encoding
+  +int height
+  +int id
+  +String image
+  +List<LayerJson> layers
+  +String name
+  +List<ObjectJson> objects
+  +double offsetx
+  +double offsety
+  +double opacity
+  +List<PropertyJson> properties
+  +int startx
+  +int starty
+  +String tintcolor
+  +String transparentcolor
+  +String type
+  +bool visible
+  +int width
+  +int x
+  +int y
+  +Map toJson()
+}
+
+"tiled::tiled.dart::LayerJson" o-- "tiled::tiled.dart::ChunkJson"
+"tiled::tiled.dart::LayerJson" o-- "tiled::tiled.dart::LayerJson"
+"tiled::tiled.dart::LayerJson" o-- "tiled::tiled.dart::ObjectJson"
+"tiled::tiled.dart::LayerJson" o-- "tiled::tiled.dart::PropertyJson"
+
+
+class "tiled::tiled.dart::ObjectJson" {
+  +bool ellipse
+  +int gid
+  +double height
+  +int id
+  +String name
+  +bool point
+  +List<PointJson> polygon
+  +List<PointJson> polyline
+  +List<PropertyJson> properties
+  +double rotation
+  +String template
+  +TextJson text
+  +String type
+  +bool visible
+  +double width
+  +double x
+  +double y
+  +Map toJson()
+}
+
+"tiled::tiled.dart::ObjectJson" o-- "tiled::tiled.dart::PointJson"
+"tiled::tiled.dart::ObjectJson" o-- "tiled::tiled.dart::PropertyJson"
+"tiled::tiled.dart::ObjectJson" o-- "tiled::tiled.dart::TextJson"
+
+class "tiled::tiled.dart::PointJson" {
+  +num x
+  +num y
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::TextJson" {
+  +bool bold
+  +String color
+  +String fontfamily
+  +String halign
+  +bool italic
+  +bool kerning
+  +int pixelsize
+  +bool strikeout
+  +String text
+  +bool underline
+  +String valign
+  +bool wrap
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::PropertyJson" {
+  +String name
+  +String type
+  +String value
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::TilesetJson" {
+  +String backgroundcolor
+  +int columns
+  +int firstgid
+  +GridJson grid
+  +String image
+  +int imageheight
+  +int imagewidth
+  +int margin
+  +String name
+  +String objectalignment
+  +List<PropertyJson> properties
+  +String source
+  +int spacing
+  +List<TerrainJson> terrains
+  +int tilecount
+  +String tiledversion
+  +int tileheight
+  +TileOffsetJson tileoffset
+  +List<TileJson> tiles
+  +int tilewidth
+  +String transparentcolor
+  +String type
+  +num version
+  +List<WangSetJson> wangsets
+  +Map toJson()
+}
+
+"tiled::tiled.dart::TilesetJson" o-- "tiled::tiled.dart::GridJson"
+"tiled::tiled.dart::TilesetJson" o-- "tiled::tiled.dart::TileOffsetJson"
+"tiled::tiled.dart::TilesetJson" o-- "tiled::tiled.dart::PropertyJson"
+"tiled::tiled.dart::TilesetJson" o-- "tiled::tiled.dart::TerrainJson"
+"tiled::tiled.dart::TilesetJson" o-- "tiled::tiled.dart::TileJson"
+"tiled::tiled.dart::TilesetJson" o-- "tiled::tiled.dart::WangSetJson"
+
+class "tiled::tiled.dart::GridJson" {
+  +int height
+  +String orientation
+  +int width
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::TileOffsetJson" {
+  +int x
+  +int y
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::FrameJson" {
+  +int duration
+  +int tileid
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::TerrainJson" {
+  +String name
+  +List<PropertyJson> properties
+  +int tile
+  +Map toJson()
+}
+"tiled::tiled.dart::TerrainJson" o-- "tiled::tiled.dart::PropertyJson"
+
+class "tiled::tiled.dart::WangSetJson" {
+  +List<WangColorJson> cornercolors
+  +List<WangColorJson> edgecolors
+  +String name
+  +List<PropertyJson> properties
+  +int tile
+  +List<WangTileJson> wangtiles
+  +Map toJson()
+}
+"tiled::tiled.dart::WangSetJson" o-- "tiled::tiled.dart::WangColorJson"
+"tiled::tiled.dart::WangSetJson" o-- "tiled::tiled.dart::PropertyJson"
+"tiled::tiled.dart::WangSetJson" o-- "tiled::tiled.dart::WangTileJson"
+
+class "tiled::tiled.dart::WangColorJson" {
+  +String color
+  +String name
+  +double probability
+  +int tile
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::WangTileJson" {
+  +bool dflip
+  +bool hflip
+  +int tile
+  +bool vflip
+  +List<int> wangid
+  +Map toJson()
+}
+
+class "tiled::tiled.dart::TileJson" {
+  +List<FrameJson> animation
+  +int id
+  +String image
+  +int imageheight
+  +int imagewidth
+  +LayerJson objectgroup
+  +double probability
+  +List<PropertyJson> properties
+  +List<int> terrain
+  +String type
+  +Map toJson()
+}
+
+"tiled::tiled.dart::TileJson" o-- "tiled::tiled.dart::Layer"
+"tiled::tiled.dart::TileJson" o-- "tiled::tiled.dart::FrameJson"
+"tiled::tiled.dart::TileJson" o-- "tiled::tiled.dart::PropertyJson"
+
+
+@enduml

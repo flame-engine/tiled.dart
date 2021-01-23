@@ -10,6 +10,12 @@ class TileMap {
   List<ObjectGroup> objectGroups = [];
   Map<String, dynamic> properties = {};
 
+
+  @override
+  String toString() {
+    return 'TileMap{tileWidth: $tileWidth, tileHeight: $tileHeight, width: $width, height: $height, tilesets: $tilesets, layers: $layers, objectGroups: $objectGroups, properties: $properties}';
+  }
+
   /// Retrieve a tile based on its GID
   ///
   /// GID is 1-based

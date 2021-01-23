@@ -12,6 +12,14 @@ class ObjectGroup {
   Map<String, dynamic> properties = {};
   List<TmxObject> tmxObjects = [];
 
+  ObjectGroup();
+
+
+  @override
+  String toString() {
+    return 'ObjectGroup{name: $name, color: $color, opacity: $opacity, visible: $visible, map: ${map != null}, properties: $properties, tmxObjects: $tmxObjects}';
+  }
+
   ObjectGroup.fromXML(XmlElement element) {
     if (element == null) {
       throw 'arg "element" cannot be null';

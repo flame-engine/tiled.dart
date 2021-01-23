@@ -26,6 +26,12 @@ class Layer {
 
   Layer(this.name, this.width, this.height);
 
+
+  @override
+  String toString() {
+    return 'Layer{name: $name, width: $width, height: $height, visible: $visible, properties: $properties, map: ${map != null}, tileMatrix: $tileMatrix, tileFlips: $tileFlips, _tiles: $_tiles}';
+  }
+
   Layer.fromXML(XmlElement element) {
     if (element == null) {
       throw 'arg "element" cannot be null';

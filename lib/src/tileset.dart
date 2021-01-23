@@ -19,6 +19,12 @@ class Tileset {
 
   Tileset(this.firstgid);
 
+
+  @override
+  String toString() {
+    return 'Tileset{firstgid: $firstgid, width: $width, height: $height, spacing: $spacing, margin: $margin, name: $name, source: $source, map: ${map != null}, image: $image, images: $images, properties: $properties, tileProperties: $tileProperties, tileImage: $tileImage}';
+  }
+
   Tileset.fromXML(XmlElement element, {TsxProvider tsx}) {
     _parseTilesetAttributes(element);
     element = _checkIfExtenalTsx(element, tsx);
@@ -45,8 +51,8 @@ class Tileset {
     NodeDSL.on(element, (dsl) {
       firstgid = dsl.intOr('firstgid', firstgid);
       name = dsl.strOr('name', name);
-      width = dsl.intOr('tilewidth', width);
-      height = dsl.intOr('tileheight', height);
+      width = dsl.intOr('columns', width);
+      height = ((dsl.intOr('tilecount', height)) / width).round();
       spacing = dsl.intOr('spacing', spacing);
       margin = dsl.intOr('margin', margin);
       source = dsl.strOr('source', source);

@@ -19,6 +19,10 @@ class Tile {
 
   Image _image;
 
+  set image(Image value) {
+    _image = value;
+  }
+
   Image get image {
     if (_image == null) {
       return tileset.image;
@@ -45,6 +49,12 @@ class Tile {
     properties ??= {};
 
     _image = tileset.tileImage[gid];
+  }
+
+
+  @override
+  String toString() {
+    return 'Tile{tileId: $tileId, tileset: ${tileset != null}, gid: $gid, width: $width, height: $height, spacing: $spacing, margin: $margin, flips: $flips, properties: $properties, _image: $_image, x: $x, y: $y, px: $px, py: $py}';
   }
 
   Tile.emptyTile() {

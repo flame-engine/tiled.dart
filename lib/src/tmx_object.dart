@@ -22,7 +22,6 @@ class TmxObject {
 
   TmxObject();
 
-
   @override
   String toString() {
     return 'TmxObject{name: $name, type: $type, x: $x, y: $y, width: $width, height: $height, rotation: $rotation, gid: $gid, visible: $visible, isRectangle: $isRectangle, isEllipse: $isEllipse, isPolygon: $isPolygon, isPolyline: $isPolyline, points: $points, properties: $properties}';

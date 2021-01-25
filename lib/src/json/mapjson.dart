@@ -3,11 +3,12 @@ import 'package:tiled/src/json/layerjson.dart';
 import 'package:tiled/src/json/propertyjson.dart';
 import 'package:tiled/src/json/tilesetjson.dart';
 import 'package:tiled/tiled.dart';
+import 'package:xml/xml.dart';
 
 class MapJson {
   String backgroundcolor;
   int compressionlevel;
-  EditorsettingJson editorsettings; // TODO not in description
+  List<EditorsettingJson> editorsettings;
   int height;
   int hexsidelength;
   bool infinite;
@@ -16,7 +17,7 @@ class MapJson {
   int nextobjectid;
   String orientation; // orthogonal, isometric, staggered or hexagonal
   List<PropertyJson> properties = [];
-  String renderorder;
+  String renderorder; // right-down (the default), right-up, left-down and left-up.
   String staggeraxis; // x or y
   String staggerindex; // odd or even
   String tiledversion;
@@ -27,42 +28,101 @@ class MapJson {
   num version;
   int width;
 
-  MapJson(
-      {this.backgroundcolor,
-      this.compressionlevel,
-      this.editorsettings,
-      this.height,
-      this.hexsidelength,
-      this.infinite,
-      this.layers,
-      this.nextlayerid,
-      this.nextobjectid,
-      this.orientation,
-      this.properties,
-      this.renderorder,
-      this.staggeraxis,
-      this.staggerindex,
-      this.tiledversion,
-      this.tileheight,
-      this.tilesets,
-      this.tilewidth,
-      this.type,
-      this.version,
-      this.width});
+  MapJson({this.backgroundcolor,
+    this.compressionlevel,
+    this.editorsettings,
+    this.height,
+    this.hexsidelength,
+    this.infinite,
+    this.layers,
+    this.nextlayerid,
+    this.nextobjectid,
+    this.orientation,
+    this.properties,
+    this.renderorder,
+    this.staggeraxis,
+    this.staggerindex,
+    this.tiledversion,
+    this.tileheight,
+    this.tilesets,
+    this.tilewidth,
+    this.type,
+    this.version,
+    this.width});
+
+
+  MapJson.fromXml(XmlElement xmlElement) {
+    if (xmlElement.name.local != 'map') {
+      throw 'XML is not in TMX format';
+    }
+
+    backgroundcolor = xmlElement.getAttribute('backgroundcolor');
+    compressionlevel = int.parse(xmlElement.getAttribute('compressionlevel')) ?? -1; //defaults to -1
+    height = int.parse(xmlElement.getAttribute('height'));
+    hexsidelength = int.parse(xmlElement.getAttribute('hexsidelength'));
+    infinite = (int.parse(xmlElement.getAttribute('infinite')) ?? 0) != 0;  // 0 for false, 1 for true, defaults to 0)
+    nextlayerid = int.parse(xmlElement.getAttribute('nextlayerid'));
+    nextobjectid = int.parse(xmlElement.getAttribute('nextobjectid'));
+    orientation = xmlElement.getAttribute('orientation');
+    renderorder = xmlElement.getAttribute('renderorder') ?? "right-down"; // right-down (the default), right-up, left-down and left-up.
+    staggeraxis = xmlElement.getAttribute('staggeraxis');
+    staggerindex = xmlElement.getAttribute('staggerindex');
+    tiledversion = xmlElement.getAttribute('tiledversion');
+    tileheight = int.parse(xmlElement.getAttribute('tileheight'));
+    tilewidth = int.parse(xmlElement.getAttribute('tilewidth'));
+    type = "map"; // only set in jsonImport
+    version = int.parse(xmlElement.getAttribute('version'));
+    width = int.parse(xmlElement.getAttribute('width'));
+
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'tileset':
+          element.nodes.forEach((element) {tilesets.add(TilesetJson.fromXML(element));});
+          break;
+        case 'layer':
+          element.nodes.forEach((element) {layers.add(LayerJson.fromXML(element));});
+          break;
+        // case 'objectgroup': //TODO split in json and new in tmx
+        //   element.nodes.forEach((element) {objectGroups.add(ObjectGroupJson.fromXML(element));});
+        //   break;
+        // case 'imagelayer':
+        //   element.nodes.forEach((element) {imageLayers.add(ImageLayerJson.fromXML(element));});
+        //   break;
+        // case 'group':
+        //   element.nodes.forEach((element) {groups.add(GroupJson.fromXML(element));});
+        //   break;
+        case 'properties':
+          element.nodes.forEach((element) {properties.add(PropertyJson.fromXML(element));});
+          break;
+        case 'editorsettings':
+          element.nodes.forEach((element) {editorsettings.add(EditorsettingJson.fromXML(element));});
+          break;
+      }
+    });
+  }
+
 
   MapJson.fromJson(Map<String, dynamic> json) {
     backgroundcolor = json['backgroundcolor'];
-    compressionlevel = json['compressionlevel'];
-    editorsettings = json['editorsettings'] != null
-        ? EditorsettingJson.fromJson(json['editorsettings'])
-        : null;
+    compressionlevel = json['compressionlevel'] ?? -1;
+    if (json['editorsettings'] != null) {
+      editorsettings = <EditorsettingJson>[];
+      json['editorsettings'].forEach((v) {
+        editorsettings.add(EditorsettingJson.fromJson(v));
+      });
+    }
     height = json['height'];
     hexsidelength = json['hexsidelength'];
-    infinite = json['infinite'];
+    infinite = json['infinite'] ?? false;
     if (json['layers'] != null) {
       layers = <LayerJson>[];
       json['layers'].forEach((v) {
         layers.add(LayerJson.fromJson(v)); // TODO sorting?
+        //TODO Split by type == tilelayer, objectgroup, imagelayer or group
+        // - layers
+        // - objectGroups
+        // - imageLayers
+        // - groups
       });
     }
     nextlayerid = json['nextlayerid'];
@@ -74,7 +134,7 @@ class MapJson {
         properties.add(PropertyJson.fromJson(v));
       });
     }
-    renderorder = json['renderorder'];
+    renderorder = json['renderorder'] ?? "right-down";
     staggeraxis = json['staggeraxis'];
     staggerindex = json['staggerindex'];
     tiledversion = json['tiledversion'];
@@ -86,7 +146,7 @@ class MapJson {
       });
     }
     tilewidth = json['tilewidth'];
-    type = json['type'];
+    type = json['type'] ?? "map";
     version = json['version'];
     width = json['width'];
   }
@@ -96,7 +156,7 @@ class MapJson {
     data['backgroundcolor'] = backgroundcolor;
     data['compressionlevel'] = compressionlevel;
     if (editorsettings != null) {
-      data['editorsettings'] = editorsettings.toJson();
+      data['editorsettings'] = editorsettings.map((v) => v.toJson()).toList();
     }
     data['height'] = height;
     data['hexsidelength'] = hexsidelength;

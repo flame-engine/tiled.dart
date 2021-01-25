@@ -6,6 +6,7 @@ import 'package:tiled/src/json/chunkjson.dart';
 import 'package:tiled/src/json/objectjson.dart';
 import 'package:tiled/src/json/propertyjson.dart';
 import 'package:tiled/tiled.dart';
+import 'package:xml/src/xml/nodes/node.dart';
 
 class LayerJson {
   List<ChunkJson> chunks = [];
@@ -59,6 +60,8 @@ class LayerJson {
       this.width,
       this.x,
       this.y});
+
+  LayerJson.fromXML(XmlNode element) {}
 
   LayerJson.fromJson(Map<String, dynamic> json) {
     if (json['chunks'] != null) {

@@ -1,3 +1,5 @@
+import 'package:xml/src/xml/nodes/node.dart';
+
 class PropertyJson {
   String name;
   String type;
@@ -17,5 +19,11 @@ class PropertyJson {
     data['type'] = type;
     data['value'] = value;
     return data;
+  }
+
+  PropertyJson.fromXML(XmlNode element) {
+    value = element.getAttribute('value');
+    name = element.getAttribute('name');
+    type = element.getAttribute('type');
   }
 }

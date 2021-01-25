@@ -1,9 +1,17 @@
+import 'package:xml/xml.dart';
+
 class GridJson {
   int height;
   String orientation;
   int width;
 
   GridJson({this.height, this.orientation, this.width});
+
+  GridJson.fromXML(XmlElement xmlElement) {
+    height  = int.parse(xmlElement.getAttribute('height'));
+    width  = int.parse(xmlElement.getAttribute('width'));
+    orientation  = xmlElement.getAttribute('orientation');
+  }
 
   GridJson.fromJson(Map<String, dynamic> json) {
     height = json['height'];

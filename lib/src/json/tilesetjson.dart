@@ -5,15 +5,15 @@ import 'package:tiled/src/json/tilejson.dart';
 import 'package:tiled/src/json/tileoffsetjson.dart';
 import 'package:tiled/src/json/wangsetjson.dart';
 import 'package:tiled/tiled.dart';
+import 'package:xml/src/xml/nodes/node.dart';
+import 'package:xml/xml.dart';
 
 class TilesetJson {
   String backgroundcolor;
   int columns;
   int firstgid;
   GridJson grid;
-  String image;
-  int imageheight;
-  int imagewidth;
+  Image image;
   int margin;
   String name;
   String objectalignment;
@@ -38,8 +38,6 @@ class TilesetJson {
       this.firstgid,
       this.grid,
       this.image,
-      this.imageheight,
-      this.imagewidth,
       this.margin,
       this.name,
       this.objectalignment,
@@ -58,14 +56,66 @@ class TilesetJson {
       this.version,
       this.wangsets});
 
+  TilesetJson.fromXML(XmlNode xmlElement) {
+    backgroundcolor = xmlElement.getAttribute('backgroundcolor');
+    columns = int.parse(xmlElement.getAttribute('columns'));
+    firstgid = int.parse(xmlElement.getAttribute('firstgid'));
+    margin = int.parse(xmlElement.getAttribute('margin'));
+    name = xmlElement.getAttribute('name');
+    objectalignment = xmlElement.getAttribute('objectalignment');
+    source = xmlElement.getAttribute('source');
+    spacing = int.parse(xmlElement.getAttribute('spacing'));
+    tilecount = int.parse(xmlElement.getAttribute('tilecount'));
+    tileheight = int.parse(xmlElement.getAttribute('tileheight'));
+    tiledversion = xmlElement.getAttribute('tiledversion');
+    tilewidth = int.parse(xmlElement.getAttribute('tilewidth'));
+    transparentcolor = xmlElement.getAttribute('transparentcolor');
+    type = xmlElement.getAttribute('type');
+    version = int.parse(xmlElement.getAttribute('version'));
+
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'image':
+          image = Image.fromXML(element);
+          break;
+        case 'grid':
+          grid = GridJson.fromXML(element);
+          break;
+        case 'tileoffset':
+          tileoffset = TileOffsetJson.fromXML(element);
+          break;
+        case 'properties':
+          element.nodes.forEach((element) {
+            properties.add(PropertyJson.fromXML(element));
+          });
+          break;
+        case 'terrains':
+          element.nodes.forEach((element) {
+            terrains.add(TerrainJson.fromXML(element));
+          });
+          break;
+        case 'tiles':
+          element.nodes.forEach((element) {
+            tiles.add(TileJson.fromXML(element));
+          });
+          break;
+        case 'wangsets':
+          element.nodes.forEach((element) {
+            wangsets.add(WangSetJson.fromXML(element));
+          });
+          break;
+      }
+    });
+  }
+
   TilesetJson.fromJson(Map<String, dynamic> json) {
     backgroundcolor = json['backgroundcolor'];
     columns = json['columns'];
     firstgid = json['firstgid'];
     grid = json['grid'] != null ? GridJson.fromJson(json['grid']) : null;
-    image = json['image'];
-    imageheight = json['imageheight'];
-    imagewidth = json['imagewidth'];
+    if (json['image'] != null) {
+      image = Image(json['image'], json['imageheight'], json['imagewidth']);
+    }
     margin = json['margin'];
     name = json['name'];
     objectalignment = json['objectalignment'];
@@ -115,9 +165,9 @@ class TilesetJson {
     if (grid != null) {
       data['grid'] = grid.toJson();
     }
-    data['image'] = image;
-    data['imageheight'] = imageheight;
-    data['imagewidth'] = imagewidth;
+    data['image'] = image.source;
+    data['imageheight'] = image.height;
+    data['imagewidth'] = image.width;
     data['margin'] = margin;
     data['name'] = name;
     data['objectalignment'] = objectalignment;
@@ -157,7 +207,7 @@ class TilesetJson {
     tileset.spacing = spacing;
     tileset.map = map;
 
-    tileset.image = Image(image, imagewidth, imageheight);
+    tileset.image = image;
     tileset.images = [tileset.image]; //TODO this had to be be wrong :D
 
     tileset.tileProperties = {};
@@ -173,11 +223,8 @@ class TilesetJson {
     });
     tileset.tileImage = {};
     tiles.forEach((element) {
-      tileset.tileImage.putIfAbsent(
-          element.id + tileset.firstgid,
-          () => element.image == null
-              ? null
-              : Image(element.image, element.imagewidth, element.imageheight));
+      tileset.tileImage
+          .putIfAbsent(element.id + tileset.firstgid, () => element.image);
     });
 
     // TODO not converted to Tileset

@@ -2,13 +2,12 @@ import 'package:tiled/src/json/framejson.dart';
 import 'package:tiled/src/json/layerjson.dart';
 import 'package:tiled/src/json/propertyjson.dart';
 import 'package:tiled/tiled.dart';
+import 'package:xml/xml.dart';
 
 class TileJson {
   List<FrameJson> animation = [];
   int id;
-  String image;
-  int imageheight;
-  int imagewidth;
+  Image image;
   LayerJson objectgroup;
   double probability;
   List<PropertyJson> properties = [];
@@ -19,13 +18,36 @@ class TileJson {
       {this.animation,
       this.id,
       this.image,
-      this.imageheight,
-      this.imagewidth,
       this.objectgroup,
       this.probability,
       this.properties,
       this.terrain,
       this.type});
+
+  TileJson.fromXML(XmlElement xmlElement) {
+    id = int.parse(xmlElement.getAttribute('id'));
+    probability = double.parse(xmlElement.getAttribute('probability') ?? 0);
+    type = xmlElement.getAttribute('type');
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'image':
+          image = Image.fromXML(element);
+          break;
+        case 'properties':
+          element.nodes.forEach((element) {properties.add(PropertyJson.fromXML(element));});
+          break;
+        case 'terrain':
+          element.nodes.forEach((element) {terrain.add(int.parse(element.getAttribute('id')));}); // TODO int? is this ok?  // comma-separated indexes
+          break;
+        case 'animation':
+          element.nodes.forEach((element) {animation.add(FrameJson.fromXML(element));});
+          break;
+        case 'objectgroup':
+          objectgroup = LayerJson.fromXML(element); //TODO explicit ObjectGroup instead of Layer
+          break;
+      }
+    });
+  }
 
   TileJson.fromJson(Map<String, dynamic> json) {
     if (json['animation'] != null) {
@@ -35,11 +57,11 @@ class TileJson {
       });
     }
     id = json['id'];
-    image = json['image'];
-    imageheight = json['imageheight'];
-    imagewidth = json['imagewidth'];
+    if(json['image'] != null){
+      image = Image(json['image'], json['imageheight'], json['imagewidth']);
+    }
     objectgroup = json['objectgroup'];
-    probability = json['probability'];
+    probability = json['probability'] ?? 0;
     if (json['properties'] != null) {
       properties = <PropertyJson>[];
       json['properties'].forEach((v) {
@@ -61,9 +83,9 @@ class TileJson {
       data['animation'] = animation.map((v) => v).toList();
     }
     data['id'] = id;
-    data['image'] = image;
-    data['imageheight'] = imageheight;
-    data['imagewidth'] = imagewidth;
+    data['image'] = image.source;
+    data['imageheight'] = image.height;
+    data['imagewidth'] = image.width;
     data['objectgroup'] = objectgroup;
     data['probability'] = probability;
     if (properties != null) {
@@ -79,7 +101,7 @@ class TileJson {
   Tile toTile(Tileset tileset) {
     final Tile tile = Tile(id, tileset);
 
-    tile.image = Image(image, imagewidth, imageheight);
+    tile.image = image;
     tile.properties = <String, dynamic>{};
     properties.forEach((element) {
       tile.properties.putIfAbsent(element.name, () => element.value);

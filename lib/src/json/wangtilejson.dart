@@ -1,18 +1,28 @@
+
+import 'package:xml/xml.dart';
+
 class WangTileJson {
   bool dflip;
   bool hflip;
-  int tile;
+  int tileid;
   bool vflip;
-  List<int> wangid = [];
+  List<int> wangid; //32-bit unsigned integer
 
-  WangTileJson({this.dflip, this.hflip, this.tile, this.vflip, this.wangid});
+  WangTileJson({this.dflip, this.hflip, this.tileid, this.vflip, this.wangid});
+
+  WangTileJson.fromXML(XmlElement xmlElement) {
+    tileid  = int.parse(xmlElement.getAttribute('tileid'));
+    // wangid  = int.parse(xmlElement.getAttribute('wangid')); // TODO parse Int32
+    dflip  = xmlElement.getAttribute('dflip') == 'true'; //TODO right?
+    hflip  = xmlElement.getAttribute('hflip') == 'true';
+    vflip  = xmlElement.getAttribute('vflip') == 'true';
+  }
 
   WangTileJson.fromJson(Map<String, dynamic> json) {
     dflip = json['dflip'];
     hflip = json['hflip'];
-    tile = json['tile'];
+    tileid = json['tileid'];
     vflip = json['vflip'];
-    wangid = json['wangid'];
     if (json['wangid'] != null) {
       wangid = <int>[];
       json['wangid'].forEach((v) {
@@ -25,7 +35,7 @@ class WangTileJson {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['dflip'] = dflip;
     data['hflip'] = hflip;
-    data['tile'] = tile;
+    data['tileid'] = tileid;
     data['vflip'] = vflip;
     if (wangid != null) {
       data['wangid'] = wangid.map((v) => v).toList();

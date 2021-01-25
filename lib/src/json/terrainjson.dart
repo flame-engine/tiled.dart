@@ -1,4 +1,5 @@
 import 'package:tiled/src/json/propertyjson.dart';
+import 'package:xml/xml.dart';
 
 class TerrainJson {
   String name;
@@ -6,6 +7,18 @@ class TerrainJson {
   int tile;
 
   TerrainJson({this.name, this.properties, this.tile});
+
+  TerrainJson.fromXML(XmlElement xmlElement) {
+    name  = xmlElement.getAttribute('name');
+    tile  = int.parse(xmlElement.getAttribute('tile'));
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'properties':
+          element.nodes.forEach((element) {properties.add(PropertyJson.fromXML(element));});
+          break;
+      }
+    });
+  }
 
   TerrainJson.fromJson(Map<String, dynamic> json) {
     name = json['name'];

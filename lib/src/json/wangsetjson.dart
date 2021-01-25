@@ -1,6 +1,7 @@
 import 'package:tiled/src/json/propertyjson.dart';
 import 'package:tiled/src/json/wangcolorjson.dart';
 import 'package:tiled/src/json/wangtilejson.dart';
+import 'package:xml/xml.dart';
 
 class WangSetJson {
   List<WangColorJson> cornercolors = [];
@@ -17,6 +18,27 @@ class WangSetJson {
       this.properties,
       this.tile,
       this.wangtiles});
+
+  WangSetJson.fromXML(XmlElement xmlElement) {
+    name  = xmlElement.getAttribute('name');
+    tile  = int.parse(xmlElement.getAttribute('tile'));
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'cornercolors':
+          element.nodes.forEach((element) {cornercolors.add(WangColorJson.fromXML(element));});
+          break;
+        case 'edgecolors':
+          element.nodes.forEach((element) {edgecolors.add(WangColorJson.fromXML(element));});
+          break;
+        case 'properties':
+          element.nodes.forEach((element) {properties.add(PropertyJson.fromXML(element));});
+          break;
+        case 'wangtiles':
+          element.nodes.forEach((element) {wangtiles.add(WangTileJson.fromXML(element));});
+          break;
+      }
+    });
+  }
 
   WangSetJson.fromJson(Map<String, dynamic> json) {
     if (json['cornercolors'] != null) {

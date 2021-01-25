@@ -1,8 +1,15 @@
+import 'package:xml/xml.dart';
+
 class TileOffsetJson {
   int x;
   int y;
 
-  TileOffsetJson({this.x, this.y});
+  TileOffsetJson({this.x, this.y}); //TODO remove all Constructors
+
+  TileOffsetJson.fromXML(XmlElement xmlElement) {
+    x  = int.parse(xmlElement.getAttribute('x'));
+    y  = int.parse(xmlElement.getAttribute('y'));
+  }
 
   TileOffsetJson.fromJson(Map<String, dynamic> json) {
     x = json['x'];

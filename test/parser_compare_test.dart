@@ -1,6 +1,8 @@
-import 'package:test/test.dart';
-import 'package:tiled/tiled.dart';
 import 'dart:io';
+
+import 'package:test/test.dart';
+import 'package:tiled/src/json/mapjson.dart';
+import 'package:tiled/tiled.dart';
 
 void main() {
   final parser = TileMapJsonParser();

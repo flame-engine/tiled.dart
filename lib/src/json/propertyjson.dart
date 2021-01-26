@@ -7,6 +7,12 @@ class PropertyJson {
 
   PropertyJson({this.name, this.type, this.value});
 
+  PropertyJson.fromXML(XmlNode element) {
+    value = element.getAttribute('value');
+    name = element.getAttribute('name');
+    type = element.getAttribute('type');
+  }
+
   PropertyJson.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     type = json['type'];
@@ -19,11 +25,5 @@ class PropertyJson {
     data['type'] = type;
     data['value'] = value;
     return data;
-  }
-
-  PropertyJson.fromXML(XmlNode element) {
-    value = element.getAttribute('value');
-    name = element.getAttribute('name');
-    type = element.getAttribute('type');
   }
 }

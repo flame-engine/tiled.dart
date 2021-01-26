@@ -8,8 +8,8 @@ class GridJson {
   GridJson({this.height, this.orientation, this.width});
 
   GridJson.fromXML(XmlElement xmlElement) {
-    height  = int.parse(xmlElement.getAttribute('height'));
-    width  = int.parse(xmlElement.getAttribute('width'));
+    height  = int.tryParse(xmlElement.getAttribute('height') ?? '');
+    width  = int.tryParse(xmlElement.getAttribute('width') ?? '');
     orientation  = xmlElement.getAttribute('orientation');
   }
 

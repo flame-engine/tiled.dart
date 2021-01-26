@@ -7,8 +7,8 @@ class TileOffsetJson {
   TileOffsetJson({this.x, this.y}); //TODO remove all Constructors
 
   TileOffsetJson.fromXML(XmlElement xmlElement) {
-    x  = int.parse(xmlElement.getAttribute('x'));
-    y  = int.parse(xmlElement.getAttribute('y'));
+    x  = int.tryParse(xmlElement.getAttribute('x') ?? '');
+    y  = int.tryParse(xmlElement.getAttribute('y') ?? '');
   }
 
   TileOffsetJson.fromJson(Map<String, dynamic> json) {

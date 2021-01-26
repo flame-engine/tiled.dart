@@ -7,17 +7,19 @@ import 'package:tiled/src/json/objectjson.dart';
 import 'package:tiled/src/json/propertyjson.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/src/xml/nodes/node.dart';
+import 'package:xml/xml.dart';
 
 class LayerJson {
   List<ChunkJson> chunks = [];
   String
       compression; // zlib, gzip, zstd (since Tiled 1.3) or empty (default). tilelayer
   List<int> data = [];
-  String draworder = 'topdown'; //topdown (default) or index. objectgroup
+  String draworder = 'topdown'; //topdown (default) or index. only objectgroup
+  String color; // only objectgroup; Not supported by json
   String encoding = 'csv'; // csv (default) or base64. tilelayer
   int height;
   int id;
-  String image;
+  Image image; // only on imageLayer
   List<LayerJson> layers = [];
   String name;
   List<ObjectJson> objects = [];
@@ -61,7 +63,59 @@ class LayerJson {
       this.x,
       this.y});
 
-  LayerJson.fromXML(XmlNode element) {}
+  LayerJson.fromXML(XmlNode xmlElement) {
+
+    draworder = xmlElement.getAttribute('draworder');// only ObjectGroup
+    color = xmlElement.getAttribute('color');// only ObjectGroup
+    height = int.tryParse(xmlElement.getAttribute('height') ?? '');
+    id = int.tryParse(xmlElement.getAttribute('id') ?? '');
+    name = xmlElement.getAttribute('name');
+    offsetx = double.tryParse(xmlElement.getAttribute('offsetx') ?? '');
+    offsety = double.tryParse(xmlElement.getAttribute('offsety') ?? '');
+    opacity = double.tryParse(xmlElement.getAttribute('opacity') ?? '');
+    startx = int.tryParse(xmlElement.getAttribute('startx') ?? '');
+    starty = int.tryParse(xmlElement.getAttribute('starty') ?? '');
+    width = int.tryParse(xmlElement.getAttribute('width') ?? '');
+    x = int.tryParse(xmlElement.getAttribute('x') ?? '');
+    y = int.tryParse(xmlElement.getAttribute('y') ?? '');
+    tintcolor = xmlElement.getAttribute('tintcolor');
+    transparentcolor = xmlElement.getAttribute('transparentcolor');
+    type = xmlElement.getAttribute('type');
+    visible = int.tryParse(xmlElement.getAttribute('visible') ?? "1") == 1;
+
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'image':
+          image = Image.fromXML(element);
+          break;
+        case 'data':
+          compression = element.getAttribute('compression');
+          encoding = element.getAttribute('encoding');
+          data = decodeData(element.text, encoding, compression);
+          break;
+        case 'properties':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            properties.add(PropertyJson.fromXML(element));
+          });
+          break;
+        case 'chunks':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            chunks.add(ChunkJson.fromXML(element));
+          });
+          break;
+        case 'layers':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            layers.add(LayerJson.fromXML(element));
+          });
+          break;
+        case 'objects':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            objects.add(ObjectJson.fromXML(element));
+          });
+          break;
+      }
+    });
+  }
 
   LayerJson.fromJson(Map<String, dynamic> json) {
     if (json['chunks'] != null) {
@@ -154,21 +208,21 @@ class LayerJson {
   Layer toLayer(TileMap tileMap) {
     final Layer layer = Layer(name, width, height);
     layer.name = name;
-    layer.height = height;
+    layer.height = height ?? 0;
     layer.properties = <String, dynamic>{};
     properties.forEach((element) {
       layer.properties.putIfAbsent(element.name, () => element.value);
     });
     layer.visible = visible;
-    layer.width = width;
+    layer.width = width ?? 0;
     layer.map = tileMap;
 
-    layer.tileMatrix = List.generate(height, (_) => List<int>(width));
-    layer.tileFlips = List.generate(height, (_) => List<Flips>(width));
+    layer.tileMatrix = List.generate(layer.height, (_) => List<int>(layer.width));
+    layer.tileFlips = List.generate(layer.height, (_) => List<Flips>(layer.width));
 
-    for (var i = 0; i < height; ++i) {
-      for (var j = 0; j < width; ++j) {
-        final gid = data[(i * width) + j];
+    for (var i = 0; i < layer.height; ++i) {
+      for (var j = 0; j < layer.width; ++j) {
+        final gid = data[(i * layer.width) + j];
         layer.tileMatrix[i][j] = gid;
         // Read out the flags
         final flippedHorizontally =
@@ -228,8 +282,7 @@ class LayerJson {
     objects.forEach((element) {
       objectGroup.tmxObjects.add(element.toTmxObject());
     });
-    objectGroup.color =
-        tintcolor; // TODO is this correct? or "transparentcolor"
+    objectGroup.color = color;
 
     // TODO not converted
     // objectGroup.chunks = chunks;
@@ -264,7 +317,7 @@ class LayerJson {
       return json.cast<int>();
     }
     //Ok, its base64
-    final Uint8List decodedString = base64.decode(json);
+    final Uint8List decodedString = base64.decode(json.trim());
     //zlib, gzip, zstd or empty
     List<int> decompressed;
     switch (compression) {
@@ -275,17 +328,21 @@ class LayerJson {
         decompressed = GZipDecoder().decodeBytes(decodedString);
         break;
       case 'zstd':
-        throw UnsupportedError("zstd is an unsupported compression"); //TODO
+        throw UnsupportedError("zstd is an unsupported compression"); //TODO zstd compression
       default:
         decompressed = decodedString;
         break;
     }
 
-    // I have no idea why, but every base64 String has 4 digits instead of one, so it has to be reduced
+    // From the tiled documentation:
+    // Now you have an array of bytes, which should be interpreted as an array of unsigned 32-bit integers using little-endian byte ordering.
+    var bytes2 = new Uint8List.fromList(decompressed);
+    var dv = ByteData.view(bytes2.buffer);
     final reducedString = <int>[];
     for (var i = 0; i < decompressed.length; ++i) {
       if (i % 4 == 0) {
-        reducedString.add(decompressed[i]);
+        var uint2 = dv.getUint32(i,Endian.little);
+        reducedString.add(uint2);
       }
     }
     return reducedString;

@@ -21,20 +21,20 @@ class WangSetJson {
 
   WangSetJson.fromXML(XmlElement xmlElement) {
     name  = xmlElement.getAttribute('name');
-    tile  = int.parse(xmlElement.getAttribute('tile'));
+    tile  = int.tryParse(xmlElement.getAttribute('tile') ?? '');
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'cornercolors':
-          element.nodes.forEach((element) {cornercolors.add(WangColorJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {cornercolors.add(WangColorJson.fromXML(element));});
           break;
         case 'edgecolors':
-          element.nodes.forEach((element) {edgecolors.add(WangColorJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {edgecolors.add(WangColorJson.fromXML(element));});
           break;
         case 'properties':
-          element.nodes.forEach((element) {properties.add(PropertyJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {properties.add(PropertyJson.fromXML(element));});
           break;
         case 'wangtiles':
-          element.nodes.forEach((element) {wangtiles.add(WangTileJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {wangtiles.add(WangTileJson.fromXML(element));});
           break;
       }
     });

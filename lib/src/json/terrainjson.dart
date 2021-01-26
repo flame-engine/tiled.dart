@@ -10,11 +10,11 @@ class TerrainJson {
 
   TerrainJson.fromXML(XmlElement xmlElement) {
     name  = xmlElement.getAttribute('name');
-    tile  = int.parse(xmlElement.getAttribute('tile'));
+    tile  = int.tryParse(xmlElement.getAttribute('tile') ?? '');
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'properties':
-          element.nodes.forEach((element) {properties.add(PropertyJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {properties.add(PropertyJson.fromXML(element));});
           break;
       }
     });

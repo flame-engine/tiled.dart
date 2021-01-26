@@ -1,3 +1,4 @@
+import 'package:tiled/src/json/chunkjson.dart';
 import 'package:tiled/src/json/editorsettingsjson.dart';
 import 'package:tiled/src/json/layerjson.dart';
 import 'package:tiled/src/json/propertyjson.dart';
@@ -57,30 +58,30 @@ class MapJson {
     }
 
     backgroundcolor = xmlElement.getAttribute('backgroundcolor');
-    compressionlevel = int.parse(xmlElement.getAttribute('compressionlevel')) ?? -1; //defaults to -1
-    height = int.parse(xmlElement.getAttribute('height'));
-    hexsidelength = int.parse(xmlElement.getAttribute('hexsidelength'));
-    infinite = (int.parse(xmlElement.getAttribute('infinite')) ?? 0) != 0;  // 0 for false, 1 for true, defaults to 0)
-    nextlayerid = int.parse(xmlElement.getAttribute('nextlayerid'));
-    nextobjectid = int.parse(xmlElement.getAttribute('nextobjectid'));
+    compressionlevel = int.tryParse(xmlElement.getAttribute('compressionlevel') ?? "-1"); //defaults to -1
+    height = int.tryParse(xmlElement.getAttribute('height') ?? '');
+    hexsidelength = int.tryParse(xmlElement.getAttribute('hexsidelength') ?? '');
+    infinite = int.tryParse(xmlElement.getAttribute('infinite') ?? "0") != 0;  // 0 for false, 1 for true, defaults to 0)
+    nextlayerid = int.tryParse(xmlElement.getAttribute('nextlayerid') ?? '');
+    nextobjectid = int.tryParse(xmlElement.getAttribute('nextobjectid') ?? '');
     orientation = xmlElement.getAttribute('orientation');
     renderorder = xmlElement.getAttribute('renderorder') ?? "right-down"; // right-down (the default), right-up, left-down and left-up.
     staggeraxis = xmlElement.getAttribute('staggeraxis');
     staggerindex = xmlElement.getAttribute('staggerindex');
     tiledversion = xmlElement.getAttribute('tiledversion');
-    tileheight = int.parse(xmlElement.getAttribute('tileheight'));
-    tilewidth = int.parse(xmlElement.getAttribute('tilewidth'));
+    tileheight = int.tryParse(xmlElement.getAttribute('tileheight') ?? '');
+    tilewidth = int.tryParse(xmlElement.getAttribute('tilewidth') ?? '');
     type = "map"; // only set in jsonImport
-    version = int.parse(xmlElement.getAttribute('version'));
-    width = int.parse(xmlElement.getAttribute('width'));
+    version = int.tryParse(xmlElement.getAttribute('version') ?? '');
+    width = int.tryParse(xmlElement.getAttribute('width') ?? '');
 
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'tileset':
-          element.nodes.forEach((element) {tilesets.add(TilesetJson.fromXML(element));});
+          tilesets.add(TilesetJson.fromXML(element));
           break;
         case 'layer':
-          element.nodes.forEach((element) {layers.add(LayerJson.fromXML(element));});
+          layers.add(LayerJson.fromXML(element));
           break;
         // case 'objectgroup': //TODO split in json and new in tmx
         //   element.nodes.forEach((element) {objectGroups.add(ObjectGroupJson.fromXML(element));});
@@ -92,10 +93,10 @@ class MapJson {
         //   element.nodes.forEach((element) {groups.add(GroupJson.fromXML(element));});
         //   break;
         case 'properties':
-          element.nodes.forEach((element) {properties.add(PropertyJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {properties.add(PropertyJson.fromXML(element));});
           break;
         case 'editorsettings':
-          element.nodes.forEach((element) {editorsettings.add(EditorsettingJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {editorsettings.add(EditorsettingJson.fromXML(element));});
           break;
       }
     });
@@ -107,9 +108,7 @@ class MapJson {
     compressionlevel = json['compressionlevel'] ?? -1;
     if (json['editorsettings'] != null) {
       editorsettings = <EditorsettingJson>[];
-      json['editorsettings'].forEach((v) {
-        editorsettings.add(EditorsettingJson.fromJson(v));
-      });
+      editorsettings.add(EditorsettingJson.fromJson(json['editorsettings']));
     }
     height = json['height'];
     hexsidelength = json['hexsidelength'];

@@ -58,20 +58,20 @@ class TilesetJson {
 
   TilesetJson.fromXML(XmlNode xmlElement) {
     backgroundcolor = xmlElement.getAttribute('backgroundcolor');
-    columns = int.parse(xmlElement.getAttribute('columns'));
-    firstgid = int.parse(xmlElement.getAttribute('firstgid'));
-    margin = int.parse(xmlElement.getAttribute('margin'));
+    columns = int.tryParse(xmlElement.getAttribute('columns') ?? '');
+    firstgid = int.tryParse(xmlElement.getAttribute('firstgid') ?? '');
+    margin = int.tryParse(xmlElement.getAttribute('margin') ?? '0');
     name = xmlElement.getAttribute('name');
     objectalignment = xmlElement.getAttribute('objectalignment');
     source = xmlElement.getAttribute('source');
-    spacing = int.parse(xmlElement.getAttribute('spacing'));
-    tilecount = int.parse(xmlElement.getAttribute('tilecount'));
-    tileheight = int.parse(xmlElement.getAttribute('tileheight'));
+    spacing = int.tryParse(xmlElement.getAttribute('spacing') ?? '0');
+    tilecount = int.tryParse(xmlElement.getAttribute('tilecount') ?? '');
+    tileheight = int.tryParse(xmlElement.getAttribute('tileheight') ?? '');
     tiledversion = xmlElement.getAttribute('tiledversion');
-    tilewidth = int.parse(xmlElement.getAttribute('tilewidth'));
+    tilewidth = int.tryParse(xmlElement.getAttribute('tilewidth') ?? '');
     transparentcolor = xmlElement.getAttribute('transparentcolor');
     type = xmlElement.getAttribute('type');
-    version = int.parse(xmlElement.getAttribute('version'));
+    version = int.tryParse(xmlElement.getAttribute('version') ?? '');
 
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
@@ -85,22 +85,20 @@ class TilesetJson {
           tileoffset = TileOffsetJson.fromXML(element);
           break;
         case 'properties':
-          element.nodes.forEach((element) {
+          element.nodes.whereType<XmlElement>().forEach((element) {
             properties.add(PropertyJson.fromXML(element));
           });
           break;
         case 'terrains':
-          element.nodes.forEach((element) {
+          element.nodes.whereType<XmlElement>().forEach((element) {
             terrains.add(TerrainJson.fromXML(element));
           });
           break;
-        case 'tiles':
-          element.nodes.forEach((element) {
+        case 'tile':
             tiles.add(TileJson.fromXML(element));
-          });
           break;
         case 'wangsets':
-          element.nodes.forEach((element) {
+          element.nodes.whereType<XmlElement>().forEach((element) {
             wangsets.add(WangSetJson.fromXML(element));
           });
           break;
@@ -116,7 +114,7 @@ class TilesetJson {
     if (json['image'] != null) {
       image = Image(json['image'], json['imageheight'], json['imagewidth']);
     }
-    margin = json['margin'];
+    margin = json['margin'] ?? 0;
     name = json['name'];
     objectalignment = json['objectalignment'];
     if (json['properties'] != null) {
@@ -126,7 +124,7 @@ class TilesetJson {
       });
     }
     source = json['source'];
-    spacing = json['spacing'];
+    spacing = json['spacing'] ?? 0;
     if (json['terrains'] != null) {
       terrains = <TerrainJson>[];
       json['terrains'].forEach((v) {

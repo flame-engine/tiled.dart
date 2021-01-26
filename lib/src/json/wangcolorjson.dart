@@ -9,8 +9,8 @@ class WangColorJson {
   WangColorJson({this.color, this.name, this.probability, this.tile});
 
   WangColorJson.fromXML(XmlElement xmlElement) {
-    tile  = int.parse(xmlElement.getAttribute('tile'));
-    probability  = double.parse(xmlElement.getAttribute('probability') ?? 0);
+    tile  = int.tryParse(xmlElement.getAttribute('tile') ?? '');
+    probability  = double.tryParse(xmlElement.getAttribute('probability') ?? 0);
     color = xmlElement.getAttribute('color');
     name = xmlElement.getAttribute('name');
   }

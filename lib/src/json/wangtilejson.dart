@@ -11,9 +11,9 @@ class WangTileJson {
   WangTileJson({this.dflip, this.hflip, this.tileid, this.vflip, this.wangid});
 
   WangTileJson.fromXML(XmlElement xmlElement) {
-    tileid  = int.parse(xmlElement.getAttribute('tileid'));
+    tileid  = int.tryParse(xmlElement.getAttribute('tileid') ?? '');
     // wangid  = int.parse(xmlElement.getAttribute('wangid')); // TODO parse Int32
-    dflip  = xmlElement.getAttribute('dflip') == 'true'; //TODO right?
+    dflip  = xmlElement.getAttribute('dflip') == 'true';
     hflip  = xmlElement.getAttribute('hflip') == 'true';
     vflip  = xmlElement.getAttribute('vflip') == 'true';
   }

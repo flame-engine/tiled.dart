@@ -1,8 +1,15 @@
+import 'package:xml/xml.dart';
+
 class ExportJson {
   String format;
   String target;
 
   ExportJson({this.format, this.target});
+
+  ExportJson.fromXML(XmlNode xmlElement) {
+    format = xmlElement.getAttribute('format');
+    target = xmlElement.getAttribute('target');
+  }
 
   ExportJson.fromJson(Map<String, dynamic> json) {
     format = json['format'];

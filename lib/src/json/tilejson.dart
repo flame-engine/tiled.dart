@@ -5,6 +5,10 @@ import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
 class TileJson {
+  static const int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+  static const int FLIPPED_VERTICALLY_FLAG = 0x40000000;
+  static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
+
   List<FrameJson> animation = [];
   int id;
   Image image;
@@ -13,6 +17,11 @@ class TileJson {
   List<PropertyJson> properties = [];
   List<int> terrain = []; // index of the terrain
   String type;
+
+  //Additionaly
+  bool flippedHorizontally;
+  bool flippedVertically;
+  bool flippedDiagonally;
 
   TileJson(
       {this.animation,
@@ -25,8 +34,15 @@ class TileJson {
       this.type});
 
   TileJson.fromXML(XmlElement xmlElement) {
-    id = int.parse(xmlElement.getAttribute('id'));
-    probability = double.parse(xmlElement.getAttribute('probability') ?? 0);
+    id = int.tryParse(xmlElement.getAttribute('id') ?? '');
+    // get flips from id
+    flippedHorizontally = (id & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG; //TODO Test
+    flippedVertically = (id & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
+    flippedDiagonally = (id & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
+    //clear id from flips
+    id &= ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG);
+
+    probability = double.tryParse(xmlElement.getAttribute('probability') ?? '0');
     type = xmlElement.getAttribute('type');
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
@@ -34,13 +50,13 @@ class TileJson {
           image = Image.fromXML(element);
           break;
         case 'properties':
-          element.nodes.forEach((element) {properties.add(PropertyJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {properties.add(PropertyJson.fromXML(element));});
           break;
         case 'terrain':
-          element.nodes.forEach((element) {terrain.add(int.parse(element.getAttribute('id')));}); // TODO int? is this ok?  // comma-separated indexes
+          element.nodes.whereType<XmlElement>().forEach((element) {terrain.add(int.tryParse(element.getAttribute('id') ?? ''));}); // TODO int? is this ok?  // comma-separated indexes
           break;
         case 'animation':
-          element.nodes.forEach((element) {animation.add(FrameJson.fromXML(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {animation.add(FrameJson.fromXML(element));});
           break;
         case 'objectgroup':
           objectgroup = LayerJson.fromXML(element); //TODO explicit ObjectGroup instead of Layer

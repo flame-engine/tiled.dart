@@ -1,6 +1,7 @@
 import 'package:tiled/src/json/chunkjson.dart';
 import 'package:tiled/src/json/exportjson.dart';
 import 'package:xml/src/xml/nodes/node.dart';
+import 'package:xml/xml.dart';
 
 class EditorsettingJson {
   ChunkJson chunksize;
@@ -8,8 +9,17 @@ class EditorsettingJson {
 
   EditorsettingJson({this.chunksize, this.export});
 
-  EditorsettingJson.fromXML(XmlNode element) {
-
+  EditorsettingJson.fromXML(XmlNode xmlElement) {
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'chunksize':
+          chunksize = ChunkJson.fromXML(element);
+          break;
+        case 'export':
+          export = ExportJson.fromXML(element);
+          break;
+      }
+    });
 
   }
 

@@ -6,7 +6,6 @@ import 'package:tiled/src/json/chunkjson.dart';
 import 'package:tiled/src/json/objectjson.dart';
 import 'package:tiled/src/json/propertyjson.dart';
 import 'package:tiled/tiled.dart';
-import 'package:xml/src/xml/nodes/node.dart';
 import 'package:xml/xml.dart';
 
 class LayerJson {
@@ -336,15 +335,14 @@ class LayerJson {
 
     // From the tiled documentation:
     // Now you have an array of bytes, which should be interpreted as an array of unsigned 32-bit integers using little-endian byte ordering.
-    var bytes2 = new Uint8List.fromList(decompressed);
-    var dv = ByteData.view(bytes2.buffer);
-    final reducedString = <int>[];
+    final bytes = Uint8List.fromList(decompressed);
+    final dv = ByteData.view(bytes.buffer);
+    final uint32 = <int>[];
     for (var i = 0; i < decompressed.length; ++i) {
       if (i % 4 == 0) {
-        var uint2 = dv.getUint32(i,Endian.little);
-        reducedString.add(uint2);
+        uint32.add(dv.getUint32(i,Endian.little));
       }
     }
-    return reducedString;
+    return uint32;
   }
 }

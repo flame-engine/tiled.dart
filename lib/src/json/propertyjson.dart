@@ -1,4 +1,4 @@
-import 'package:xml/src/xml/nodes/node.dart';
+import 'package:xml/xml.dart';
 
 class PropertyJson {
   String name;

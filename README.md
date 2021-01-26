@@ -40,6 +40,4 @@ Alternatively load a json file and use the json or tmx structure.
     final TileMap map = map.toTileMap();
 ```
 
-## Credits
 
-TMX support is work of @radicaled and we have got his code from [tmx.dart](https://github.com/radicaled/tmx.dart) lib.

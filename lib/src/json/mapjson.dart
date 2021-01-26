@@ -1,4 +1,3 @@
-import 'package:tiled/src/json/chunkjson.dart';
 import 'package:tiled/src/json/editorsettingsjson.dart';
 import 'package:tiled/src/json/layerjson.dart';
 import 'package:tiled/src/json/propertyjson.dart';

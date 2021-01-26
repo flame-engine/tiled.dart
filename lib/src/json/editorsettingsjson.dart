@@ -1,6 +1,5 @@
 import 'package:tiled/src/json/chunkjson.dart';
 import 'package:tiled/src/json/exportjson.dart';
-import 'package:xml/src/xml/nodes/node.dart';
 import 'package:xml/xml.dart';
 
 class EditorsettingJson {

@@ -5,7 +5,6 @@ import 'package:tiled/src/json/tilejson.dart';
 import 'package:tiled/src/json/tileoffsetjson.dart';
 import 'package:tiled/src/json/wangsetjson.dart';
 import 'package:tiled/tiled.dart';
-import 'package:xml/src/xml/nodes/node.dart';
 import 'package:xml/xml.dart';
 
 class TilesetJson {

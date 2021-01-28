@@ -23,7 +23,7 @@ class Text {
     kerning = (element.getAttribute('kerning') ?? '0') == '1';
     pixelsize = int.tryParse(element.getAttribute('pixelsize') ?? '16');
     strikeout = (element.getAttribute('strikeout') ?? '0') == '1';
-    text = element.getAttribute('text') ?? '';
+    text = element.text ?? '';
     underline = (element.getAttribute('underline') ?? '0') == '1';
     valign = element.getAttribute('valign') ?? 'top'; // top , center or bottom, defaults to top
     wrap = (element.getAttribute('wrap') ?? '0') == '1';

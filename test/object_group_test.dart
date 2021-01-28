@@ -1,22 +1,21 @@
-import 'package:test/test.dart';
-import 'package:xml/xml.dart';
 import 'dart:io';
 
+import 'package:test/test.dart';
+import 'package:tiled/tiled.dart';
+
 void main() {
-  XmlElement xmlRoot;
+  TiledMap map;
   setUp(() {
     return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
-      xmlRoot = XmlDocument.parse(xml).rootElement;
+      map = TileMapParser.parseTmx(xml);
     });
   });
 
-  group('ObjectGroup.fromXML', () {
-    ObjectGroup objectGroup;
-    XmlElement xml;
+  group('Layer.fromXML', () {
+    Layer objectGroup;
 
     setUp(() {
-      xml = xmlRoot.findAllElements('objectgroup').first;
-      objectGroup = ObjectGroup.fromXML(xml);
+      objectGroup = map.getLayerByName('Test Object Layer 1');
     });
 
     test('sets name', () {
@@ -33,15 +32,13 @@ void main() {
 
     test('sets visible', () {
       expect(objectGroup.visible, equals(true));
-
-      final xml = xmlRoot.findAllElements('objectgroup').last;
-      objectGroup = ObjectGroup.fromXML(xml);
+      objectGroup = map.getLayerByName('EmptyLayer');
 
       expect(objectGroup.visible, equals(false));
     });
 
     test('populates tmxObjects', () {
-      expect(objectGroup.tmxObjects.length, greaterThan(0));
+      expect(objectGroup.objects.length, greaterThan(0));
     });
   });
 }

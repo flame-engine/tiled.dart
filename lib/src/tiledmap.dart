@@ -72,6 +72,10 @@ class TiledMap {
     return imageSet.toList();
   }
 
+  Layer getLayerByName(String s) {
+    return layers.where((element) => element.name == s)?.first;
+  }
+
   TiledMap.fromXml(XmlElement xmlElement) {
     if (xmlElement.name.local != 'map') {
       throw 'XML is not in TMX format';

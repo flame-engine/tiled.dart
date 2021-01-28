@@ -1,6 +1,7 @@
 library tiled;
 
 import 'dart:convert';
+import 'dart:html';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -17,6 +18,7 @@ part 'src/tiledobject.dart';
 part 'src/point.dart';
 part 'src/property.dart';
 part 'src/terrain.dart';
+part 'src/template.dart';
 part 'src/text.dart';
 part 'src/tile.dart';
 part 'src/tile_map_parser.dart';

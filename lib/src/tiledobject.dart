@@ -11,7 +11,7 @@ class TiledObject {
   List<Point> polyline = [];
   List<Property> properties = [];
   double rotation;
-  String template;
+  Template template;
   Text text;
   String type;
   bool visible;
@@ -54,9 +54,11 @@ class TiledObject {
         case 'text':
           text = Text.fromXml(element);
           break;
+        case 'template':
+          template = Template.fromXml(element);
+          break;
       }
     });
-    //TODO template;
   }
 
   TiledObject.fromJson(Map<String, dynamic> json) {
@@ -85,7 +87,7 @@ class TiledObject {
       });
     }
     rotation = json['rotation']?.toDouble();
-    template = json['template'];
+    template = json['template'] != null ? Template.fromJson(json['template']) : null;
     text = json['text'] != null ? Text.fromJson(json['text']) : null;
     type = json['type'];
     visible = json['visible'];

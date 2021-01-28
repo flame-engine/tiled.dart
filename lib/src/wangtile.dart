@@ -5,7 +5,7 @@ class WangTile {
   bool hflip;
   int tileid;
   bool vflip;
-  List<int> wangid; //32-bit unsigned integer
+  List<int> wangid; //TODO 32-bit unsigned integer
 
   WangTile.fromXml(XmlElement xmlElement) {
     tileid  = int.tryParse(xmlElement.getAttribute('tileid') ?? '');

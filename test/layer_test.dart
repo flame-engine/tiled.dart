@@ -1,20 +1,20 @@
-import 'package:test/test.dart';
-import 'package:tiled/tiled.dart';
-import 'package:xml/xml.dart';
 import 'dart:async';
 import 'dart:io';
 
-void main() {
-  XmlElement xmlRoot, xmlRootBase64Gzip;
+import 'package:test/test.dart';
+import 'package:tiled/tiled.dart';
 
-  // Urgh. var xml = File.read(/* ... */); >:/
+void main() {
+  TiledMap mapTmx;
+  TiledMap mapTmxBase64Gzip;
+
   setUp(() {
     final f1 = File('./test/fixtures/test.tmx').readAsString().then((xml) {
-      xmlRoot = XmlDocument.parse(xml).rootElement;
+      mapTmx = TileMapParser.parseTmx(xml);
     });
     final f2 =
         File('./test/fixtures/test_base64_gzip.tmx').readAsString().then((xml) {
-      xmlRootBase64Gzip = XmlDocument.parse(xml).rootElement;
+          mapTmxBase64Gzip = TileMapParser.parseTmx(xml);
     });
 
     return Future.wait([f1, f2]);
@@ -22,68 +22,47 @@ void main() {
 
   group('Layer.fromXML', () {
     test('supports gzip', () {
-      final layerNode = xmlRootBase64Gzip.findAllElements('layer').first;
-      final layer = Layer.fromXml(layerNode);
+      final layer = mapTmx.layers.where((element) => element.type == 'tilelayer').first;
 
-      expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[2], equals([0, 0, 1, 0, 0, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[3], equals([0, 0, 0, 1, 0, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[4], equals([0, 0, 0, 0, 1, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[5], equals([0, 0, 0, 0, 0, 1, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[6], equals([0, 0, 0, 0, 0, 0, 1, 0, 0, 0]));
-      expect(layer.tileMatrix[7], equals([0, 0, 0, 0, 0, 0, 0, 1, 0, 0]));
-      expect(layer.tileMatrix[8], equals([0, 0, 0, 0, 0, 0, 0, 0, 1, 0]));
-      expect(layer.tileMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
+      expect(layer.tileIDMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[2], equals([0, 0, 1, 0, 0, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[3], equals([0, 0, 0, 1, 0, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[4], equals([0, 0, 0, 0, 1, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[5], equals([0, 0, 0, 0, 0, 1, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[6], equals([0, 0, 0, 0, 0, 0, 1, 0, 0, 0]));
+      expect(layer.tileIDMatrix[7], equals([0, 0, 0, 0, 0, 0, 0, 1, 0, 0]));
+      expect(layer.tileIDMatrix[8], equals([0, 0, 0, 0, 0, 0, 0, 0, 1, 0]));
+      expect(layer.tileIDMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
     });
     test('supports zlib', () {
-      final layerNode = xmlRoot.findAllElements('layer').first;
-      final layer = Layer.fromXml(layerNode);
+      final layer = mapTmxBase64Gzip.layers.where((element) => element.type == 'tilelayer').first;
 
-      expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[2], equals([0, 0, 1, 0, 0, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[3], equals([0, 0, 0, 1, 0, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[4], equals([0, 0, 0, 0, 1, 0, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[5], equals([0, 0, 0, 0, 0, 1, 0, 0, 0, 0]));
-      expect(layer.tileMatrix[6], equals([0, 0, 0, 0, 0, 0, 1, 0, 0, 0]));
-      expect(layer.tileMatrix[7], equals([0, 0, 0, 0, 0, 0, 0, 1, 0, 0]));
-      expect(layer.tileMatrix[8], equals([0, 0, 0, 0, 0, 0, 0, 0, 1, 0]));
-      expect(layer.tileMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
+      expect(layer.tileIDMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[2], equals([0, 0, 1, 0, 0, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[3], equals([0, 0, 0, 1, 0, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[4], equals([0, 0, 0, 0, 1, 0, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[5], equals([0, 0, 0, 0, 0, 1, 0, 0, 0, 0]));
+      expect(layer.tileIDMatrix[6], equals([0, 0, 0, 0, 0, 0, 1, 0, 0, 0]));
+      expect(layer.tileIDMatrix[7], equals([0, 0, 0, 0, 0, 0, 0, 1, 0, 0]));
+      expect(layer.tileIDMatrix[8], equals([0, 0, 0, 0, 0, 0, 0, 0, 1, 0]));
+      expect(layer.tileIDMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
     });
   });
 
   group('Layer.tiles', () {
-    TiledMap map;
     Layer layer;
 
     setUp(() {
-      map = TileMapParser().parse(xmlRoot.toString());
-      layer = map.layers.first;
+      layer = mapTmx.layers.where((element) => element.type == 'tilelayer').first;
     });
 
     test('is the expected size of 100', () {
-      expect(layer.tiles.length, equals(10));
-      layer.tiles.forEach((row) {
+      expect(layer.tileIDMatrix.length, equals(10));
+      layer.tileIDMatrix.forEach((row) {
         expect(row.length, equals(10));
       });
-    });
-
-    test('calculates the x and y correctly for every tile', () {
-      final coords = <List<int>>[];
-      layer.tiles.forEach(
-        (row) => row.forEach((tile) => coords.add([tile.x, tile.y])),
-      );
-
-      // Tileset is 32x32 in test.tmx, and the map is 10x10.
-      final expectedCoords = <List<int>>[];
-      for (int x = 0; x < 10; x++) {
-        for (int y = 0; y < 10; y++) {
-          expectedCoords.add([y, x]);
-        }
-      }
-
-      expect(coords, equals(expectedCoords));
     });
   });
 }

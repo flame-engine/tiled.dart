@@ -22,7 +22,7 @@ class Layer {
   int starty;
   String tintcolor;
   String transparentcolor;
-  String type; // tilelayer, objectgroup, imagelayer or group
+  String type; // tilelayer, objectgroup, imagelayer or group //TODO group
   bool visible;
   int width;
   int x;

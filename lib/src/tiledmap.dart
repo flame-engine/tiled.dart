@@ -105,13 +105,19 @@ class TiledMap {
           tilesets.add(Tileset.fromXml(element));
           break;
         case 'layer':
-          layers.add(Layer.fromXml(element));
+          final layer = Layer.fromXml(element);
+          layer.type = 'tilelayer';
+          layers.add(layer);
           break;
         case 'objectgroup':
-          layers.add(Layer.fromXml(element));
+          final layer = Layer.fromXml(element);
+          layer.type = 'objectgroup';
+          layers.add(layer);
           break;
         case 'imagelayer':
-          layers.add(Layer.fromXml(element));
+          final layer = Layer.fromXml(element);
+          layer.type = 'imagelayer';
+          layers.add(layer);
           break;
         // case 'group':
         //   element.nodes.forEach((element) {groups.add(GroupJson.fromXML(element));});

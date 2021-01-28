@@ -23,7 +23,7 @@ void main() {
   group('Layer.fromXML', () {
     test('supports gzip', () {
       final layerNode = xmlRootBase64Gzip.findAllElements('layer').first;
-      final layer = Layer.fromXML(layerNode);
+      final layer = Layer.fromXml(layerNode);
 
       expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
       expect(layer.tileMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -38,7 +38,7 @@ void main() {
     });
     test('supports zlib', () {
       final layerNode = xmlRoot.findAllElements('layer').first;
-      final layer = Layer.fromXML(layerNode);
+      final layer = Layer.fromXml(layerNode);
 
       expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
       expect(layer.tileMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -54,7 +54,7 @@ void main() {
   });
 
   group('Layer.tiles', () {
-    TileMap map;
+    TiledMap map;
     Layer layer;
 
     setUp(() {

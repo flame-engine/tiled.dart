@@ -1,6 +1,6 @@
-import 'package:xml/xml.dart';
+part of tiled;
 
-class ChunkJson {
+class Chunk {
   String
       data; // TODO array or string - 	Array of unsigned int (GIDs) or base64-encoded data
   int height;
@@ -8,9 +8,7 @@ class ChunkJson {
   int x;
   int y;
 
-  ChunkJson({this.data, this.height, this.width, this.x, this.y});
-
-  ChunkJson.fromXML(XmlNode xmlElement) {
+  Chunk.fromXml(XmlNode xmlElement) {
     height = int.tryParse(xmlElement.getAttribute('height') ?? '');
     width = int.tryParse(xmlElement.getAttribute('width') ?? '');
     x = int.tryParse(xmlElement.getAttribute('x') ?? '');
@@ -18,21 +16,11 @@ class ChunkJson {
     //TODO data
   }
 
-  ChunkJson.fromJson(Map<String, dynamic> json) {
-    data = json['data'];
+  Chunk.fromJson(Map<String, dynamic> json) {
+    data = json['data']; //TODO Data object with enc & comp?
     height = json['height'];
     width = json['width'];
     x = json['x'];
     y = json['y'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['data'] = data;
-    data['height'] = height;
-    data['width'] = width;
-    data['x'] = x;
-    data['y'] = y;
-    return data;
   }
 }

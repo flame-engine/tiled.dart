@@ -1,134 +1,188 @@
 part of tiled;
 
 class Layer {
-  static const int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
-  static const int FLIPPED_VERTICALLY_FLAG = 0x40000000;
-  static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
-
-  String name;
-  int width;
+  List<Chunk> chunks = [];
+  String
+      compression; // zlib, gzip, zstd (since Tiled 1.3) or empty (default). tilelayer
+  List<int> data = [];
+  String draworder = 'topdown'; //topdown (default) or index. only objectgroup
+  String color; // only objectgroup; Not supported by json
+  String encoding = 'csv'; // csv (default) or base64. tilelayer
   int height;
+  int id;
+  TiledImage image; // only on imageLayer
+  List<Layer> layers = [];
+  String name;
+  List<TiledObject> objects = [];
+  double offsetx;
+  double offsety;
+  double opacity;
+  List<Property> properties = [];
+  int startx;
+  int starty;
+  String tintcolor;
+  String transparentcolor;
+  String type; // tilelayer, objectgroup, imagelayer or group
   bool visible;
+  int width;
+  int x;
+  int y;
 
-  Map<String, dynamic> properties = {};
+  // Convenience
+  List<List<int>> tileIDMatrix;
 
-  TileMap map;
-  List<List<int>> tileMatrix;
-  List<List<Flips>> tileFlips;
+  Layer.fromXml(XmlNode xmlElement) {
+    draworder = xmlElement.getAttribute('draworder');// only ObjectGroup
+    color = xmlElement.getAttribute('color');// only ObjectGroup
+    height = int.tryParse(xmlElement.getAttribute('height') ?? '');
+    id = int.tryParse(xmlElement.getAttribute('id') ?? '');
+    name = xmlElement.getAttribute('name');
+    offsetx = double.tryParse(xmlElement.getAttribute('offsetx') ?? '');
+    offsety = double.tryParse(xmlElement.getAttribute('offsety') ?? '');
+    opacity = double.tryParse(xmlElement.getAttribute('opacity') ?? '');
+    startx = int.tryParse(xmlElement.getAttribute('startx') ?? '');
+    starty = int.tryParse(xmlElement.getAttribute('starty') ?? '');
+    width = int.tryParse(xmlElement.getAttribute('width') ?? '');
+    x = int.tryParse(xmlElement.getAttribute('x') ?? '');
+    y = int.tryParse(xmlElement.getAttribute('y') ?? '');
+    tintcolor = xmlElement.getAttribute('tintcolor');
+    transparentcolor = xmlElement.getAttribute('transparentcolor');
+    type = xmlElement.getAttribute('type');
+    visible = int.tryParse(xmlElement.getAttribute('visible') ?? "1") == 1;
 
-  List<List<Tile>> _tiles;
-  List<List<Tile>> get tiles {
-    if (_tiles == null) {
-      _recalculateTiles();
-    }
-    return _tiles;
-  }
-
-  Layer(this.name, this.width, this.height);
-
-
-  @override
-  String toString() {
-    return 'Layer{name: $name, width: $width, height: $height, visible: $visible, properties: $properties, map: ${map != null}, tileMatrix: $tileMatrix, tileFlips: $tileFlips, _tiles: $_tiles}';
-  }
-
-  Layer.fromXML(XmlElement element) {
-    if (element == null) {
-      throw 'arg "element" cannot be null';
-    }
-
-    NodeDSL.on(element, (dsl) {
-      name = dsl.strOr('name', name);
-      width = dsl.intOr('width', width);
-      height = dsl.intOr('height', height);
-      visible = dsl.boolOr('visible', true);
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'image':
+          image = TiledImage.fromXml(element);
+          break;
+        case 'data':
+          compression = element.getAttribute('compression');
+          encoding = element.getAttribute('encoding');
+          data = decodeData(element.text, encoding, compression);
+          break;
+        case 'properties':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            properties.add(Property.fromXml(element));
+          });
+          break;
+        case 'chunks':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            chunks.add(Chunk.fromXml(element));
+          });
+          break;
+        case 'layers':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            layers.add(Layer.fromXml(element));
+          });
+          break;
+        case 'object':
+            objects.add(TiledObject.fromXml(element));
+          break;
+      }
     });
 
-    final dataElement = element.children.firstWhere(
-      (node) => node is XmlElement && node.name.local == 'data',
-      orElse: () => null,
-    );
-    if (dataElement is XmlElement) {
-      final decoder = TileMapParser._getDecoder(
-        dataElement.getAttribute('encoding'),
-      );
-      final decompressor = TileMapParser._getDecompressor(
-        dataElement.getAttribute('compression'),
-      );
-
-      final decodedString = decoder(dataElement.text);
-      final inflatedString = decompressor?.call(decodedString) ?? decodedString;
-
-      assembleTileMatrix(inflatedString);
-    }
-
-    properties = TileMapParser._parsePropertiesFromElement(element);
+    _generateTileMatrix();
   }
 
-  // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
-  void assembleTileMatrix(var bytes) {
-    tileMatrix = List.generate(height, (_) => List<int>(width));
-    tileFlips = List.generate(height, (_) => List<Flips>(width));
+  Layer.fromJson(Map<String, dynamic> json) {
+    if (json['chunks'] != null) {
+      chunks = <Chunk>[];
+      json['chunks'].forEach((v) {
+        chunks.add(Chunk.fromJson(v));
+      });
+    }
+    compression = json['compression'];
+    encoding = json['encoding'];
+    data = decodeData(json['data'], encoding, compression);
+    draworder = json['draworder'];
+    height = json['height'];
+    id = json['id'];
+    image = json['image'];
+    if (json['layers'] != null) {
+      layers = <Layer>[];
+      json['layers'].forEach((v) {
+        layers.add(Layer.fromJson(v));
+      });
+    }
+    name = json['name'];
+    offsetx = json['offsetx'];
+    offsety = json['offsety'];
+    opacity = json['opacity']?.toDouble();
+    if (json['properties'] != null) {
+      properties = <Property>[];
+      json['properties'].forEach((v) {
+        properties.add(Property.fromJson(v));
+      });
+    }
+    startx = json['startx'];
+    starty = json['starty'];
+    tintcolor = json['tintcolor'];
+    transparentcolor = json['transparentcolor'];
+    type = json['type'];
+    visible = json['visible'];
+    width = json['width'];
+    x = json['x'];
+    y = json['y'];
+    if (json['objects'] != null) {
+      objects = <TiledObject>[];
+      json['objects'].forEach((v) {
+        objects.add(TiledObject.fromJson(v));
+      });
+    }
+    _generateTileMatrix();
+  }
 
-    var tileIndex = 0;
-    for (var y = 0; y < height; ++y) {
-      for (var x = 0; x < width; ++x) {
-        var globalTileId = bytes[tileIndex] |
-            bytes[tileIndex + 1] << 8 |
-            bytes[tileIndex + 2] << 16 |
-            bytes[tileIndex + 3] << 24;
+  List<int> decodeData(json, String encoding, String compression) {
+    if (json == null) {
+      return null;
+    }
 
-        tileIndex += 4;
+    if (encoding == null || encoding == 'csv') {
+      return json.cast<int>();
+    }
+    //Ok, its base64
+    final Uint8List decodedString = base64.decode(json.trim());
+    //zlib, gzip, zstd or empty
+    List<int> decompressed;
+    switch (compression) {
+      case 'zlib':
+        decompressed = ZLibDecoder().decodeBytes(decodedString);
+        break;
+      case 'gzip':
+        decompressed = GZipDecoder().decodeBytes(decodedString);
+        break;
+      case 'zstd':
+        //TODO zstd compression not supported in dart
+        throw UnsupportedError("zstd is an unsupported compression");
+      default:
+        decompressed = decodedString;
+        break;
+    }
 
-        // Read out the flags
-        final flippedHorizontally =
-            (globalTileId & FLIPPED_HORIZONTALLY_FLAG) ==
-                FLIPPED_HORIZONTALLY_FLAG;
-        final flippedVertically =
-            (globalTileId & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
-        final flippedDiagonally =
-            (globalTileId & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
-
-        // Save rotation flags
-        tileFlips[y][x] = Flips(
-          flippedHorizontally,
-          flippedVertically,
-          flippedDiagonally,
-        );
-
-        // Clear the flags
-        globalTileId &= ~(FLIPPED_HORIZONTALLY_FLAG |
-            FLIPPED_VERTICALLY_FLAG |
-            FLIPPED_DIAGONALLY_FLAG);
-
-        tileMatrix[y][x] = globalTileId;
+    // From the tiled documentation:
+    // Now you have an array of bytes, which should be interpreted as an array of unsigned 32-bit integers using little-endian byte ordering.
+    final bytes = Uint8List.fromList(decompressed);
+    final dv = ByteData.view(bytes.buffer);
+    final uint32 = <int>[];
+    for (var i = 0; i < decompressed.length; ++i) {
+      if (i % 4 == 0) {
+        uint32.add(dv.getUint32(i,Endian.little));
       }
     }
+    return uint32;
   }
 
-  void _recalculateTiles() {
-    int px = 0;
-    int py = 0;
-
-    _tiles = List.generate(height, (_) => List<Tile>(width));
-    _tiles.asMap().forEach((j, List<Tile> rows) {
-      px = 0;
-
-      rows.asMap().forEach((i, Tile t) {
-        final tileId = tileMatrix[j][i];
-        final flips = tileFlips[j][i];
-        final tile = map.getTileByGID(tileId)
-          ..x = i
-          ..y = j
-          ..px = px
-          ..py = py
-          ..flips = flips;
-
-        _tiles[j][i] = tile;
-        px += map.tileWidth;
-      });
-
-      py += map.tileHeight;
-    });
+  void _generateTileMatrix() {
+    tileIDMatrix = <List<int>>[];
+    if(height == null || width == null){ // objectlayer
+      return;
+    }
+    for (var i = 0; i < height; ++i) {
+      final row = <int>[];
+      for (var j = 0; j < width; ++j) {
+        row.add(data[(i*width) + j]);
+      }
+      tileIDMatrix.add(row);
+    }
   }
 }

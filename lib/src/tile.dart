@@ -1,77 +1,97 @@
 part of tiled;
 
 class Tile {
-  // Tile IDs are 0-based, to conform with TMX documentation.
-  int tileId;
-  Tileset tileset;
+  static const int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+  static const int FLIPPED_VERTICALLY_FLAG = 0x40000000;
+  static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
-  // Tile global IDs aren't 1-based, but start from "1" (0 being an "null tile").
-  int gid;
+  List<Frame> animation = [];
+  int id;
+  TiledImage image;
+  Layer objectgroup;
+  double probability;
+  List<Property> properties = [];
+  List<int> terrain = []; // index of the terrain
+  String type;
 
-  int width;
-  int height;
-  int spacing;
-  int margin;
+  //Additionaly
+  bool flippedHorizontally = false;
+  bool flippedVertically = false;
+  bool flippedDiagonally = false;
 
-  Flips flips;
+  Tile(this.id);
 
-  Map<String, dynamic> properties = {};
+  Tile.fromXml(XmlElement xmlElement) {
+    id = int.tryParse(xmlElement.getAttribute('id') ?? '');
+    // get flips from id
+    flippedHorizontally =
+        (id & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
+    flippedVertically =
+        (id & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
+    flippedDiagonally =
+        (id & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
+    //clear id from flips
+    id &= ~(FLIPPED_HORIZONTALLY_FLAG |
+        FLIPPED_VERTICALLY_FLAG |
+        FLIPPED_DIAGONALLY_FLAG);
 
-  Image _image;
-
-  set image(Image value) {
-    _image = value;
+    probability =
+        double.tryParse(xmlElement.getAttribute('probability') ?? '0');
+    type = xmlElement.getAttribute('type');
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'image':
+          image = TiledImage.fromXml(element);
+          break;
+        case 'properties':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            properties.add(Property.fromXml(element));
+          });
+          break;
+        case 'terrain':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            terrain.add(int.tryParse(element.getAttribute('id') ?? ''));
+          });
+          break;
+        case 'animation':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            animation.add(Frame.fromXml(element));
+          });
+          break;
+        case 'objectgroup':
+          objectgroup = Layer.fromXml(
+              element);
+          break;
+      }
+    });
   }
 
-  Image get image {
-    if (_image == null) {
-      return tileset.image;
-    } else {
-
+  Tile.fromJson(Map<String, dynamic> json) {
+    if (json['animation'] != null) {
+      animation = <Frame>[];
+      json['animation'].forEach((v) {
+        animation.add(Frame.fromJson(v));
+      });
     }
-    return _image;
-  }
-
-  // Optional X / Y locations for the tile.
-  int x, y;
-  int px, py;
-
-  bool get isEmpty {
-    return gid == 0;
-  }
-
-  Tile(this.tileId, this.tileset, {this.flips = const Flips.defaults()}) {
-    width = tileset.width;
-    height = tileset.height;
-    spacing = tileset.spacing;
-    margin = tileset.margin;
-    gid = tileId + tileset.firstgid;
-    properties = tileset.tileProperties[gid];
-
-    properties ??= {};
-
-    _image = tileset.tileImage[gid];
-  }
-
-
-  @override
-  String toString() {
-    return 'Tile{tileId: $tileId, tileset: ${tileset != null}, gid: $gid, width: $width, height: $height, spacing: $spacing, margin: $margin, flips: $flips, properties: $properties, _image: $_image, x: $x, y: $y, px: $px, py: $py}';
-  }
-
-  Tile.emptyTile() {
-    gid = 0;
-  }
-
-  Rectangle computeDrawRect() {
-    if (_image != null) {
-      return Rectangle(0, 0, _image.width, _image.height);
+    id = json['id'];
+    if (json['image'] != null) {
+      image =
+          TiledImage(json['image'], json['imageheight'], json['imagewidth']);
     }
-    final tilesPerRow = tileset.image.width ~/ (width + spacing);
-    final row = tileId ~/ tilesPerRow;
-    final column = tileId % tilesPerRow;
-    final x = margin + (column * (width + spacing));
-    final y = margin + (row * (height + spacing));
-    return Rectangle(x, y, width + spacing, height + spacing);
+    objectgroup = json['objectgroup'];
+    probability = json['probability'] ?? 0;
+    if (json['properties'] != null) {
+      properties = <Property>[];
+      json['properties'].forEach((v) {
+        properties.add(Property.fromJson(v));
+      });
+    }
+    if (json['terrain'] != null) {
+      terrain = <int>[];
+      json['terrain'].forEach((v) {
+        terrain.add(v);
+      });
+    }
+    type = json['type'];
   }
 }

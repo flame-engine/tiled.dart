@@ -22,7 +22,7 @@ void main() {
           .then((xml) {
         final xmlRoot = XmlDocument.parse(xml).rootElement;
         final tilesetXml = xmlRoot.findAllElements('tileset').first;
-        tileset = Tileset.fromXML(tilesetXml);
+        tileset = Tileset.fromXml(tilesetXml);
       });
     });
     test('spacing = 1', () => expect(tileset.spacing, equals(1)));

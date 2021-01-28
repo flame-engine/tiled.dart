@@ -5,9 +5,9 @@ void main() {
   // GID is 1-based
   group('Map.getTileByGID', () {
     tiled.Tile tile;
-    tiled.TileMap map;
+    tiled.TiledMap map;
     setUp(() {
-      map = tiled.TileMap();
+      map = tiled.TiledMap();
       // 2 tilesets:
       // 1 tileset with 1 tile
       // 1 tileset with 3 tiles
@@ -49,13 +49,13 @@ void main() {
   });
 
   group('Map.getTileByLocalID', () {
-    tiled.TileMap map;
+    tiled.TiledMap map;
     final tileset = tiled.Tileset(1)
       ..name = 'Humans'
       ..height = 64
       ..width = 32;
     setUp(() {
-      map = tiled.TileMap();
+      map = tiled.TiledMap();
       map.tilesets.add(tileset);
     });
 
@@ -81,13 +81,13 @@ void main() {
   });
 
   group('Map.getTileByPhrase', () {
-    tiled.TileMap map;
+    tiled.TiledMap map;
     final tileset = tiled.Tileset(1)
       ..name = 'Humans'
       ..height = 64
       ..width = 32;
     setUp(() {
-      map = tiled.TileMap();
+      map = tiled.TiledMap();
       map.tilesets.add(tileset);
     });
 
@@ -124,10 +124,10 @@ void main() {
   });
 
   group('Map.getTileset', () {
-    tiled.TileMap map;
+    tiled.TiledMap map;
     final tileset = tiled.Tileset(1)..name = 'Humans';
     setUp(() {
-      map = tiled.TileMap();
+      map = tiled.TiledMap();
       map.tilesets.add(tileset);
     });
 

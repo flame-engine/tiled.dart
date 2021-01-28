@@ -6,7 +6,7 @@ import 'dart:io';
 
 void main() {
   final parser = TileMapParser();
-  TileMap map;
+  TiledMap map;
   setUp(() {
     return File('./test/fixtures/test.tmx').readAsString().then((xml) {
       map = parser.parse(xml);
@@ -43,7 +43,7 @@ void main() {
       test('has its image', () => expect(tileset.image, isNotNull));
 
       group('populates its first image correctly and', () {
-        Image image;
+        TiledImage image;
         setUp(() => image = tileset.image);
 
         test('has its width = 96', () => expect(image.width, equals(96)));

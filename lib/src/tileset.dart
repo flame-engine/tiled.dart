@@ -1,85 +1,150 @@
 part of tiled;
 
 class Tileset {
+  String backgroundcolor;
+  int columns;
   int firstgid;
-  int width;
-  int height;
-  int spacing = 0;
-  int margin = 0;
+  Grid grid;
+  TiledImage image;
+  int margin;
   String name;
+  String objectalignment;
+  List<Property> properties = [];
   String source;
+  int spacing;
+  List<Terrain> terrains = [];
+  int tilecount;
+  String tiledversion;
+  TileOffset tileoffset;
+  List<Tile> tiles = [];
+  int tileheight;
+  int tilewidth;
+  String transparentcolor;
+  String type;
+  num version;
+  List<WangSet> wangsets = [];
 
-  TileMap map;
+  Tileset.fromXml(XmlNode xmlElement) {
+    backgroundcolor = xmlElement.getAttribute('backgroundcolor');
+    columns = int.tryParse(xmlElement.getAttribute('columns') ?? '');
+    firstgid = int.tryParse(xmlElement.getAttribute('firstgid') ?? '');
+    margin = int.tryParse(xmlElement.getAttribute('margin') ?? '0');
+    name = xmlElement.getAttribute('name');
+    objectalignment = xmlElement.getAttribute('objectalignment');
+    source = xmlElement.getAttribute('source');
+    spacing = int.tryParse(xmlElement.getAttribute('spacing') ?? '0');
+    tilecount = int.tryParse(xmlElement.getAttribute('tilecount') ?? '');
+    tileheight = int.tryParse(xmlElement.getAttribute('tileheight') ?? '');
+    tiledversion = xmlElement.getAttribute('tiledversion');
+    tilewidth = int.tryParse(xmlElement.getAttribute('tilewidth') ?? '');
+    transparentcolor = xmlElement.getAttribute('transparentcolor');
+    type = xmlElement.getAttribute('type');
+    version = int.tryParse(xmlElement.getAttribute('version') ?? '');
 
-  Image image;
-  List<Image> images = [];
-  Map<String, dynamic> properties = {};
-  Map<int, Map<String, dynamic>> tileProperties = {};
-  Map<int, Image> tileImage = {};
+    final tilelist = <Tile>[];
 
-  Tileset(this.firstgid);
-
-
-  @override
-  String toString() {
-    return 'Tileset{firstgid: $firstgid, width: $width, height: $height, spacing: $spacing, margin: $margin, name: $name, source: $source, map: ${map != null}, image: $image, images: $images, properties: $properties, tileProperties: $tileProperties, tileImage: $tileImage}';
-  }
-
-  Tileset.fromXML(XmlElement element, {TsxProvider tsx}) {
-    _parseTilesetAttributes(element);
-    element = _checkIfExtenalTsx(element, tsx);
-    _parseTilesetAttributes(element);
-
-    image = _findImage(element);
-    _addImage(image);
-
-    properties = TileMapParser._parsePropertiesFromElement(element);
-
-    // Parse tile properties, if present.
-    element.findElements('tile').forEach((XmlElement tileNode) {
-      final tileId = int.parse(tileNode.getAttribute('id'));
-      final tileGid = tileId + firstgid;
-      tileProperties[tileGid] =
-          TileMapParser._parsePropertiesFromElement(tileNode);
-      final image = _findImage(tileNode);
-      tileImage[tileGid] = image;
-      _addImage(image);
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'image':
+          image = TiledImage.fromXml(element);
+          break;
+        case 'grid':
+          grid = Grid.fromXml(element);
+          break;
+        case 'tileoffset':
+          tileoffset = TileOffset.fromXml(element);
+          break;
+        case 'properties':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            properties.add(Property.fromXml(element));
+          });
+          break;
+        case 'terrains':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            terrains.add(Terrain.fromXml(element));
+          });
+          break;
+        case 'tile':
+            tilelist.add(Tile.fromXml(element));
+          break;
+        case 'wangsets':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            wangsets.add(WangSet.fromXml(element));
+          });
+          break;
+      }
     });
-  }
 
-  void _parseTilesetAttributes(XmlElement element) {
-    NodeDSL.on(element, (dsl) {
-      firstgid = dsl.intOr('firstgid', firstgid);
-      name = dsl.strOr('name', name);
-      width = dsl.intOr('columns', width);
-      height = ((dsl.intOr('tilecount', height)) / width).round();
-      spacing = dsl.intOr('spacing', spacing);
-      margin = dsl.intOr('margin', margin);
-      source = dsl.strOr('source', source);
-    });
-  }
-
-  XmlElement _checkIfExtenalTsx(XmlElement element, TsxProvider tsx) {
-    final filename = element.getAttribute('source');
-    if (tsx != null && filename != null) {
-      return _parseXml(tsx.getSource(filename)).rootElement;
+    final iterator = tilelist.iterator;
+    Tile t = iterator.moveNext() ? iterator.current : Tile(-1);
+    for (var i = 0; i < tilecount; ++i) {
+      if(t.id == i){
+        tiles.add(t);
+        if(iterator.moveNext()) {
+          t = iterator.current;
+        }
+      }else{
+        tiles.add(Tile(i));
+      }
     }
-    return element;
   }
 
-  Image _findImage(XmlElement element) {
-    final list = element
-        .findElements('image')
-        .map((XmlElement node) => TileMapParser._parseImage(node));
-    if (list.isNotEmpty) {
-      return list.first;
+  Tileset.fromJson(Map<String, dynamic> json) {
+    backgroundcolor = json['backgroundcolor'];
+    columns = json['columns'];
+    firstgid = json['firstgid'];
+    grid = json['grid'] != null ? Grid.fromJson(json['grid']) : null;
+    if (json['image'] != null) {
+      image = TiledImage(json['image'], json['imageheight'], json['imagewidth']);
     }
-    return null;
-  }
+    margin = json['margin'] ?? 0;
+    name = json['name'];
+    objectalignment = json['objectalignment'];
+    if (json['properties'] != null) {
+      properties = <Property>[];
+      json['properties'].forEach((v) {
+        properties.add(Property.fromJson(v));
+      });
+    }
+    source = json['source'];
+    spacing = json['spacing'] ?? 0;
+    if (json['terrains'] != null) {
+      terrains = <Terrain>[];
+      json['terrains'].forEach((v) {
+        terrains.add(Terrain.fromJson(v));
+      });
+    }
+    tilecount = json['tilecount'];
+    tiledversion = json['tiledversion'];
+    tileheight = json['tileheight'];
+    tileoffset = json['tileoffset'] != null
+        ? TileOffset.fromJson(json['tileoffset'])
+        : null;
 
-  void _addImage(image) {
-    if (image != null) {
-      images.add(image);
+    final tilelist = json['tiles'] ?? <Map<String, dynamic>>[];
+
+    final iterator = tilelist.iterator;
+    Tile t = iterator.moveNext() ? Tile.fromJson(iterator.current) : Tile(-1);
+    for (var i = 0; i < tilecount; ++i) {
+      if(t.id == i){
+        tiles.add(t);
+        if(iterator.moveNext()) {
+          t = Tile.fromJson(iterator.current);
+        }
+      }else{
+        tiles.add(Tile(i));
+      }
+    }
+
+    tilewidth = json['tilewidth'];
+    transparentcolor = json['transparentcolor'];
+    type = json['type'];
+    version = json['version'];
+    if (json['wangsets'] != null) {
+      wangsets = <WangSet>[];
+      json['wangsets'].forEach((v) {
+        wangsets.add(WangSet.fromJson(v));
+      });
     }
   }
 }

@@ -1,14 +1,15 @@
 part of tiled;
 
-class Image {
+class TiledImage {
   String source;
   num width;
   num height;
   String trans;
 
-  Image(this.source, this.width, this.height);
+  // Needed for Json
+  TiledImage(this.source, this.width, this.height);
 
-  Image.fromXML(XmlElement xmlElement) {
+  TiledImage.fromXml(XmlElement xmlElement) {
     height  = int.tryParse(xmlElement.getAttribute('height') ?? '');
     width  = int.tryParse(xmlElement.getAttribute('width') ?? '');
     source  = xmlElement.getAttribute('source');
@@ -20,8 +21,15 @@ class Image {
     // data
   }
 
+  /// Needed for getTiledImages in TileMap;
+  /// Images are equal if their source is equal.
   @override
-  String toString() {
-    return 'Image{source: $source, width: $width, height: $height, trans: $trans}';
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TiledImage &&
+          runtimeType == other.runtimeType &&
+          source == other.source;
+
+  @override
+  int get hashCode => source.hashCode;
 }

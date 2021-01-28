@@ -15,7 +15,7 @@ void main() {
   group('rectangle', () {
     test('rectangle map works from layer', () {
       final layerNode = xmlRoot.findAllElements('layer').first;
-      final layer = Layer.fromXML(layerNode);
+      final layer = Layer.fromXml(layerNode);
 
       expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
       expect(layer.tileMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
@@ -34,7 +34,7 @@ void main() {
 
     test('rectangle map works from map', () {
       final TileMapParser parser = TileMapParser();
-      final TileMap map = parser.parse(xmlRoot.toString());
+      final TiledMap map = parser.parse(xmlRoot.toString());
       final layer = map.layers.first;
 
       expect(layer.tiles[0][0].tileId, equals(0));

@@ -12,6 +12,16 @@ void main() {
     });
   });
 
+  test('Parser.parse raises an error when the XML is empty', () {
+    const wrongXml = '';
+    expect(() => TileMapParser.parseTmx(wrongXml), throwsA('XML is empty'));
+  });
+
+  test('Parser.parse raises an error when the XML is null', () {
+    const wrongXml = null;
+    expect(() => TileMapParser.parseTmx(wrongXml), throwsA('XML is empty'));
+  });
+
   test('Parser.parse raises an error when the XML is not in TMX format', () {
     const wrongXml = '<xml></xml>';
     expect(() => TileMapParser.parseTmx(wrongXml), throwsA('XML is not in TMX format'));

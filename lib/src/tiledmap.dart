@@ -76,10 +76,6 @@ class TiledMap {
   }
 
   TiledMap.fromXml(XmlElement xmlElement, {TsxProvider tsx}) {
-    if (xmlElement.name.local != 'map') {
-      throw 'XML is not in TMX format';
-    }
-
     backgroundcolor = xmlElement.getAttribute('backgroundcolor');
     compressionlevel = int.tryParse(xmlElement.getAttribute('compressionlevel') ?? "-1"); //defaults to -1
     height = int.tryParse(xmlElement.getAttribute('height') ?? '');

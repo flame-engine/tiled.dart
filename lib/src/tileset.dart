@@ -24,7 +24,7 @@ class Tileset {
   num version;
   List<WangSet> wangsets = [];
 
-  Tileset.fromXml(XmlNode xmlElement) {
+  Tileset.fromXml(XmlNode xmlElement, {TsxProvider tsx}) {
     backgroundcolor = xmlElement.getAttribute('backgroundcolor');
     columns = int.tryParse(xmlElement.getAttribute('columns') ?? '');
     firstgid = int.tryParse(xmlElement.getAttribute('firstgid') ?? '');
@@ -75,10 +75,12 @@ class Tileset {
       }
     });
 
+    _checkIfExtenalTsx(source, tsx);
+
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? iterator.current : Tile(-1);
     for (var i = 0; i < tilecount; ++i) {
-      if(t.id == i){
+      if(t.gid == i){
         tiles.add(t);
         if(iterator.moveNext()) {
           t = iterator.current;
@@ -86,6 +88,35 @@ class Tileset {
       }else{
         tiles.add(Tile(i));
       }
+    }
+  }
+
+  void _checkIfExtenalTsx(String source, TsxProvider tsx) {
+    if (tsx != null && source != null) {
+      final Tileset tileset = Tileset.fromXml(tsx.getSource(source));
+      //Copy attributes if not null
+      backgroundcolor = tileset.backgroundcolor ?? backgroundcolor;
+      columns = tileset.columns ?? columns;
+      firstgid = tileset.firstgid ?? firstgid;
+      grid = tileset.grid ?? grid;
+      image = tileset.image ?? image;
+      margin = tileset.margin ?? margin;
+      name = tileset.name ?? name;
+      objectalignment = tileset.objectalignment ?? objectalignment;
+      spacing = tileset.spacing ?? spacing;
+      tilecount = tileset.tilecount ?? tilecount;
+      tiledversion = tileset.tiledversion ?? tiledversion;
+      tileoffset = tileset.tileoffset ?? tileoffset;
+      tileheight = tileset.tileheight ?? tileheight;
+      tilewidth = tileset.tilewidth ?? tilewidth;
+      transparentcolor = tileset.transparentcolor ?? transparentcolor;
+      type = tileset.type ?? type;
+      version = tileset.version ?? version;
+      //Add List-Attributes
+      properties.addAll(tileset.properties);
+      terrains.addAll(tileset.terrains);
+      tiles.addAll(tileset.tiles);
+      wangsets.addAll(tileset.wangsets);
     }
   }
 
@@ -126,7 +157,7 @@ class Tileset {
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? Tile.fromJson(iterator.current) : Tile(-1);
     for (var i = 0; i < tilecount; ++i) {
-      if(t.id == i){
+      if(t.gid == i){
         tiles.add(t);
         if(iterator.moveNext()) {
           t = Tile.fromJson(iterator.current);

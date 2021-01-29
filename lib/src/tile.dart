@@ -1,12 +1,8 @@
 part of tiled;
 
 class Tile {
-  static const int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
-  static const int FLIPPED_VERTICALLY_FLAG = 0x40000000;
-  static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
-
   List<Frame> animation = [];
-  int id;
+  int gid;
   TiledImage image;
   Layer objectgroup;
   double probability;
@@ -14,27 +10,12 @@ class Tile {
   List<int> terrain = []; // index of the terrain
   String type;
 
-  //Additionaly
-  bool flippedHorizontally = false;
-  bool flippedVertically = false;
-  bool flippedDiagonally = false;
+  Tile(this.gid);
 
-  Tile(this.id);
+  bool get isEmpty => gid == 0;
 
   Tile.fromXml(XmlElement xmlElement) {
-    id = int.tryParse(xmlElement.getAttribute('id') ?? '');
-    // get flips from id
-    flippedHorizontally =
-        (id & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
-    flippedVertically =
-        (id & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
-    flippedDiagonally =
-        (id & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
-    //clear id from flips
-    id &= ~(FLIPPED_HORIZONTALLY_FLAG |
-        FLIPPED_VERTICALLY_FLAG |
-        FLIPPED_DIAGONALLY_FLAG);
-
+    gid = int.tryParse(xmlElement.getAttribute('id') ?? '');
     probability =
         double.tryParse(xmlElement.getAttribute('probability') ?? '0');
     type = xmlElement.getAttribute('type');
@@ -73,7 +54,7 @@ class Tile {
         animation.add(Frame.fromJson(v));
       });
     }
-    id = json['id'];
+    gid = json['id'];
     if (json['image'] != null) {
       image =
           TiledImage(json['image'], json['imageheight'], json['imagewidth']);

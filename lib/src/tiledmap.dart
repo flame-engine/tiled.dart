@@ -25,14 +25,9 @@ class TiledMap {
   int width;
 
   // Convenience Methods
-  int cleanupTileIDFromFlips(int tileID) {
-    tileID &= ~(Tile.FLIPPED_HORIZONTALLY_FLAG | Tile.FLIPPED_VERTICALLY_FLAG | Tile.FLIPPED_DIAGONALLY_FLAG);
-    return tileID;
-  }
-
-  Tile getTileByID(int cleanTileID){
+  Tile getTileByGID(int cleanTileID){
     final Tileset tileset = getTilesetByTileID(cleanTileID);
-    final tiles = tileset.tiles.where((element) => element.id == (cleanTileID - tileset.firstgid)).toList();
+    final tiles = tileset.tiles.where((element) => element.gid == (cleanTileID - tileset.firstgid)).toList();
     if(tiles.isNotEmpty){
       return tiles.first;
     }
@@ -73,10 +68,14 @@ class TiledMap {
   }
 
   Layer getLayerByName(String s) {
-    return layers.where((element) => element.name == s)?.first;
+    return layers.firstWhere((element) => element.name == s);
   }
 
-  TiledMap.fromXml(XmlElement xmlElement) {
+  getTilesetByName(String s) {
+    return tilesets.firstWhere((element) => element.name == s);
+  }
+
+  TiledMap.fromXml(XmlElement xmlElement, {TsxProvider tsx}) {
     if (xmlElement.name.local != 'map') {
       throw 'XML is not in TMX format';
     }
@@ -102,7 +101,7 @@ class TiledMap {
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'tileset':
-          tilesets.add(Tileset.fromXml(element));
+          tilesets.add(Tileset.fromXml(element, tsx: tsx));
           break;
         case 'layer':
           final layer = Layer.fromXml(element);

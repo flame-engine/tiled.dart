@@ -4,6 +4,8 @@ class Point {
   num x;
   num y;
 
+  Point(this.x, this.y);
+
   Point.fromXml(XmlElement xmlElement) {
     x  = int.tryParse(xmlElement.getAttribute('x') ?? '');
     y  = int.tryParse(xmlElement.getAttribute('y') ?? '');

@@ -30,6 +30,7 @@ class Layer {
 
   // Convenience
   List<List<int>> tileIDMatrix;
+  List<List<Flips>> tileFlips;
 
   Layer.fromXml(XmlNode xmlElement) {
     draworder = xmlElement.getAttribute('draworder');// only ObjectGroup
@@ -172,17 +173,37 @@ class Layer {
     return uint32;
   }
 
+  static const int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+  static const int FLIPPED_VERTICALLY_FLAG = 0x40000000;
+  static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
+
   void _generateTileMatrix() {
     tileIDMatrix = <List<int>>[];
+    tileFlips = <List<Flips>>[];
     if(height == null || width == null){ // objectlayer
       return;
     }
     for (var i = 0; i < height; ++i) {
       final row = <int>[];
+      final fliprow = <Flips>[];
       for (var j = 0; j < width; ++j) {
-        row.add(data[(i*width) + j]);
+        int id = data[(i*width) + j];
+        // get flips from id
+        final bool flippedHorizontally =
+            (id & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
+        final bool flippedVertically =
+            (id & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
+        final bool flippedDiagonally =
+            (id & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
+        //clear id from flips
+        id &= ~(FLIPPED_HORIZONTALLY_FLAG |
+                FLIPPED_VERTICALLY_FLAG |
+                FLIPPED_DIAGONALLY_FLAG);
+        row.add(id);
+        fliprow.add(Flips(flippedHorizontally, flippedVertically, flippedDiagonally));
       }
       tileIDMatrix.add(row);
+      tileFlips.add(fliprow);
     }
   }
 }

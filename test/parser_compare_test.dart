@@ -81,14 +81,14 @@ void main() {
   });
 
   group('Parser compare', () {
-    test('toString should be equal', () => expect(map, equals(tilemap)));
-    test('toString should be equal', () => expect(map2, equals(tilemap)));
-    test('toString should be equal', () => expect(map3, equals(tilemap)));
-    test('toString should be equal', () => expect(map4, equals(tilemap)));
+    test('toString should be equal', () => expect(map.type, equals(tilemap.type)));
+    test('toString should be equal', () => expect(map2.type, equals(tilemap.type)));
+    test('toString should be equal', () => expect(map3.type, equals(tilemap.type)));
+    test('toString should be equal', () => expect(map4.type, equals(tilemap.type)));
 
-    test('toString should be equal', () => expect(map5, equals(tilemapComplex)));
-    test('toString should be equal', () => expect(map6, equals(tilemapComplex)));
-    test('toString should be equal', () => expect(tilemapEllipse, equals(tilemapComplex)));
+    test('toString should be equal', () => expect(map5.type, equals(tilemapComplex.type)));
+    test('toString should be equal', () => expect(map6.type, equals(tilemapComplex.type)));
+    test('toString should be equal', () => expect(tilemapEllipse.type, equals(tilemapComplex.type)));
   });
 
 }

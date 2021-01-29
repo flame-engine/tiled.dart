@@ -11,12 +11,12 @@ class TileMapParser {
   }
 
 
-  static TiledMap parseTmx(String xml) {
+  static TiledMap parseTmx(String xml, {TsxProvider tsx}) {
     // TODO Check Filetype?
     // TODO Custom parser?
     // TODO ?.toDouble()
     final xmlElement = XmlDocument.parse(xml).rootElement;
-    final TiledMap map = TiledMap.fromXml(xmlElement);
+    final TiledMap map = TiledMap.fromXml(xmlElement, tsx: tsx);
     return map;
   }
 

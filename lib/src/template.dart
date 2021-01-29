@@ -8,7 +8,7 @@ class Template {
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'tileset':
-          tileset = Tileset.fromXml(element);
+          tileset = Tileset.fromXml(element, tsx: null); // TODO is it possible to have an externel tsx here?
           break;
         case 'object':
           object = TiledObject.fromXml(element);

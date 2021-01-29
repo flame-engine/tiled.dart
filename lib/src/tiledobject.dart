@@ -41,21 +41,34 @@ class TiledObject {
           break;
         case 'polygon':
           polygon = [];
-          element.children.whereType<XmlElement>().forEach((XmlElement pointElement) {
-            polygon.add(Point.fromXml(pointElement));
-          });
+          final List<String> pointString = element.getAttribute('points').split(" "); // "0,0 -4,81 -78,19"
+          for (var i = 0; i < pointString.length; ++i) {
+            pointString.forEach((element) {
+              final List<String> ps = element.split(",");
+              polygon.add(Point(int.parse(ps[0]), int.parse(ps[1])));
+            });
+          }
           break;
         case 'polyline':
           polyline = [];
-          element.children.whereType<XmlElement>().forEach((XmlElement pointElement) {
-            polyline.add(Point.fromXml(pointElement));
-          });
+          final List<String> pointString = element.getAttribute('points').split(" "); // "0,0 -4,81 -78,19"
+          for (var i = 0; i < pointString.length; ++i) {
+            pointString.forEach((element) {
+              final List<String> ps = element.split(",");
+              polyline.add(Point(int.parse(ps[0]), int.parse(ps[1])));
+            });
+          }
           break;
         case 'text':
           text = Text.fromXml(element);
           break;
         case 'template':
           template = Template.fromXml(element);
+          break;
+        case 'properties':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            properties.add(Property.fromXml(element));
+          });
           break;
       }
     });
@@ -95,4 +108,9 @@ class TiledObject {
     x = json['x']?.toDouble();
     y = json['y']?.toDouble();
   }
+
+  bool get isPolyline => polyline.isNotEmpty;
+  bool get isPolygon => polygon.isNotEmpty;
+  bool get isPoint => point;
+  bool get isEllipse => ellipse;
 }

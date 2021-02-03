@@ -13,17 +13,18 @@ class WangSet {
     tile  = int.tryParse(xmlElement.getAttribute('tile') ?? '');
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
-        case 'cornercolors':
-          element.nodes.whereType<XmlElement>().forEach((element) {cornercolors.add(WangColor.fromXml(element));});
-          break;
-        case 'edgecolors':
-          element.nodes.whereType<XmlElement>().forEach((element) {edgecolors.add(WangColor.fromXml(element));});
+        case 'wangcolor':
+          if( xmlElement.getAttribute('type') == 'corner'){
+            cornercolors.add(WangColor.fromXml(element));
+          }else{
+            edgecolors.add(WangColor.fromXml(element));
+          }
           break;
         case 'properties':
           element.nodes.whereType<XmlElement>().forEach((element) {properties.add(Property.fromXml(element));});
           break;
-        case 'wangtiles':
-          element.nodes.whereType<XmlElement>().forEach((element) {wangtiles.add(WangTile.fromXml(element));});
+        case 'wangtile':
+          wangtiles.add(WangTile.fromXml(element));
           break;
       }
     });

@@ -114,9 +114,11 @@ class TiledMap {
           layer.type = 'imagelayer';
           layers.add(layer);
           break;
-        // case 'group':
-        //   element.nodes.forEach((element) {groups.add(GroupJson.fromXML(element));});
-        //   break;
+        case 'group':
+          final layer = Layer.fromXml(element);
+          layer.type = 'group';
+          layers.add(layer);
+          break;
         case 'properties':
           element.nodes.whereType<XmlElement>().forEach((element) {properties.add(Property.fromXml(element));});
           break;

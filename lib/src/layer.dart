@@ -22,7 +22,7 @@ class Layer {
   int starty;
   String tintcolor;
   String transparentcolor;
-  String type; // tilelayer, objectgroup, imagelayer or group //TODO group
+  String type; // tilelayer, objectgroup, imagelayer or group
   bool visible;
   int width;
   int x;
@@ -77,13 +77,28 @@ class Layer {
             chunks.add(Chunk.fromXml(element, encoding, compression));
           });
           break;
-        case 'layers':
-          element.nodes.whereType<XmlElement>().forEach((element) {
-            layers.add(Layer.fromXml(element));
-          });
+        case 'layer':
+          final layer = Layer.fromXml(element);
+          layer.type = 'tilelayer';
+          layers.add(layer);
+          break;
+        case 'objectgroup':
+          final layer = Layer.fromXml(element);
+          layer.type = 'objectgroup';
+          layers.add(layer);
+          break;
+        case 'imagelayer':
+          final layer = Layer.fromXml(element);
+          layer.type = 'imagelayer';
+          layers.add(layer);
+          break;
+        case 'group':
+          final layer = Layer.fromXml(element);
+          layer.type = 'group';
+          layers.add(layer);
           break;
         case 'object':
-            objects.add(TiledObject.fromXml(element));
+          objects.add(TiledObject.fromXml(element));
           break;
       }
     });

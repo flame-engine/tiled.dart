@@ -5,14 +5,16 @@ class WangTile {
   bool hflip;
   int tileid;
   bool vflip;
-  List<int> wangid; //TODO 32-bit unsigned integer
+  List<int> wangid;
 
   WangTile.fromXml(XmlElement xmlElement) {
     tileid  = int.tryParse(xmlElement.getAttribute('tileid') ?? '');
-    // wangid  = int.parse(xmlElement.getAttribute('wangid')); // TODO parse Int32
     dflip  = xmlElement.getAttribute('dflip') == 'true';
     hflip  = xmlElement.getAttribute('hflip') == 'true';
     vflip  = xmlElement.getAttribute('vflip') == 'true';
+    final id = xmlElement.getAttribute('wangid') ?? "";
+    final idList = id.split(",").map(int.parse).toList();
+    _setWangid(idList);
   }
 
   WangTile.fromJson(Map<String, dynamic> json) {
@@ -20,11 +22,18 @@ class WangTile {
     hflip = json['hflip'];
     tileid = json['tileid'];
     vflip = json['vflip'];
-    if (json['wangid'] != null) {
-      wangid = <int>[];
-      json['wangid'].forEach((v) { // TODO parse Int32
-        wangid.add(v);
-      });
+    _setWangid(json['wangid'] ?? []);
+  }
+
+  void _setWangid(List<int> value) {
+    final bytes = Uint8List.fromList(value);
+    final dv = ByteData.view(bytes.buffer);
+    final uint32 = <int>[];
+    for (var i = 0; i < value.length; ++i) {
+      if (i % 4 == 0) {
+        uint32.add(dv.getUint32(i,Endian.little));
+      }
     }
+    wangid = uint32;
   }
 }

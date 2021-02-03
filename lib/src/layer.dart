@@ -29,8 +29,8 @@ class Layer {
   int y;
 
   // Convenience
-  List<List<int>> tileIDMatrix;
-  List<List<Flips>> tileFlips;
+  List<List<int>> tileIDMatrix = [];
+  List<List<Flips>> tileFlips = [];
 
   Layer.fromXml(XmlNode xmlElement) {
     draworder = xmlElement.getAttribute('draworder');// only ObjectGroup
@@ -59,7 +59,13 @@ class Layer {
         case 'data':
           compression = element.getAttribute('compression');
           encoding = element.getAttribute('encoding');
-          data = decodeData(element.text, encoding, compression);
+          chunks = <Chunk>[];
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            chunks.add(Chunk.fromXml(element, encoding, compression));
+          });
+          if(chunks.isEmpty){
+            data = decodeData(element.text, encoding, compression);
+          }
           break;
         case 'properties':
           element.nodes.whereType<XmlElement>().forEach((element) {
@@ -68,7 +74,7 @@ class Layer {
           break;
         case 'chunks':
           element.nodes.whereType<XmlElement>().forEach((element) {
-            chunks.add(Chunk.fromXml(element));
+            chunks.add(Chunk.fromXml(element, encoding, compression));
           });
           break;
         case 'layers':
@@ -86,15 +92,15 @@ class Layer {
   }
 
   Layer.fromJson(Map<String, dynamic> json) {
+    compression = json['compression'];
+    encoding = json['encoding'];
     if (json['chunks'] != null) {
       chunks = <Chunk>[];
       json['chunks'].forEach((v) {
-        chunks.add(Chunk.fromJson(v));
+        chunks.add(Chunk.fromJson(v, encoding, compression));
       });
     }
-    compression = json['compression'];
-    encoding = json['encoding'];
-    data = decodeData(json['data'], encoding, compression);
+    data = json['data'] != null ? decodeData(json['data'], encoding, compression) : [];
     draworder = json['draworder'];
     height = json['height'];
     id = json['id'];
@@ -133,7 +139,7 @@ class Layer {
     _generateTileMatrix();
   }
 
-  List<int> decodeData(json, String encoding, String compression) {
+  static List<int> decodeData(json, String encoding, String compression) {
     if (json == null) {
       return null;
     }
@@ -142,7 +148,8 @@ class Layer {
       return json.cast<int>();
     }
     //Ok, its base64
-    final Uint8List decodedString = base64.decode(json.trim());
+    final trim = json.toString().replaceAll("\n", "").trim();
+    final Uint8List decodedString = base64.decode(trim);
     //zlib, gzip, zstd or empty
     List<int> decompressed;
     switch (compression) {
@@ -178,16 +185,20 @@ class Layer {
   static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
   void _generateTileMatrix() {
-    tileIDMatrix = <List<int>>[];
-    tileFlips = <List<Flips>>[];
-    if(height == null || width == null){ // objectlayer
+    if(height == null || width == null // objectlayer
+        || data.isEmpty // infinate map with chunks
+    ){
       return;
     }
-    for (var i = 0; i < height; ++i) {
-      final row = <int>[];
-      final fliprow = <Flips>[];
-      for (var j = 0; j < width; ++j) {
-        int id = data[(i*width) + j];
+    tileIDMatrix = List.generate(height, (_) => List<int>(width));
+    tileFlips = List.generate(height, (_) => List<Flips>(width));
+    generateTiles(data,height, width, tileIDMatrix, tileFlips);
+  }
+
+  static void generateTiles(List<int> data, int chunkheight, int chunkwidth, List<List<int>> matrix, List<List<Flips>> flips) {
+    for (var y = 0; y < chunkheight; ++y) {
+      for (var x = 0; x < chunkwidth; ++x) {
+        int id = data[(y*chunkwidth) + x];
         // get flips from id
         final bool flippedHorizontally =
             (id & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
@@ -197,13 +208,11 @@ class Layer {
             (id & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
         //clear id from flips
         id &= ~(FLIPPED_HORIZONTALLY_FLAG |
-                FLIPPED_VERTICALLY_FLAG |
-                FLIPPED_DIAGONALLY_FLAG);
-        row.add(id);
-        fliprow.add(Flips(flippedHorizontally, flippedVertically, flippedDiagonally));
+        FLIPPED_VERTICALLY_FLAG |
+        FLIPPED_DIAGONALLY_FLAG);
+        matrix[y][x] = id;
+        flips[y][x] = Flips(flippedHorizontally, flippedVertically, flippedDiagonally);
       }
-      tileIDMatrix.add(row);
-      tileFlips.add(fliprow);
     }
   }
 }

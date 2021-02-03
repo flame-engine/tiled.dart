@@ -71,7 +71,7 @@ class TiledMap {
     return layers.firstWhere((element) => element.name == s);
   }
 
-  getTilesetByName(String s) {
+  Tileset getTilesetByName(String s) {
     return tilesets.firstWhere((element) => element.name == s);
   }
 

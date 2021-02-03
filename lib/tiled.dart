@@ -8,6 +8,7 @@ import 'package:archive/archive.dart';
 import 'package:xml/xml.dart';
 
 part 'src/chunk.dart';
+part 'src/chunksize.dart';
 part 'src/editorsetting.dart';
 part 'src/export.dart';
 part 'src/flips.dart';

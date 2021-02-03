@@ -1,5 +1,4 @@
-import 'package:test/test.dart';
-import 'package:tiled/tiled.dart';
+
 
 /// Disabled this test, because of extensive use of default constructors.
 /// Think of alternatives.

@@ -109,33 +109,18 @@ class Layer {
   Layer.fromJson(Map<String, dynamic> json) {
     compression = json['compression'];
     encoding = json['encoding'];
-    if (json['chunks'] != null) {
-      chunks = <Chunk>[];
-      json['chunks'].forEach((v) {
-        chunks.add(Chunk.fromJson(v, encoding, compression));
-      });
-    }
+    chunks = (json['chunks'] as List)?.map((e) => Chunk.fromJson(e, encoding, compression))?.toList() ?? [];
     data = json['data'] != null ? decodeData(json['data'], encoding, compression) : [];
     drawOrder = json['draworder'];
     height = json['height'];
     id = json['id'];
     image = json['image'];
-    if (json['layers'] != null) {
-      layers = <Layer>[];
-      json['layers'].forEach((v) {
-        layers.add(Layer.fromJson(v));
-      });
-    }
+    layers = (json['layers'] as List)?.map((e) => Layer.fromJson(e))?.toList() ?? [];
     name = json['name'];
     offsetX = json['offsetx'];
     offsetY = json['offsety'];
     opacity = json['opacity']?.toDouble();
-    if (json['properties'] != null) {
-      properties = <Property>[];
-      json['properties'].forEach((v) {
-        properties.add(Property.fromJson(v));
-      });
-    }
+    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
     startX = json['startx'];
     startY = json['starty'];
     tintColor = json['tintcolor'];
@@ -145,12 +130,7 @@ class Layer {
     width = json['width'];
     x = json['x'];
     y = json['y'];
-    if (json['objects'] != null) {
-      objects = <TiledObject>[];
-      json['objects'].forEach((v) {
-        objects.add(TiledObject.fromJson(v));
-      });
-    }
+    objects = (json['objects'] as List)?.map((e) => TiledObject.fromJson(e))?.toList() ?? [];
     _generateTileMatrix();
   }
 

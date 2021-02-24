@@ -48,12 +48,7 @@ class Tile {
   }
 
   Tile.fromJson(Map<String, dynamic> json) {
-    if (json['animation'] != null) {
-      animation = <Frame>[];
-      json['animation'].forEach((v) {
-        animation.add(Frame.fromJson(v));
-      });
-    }
+    animation = (json['animation'] as List)?.map((e) => Frame.fromJson(e))?.toList() ?? [];
     gid = json['id'];
     if (json['image'] != null) {
       image =
@@ -61,18 +56,8 @@ class Tile {
     }
     objectGroup = json['objectgroup'];
     probability = json['probability'] ?? 0;
-    if (json['properties'] != null) {
-      properties = <Property>[];
-      json['properties'].forEach((v) {
-        properties.add(Property.fromJson(v));
-      });
-    }
-    if (json['terrain'] != null) {
-      terrain = <int>[];
-      json['terrain'].forEach((v) {
-        terrain.add(v);
-      });
-    }
+    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
+    terrain = (json['terrain'] as List)?.map((e) => e)?.toList() ?? []; //TODO correct?
     type = json['type'];
   }
 }

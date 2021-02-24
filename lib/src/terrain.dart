@@ -19,12 +19,7 @@ class Terrain {
 
   Terrain.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    if (json['properties'] != null) {
-      properties = <Property>[];
-      json['properties'].forEach((v) {
-        properties.add(Property.fromJson(v));
-      });
-    }
+    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
     tile = json['tile'];
   }
 }

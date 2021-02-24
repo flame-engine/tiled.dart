@@ -131,20 +131,10 @@ class TileSet {
     margin = json['margin'] ?? 0;
     name = json['name'];
     objectAlignment = json['objectalignment'];
-    if (json['properties'] != null) {
-      properties = <Property>[];
-      json['properties'].forEach((v) {
-        properties.add(Property.fromJson(v));
-      });
-    }
+    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
     source = json['source'];
     spacing = json['spacing'] ?? 0;
-    if (json['terrains'] != null) {
-      terrains = <Terrain>[];
-      json['terrains'].forEach((v) {
-        terrains.add(Terrain.fromJson(v));
-      });
-    }
+    terrains = (json['terrains'] as List)?.map((e) => Terrain.fromJson(e))?.toList() ?? [];
     tileCount = json['tilecount'];
     tiledVersion = json['tiledversion'];
     tileHeight = json['tileheight'];
@@ -171,11 +161,6 @@ class TileSet {
     transparentColor = json['transparentcolor'];
     type = json['type'];
     version = json['version'];
-    if (json['wangsets'] != null) {
-      wangSets = <WangSet>[];
-      json['wangsets'].forEach((v) {
-        wangSets.add(WangSet.fromJson(v));
-      });
-    }
+    wangSets = (json['wangsets'] as List)?.map((e) => WangSet.fromJson(e))?.toList() ?? [];
   }
 }

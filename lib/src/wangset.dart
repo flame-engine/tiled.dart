@@ -31,31 +31,11 @@ class WangSet {
   }
 
   WangSet.fromJson(Map<String, dynamic> json) {
-    if (json['cornercolors'] != null) {
-      cornerColors = <WangColor>[];
-      json['cornercolors'].forEach((v) {
-        cornerColors.add(WangColor.fromJson(v));
-      });
-    }
-    if (json['edgecolors'] != null) {
-      edgeColors = <WangColor>[];
-      json['edgecolors'].forEach((v) {
-        edgeColors.add(WangColor.fromJson(v));
-      });
-    }
+    cornerColors = (json['cornercolors'] as List)?.map((e) => WangColor.fromJson(e))?.toList() ?? [];
+    edgeColors = (json['edgecolors'] as List)?.map((e) => WangColor.fromJson(e))?.toList() ?? [];
     name = json['name'];
-    if (json['properties'] != null) {
-      properties = <Property>[];
-      json['properties'].forEach((v) {
-        properties.add(Property.fromJson(v));
-      });
-    }
+    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
     tile = json['tile'];
-    if (json['wangtiles'] != null) {
-      wangTiles = <WangTile>[];
-      json['wangtiles'].forEach((v) {
-        wangTiles.add(WangTile.fromJson(v));
-      });
-    }
+    wangTiles = (json['wangtiles'] as List)?.map((e) => WangTile.fromJson(e))?.toList() ?? [];
   }
 }

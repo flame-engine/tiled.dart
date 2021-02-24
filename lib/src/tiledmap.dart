@@ -27,11 +27,7 @@ class TiledMap {
   // Convenience Methods
   Tile getTileByGID(int cleanTileID){
     final TileSet tileset = getTilesetByTileID(cleanTileID);
-    final tiles = tileset.tiles.where((element) => element.gid == (cleanTileID - tileset.firstGId)).toList();
-    if(tiles.isNotEmpty){
-      return tiles.first;
-    }
-    return null;
+    return tileset.tiles.firstWhere((element) => element.gid == (cleanTileID - tileset.firstGId), orElse: () => null);
   }
 
   TileSet getTilesetByTileID(int cleanTileID){
@@ -140,37 +136,22 @@ class TiledMap {
     height = json['height'];
     hexSideLength = json['hexsidelength'];
     infinite = json['infinite'] ?? false;
-    if (json['layers'] != null) {
-      layers = <Layer>[];
-      json['layers'].forEach((v) {
-        layers.add(Layer.fromJson(v));
+    layers = (json['layers'] as List)?.map((e) => Layer.fromJson(e))?.toList() ?? [];
         // Could contain types:
         // - layers
         // - objectGroups
         // - imageLayers
         // - groups
-      });
-    }
     nextLayerId = json['nextlayerid'];
     nextObjectId = json['nextobjectid'];
     orientation = json['orientation'];
-    if (json['properties'] != null) {
-      properties = <Property>[];
-      json['properties'].forEach((v) {
-        properties.add(Property.fromJson(v));
-      });
-    }
+    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
     renderOrder = json['renderorder'] ?? "right-down";
     staggerAxis = json['staggeraxis'];
     staggerIndex = json['staggerindex'];
     tiledVersion = json['tiledversion'];
     tileHeight = json['tileheight'];
-    if (json['tilesets'] != null) {
-      tileSets = <TileSet>[];
-      json['tilesets'].forEach((v) {
-        tileSets.add(TileSet.fromJson(v));
-      });
-    }
+    tileSets = (json['tilesets'] as List)?.map((e) => TileSet.fromJson(e))?.toList() ?? [];
     tileWidth = json['tilewidth'];
     type = json['type'] ?? "map";
     version = json['version'];

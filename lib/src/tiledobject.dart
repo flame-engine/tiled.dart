@@ -81,24 +81,9 @@ class TiledObject {
     id = json['id'];
     name = json['name'];
     point = json['point'];
-    if (json['polygon'] != null) {
-      polygon = <Point>[];
-      json['polygon'].forEach((v) {
-        polygon.add(Point.fromJson(v));
-      });
-    }
-    if (json['polyline'] != null) {
-      polyline = <Point>[];
-      json['polyline'].forEach((v) {
-        polyline.add(Point.fromJson(v));
-      });
-    }
-    if (json['properties'] != null) {
-      properties = <Property>[];
-      json['properties'].forEach((v) {
-        properties.add(Property.fromJson(v));
-      });
-    }
+    polygon = (json['polygon'] as List)?.map((e) => Point.fromJson(e))?.toList() ?? [];
+    polyline = (json['polyline'] as List)?.map((e) => Point.fromJson(e))?.toList() ?? [];
+    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
     rotation = json['rotation']?.toDouble();
     template = json['template'] != null ? Template.fromJson(json['template']) : null;
     text = json['text'] != null ? Text.fromJson(json['text']) : null;

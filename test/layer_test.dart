@@ -22,7 +22,7 @@ void main() {
 
   group('Layer.fromXML', () {
     test('supports gzip', () {
-      final layer = mapTmx.layers.where((element) => element.type == 'tilelayer').first;
+      final layer = mapTmx.layers.where((element) => element.type == LayerType.tilelayer).first;
 
       expect(layer.tileIDMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
       expect(layer.tileIDMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -36,7 +36,7 @@ void main() {
       expect(layer.tileIDMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
     });
     test('supports zlib', () {
-      final layer = mapTmxBase64Gzip.layers.where((element) => element.type == 'tilelayer').first;
+      final layer = mapTmxBase64Gzip.layers.where((element) => element.type == LayerType.tilelayer).first;
 
       expect(layer.tileIDMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
       expect(layer.tileIDMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -55,7 +55,7 @@ void main() {
     Layer layer;
 
     setUp(() {
-      layer = mapTmx.layers.where((element) => element.type == 'tilelayer').first;
+      layer = mapTmx.layers.where((element) => element.type == LayerType.tilelayer).first;
     });
 
     test('is the expected size of 100', () {

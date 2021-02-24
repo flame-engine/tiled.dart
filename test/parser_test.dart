@@ -130,12 +130,12 @@ void main() {
     });
 
     test('and objectGroups is the correct length', () {
-      expect(map.layers.where((element) => element.type == 'objectgroup').length, equals(2));
+      expect(map.layers.where((element) => element.type == LayerType.objectlayer).length, equals(2));
     });
 
     group('and the first objectGroup', () {
       Layer og;
-      setUp(() => og = map.layers.where((element) => element.type == 'objectgroup').toList()[0]);
+      setUp(() => og = map.layers.where((element) => element.type == LayerType.objectlayer).toList()[0]);
 
       test('has the right #name', () {
         expect(og.name, equals('Test Object Layer 1'));

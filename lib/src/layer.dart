@@ -2,12 +2,11 @@ part of tiled;
 
 class Layer {
   List<Chunk> chunks = [];
-  String
-      compression; // zlib, gzip, zstd (since Tiled 1.3) or empty (default). tilelayer
+  Compression compression;
   List<int> data = [];
-  String drawOrder = 'topdown'; //topdown (default) or index. only objectgroup
-  String color; // only objectgroup; Not supported by json
-  String encoding = 'csv'; // csv (default) or base64. tilelayer
+  DrawOrder drawOrder = DrawOrder.topdown;
+  String color;
+  FileEncoding encoding = FileEncoding.csv;
   int height;
   int id;
   TiledImage image; // only on imageLayer
@@ -22,7 +21,7 @@ class Layer {
   int startY;
   String tintColor;
   String transparentColor;
-  String type; // tilelayer, objectgroup, imagelayer or group
+  LayerType type;
   bool visible;
   int width;
   int x;
@@ -33,8 +32,11 @@ class Layer {
   List<List<Flips>> tileFlips = [];
 
   Layer.fromXml(XmlNode xmlElement) {
-    drawOrder = xmlElement.getAttribute('draworder');// only ObjectGroup
-    color = xmlElement.getAttribute('color');// only ObjectGroup
+    drawOrder = DrawOrder.values.firstWhere(
+        (e) =>
+            e.name == xmlElement.getAttribute('draworder'),
+        orElse: () => null);
+    color = xmlElement.getAttribute('color'); // only ObjectGroup
     height = int.tryParse(xmlElement.getAttribute('height') ?? '');
     id = int.tryParse(xmlElement.getAttribute('id') ?? '');
     name = xmlElement.getAttribute('name');
@@ -48,7 +50,9 @@ class Layer {
     y = int.tryParse(xmlElement.getAttribute('y') ?? '');
     tintColor = xmlElement.getAttribute('tintcolor');
     transparentColor = xmlElement.getAttribute('transparentcolor');
-    type = xmlElement.getAttribute('type');
+    type = LayerType.values.firstWhere(
+        (e) => e.name == xmlElement.getAttribute('type'),
+        orElse: () => null);
     visible = int.tryParse(xmlElement.getAttribute('visible') ?? "1") == 1;
 
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
@@ -57,13 +61,17 @@ class Layer {
           image = TiledImage.fromXml(element);
           break;
         case 'data':
-          compression = element.getAttribute('compression');
-          encoding = element.getAttribute('encoding');
+          compression = Compression.values.firstWhere(
+              (e) => e.name == element.getAttribute('compression'),
+              orElse: () => null);
+          encoding = FileEncoding.values.firstWhere(
+              (e) => e.name == element.getAttribute('encoding'),
+              orElse: () => null);
           chunks = <Chunk>[];
           element.nodes.whereType<XmlElement>().forEach((element) {
             chunks.add(Chunk.fromXml(element, encoding, compression));
           });
-          if(chunks.isEmpty){
+          if (chunks.isEmpty) {
             data = decodeData(element.text, encoding, compression);
           }
           break;
@@ -79,22 +87,22 @@ class Layer {
           break;
         case 'layer':
           final layer = Layer.fromXml(element);
-          layer.type = 'tilelayer';
+          layer.type = LayerType.tilelayer;
           layers.add(layer);
           break;
         case 'objectgroup':
           final layer = Layer.fromXml(element);
-          layer.type = 'objectgroup';
+          layer.type = LayerType.objectlayer;
           layers.add(layer);
           break;
         case 'imagelayer':
           final layer = Layer.fromXml(element);
-          layer.type = 'imagelayer';
+          layer.type = LayerType.imagelayer;
           layers.add(layer);
           break;
         case 'group':
           final layer = Layer.fromXml(element);
-          layer.type = 'group';
+          layer.type = LayerType.group;
           layers.add(layer);
           break;
         case 'object':
@@ -107,39 +115,59 @@ class Layer {
   }
 
   Layer.fromJson(Map<String, dynamic> json) {
-    compression = json['compression'];
-    encoding = json['encoding'];
-    chunks = (json['chunks'] as List)?.map((e) => Chunk.fromJson(e, encoding, compression))?.toList() ?? [];
-    data = json['data'] != null ? decodeData(json['data'], encoding, compression) : [];
-    drawOrder = json['draworder'];
+    compression = Compression.values.firstWhere(
+        (e) => e.name == json['compression'],
+        orElse: () => null);
+    encoding = FileEncoding.values.firstWhere(
+        (e) => e.name == json['encoding'],
+        orElse: () => null);
+    chunks = (json['chunks'] as List)
+            ?.map((e) => Chunk.fromJson(e, encoding, compression))
+            ?.toList() ??
+        [];
+    data = json['data'] != null
+        ? decodeData(json['data'], encoding, compression)
+        : [];
+    drawOrder = DrawOrder.values.firstWhere(
+        (e) => e.name == json['draworder'],
+        orElse: () => null);
     height = json['height'];
     id = json['id'];
     image = json['image'];
-    layers = (json['layers'] as List)?.map((e) => Layer.fromJson(e))?.toList() ?? [];
+    layers =
+        (json['layers'] as List)?.map((e) => Layer.fromJson(e))?.toList() ?? [];
     name = json['name'];
     offsetX = json['offsetx'];
     offsetY = json['offsety'];
     opacity = json['opacity']?.toDouble();
-    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
+    properties = (json['properties'] as List)
+            ?.map((e) => Property.fromJson(e))
+            ?.toList() ??
+        [];
     startX = json['startx'];
     startY = json['starty'];
     tintColor = json['tintcolor'];
     transparentColor = json['transparentcolor'];
-    type = json['type'];
+    type = LayerType.values
+        .firstWhere((e) => e.name == json['type'], orElse: () => null);
     visible = json['visible'];
     width = json['width'];
     x = json['x'];
     y = json['y'];
-    objects = (json['objects'] as List)?.map((e) => TiledObject.fromJson(e))?.toList() ?? [];
+    objects = (json['objects'] as List)
+            ?.map((e) => TiledObject.fromJson(e))
+            ?.toList() ??
+        [];
     _generateTileMatrix();
   }
 
-  static List<int> decodeData(json, String encoding, String compression) {
+  static List<int> decodeData(
+      json, FileEncoding encoding, Compression compression) {
     if (json == null) {
       return null;
     }
 
-    if (encoding == null || encoding == 'csv') {
+    if (encoding == null || encoding == FileEncoding.csv) {
       return json.cast<int>();
     }
     //Ok, its base64
@@ -148,13 +176,13 @@ class Layer {
     //zlib, gzip, zstd or empty
     List<int> decompressed;
     switch (compression) {
-      case 'zlib':
+      case Compression.zlib:
         decompressed = ZLibDecoder().decodeBytes(decodedString);
         break;
-      case 'gzip':
+      case Compression.gzip:
         decompressed = GZipDecoder().decodeBytes(decodedString);
         break;
-      case 'zstd':
+      case Compression.zstd:
         //TODO zstd compression not supported in dart
         throw UnsupportedError("zstd is an unsupported compression");
       default:
@@ -169,7 +197,7 @@ class Layer {
     final uint32 = <int>[];
     for (var i = 0; i < decompressed.length; ++i) {
       if (i % 4 == 0) {
-        uint32.add(dv.getUint32(i,Endian.little));
+        uint32.add(dv.getUint32(i, Endian.little));
       }
     }
     return uint32;
@@ -180,20 +208,23 @@ class Layer {
   static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
   void _generateTileMatrix() {
-    if(height == null || width == null // objectlayer
-        || data.isEmpty // infinate map with chunks
-    ){
+    if (height == null ||
+            width == null // objectlayer
+            ||
+            data.isEmpty // infinate map with chunks
+        ) {
       return;
     }
     tileIDMatrix = List.generate(height, (_) => List<int>(width));
     tileFlips = List.generate(height, (_) => List<Flips>(width));
-    generateTiles(data,height, width, tileIDMatrix, tileFlips);
+    generateTiles(data, height, width, tileIDMatrix, tileFlips);
   }
 
-  static void generateTiles(List<int> data, int chunkheight, int chunkwidth, List<List<int>> matrix, List<List<Flips>> flips) {
+  static void generateTiles(List<int> data, int chunkheight, int chunkwidth,
+      List<List<int>> matrix, List<List<Flips>> flips) {
     for (var y = 0; y < chunkheight; ++y) {
       for (var x = 0; x < chunkwidth; ++x) {
-        int id = data[(y*chunkwidth) + x];
+        int id = data[(y * chunkwidth) + x];
         // get flips from id
         final bool flippedHorizontally =
             (id & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
@@ -203,10 +234,11 @@ class Layer {
             (id & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
         //clear id from flips
         id &= ~(FLIPPED_HORIZONTALLY_FLAG |
-        FLIPPED_VERTICALLY_FLAG |
-        FLIPPED_DIAGONALLY_FLAG);
+            FLIPPED_VERTICALLY_FLAG |
+            FLIPPED_DIAGONALLY_FLAG);
         matrix[y][x] = id;
-        flips[y][x] = Flips(flippedHorizontally, flippedVertically, flippedDiagonally);
+        flips[y][x] =
+            Flips(flippedHorizontally, flippedVertically, flippedDiagonally);
       }
     }
   }

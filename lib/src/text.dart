@@ -4,28 +4,32 @@ class Text {
   bool bold = false;
   String color = '#000000';
   String fontFamily = 'sans-serif';
-  String hAlign = 'left'; // center, right, justify or left
+  HAlign hAlign = HAlign.left;
   bool italic = false;
   bool kerning = true;
   int pixelSize = 16;
   bool strikeout = false;
   String text = "";
   bool underline = false;
-  String vAlign = 'top'; // center, bottom or top
+  VAlign vAlign = VAlign.top;
   bool wrap = false;
 
   Text.fromXml(XmlElement element) {
     bold = (element.getAttribute('bold') ?? '0') == '1';
     color = element.getAttribute('color') ?? '#000000';
     fontFamily = element.getAttribute('fontfamily') ?? 'sans-serif';
-    hAlign = element.getAttribute('halign') ?? 'left'; // left, center, right or justify, defaults to left
+    hAlign = HAlign.values.firstWhere(
+        (e) => e.name == element.getAttribute('halign'),
+        orElse: () => HAlign.left);
     italic = (element.getAttribute('italic') ?? '0') == '1';
     kerning = (element.getAttribute('kerning') ?? '0') == '1';
     pixelSize = int.tryParse(element.getAttribute('pixelsize') ?? '16');
     strikeout = (element.getAttribute('strikeout') ?? '0') == '1';
     text = element.text ?? '';
     underline = (element.getAttribute('underline') ?? '0') == '1';
-    vAlign = element.getAttribute('valign') ?? 'top'; // top , center or bottom, defaults to top
+    vAlign = VAlign.values.firstWhere(
+        (e) => e.name == element.getAttribute('valign'),
+        orElse: () => VAlign.top);
     wrap = (element.getAttribute('wrap') ?? '0') == '1';
   }
 
@@ -33,14 +37,16 @@ class Text {
     bold = json['bold'];
     color = json['color'];
     fontFamily = json['fontfamily'];
-    hAlign = json['halign'];
+    hAlign = HAlign.values.firstWhere((e) => e.name == json['halign'],
+        orElse: () => HAlign.left);
     italic = json['italic'];
     kerning = json['kerning'];
     pixelSize = json['pixelsize'];
     strikeout = json['strikeout'];
     text = json['text'];
     underline = json['underline'];
-    vAlign = json['valign'];
+    vAlign = VAlign.values.firstWhere((e) => e.name == json['valign'],
+        orElse: () => VAlign.top);
     wrap = json['wrap'];
   }
 }

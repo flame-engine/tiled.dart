@@ -12,7 +12,8 @@ class Chunk {
   List<List<int>> tileIdMatrix;
   List<List<Flips>> tileFlips;
 
-  Chunk.fromXml(XmlNode xmlElement, String encoding, String compression) {
+  Chunk.fromXml(
+      XmlNode xmlElement, FileEncoding encoding, Compression compression) {
     height = int.tryParse(xmlElement.getAttribute('height') ?? '');
     width = int.tryParse(xmlElement.getAttribute('width') ?? '');
     x = int.tryParse(xmlElement.getAttribute('x') ?? '');
@@ -24,7 +25,8 @@ class Chunk {
     Layer.generateTiles(data, height, width, tileIdMatrix, tileFlips);
   }
 
-  Chunk.fromJson(Map<String, dynamic> json, String encoding, String compression) {
+  Chunk.fromJson(Map<String, dynamic> json, FileEncoding encoding,
+      Compression compression) {
     data = Layer.decodeData(json['data'], encoding, compression);
     height = json['height'];
     width = json['width'];

@@ -4,7 +4,7 @@ class Tile {
   List<Frame> animation = [];
   int gid;
   TiledImage image;
-  Layer objectgroup;
+  Layer objectGroup;
   double probability;
   List<Property> properties = [];
   List<int> terrain = []; // index of the terrain
@@ -40,7 +40,7 @@ class Tile {
           });
           break;
         case 'objectgroup':
-          objectgroup = Layer.fromXml(
+          objectGroup = Layer.fromXml(
               element);
           break;
       }
@@ -59,7 +59,7 @@ class Tile {
       image =
           TiledImage(json['image'], json['imageheight'], json['imagewidth']);
     }
-    objectgroup = json['objectgroup'];
+    objectGroup = json['objectgroup'];
     probability = json['probability'] ?? 0;
     if (json['properties'] != null) {
       properties = <Property>[];

@@ -5,7 +5,7 @@ class Layer {
   String
       compression; // zlib, gzip, zstd (since Tiled 1.3) or empty (default). tilelayer
   List<int> data = [];
-  String draworder = 'topdown'; //topdown (default) or index. only objectgroup
+  String drawOrder = 'topdown'; //topdown (default) or index. only objectgroup
   String color; // only objectgroup; Not supported by json
   String encoding = 'csv'; // csv (default) or base64. tilelayer
   int height;
@@ -14,14 +14,14 @@ class Layer {
   List<Layer> layers = [];
   String name;
   List<TiledObject> objects = [];
-  double offsetx;
-  double offsety;
+  double offsetX;
+  double offsetY;
   double opacity;
   List<Property> properties = [];
-  int startx;
-  int starty;
-  String tintcolor;
-  String transparentcolor;
+  int startX;
+  int startY;
+  String tintColor;
+  String transparentColor;
   String type; // tilelayer, objectgroup, imagelayer or group
   bool visible;
   int width;
@@ -33,21 +33,21 @@ class Layer {
   List<List<Flips>> tileFlips = [];
 
   Layer.fromXml(XmlNode xmlElement) {
-    draworder = xmlElement.getAttribute('draworder');// only ObjectGroup
+    drawOrder = xmlElement.getAttribute('draworder');// only ObjectGroup
     color = xmlElement.getAttribute('color');// only ObjectGroup
     height = int.tryParse(xmlElement.getAttribute('height') ?? '');
     id = int.tryParse(xmlElement.getAttribute('id') ?? '');
     name = xmlElement.getAttribute('name');
-    offsetx = double.tryParse(xmlElement.getAttribute('offsetx') ?? '');
-    offsety = double.tryParse(xmlElement.getAttribute('offsety') ?? '');
+    offsetX = double.tryParse(xmlElement.getAttribute('offsetx') ?? '');
+    offsetY = double.tryParse(xmlElement.getAttribute('offsety') ?? '');
     opacity = double.tryParse(xmlElement.getAttribute('opacity') ?? '');
-    startx = int.tryParse(xmlElement.getAttribute('startx') ?? '');
-    starty = int.tryParse(xmlElement.getAttribute('starty') ?? '');
+    startX = int.tryParse(xmlElement.getAttribute('startx') ?? '');
+    startY = int.tryParse(xmlElement.getAttribute('starty') ?? '');
     width = int.tryParse(xmlElement.getAttribute('width') ?? '');
     x = int.tryParse(xmlElement.getAttribute('x') ?? '');
     y = int.tryParse(xmlElement.getAttribute('y') ?? '');
-    tintcolor = xmlElement.getAttribute('tintcolor');
-    transparentcolor = xmlElement.getAttribute('transparentcolor');
+    tintColor = xmlElement.getAttribute('tintcolor');
+    transparentColor = xmlElement.getAttribute('transparentcolor');
     type = xmlElement.getAttribute('type');
     visible = int.tryParse(xmlElement.getAttribute('visible') ?? "1") == 1;
 
@@ -116,7 +116,7 @@ class Layer {
       });
     }
     data = json['data'] != null ? decodeData(json['data'], encoding, compression) : [];
-    draworder = json['draworder'];
+    drawOrder = json['draworder'];
     height = json['height'];
     id = json['id'];
     image = json['image'];
@@ -127,8 +127,8 @@ class Layer {
       });
     }
     name = json['name'];
-    offsetx = json['offsetx'];
-    offsety = json['offsety'];
+    offsetX = json['offsetx'];
+    offsetY = json['offsety'];
     opacity = json['opacity']?.toDouble();
     if (json['properties'] != null) {
       properties = <Property>[];
@@ -136,10 +136,10 @@ class Layer {
         properties.add(Property.fromJson(v));
       });
     }
-    startx = json['startx'];
-    starty = json['starty'];
-    tintcolor = json['tintcolor'];
-    transparentcolor = json['transparentcolor'];
+    startX = json['startx'];
+    startY = json['starty'];
+    tintColor = json['tintcolor'];
+    transparentColor = json['transparentcolor'];
     type = json['type'];
     visible = json['visible'];
     width = json['width'];

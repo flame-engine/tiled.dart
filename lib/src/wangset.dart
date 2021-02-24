@@ -1,12 +1,12 @@
 part of tiled;
 
 class WangSet {
-  List<WangColor> cornercolors = [];
-  List<WangColor> edgecolors = [];
+  List<WangColor> cornerColors = [];
+  List<WangColor> edgeColors = [];
   String name;
   List<Property> properties = [];
   int tile;
-  List<WangTile> wangtiles = [];
+  List<WangTile> wangTiles = [];
 
   WangSet.fromXml(XmlElement xmlElement) {
     name  = xmlElement.getAttribute('name');
@@ -15,16 +15,16 @@ class WangSet {
       switch (element.name.local) {
         case 'wangcolor':
           if( xmlElement.getAttribute('type') == 'corner'){
-            cornercolors.add(WangColor.fromXml(element));
+            cornerColors.add(WangColor.fromXml(element));
           }else{
-            edgecolors.add(WangColor.fromXml(element));
+            edgeColors.add(WangColor.fromXml(element));
           }
           break;
         case 'properties':
           element.nodes.whereType<XmlElement>().forEach((element) {properties.add(Property.fromXml(element));});
           break;
         case 'wangtile':
-          wangtiles.add(WangTile.fromXml(element));
+          wangTiles.add(WangTile.fromXml(element));
           break;
       }
     });
@@ -32,15 +32,15 @@ class WangSet {
 
   WangSet.fromJson(Map<String, dynamic> json) {
     if (json['cornercolors'] != null) {
-      cornercolors = <WangColor>[];
+      cornerColors = <WangColor>[];
       json['cornercolors'].forEach((v) {
-        cornercolors.add(WangColor.fromJson(v));
+        cornerColors.add(WangColor.fromJson(v));
       });
     }
     if (json['edgecolors'] != null) {
-      edgecolors = <WangColor>[];
+      edgeColors = <WangColor>[];
       json['edgecolors'].forEach((v) {
-        edgecolors.add(WangColor.fromJson(v));
+        edgeColors.add(WangColor.fromJson(v));
       });
     }
     name = json['name'];
@@ -52,9 +52,9 @@ class WangSet {
     }
     tile = json['tile'];
     if (json['wangtiles'] != null) {
-      wangtiles = <WangTile>[];
+      wangTiles = <WangTile>[];
       json['wangtiles'].forEach((v) {
-        wangtiles.add(WangTile.fromJson(v));
+        wangTiles.add(WangTile.fromJson(v));
       });
     }
   }

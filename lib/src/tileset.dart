@@ -1,43 +1,43 @@
 part of tiled;
 
-class Tileset {
-  String backgroundcolor;
+class TileSet {
+  String backgroundColor;
   int columns;
-  int firstgid;
+  int firstGId;
   Grid grid;
   TiledImage image;
   int margin;
   String name;
-  String objectalignment;
+  String objectAlignment;
   List<Property> properties = [];
   String source;
   int spacing;
   List<Terrain> terrains = [];
-  int tilecount;
-  String tiledversion;
-  TileOffset tileoffset;
+  int tileCount;
+  String tiledVersion;
+  TileOffset tileOffset;
   List<Tile> tiles = [];
-  int tileheight;
-  int tilewidth;
-  String transparentcolor;
+  int tileHeight;
+  int tileWidth;
+  String transparentColor;
   String type;
   num version;
-  List<WangSet> wangsets = [];
+  List<WangSet> wangSets = [];
 
-  Tileset.fromXml(XmlNode xmlElement, {TsxProvider tsx}) {
-    backgroundcolor = xmlElement.getAttribute('backgroundcolor');
+  TileSet.fromXml(XmlNode xmlElement, {TsxProvider tsx}) {
+    backgroundColor = xmlElement.getAttribute('backgroundcolor');
     columns = int.tryParse(xmlElement.getAttribute('columns') ?? '');
-    firstgid = int.tryParse(xmlElement.getAttribute('firstgid') ?? '');
+    firstGId = int.tryParse(xmlElement.getAttribute('firstgid') ?? '');
     margin = int.tryParse(xmlElement.getAttribute('margin') ?? '0');
     name = xmlElement.getAttribute('name');
-    objectalignment = xmlElement.getAttribute('objectalignment');
+    objectAlignment = xmlElement.getAttribute('objectalignment');
     source = xmlElement.getAttribute('source');
     spacing = int.tryParse(xmlElement.getAttribute('spacing') ?? '0');
-    tilecount = int.tryParse(xmlElement.getAttribute('tilecount') ?? '');
-    tileheight = int.tryParse(xmlElement.getAttribute('tileheight') ?? '');
-    tiledversion = xmlElement.getAttribute('tiledversion');
-    tilewidth = int.tryParse(xmlElement.getAttribute('tilewidth') ?? '');
-    transparentcolor = xmlElement.getAttribute('transparentcolor');
+    tileCount = int.tryParse(xmlElement.getAttribute('tilecount') ?? '');
+    tileHeight = int.tryParse(xmlElement.getAttribute('tileheight') ?? '');
+    tiledVersion = xmlElement.getAttribute('tiledversion');
+    tileWidth = int.tryParse(xmlElement.getAttribute('tilewidth') ?? '');
+    transparentColor = xmlElement.getAttribute('transparentcolor');
     type = xmlElement.getAttribute('type');
     version = int.tryParse(xmlElement.getAttribute('version') ?? '');
 
@@ -52,7 +52,7 @@ class Tileset {
           grid = Grid.fromXml(element);
           break;
         case 'tileoffset':
-          tileoffset = TileOffset.fromXml(element);
+          tileOffset = TileOffset.fromXml(element);
           break;
         case 'properties':
           element.nodes.whereType<XmlElement>().forEach((element) {
@@ -69,7 +69,7 @@ class Tileset {
           break;
         case 'wangsets':
           element.nodes.whereType<XmlElement>().forEach((element) {
-            wangsets.add(WangSet.fromXml(element));
+            wangSets.add(WangSet.fromXml(element));
           });
           break;
       }
@@ -79,7 +79,7 @@ class Tileset {
 
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? iterator.current : Tile(-1);
-    for (var i = 0; i < tilecount; ++i) {
+    for (var i = 0; i < tileCount; ++i) {
       if(t.gid == i){
         tiles.add(t);
         if(iterator.moveNext()) {
@@ -93,44 +93,44 @@ class Tileset {
 
   void _checkIfExtenalTsx(String source, TsxProvider tsx) {
     if (tsx != null && source != null) {
-      final Tileset tileset = Tileset.fromXml(tsx.getSource(source));
+      final TileSet tileset = TileSet.fromXml(tsx.getSource(source));
       //Copy attributes if not null
-      backgroundcolor = tileset.backgroundcolor ?? backgroundcolor;
+      backgroundColor = tileset.backgroundColor ?? backgroundColor;
       columns = tileset.columns ?? columns;
-      firstgid = tileset.firstgid ?? firstgid;
+      firstGId = tileset.firstGId ?? firstGId;
       grid = tileset.grid ?? grid;
       image = tileset.image ?? image;
       margin = tileset.margin ?? margin;
       name = tileset.name ?? name;
-      objectalignment = tileset.objectalignment ?? objectalignment;
+      objectAlignment = tileset.objectAlignment ?? objectAlignment;
       spacing = tileset.spacing ?? spacing;
-      tilecount = tileset.tilecount ?? tilecount;
-      tiledversion = tileset.tiledversion ?? tiledversion;
-      tileoffset = tileset.tileoffset ?? tileoffset;
-      tileheight = tileset.tileheight ?? tileheight;
-      tilewidth = tileset.tilewidth ?? tilewidth;
-      transparentcolor = tileset.transparentcolor ?? transparentcolor;
+      tileCount = tileset.tileCount ?? tileCount;
+      tiledVersion = tileset.tiledVersion ?? tiledVersion;
+      tileOffset = tileset.tileOffset ?? tileOffset;
+      tileHeight = tileset.tileHeight ?? tileHeight;
+      tileWidth = tileset.tileWidth ?? tileWidth;
+      transparentColor = tileset.transparentColor ?? transparentColor;
       type = tileset.type ?? type;
       version = tileset.version ?? version;
       //Add List-Attributes
       properties.addAll(tileset.properties);
       terrains.addAll(tileset.terrains);
       tiles.addAll(tileset.tiles);
-      wangsets.addAll(tileset.wangsets);
+      wangSets.addAll(tileset.wangSets);
     }
   }
 
-  Tileset.fromJson(Map<String, dynamic> json) {
-    backgroundcolor = json['backgroundcolor'];
+  TileSet.fromJson(Map<String, dynamic> json) {
+    backgroundColor = json['backgroundcolor'];
     columns = json['columns'];
-    firstgid = json['firstgid'];
+    firstGId = json['firstgid'];
     grid = json['grid'] != null ? Grid.fromJson(json['grid']) : null;
     if (json['image'] != null) {
       image = TiledImage(json['image'], json['imageheight'], json['imagewidth']);
     }
     margin = json['margin'] ?? 0;
     name = json['name'];
-    objectalignment = json['objectalignment'];
+    objectAlignment = json['objectalignment'];
     if (json['properties'] != null) {
       properties = <Property>[];
       json['properties'].forEach((v) {
@@ -145,10 +145,10 @@ class Tileset {
         terrains.add(Terrain.fromJson(v));
       });
     }
-    tilecount = json['tilecount'];
-    tiledversion = json['tiledversion'];
-    tileheight = json['tileheight'];
-    tileoffset = json['tileoffset'] != null
+    tileCount = json['tilecount'];
+    tiledVersion = json['tiledversion'];
+    tileHeight = json['tileheight'];
+    tileOffset = json['tileoffset'] != null
         ? TileOffset.fromJson(json['tileoffset'])
         : null;
 
@@ -156,7 +156,7 @@ class Tileset {
 
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? Tile.fromJson(iterator.current) : Tile(-1);
-    for (var i = 0; i < tilecount; ++i) {
+    for (var i = 0; i < tileCount; ++i) {
       if(t.gid == i){
         tiles.add(t);
         if(iterator.moveNext()) {
@@ -167,14 +167,14 @@ class Tileset {
       }
     }
 
-    tilewidth = json['tilewidth'];
-    transparentcolor = json['transparentcolor'];
+    tileWidth = json['tilewidth'];
+    transparentColor = json['transparentcolor'];
     type = json['type'];
     version = json['version'];
     if (json['wangsets'] != null) {
-      wangsets = <WangSet>[];
+      wangSets = <WangSet>[];
       json['wangsets'].forEach((v) {
-        wangsets.add(WangSet.fromJson(v));
+        wangSets.add(WangSet.fromJson(v));
       });
     }
   }

@@ -2,58 +2,58 @@ part of tiled;
 
 
 class TiledMap {
-  String backgroundcolor;
-  int compressionlevel;
-  List<Editorsetting> editorsettings;
+  String backgroundColor;
+  int compressionLevel;
+  List<EditorSetting> editorSettings;
   int height;
-  int hexsidelength;
+  int hexSideLength;
   bool infinite;
   List<Layer> layers = [];
-  int nextlayerid;
-  int nextobjectid;
+  int nextLayerId;
+  int nextObjectId;
   String orientation; // orthogonal, isometric, staggered or hexagonal
   List<Property> properties = [];
-  String renderorder; // right-down (the default), right-up, left-down and left-up.
-  String staggeraxis; // x or y
-  String staggerindex; // odd or even
-  String tiledversion;
-  int tileheight;
-  List<Tileset> tilesets = [];
-  int tilewidth;
+  String renderOrder; // right-down (the default), right-up, left-down and left-up.
+  String staggerAxis; // x or y
+  String staggerIndex; // odd or even
+  String tiledVersion;
+  int tileHeight;
+  List<TileSet> tileSets = [];
+  int tileWidth;
   String type;
   num version;
   int width;
 
   // Convenience Methods
   Tile getTileByGID(int cleanTileID){
-    final Tileset tileset = getTilesetByTileID(cleanTileID);
-    final tiles = tileset.tiles.where((element) => element.gid == (cleanTileID - tileset.firstgid)).toList();
+    final TileSet tileset = getTilesetByTileID(cleanTileID);
+    final tiles = tileset.tiles.where((element) => element.gid == (cleanTileID - tileset.firstGId)).toList();
     if(tiles.isNotEmpty){
       return tiles.first;
     }
     return null;
   }
 
-  Tileset getTilesetByTileID(int cleanTileID){
-    if(tilesets.length == 1){
-      return tilesets.first;
+  TileSet getTilesetByTileID(int cleanTileID){
+    if(tileSets.length == 1){
+      return tileSets.first;
     }
-    for (var i = 0; i < tilesets.length; ++i) {
-      if(tilesets[i].firstgid > cleanTileID){
-        return tilesets[i-1];
+    for (var i = 0; i < tileSets.length; ++i) {
+      if(tileSets[i].firstGId > cleanTileID){
+        return tileSets[i-1];
       }
     }
-    return tilesets.last;
+    return tileSets.last;
   }
 
   List<TiledImage> getTiledImages(){
     final imageSet = <TiledImage>{};
-    for (var i = 0; i < tilesets.length; ++i) {
-      if(tilesets[i].image != null) {
-        imageSet.add(tilesets[i].image);
+    for (var i = 0; i < tileSets.length; ++i) {
+      if(tileSets[i].image != null) {
+        imageSet.add(tileSets[i].image);
       }
-      for (var j = 0; j < tilesets[i].tiles.length; ++j) {
-        final Tile t = tilesets[i].tiles[j];
+      for (var j = 0; j < tileSets[i].tiles.length; ++j) {
+        final Tile t = tileSets[i].tiles[j];
         if(t.image != null){
           imageSet.add(t.image);
         }
@@ -71,25 +71,25 @@ class TiledMap {
     return layers.firstWhere((element) => element.name == s);
   }
 
-  Tileset getTilesetByName(String s) {
-    return tilesets.firstWhere((element) => element.name == s);
+  TileSet getTilesetByName(String s) {
+    return tileSets.firstWhere((element) => element.name == s);
   }
 
   TiledMap.fromXml(XmlElement xmlElement, {TsxProvider tsx}) {
-    backgroundcolor = xmlElement.getAttribute('backgroundcolor');
-    compressionlevel = int.tryParse(xmlElement.getAttribute('compressionlevel') ?? "-1"); //defaults to -1
+    backgroundColor = xmlElement.getAttribute('backgroundcolor');
+    compressionLevel = int.tryParse(xmlElement.getAttribute('compressionlevel') ?? "-1"); //defaults to -1
     height = int.tryParse(xmlElement.getAttribute('height') ?? '');
-    hexsidelength = int.tryParse(xmlElement.getAttribute('hexsidelength') ?? '');
+    hexSideLength = int.tryParse(xmlElement.getAttribute('hexsidelength') ?? '');
     infinite = int.tryParse(xmlElement.getAttribute('infinite') ?? "0") != 0;  // 0 for false, 1 for true, defaults to 0)
-    nextlayerid = int.tryParse(xmlElement.getAttribute('nextlayerid') ?? '');
-    nextobjectid = int.tryParse(xmlElement.getAttribute('nextobjectid') ?? '');
+    nextLayerId = int.tryParse(xmlElement.getAttribute('nextlayerid') ?? '');
+    nextObjectId = int.tryParse(xmlElement.getAttribute('nextobjectid') ?? '');
     orientation = xmlElement.getAttribute('orientation');
-    renderorder = xmlElement.getAttribute('renderorder') ?? "right-down"; // right-down (the default), right-up, left-down and left-up.
-    staggeraxis = xmlElement.getAttribute('staggeraxis');
-    staggerindex = xmlElement.getAttribute('staggerindex');
-    tiledversion = xmlElement.getAttribute('tiledversion');
-    tileheight = int.tryParse(xmlElement.getAttribute('tileheight') ?? '');
-    tilewidth = int.tryParse(xmlElement.getAttribute('tilewidth') ?? '');
+    renderOrder = xmlElement.getAttribute('renderorder') ?? "right-down"; // right-down (the default), right-up, left-down and left-up.
+    staggerAxis = xmlElement.getAttribute('staggeraxis');
+    staggerIndex = xmlElement.getAttribute('staggerindex');
+    tiledVersion = xmlElement.getAttribute('tiledversion');
+    tileHeight = int.tryParse(xmlElement.getAttribute('tileheight') ?? '');
+    tileWidth = int.tryParse(xmlElement.getAttribute('tilewidth') ?? '');
     type = "map"; // only set in jsonImport
     version = int.tryParse(xmlElement.getAttribute('version') ?? '');
     width = int.tryParse(xmlElement.getAttribute('width') ?? '');
@@ -97,7 +97,7 @@ class TiledMap {
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
         case 'tileset':
-          tilesets.add(Tileset.fromXml(element, tsx: tsx));
+          tileSets.add(TileSet.fromXml(element, tsx: tsx));
           break;
         case 'layer':
           final layer = Layer.fromXml(element);
@@ -123,7 +123,7 @@ class TiledMap {
           element.nodes.whereType<XmlElement>().forEach((element) {properties.add(Property.fromXml(element));});
           break;
         case 'editorsettings':
-          element.nodes.whereType<XmlElement>().forEach((element) {editorsettings.add(Editorsetting.fromXml(element));});
+          element.nodes.whereType<XmlElement>().forEach((element) {editorSettings.add(EditorSetting.fromXml(element));});
           break;
       }
     });
@@ -131,14 +131,14 @@ class TiledMap {
 
 
   TiledMap.fromJson(Map<String, dynamic> json) {
-    backgroundcolor = json['backgroundcolor'];
-    compressionlevel = json['compressionlevel'] ?? -1;
+    backgroundColor = json['backgroundcolor'];
+    compressionLevel = json['compressionlevel'] ?? -1;
     if (json['editorsettings'] != null) {
-      editorsettings = <Editorsetting>[];
-      editorsettings.add(Editorsetting.fromJson(json['editorsettings']));
+      editorSettings = <EditorSetting>[];
+      editorSettings.add(EditorSetting.fromJson(json['editorsettings']));
     }
     height = json['height'];
-    hexsidelength = json['hexsidelength'];
+    hexSideLength = json['hexsidelength'];
     infinite = json['infinite'] ?? false;
     if (json['layers'] != null) {
       layers = <Layer>[];
@@ -151,8 +151,8 @@ class TiledMap {
         // - groups
       });
     }
-    nextlayerid = json['nextlayerid'];
-    nextobjectid = json['nextobjectid'];
+    nextLayerId = json['nextlayerid'];
+    nextObjectId = json['nextobjectid'];
     orientation = json['orientation'];
     if (json['properties'] != null) {
       properties = <Property>[];
@@ -160,18 +160,18 @@ class TiledMap {
         properties.add(Property.fromJson(v));
       });
     }
-    renderorder = json['renderorder'] ?? "right-down";
-    staggeraxis = json['staggeraxis'];
-    staggerindex = json['staggerindex'];
-    tiledversion = json['tiledversion'];
-    tileheight = json['tileheight'];
+    renderOrder = json['renderorder'] ?? "right-down";
+    staggerAxis = json['staggeraxis'];
+    staggerIndex = json['staggerindex'];
+    tiledVersion = json['tiledversion'];
+    tileHeight = json['tileheight'];
     if (json['tilesets'] != null) {
-      tilesets = <Tileset>[];
+      tileSets = <TileSet>[];
       json['tilesets'].forEach((v) {
-        tilesets.add(Tileset.fromJson(v));
+        tileSets.add(TileSet.fromJson(v));
       });
     }
-    tilewidth = json['tilewidth'];
+    tileWidth = json['tilewidth'];
     type = json['type'] ?? "map";
     version = json['version'];
     width = json['width'];

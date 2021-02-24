@@ -9,7 +9,7 @@ class Chunk {
 
   // Convenience
 
-  List<List<int>> tileIDMatrix;
+  List<List<int>> tileIdMatrix;
   List<List<Flips>> tileFlips;
 
   Chunk.fromXml(XmlNode xmlElement, String encoding, String compression) {
@@ -19,9 +19,9 @@ class Chunk {
     y = int.tryParse(xmlElement.getAttribute('y') ?? '');
     data = Layer.decodeData(xmlElement.text, encoding, compression);
 
-    tileIDMatrix = List.generate(height, (_) => List<int>(width));
+    tileIdMatrix = List.generate(height, (_) => List<int>(width));
     tileFlips = List.generate(height, (_) => List<Flips>(width));
-    Layer.generateTiles(data, height, width, tileIDMatrix, tileFlips);
+    Layer.generateTiles(data, height, width, tileIdMatrix, tileFlips);
   }
 
   Chunk.fromJson(Map<String, dynamic> json, String encoding, String compression) {
@@ -31,7 +31,7 @@ class Chunk {
     x = json['x'];
     y = json['y'];
 
-    tileIDMatrix = List.generate(height, (_) => List<int>(width));
+    tileIdMatrix = List.generate(height, (_) => List<int>(width));
     tileFlips = List.generate(height, (_) => List<Flips>(width));
   }
 }

@@ -2,7 +2,7 @@ part of tiled;
 
 class TiledObject {
   bool ellipse = false;
-  int gid;
+  int gId;
   double height;
   int id;
   String name;
@@ -27,7 +27,7 @@ class TiledObject {
     rotation = double.tryParse(xmlElement.getAttribute('rotation') ?? '0');
     visible = int.tryParse(xmlElement.getAttribute('visible') ?? '1') == 1;
     id = int.tryParse(xmlElement.getAttribute('id') ?? '');
-    gid = int.tryParse(xmlElement.getAttribute('gid') ?? '');
+    gId = int.tryParse(xmlElement.getAttribute('gid') ?? '');
     name = xmlElement.getAttribute('name');
     type = xmlElement.getAttribute('type');
 
@@ -76,7 +76,7 @@ class TiledObject {
 
   TiledObject.fromJson(Map<String, dynamic> json) {
     ellipse = json['ellipse'];
-    gid = json['gid'];
+    gId = json['gid'];
     height = json['height']?.toDouble();
     id = json['id'];
     name = json['name'];

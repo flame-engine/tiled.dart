@@ -1,27 +1,27 @@
 part of tiled;
 
 class WangTile {
-  bool dflip;
-  bool hflip;
-  int tileid;
-  bool vflip;
-  List<int> wangid;
+  bool dFlip;
+  bool hFlip;
+  int tileId;
+  bool vFlip;
+  List<int> wangId;
 
   WangTile.fromXml(XmlElement xmlElement) {
-    tileid  = int.tryParse(xmlElement.getAttribute('tileid') ?? '');
-    dflip  = xmlElement.getAttribute('dflip') == 'true';
-    hflip  = xmlElement.getAttribute('hflip') == 'true';
-    vflip  = xmlElement.getAttribute('vflip') == 'true';
+    tileId  = int.tryParse(xmlElement.getAttribute('tileid') ?? '');
+    dFlip  = xmlElement.getAttribute('dflip') == 'true';
+    hFlip  = xmlElement.getAttribute('hflip') == 'true';
+    vFlip  = xmlElement.getAttribute('vflip') == 'true';
     final id = xmlElement.getAttribute('wangid') ?? "";
     final idList = id.split(",").map(int.parse).toList();
     _setWangid(idList);
   }
 
   WangTile.fromJson(Map<String, dynamic> json) {
-    dflip = json['dflip'];
-    hflip = json['hflip'];
-    tileid = json['tileid'];
-    vflip = json['vflip'];
+    dFlip = json['dflip'];
+    hFlip = json['hflip'];
+    tileId = json['tileid'];
+    vFlip = json['vflip'];
     _setWangid(json['wangid'] ?? []);
   }
 
@@ -34,6 +34,6 @@ class WangTile {
         uint32.add(dv.getUint32(i,Endian.little));
       }
     }
-    wangid = uint32;
+    wangId = uint32;
   }
 }

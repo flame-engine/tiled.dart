@@ -30,8 +30,8 @@ void main() {
         expect(row.length, equals(0));
       });
       expect(layer.chunks.length, equals(8));
-      expect(layer.chunks[0].tileIDMatrix.length, equals(16));
-      layer.chunks[0].tileIDMatrix.forEach((row) {
+      expect(layer.chunks[0].tileIdMatrix.length, equals(16));
+      layer.chunks[0].tileIdMatrix.forEach((row) {
         expect(row.length, equals(16));
       });
 
@@ -50,8 +50,8 @@ void main() {
         expect(row.length, equals(0));
       });
       expect(layer.chunks.length, equals(8));
-      expect(layer.chunks[0].tileIDMatrix.length, equals(16));
-      layer.chunks[0].tileIDMatrix.forEach((row) {
+      expect(layer.chunks[0].tileIdMatrix.length, equals(16));
+      layer.chunks[0].tileIdMatrix.forEach((row) {
         expect(row.length, equals(16));
       });
     });

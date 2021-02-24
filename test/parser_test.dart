@@ -28,26 +28,26 @@ void main() {
   });
 
   group('Parser.parse returns a populated Map that', () {
-    test('has its tileWidth = 32', () => expect(map.tilewidth, equals(32)));
-    test('has its tileHeight = 32', () => expect(map.tileheight, equals(32)));
+    test('has its tileWidth = 32', () => expect(map.tileWidth, equals(32)));
+    test('has its tileHeight = 32', () => expect(map.tileHeight, equals(32)));
   });
 
   group('Parser.parse populates Map with tilesets', () {
     test('and Map.tilesets is the correct size', () {
-      expect(map.tilesets.length, equals(1));
+      expect(map.tileSets.length, equals(1));
     });
 
     group('and the first tileset', () {
-      Tileset tileset;
-      setUp(() => tileset = map.tilesets[0]);
+      TileSet tileset;
+      setUp(() => tileset = map.tileSets[0]);
 
-      test('has its firstgid = 1', () => expect(tileset.firstgid, equals(1)));
+      test('has its firstgid = 1', () => expect(tileset.firstGId, equals(1)));
       test('has its name = "basketball"', () {
         expect(tileset.name, equals('basketball'));
       });
 
-      test('has its tilewidth = 32', () => expect(tileset.tilewidth, equals(32)));
-      test('has its tileheight = 32', () => expect(tileset.tileheight, equals(32)));
+      test('has its tilewidth = 32', () => expect(tileset.tileWidth, equals(32)));
+      test('has its tileheight = 32', () => expect(tileset.tileHeight, equals(32)));
       // test('has its map = map', () => expect(tileset.map, equals(map)));
       test('has its image', () => expect(tileset.image, isNotNull));
 
@@ -151,7 +151,7 @@ void main() {
     });
 
     test('and global tileset image', () {
-      final Tileset tileset = map.getTilesetByName('default');
+      final TileSet tileset = map.getTilesetByName('default');
       expect(tileset.image.source, equals('level1.png'));
       // final Tile tile1 = map.getTileByGID(tileset.firstgid);
       // expect(tileset.images.length, equals(1));
@@ -172,7 +172,7 @@ void main() {
     });
 
     test('and image per tile', () {
-      final Tileset tileset = map.getTilesetByName('other');
+      final TileSet tileset = map.getTilesetByName('other');
       // final Tile tile1 = map.getTileByGID(tileset.firstgid);
       // final Tile tile2 = map.getTileByGID(tileset.firstgid + 1);
       expect(tileset.image, isNull);

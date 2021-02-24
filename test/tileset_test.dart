@@ -16,14 +16,14 @@ void main() {
   // });
 
   group('Tileset.fromXML', () {
-    Tileset tileset;
+    TileSet tileset;
     setUp(() {
       return File('./test/fixtures/map_with_spacing_margin.tmx')
           .readAsString()
           .then((xml) {
         final xmlRoot = XmlDocument.parse(xml).rootElement;
         final tilesetXml = xmlRoot.findAllElements('tileset').first;
-        tileset = Tileset.fromXml(tilesetXml);
+        tileset = TileSet.fromXml(tilesetXml);
       });
     });
     test('spacing = 1', () => expect(tileset.spacing, equals(1)));

@@ -8,7 +8,6 @@ class Chunk {
   int y;
 
   // Convenience
-
   List<List<int>> tileIdMatrix;
   List<List<Flips>> tileFlips;
 
@@ -35,5 +34,6 @@ class Chunk {
 
     tileIdMatrix = List.generate(height, (_) => List<int>(width));
     tileFlips = List.generate(height, (_) => List<Flips>(width));
+    Layer.generateTiles(data, height, width, tileIdMatrix, tileFlips);
   }
 }

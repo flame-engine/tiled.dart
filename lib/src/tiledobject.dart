@@ -45,7 +45,7 @@ class TiledObject {
           for (var i = 0; i < pointString.length; ++i) {
             pointString.forEach((element) {
               final List<String> ps = element.split(",");
-              polygon.add(Point(int.parse(ps[0]), int.parse(ps[1])));
+              polygon.add(Point(double.parse(ps[0]), double.parse(ps[1])));
             });
           }
           break;
@@ -55,7 +55,7 @@ class TiledObject {
           for (var i = 0; i < pointString.length; ++i) {
             pointString.forEach((element) {
               final List<String> ps = element.split(",");
-              polyline.add(Point(int.parse(ps[0]), int.parse(ps[1])));
+              polyline.add(Point(double.parse(ps[0]), double.parse(ps[1])));
             });
           }
           break;

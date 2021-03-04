@@ -1,14 +1,14 @@
 part of tiled;
 
 class Point {
-  num x;
-  num y;
+  double x;
+  double y;
 
   Point(this.x, this.y);
 
   Point.fromXml(XmlElement xmlElement) {
-    x  = int.tryParse(xmlElement.getAttribute('x') ?? '');
-    y  = int.tryParse(xmlElement.getAttribute('y') ?? '');
+    x  = double.tryParse(xmlElement.getAttribute('x') ?? '');
+    y  = double.tryParse(xmlElement.getAttribute('y') ?? '');
   }
 
   Point.fromJson(Map<String, dynamic> json) {

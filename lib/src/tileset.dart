@@ -77,9 +77,12 @@ class TileSet {
 
     _checkIfExtenalTsx(source, tsx);
 
+    if(tileCount == null && tilelist.isNotEmpty){
+      tileCount = tilelist.last.gid;
+    }
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? iterator.current : Tile(-1);
-    for (var i = 0; i < tileCount; ++i) {
+    for (var i = 0; i <= tileCount; ++i) {
       if(t.gid == i){
         tiles.add(t);
         if(iterator.moveNext()) {
@@ -144,9 +147,12 @@ class TileSet {
 
     final tilelist = json['tiles'] ?? <Map<String, dynamic>>[];
 
+    if(tileCount == null && tilelist.isNotEmpty){
+      tileCount = tilelist.last.gid;
+    }
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? Tile.fromJson(iterator.current) : Tile(-1);
-    for (var i = 0; i < tileCount; ++i) {
+    for (var i = 0; i <= tileCount; ++i) {
       if(t.gid == i){
         tiles.add(t);
         if(iterator.moveNext()) {
@@ -162,5 +168,16 @@ class TileSet {
     type = json['type'];
     version = json['version'];
     wangSets = (json['wangsets'] as List)?.map((e) => WangSet.fromJson(e))?.toList() ?? [];
+  }
+
+  Rectangle computeDrawRect(Tile tile) {
+    if (tile.image != null) {
+      return Rectangle(0, 0, tile.image.width, tile.image.height);
+    }
+    final row = (tile.gid - firstGId) ~/ columns;
+    final column = (tile.gid - firstGId) % columns;
+    final x = margin + (column * (tileWidth + spacing));
+    final y = margin + (row * (tileHeight + spacing));
+    return Rectangle(x, y, tileWidth + spacing, tileHeight + spacing);
   }
 }

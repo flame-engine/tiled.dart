@@ -4,6 +4,12 @@ import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {
+  TiledMap oldmap;
+  setUp(() {
+    return File('./test/fixtures/test_old.tmx').readAsString().then((xml) {
+      oldmap = TileMapParser.parseTmx(xml);
+    });
+  });
 
   TiledMap map;
   setUp(() {
@@ -81,6 +87,8 @@ void main() {
   });
 
   group('Parser compare', () {
+    test('toString should be equal', () => expect(oldmap.type, equals(tilemap.type)));
+
     test('toString should be equal', () => expect(map.type, equals(tilemap.type)));
     test('toString should be equal', () => expect(map2.type, equals(tilemap.type)));
     test('toString should be equal', () => expect(map3.type, equals(tilemap.type)));

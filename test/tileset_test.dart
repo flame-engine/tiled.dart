@@ -4,16 +4,15 @@ import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {
-  // TODO no default constructor on Tileset
-  // group('Tileset defaults', () {
-  //   Tileset tileset;
-  //   setUp(() => tileset = Tileset(1));
-  //   test('spacing == 0', () => expect(tileset.spacing, equals(0)));
-  //   test('margin == 0', () => expect(tileset.margin, equals(0)));
-  //   test('tileProperties == {}', () {
-  //     expect(tileset.tileProperties, equals({}));
-  //   });
-  // });
+  group('Tileset defaults', () {
+    TileSet tileset;
+    setUp(() => tileset = TileSet('Humans', 1, 32, 64*32, []));
+    test('spacing == 0', () => expect(tileset.spacing, equals(0)));
+    test('margin == 0', () => expect(tileset.margin, equals(0)));
+    test('tileProperties == {}', () {
+      expect(tileset.properties, equals([]));
+    });
+  });
 
   group('Tileset.fromXML', () {
     TileSet tileset;

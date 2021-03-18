@@ -5,7 +5,7 @@ void main() {
   group('Tile.emptyTile()', () {
     test('creates a tile with GID = 0', () {
       final tile = Tile(0);
-      expect(tile.gid, equals(0));
+      expect(tile.localId, equals(0));
     });
   });
 
@@ -18,7 +18,7 @@ void main() {
     });
 
     test('returns false if gid != 0', () {
-      final tile = Tile(0)..gid = 1;
+      final tile = Tile(0)..localId = 1;
       expect(tile.isEmpty, isFalse);
     });
   });
@@ -29,16 +29,10 @@ void main() {
   });
 
   // TODO no default constructor on Tileset
-  // test('Tile.properties queries Tileset.tileProperties correctly', () {
-  //   final ts = Tileset(1)..tileProperties[1] = {'tile_property': 'tile_value'};
-  //   final tile = Tile(0, ts);
-  //
-  //   expect(tile.properties, equals({'tile_property': 'tile_value'}));
-  // });
-  //
-  // test('Tile.properties matches if Tileset.tileProperties if empty', () {
-  //   final ts = Tileset(1);
-  //   final tile = Tile(2, ts);
-  //   expect(tile.properties, equals({}));
-  // });
+  test('Tile.properties queries Tileset.tileProperties correctly', () {
+    final tile = Tile(0)..properties.add(Property('tile_property', 'type', 'tile_value'));
+    expect(tile.properties.first.name, equals('tile_property'));
+    expect(tile.properties.first.type, equals('type'));
+    expect(tile.properties.first.value, equals('tile_value'));
+  });
 }

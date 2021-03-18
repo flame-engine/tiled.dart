@@ -15,9 +15,6 @@ void main() {
   setUp(() {
     return File('./test/fixtures/testcsv.json').readAsString().then((xml) {
       map = TileMapParser.parseJson(xml);
-      // var out = new File('jsonoutcome.json').openWrite();
-      // out.write(map.toTileMap());
-      // out.close();
     });
   });
 
@@ -48,9 +45,6 @@ void main() {
   setUp(() {
     return File('./test/fixtures/test.tmx').readAsString().then((xml) {
       tilemap = TileMapParser.parseTmx(xml);
-      // var out = new File('tmxoutcome.json').openWrite();
-      // out.write(tilemap);
-      // out.close();
     });
   });
 
@@ -58,9 +52,6 @@ void main() {
   setUp(() {
     return File('./test/fixtures/map.tmx').readAsString().then((xml) {
       tilemapEllipse = TileMapParser.parseTmx(xml);
-      // var out = new File('tmxoutcome.json').openWrite();
-      // out.write(tilemap);
-      // out.close();
     });
   });
 

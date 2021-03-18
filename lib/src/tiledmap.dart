@@ -23,20 +23,52 @@ class TiledMap {
   num version;
   int width;
 
+  TiledMap();
+
   // Convenience Methods
-  Tile getTileByGID(int cleanTileID) {
-    final TileSet tileset = getTilesetByTileID(cleanTileID);
+  Tile getTileByGId(int tileGId) {
+    if (tileGId == 0) {
+      return Tile(0);
+    }
+    final TileSet tileset = getTilesetByTileGId(tileGId);
     return tileset.tiles.firstWhere(
-        (element) => element.gid == (cleanTileID - tileset.firstGId),
-        orElse: () => null);
+        (element) => element.localId == (tileGId - tileset.firstGId),
+        orElse: null);
   }
 
-  TileSet getTilesetByTileID(int cleanTileID) {
+  Tile getTileByLocalID(String tileSetName, int localId) {
+    final TileSet tileset = getTilesetByName(tileSetName);
+    return tileset.tiles.firstWhere(
+            (element) => element.localId == localId,
+        orElse: null);
+  }
+
+  Tile getTileByPhrase(String tilePhrase) {
+    final split = tilePhrase.split('|');
+    if (split.length != 2) {
+      throw ArgumentError(
+        '$tilePhrase not in the format of "TilesetName|LocalTileID"',
+      );
+    }
+
+    final tilesetName = split.first;
+    final tileId = int.tryParse(split.last);
+    if (tileId == null) {
+      throw ArgumentError('Local tile ID ${split.last} is not an integer.');
+    }
+
+    return getTileByLocalID(tilesetName, tileId);
+  }
+
+  TileSet getTilesetByTileGId(int tileGId) {
     if (tileSets.length == 1) {
       return tileSets.first;
     }
     for (var i = 0; i < tileSets.length; ++i) {
-      if (tileSets[i].firstGId > cleanTileID) {
+      if (tileSets[i].firstGId > tileGId) {
+        if(i == 0){
+          throw ArgumentError('Tileset not found');
+        }
         return tileSets[i - 1];
       }
     }
@@ -64,12 +96,12 @@ class TiledMap {
     return imageSet.toList();
   }
 
-  Layer getLayerByName(String s) {
-    return layers.firstWhere((element) => element.name == s);
+  Layer getLayerByName(String name) {
+    return layers.firstWhere((element) => element.name == name, orElse: () => throw ArgumentError('Layer $name not found'));
   }
 
-  TileSet getTilesetByName(String s) {
-    return tileSets.firstWhere((element) => element.name == s);
+  TileSet getTilesetByName(String name) {
+    return tileSets.firstWhere((element) => element.name == name, orElse: () => throw ArgumentError('Tileset $name not found'));
   }
 
   TiledMap.fromXml(XmlElement xmlElement, {TsxProvider tsx}) {

@@ -24,6 +24,24 @@ class TileSet {
   num version;
   List<WangSet> wangSets = [];
 
+  TileSet(this.name, this.firstGId, this.columns, this.tileCount, List<Tile> tilelist){
+    if(tileCount == null && tilelist.isNotEmpty){
+      tileCount = tilelist.last.localId;
+    }
+    final iterator = tilelist.iterator;
+    Tile t = iterator.moveNext() ? iterator.current : Tile(-1);
+    for (var i = 0; i <= tileCount; ++i) {
+      if(t.localId == i){
+        tiles.add(t);
+        if(iterator.moveNext()) {
+          t = iterator.current;
+        }
+      }else{
+        tiles.add(Tile(i));
+      }
+    }
+  }
+
   TileSet.fromXml(XmlNode xmlElement, {TsxProvider tsx}) {
     backgroundColor = xmlElement.getAttribute('backgroundcolor');
     columns = int.tryParse(xmlElement.getAttribute('columns') ?? '');
@@ -78,12 +96,12 @@ class TileSet {
     _checkIfExtenalTsx(source, tsx);
 
     if(tileCount == null && tilelist.isNotEmpty){
-      tileCount = tilelist.last.gid;
+      tileCount = tilelist.last.localId;
     }
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? iterator.current : Tile(-1);
     for (var i = 0; i <= tileCount; ++i) {
-      if(t.gid == i){
+      if(t.localId == i){
         tiles.add(t);
         if(iterator.moveNext()) {
           t = iterator.current;
@@ -148,12 +166,12 @@ class TileSet {
     final tilelist = json['tiles'] ?? <Map<String, dynamic>>[];
 
     if(tileCount == null && tilelist.isNotEmpty){
-      tileCount = tilelist.last.gid;
+      tileCount = tilelist.last.localId;
     }
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? Tile.fromJson(iterator.current) : Tile(-1);
     for (var i = 0; i <= tileCount; ++i) {
-      if(t.gid == i){
+      if(t.localId == i){
         tiles.add(t);
         if(iterator.moveNext()) {
           t = Tile.fromJson(iterator.current);
@@ -174,8 +192,8 @@ class TileSet {
     if (tile.image != null) {
       return Rectangle(0, 0, tile.image.width, tile.image.height);
     }
-    final row = (tile.gid - firstGId) ~/ columns;
-    final column = (tile.gid - firstGId) % columns;
+    final row = (tile.localId - firstGId) ~/ columns;
+    final column = (tile.localId - firstGId) % columns;
     final x = margin + (column * (tileWidth + spacing));
     final y = margin + (row * (tileHeight + spacing));
     return Rectangle(x, y, tileWidth + spacing, tileHeight + spacing);

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
@@ -153,21 +154,20 @@ void main() {
     test('and global tileset image', () {
       final TileSet tileset = map.getTilesetByName('default');
       expect(tileset.image.source, equals('level1.png'));
-      // final Tile tile1 = map.getTileByGID(tileset.firstgid);
-      // expect(tileset.images.length, equals(1));
-      // expect(tile1.image.source, equals('level1.png'));
-      // expect(tile1.computeDrawRect(), equals(math.Rectangle(0, 0, 16, 16)));
+      final Tile tile1 = map.getTileByGId(tileset.firstGId);
+      // TODO drawRect???
+      // expect(tileset.computeDrawRect(tile1), equals(const math.Rectangle(0, 0, 16, 16)));
       // expect(
-      //   map.getTileByGID(tileset.firstgid + 1).computeDrawRect(),
-      //   equals(math.Rectangle(16, 0, 16, 16)),
+      //   tileset.computeDrawRect(map.getTileByGId(tileset.firstGId + 1)),
+      //   equals(const math.Rectangle(16, 0, 16, 16)),
       // );
       // expect(
-      //   map.getTileByGID(tileset.firstgid + 17).computeDrawRect(),
-      //   equals(math.Rectangle(0, 16, 16, 16)),
+      //   tileset.computeDrawRect(map.getTileByGId(tileset.firstGId + 17)),
+      //   equals(const math.Rectangle(0, 16, 16, 16)),
       // );
       // expect(
-      //   map.getTileByGID(tileset.firstgid + 19).computeDrawRect(),
-      //   equals(math.Rectangle(32, 16, 16, 16)),
+      //   tileset.computeDrawRect(map.getTileByGId(tileset.firstGId + 19)),
+      //   equals(const math.Rectangle(32, 16, 16, 16)),
       // );
     });
 
@@ -181,6 +181,7 @@ void main() {
       expect(tiledImages[0].source, equals('level1.png'));
       expect(tiledImages[1].source, equals('image1.png'));
       expect(tiledImages[2].source, equals('image2.png'));
+      // TODO drawRect???
       // expect(tile1.image.source, equals('image1.png'));
       // expect(tile1.computeDrawRect(), equals(math.Rectangle(0, 0, 32, 32)));
       // expect(tile2.image.source, equals('image2.png'));

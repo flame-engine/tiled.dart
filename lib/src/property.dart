@@ -5,6 +5,8 @@ class Property {
   String type;
   String value;
 
+  Property(this.name, this.type, this.value);
+
   Property.fromXml(XmlNode element) {
     value = element.getAttribute('value');
     name = element.getAttribute('name');

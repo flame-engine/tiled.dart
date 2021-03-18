@@ -2,7 +2,7 @@ part of tiled;
 
 class Tile {
   List<Frame> animation = [];
-  int gid;
+  int localId;
   TiledImage image;
   Layer objectGroup;
   double probability;
@@ -10,12 +10,12 @@ class Tile {
   List<int> terrain = []; // index of the terrain
   String type;
 
-  Tile(this.gid);
+  Tile(this.localId);
 
-  bool get isEmpty => gid == 0;
+  bool get isEmpty => localId == 0;
 
   Tile.fromXml(XmlElement xmlElement) {
-    gid = int.tryParse(xmlElement.getAttribute('id') ?? '');
+    localId = int.tryParse(xmlElement.getAttribute('id') ?? '');
     probability =
         double.tryParse(xmlElement.getAttribute('probability') ?? '0');
     type = xmlElement.getAttribute('type');
@@ -49,7 +49,7 @@ class Tile {
 
   Tile.fromJson(Map<String, dynamic> json) {
     animation = (json['animation'] as List)?.map((e) => Frame.fromJson(e))?.toList() ?? [];
-    gid = json['id'];
+    localId = json['id'];
     if (json['image'] != null) {
       image =
           TiledImage(json['image'], json['imageheight'], json['imagewidth']);

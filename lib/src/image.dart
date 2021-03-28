@@ -1,7 +1,7 @@
 part of tiled;
 
 class Image {
-  String source;
+  String? source;
   num width;
   num height;
 

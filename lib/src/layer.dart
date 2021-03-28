@@ -5,19 +5,19 @@ class Layer {
   static const int FLIPPED_VERTICALLY_FLAG = 0x40000000;
   static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
-  String name;
-  int width;
-  int height;
-  bool visible;
+  String? name;
+  int? width;
+  int? height;
+  bool? visible;
 
-  Map<String, dynamic> properties = {};
+  Map<String?, dynamic> properties = {};
 
-  TileMap map;
-  List<List<int>> tileMatrix;
-  List<List<Flips>> tileFlips;
+  TileMap? map;
+  late List<List<int?>> tileMatrix;
+  late List<List<Flips?>> tileFlips;
 
-  List<List<Tile>> _tiles;
-  List<List<Tile>> get tiles {
+  List<List<Tile?>>? _tiles;
+  List<List<Tile?>>? get tiles {
     if (_tiles == null) {
       _recalculateTiles();
     }
@@ -27,10 +27,6 @@ class Layer {
   Layer(this.name, this.width, this.height);
 
   Layer.fromXML(XmlElement element) {
-    if (element == null) {
-      throw 'arg "element" cannot be null';
-    }
-
     NodeDSL.on(element, (dsl) {
       name = dsl.strOr('name', name);
       width = dsl.intOr('width', width);
@@ -38,10 +34,7 @@ class Layer {
       visible = dsl.boolOr('visible', true);
     });
 
-    final dataElement = element.children.firstWhere(
-      (node) => node is XmlElement && node.name.local == 'data',
-      orElse: () => null,
-    );
+    final dataElement = element.getElement('data');
     if (dataElement is XmlElement) {
       final decoder = TileMapParser._getDecoder(
         dataElement.getAttribute('encoding'),
@@ -61,12 +54,14 @@ class Layer {
 
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
   void assembleTileMatrix(var bytes) {
-    tileMatrix = List.generate(height, (_) => List<int>(width));
-    tileFlips = List.generate(height, (_) => List<Flips>(width));
+    tileMatrix = List.generate(
+        height!, (_) => List<int?>.filled(width!, null, growable: false));
+    tileFlips = List.generate(
+        height!, (_) => List<Flips?>.filled(width!, null, growable: false));
 
     var tileIndex = 0;
-    for (var y = 0; y < height; ++y) {
-      for (var x = 0; x < width; ++x) {
+    for (var y = 0; y < height!; ++y) {
+      for (var x = 0; x < width!; ++x) {
         var globalTileId = bytes[tileIndex] |
             bytes[tileIndex + 1] << 8 |
             bytes[tileIndex + 2] << 16 |
@@ -104,25 +99,26 @@ class Layer {
     int px = 0;
     int py = 0;
 
-    _tiles = List.generate(height, (_) => List<Tile>(width));
-    _tiles.asMap().forEach((j, List<Tile> rows) {
+    _tiles = List.generate(
+        height!, (_) => List<Tile?>.filled(width!, null, growable: false));
+    _tiles!.asMap().forEach((j, List<Tile?> rows) {
       px = 0;
 
-      rows.asMap().forEach((i, Tile t) {
+      rows.asMap().forEach((i, Tile? t) {
         final tileId = tileMatrix[j][i];
         final flips = tileFlips[j][i];
-        final tile = map.getTileByGID(tileId)
+        final tile = map!.getTileByGID(tileId)
           ..x = i
           ..y = j
           ..px = px
           ..py = py
           ..flips = flips;
 
-        _tiles[j][i] = tile;
-        px += map.tileWidth;
+        _tiles![j][i] = tile;
+        px += map!.tileWidth!;
       });
 
-      py += map.tileHeight;
+      py += map!.tileHeight!;
     });
   }
 }

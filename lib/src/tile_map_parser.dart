@@ -3,7 +3,7 @@ part of tiled;
 class TileMapParser {
   TileMapParser();
 
-  TileMap parse(String xml, {TsxProvider tsx}) {
+  TileMap parse(String xml, {TsxProvider? tsx}) {
     final xmlElement = _parseXml(xml).rootElement;
 
     if (xmlElement.name.local != 'map') {
@@ -11,10 +11,10 @@ class TileMapParser {
     }
 
     final map = TileMap();
-    map.tileWidth = int.parse(xmlElement.getAttribute('tilewidth'));
-    map.tileHeight = int.parse(xmlElement.getAttribute('tileheight'));
-    map.width = int.parse(xmlElement.getAttribute('width'));
-    map.height = int.parse(xmlElement.getAttribute('height'));
+    map.tileWidth = int.parse(xmlElement.getAttribute('tilewidth')!);
+    map.tileHeight = int.parse(xmlElement.getAttribute('tileheight')!);
+    map.width = int.parse(xmlElement.getAttribute('width')!);
+    map.height = int.parse(xmlElement.getAttribute('height')!);
 
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
@@ -38,19 +38,19 @@ class TileMapParser {
   static Image _parseImage(XmlElement node) {
     return Image(
       node.getAttribute('source'),
-      int.parse(node.getAttribute('width')),
-      int.parse(node.getAttribute('height')),
+      int.parse(node.getAttribute('width')!),
+      int.parse(node.getAttribute('height')!),
     );
   }
 
-  static Map<String, dynamic> _parsePropertiesFromElement(XmlElement element) {
+  static Map<String?, dynamic> _parsePropertiesFromElement(XmlElement element) {
     return TileMapParser._parseProperties(
       TileMapParser._getPropertyNodes(element),
     );
   }
 
-  static Map<String, dynamic> _parseProperties(nodes) {
-    final map = <String, dynamic>{};
+  static Map<String?, dynamic> _parseProperties(nodes) {
+    final map = <String?, dynamic>{};
 
     nodes.forEach((property) {
       final attrs = property.getAttribute;
@@ -81,11 +81,12 @@ class TileMapParser {
     return base64.decode(sanitized);
   }
 
-  static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
-    final propertyNode = node.children.whereType<XmlElement>().firstWhere(
-          (element) => element.name.local == 'properties',
-          orElse: () => null,
-        );
+  static Iterable<XmlElement>? _getPropertyNodes(XmlElement node) {
+    final XmlElement? propertyNode =
+        node.children.whereType<XmlElement?>().firstWhere(
+              (element) => element!.name.local == 'properties',
+              orElse: () => null,
+            );
     if (propertyNode == null) {
       return [];
     }
@@ -94,7 +95,7 @@ class TileMapParser {
 
   static List<Point> _getPoints(XmlElement node) {
     // Format: points="0,0 -5,98 -49,42"
-    final points = node.getAttribute('points').split(' ');
+    final points = node.getAttribute('points')!.split(' ');
     return points.map((point) {
       final arr = point.split(',');
       final p = (str) => double.parse(str);
@@ -102,7 +103,7 @@ class TileMapParser {
     }).toList();
   }
 
-  static Uint8List Function(String) _getDecoder(String encodingType) {
+  static Uint8List Function(String) _getDecoder(String? encodingType) {
     switch (encodingType) {
       case 'base64':
         return _decodeBase64;
@@ -111,12 +112,12 @@ class TileMapParser {
     }
   }
 
-  static List<int> Function(List<int>) _getDecompressor(
-    String compressionType,
+  static List<int> Function(List<int>)? _getDecompressor(
+    String? compressionType,
   ) {
     switch (compressionType) {
       case 'zlib':
-        return ZLibDecoder().decodeBytes;
+        return const ZLibDecoder().decodeBytes;
       case 'gzip':
         return GZipDecoder().decodeBytes;
       default:

@@ -10,9 +10,9 @@ class Flips {
   const Flips.defaults() : this(false, false, false);
 
   Flips copyWith({
-    bool horizontally,
-    bool vertically,
-    bool diagonally,
+    bool? horizontally,
+    bool? vertically,
+    bool? diagonally,
   }) {
     return Flips(
       horizontally ?? this.horizontally,

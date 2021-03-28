@@ -4,11 +4,12 @@ description: A Dart Tiled library. Parse your TMX files into useful representati
 homepage: https://github.com/flame-engine/tiled.dart
 
 dependencies:
-  archive: ^2.0.13
-  xml: ^4.2.0
+  archive: ^3.1.2
+  xml: ^5.0.2
+  collection: ^1.15.0-nullsafety.4
 
 dev_dependencies:
-  test: any
+  test: ^1.16.8
 
 environment:
-  sdk: ">=2.3.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'

@@ -5,7 +5,7 @@ import 'dart:async';
 import 'dart:io';
 
 void main() {
-  XmlElement xmlRoot, xmlRootBase64Gzip;
+  XmlElement? xmlRoot, xmlRootBase64Gzip;
 
   // Urgh. var xml = File.read(/* ... */); >:/
   setUp(() {
@@ -22,7 +22,7 @@ void main() {
 
   group('Layer.fromXML', () {
     test('supports gzip', () {
-      final layerNode = xmlRootBase64Gzip.findAllElements('layer').first;
+      final layerNode = xmlRootBase64Gzip!.findAllElements('layer').first;
       final layer = Layer.fromXML(layerNode);
 
       expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -37,7 +37,7 @@ void main() {
       expect(layer.tileMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
     });
     test('supports zlib', () {
-      final layerNode = xmlRoot.findAllElements('layer').first;
+      final layerNode = xmlRoot!.findAllElements('layer').first;
       final layer = Layer.fromXML(layerNode);
 
       expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -55,7 +55,7 @@ void main() {
 
   group('Layer.tiles', () {
     TileMap map;
-    Layer layer;
+    late Layer layer;
 
     setUp(() {
       map = TileMapParser().parse(xmlRoot.toString());
@@ -63,16 +63,16 @@ void main() {
     });
 
     test('is the expected size of 100', () {
-      expect(layer.tiles.length, equals(10));
-      layer.tiles.forEach((row) {
+      expect(layer.tiles!.length, equals(10));
+      layer.tiles!.forEach((row) {
         expect(row.length, equals(10));
       });
     });
 
     test('calculates the x and y correctly for every tile', () {
-      final coords = <List<int>>[];
-      layer.tiles.forEach(
-        (row) => row.forEach((tile) => coords.add([tile.x, tile.y])),
+      final List<List<int?>> coords = <List<int?>>[];
+      layer.tiles!.forEach(
+        (row) => row.forEach((tile) => coords.add([tile!.x, tile.y])),
       );
 
       // Tileset is 32x32 in test.tmx, and the map is 10x10.

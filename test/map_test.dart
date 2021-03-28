@@ -4,8 +4,8 @@ import 'package:tiled/tiled.dart' as tiled;
 void main() {
   // GID is 1-based
   group('Map.getTileByGID', () {
-    tiled.Tile tile;
-    tiled.TileMap map;
+    late tiled.Tile tile;
+    late tiled.TileMap map;
     setUp(() {
       map = tiled.TileMap();
       // 2 tilesets:
@@ -49,7 +49,7 @@ void main() {
   });
 
   group('Map.getTileByLocalID', () {
-    tiled.TileMap map;
+    late tiled.TileMap map;
     final tileset = tiled.Tileset(1)
       ..name = 'Humans'
       ..height = 64
@@ -67,7 +67,7 @@ void main() {
     });
 
     group('returns a tile', () {
-      tiled.Tile tile;
+      late tiled.Tile tile;
       setUp(() => tile = map.getTileByLocalID('Humans', 0));
 
       test('with the expected Tileset', () {
@@ -81,7 +81,7 @@ void main() {
   });
 
   group('Map.getTileByPhrase', () {
-    tiled.TileMap map;
+    late tiled.TileMap map;
     final tileset = tiled.Tileset(1)
       ..name = 'Humans'
       ..height = 64
@@ -110,7 +110,7 @@ void main() {
     });
 
     group('returns a tile', () {
-      tiled.Tile tile;
+      late tiled.Tile tile;
       setUp(() => tile = map.getTileByPhrase('Humans|0'));
 
       test('with the expected Tileset', () {
@@ -124,7 +124,7 @@ void main() {
   });
 
   group('Map.getTileset', () {
-    tiled.TileMap map;
+    late tiled.TileMap map;
     final tileset = tiled.Tileset(1)..name = 'Humans';
     setUp(() {
       map = tiled.TileMap();

@@ -1,25 +1,25 @@
 part of tiled;
 
 class Tileset {
-  int firstgid;
-  int width;
-  int height;
-  int spacing = 0;
-  int margin = 0;
-  String name;
-  String source;
+  int? firstgid;
+  int? width;
+  int? height;
+  int? spacing = 0;
+  int? margin = 0;
+  String? name;
+  String? source;
 
-  TileMap map;
+  TileMap? map;
 
-  Image image;
+  Image? image;
   List<Image> images = [];
-  Map<String, dynamic> properties = {};
-  Map<int, Map<String, dynamic>> tileProperties = {};
-  Map<int, Image> tileImage = {};
+  Map<String?, dynamic> properties = {};
+  Map<int, Map<String?, dynamic>> tileProperties = {};
+  Map<int, Image?> tileImage = {};
 
   Tileset(this.firstgid);
 
-  Tileset.fromXML(XmlElement element, {TsxProvider tsx}) {
+  Tileset.fromXML(XmlElement element, {TsxProvider? tsx}) {
     _parseTilesetAttributes(element);
     element = _checkIfExtenalTsx(element, tsx);
     _parseTilesetAttributes(element);
@@ -31,8 +31,8 @@ class Tileset {
 
     // Parse tile properties, if present.
     element.findElements('tile').forEach((XmlElement tileNode) {
-      final tileId = int.parse(tileNode.getAttribute('id'));
-      final tileGid = tileId + firstgid;
+      final tileId = int.parse(tileNode.getAttribute('id')!);
+      final tileGid = tileId + firstgid!;
       tileProperties[tileGid] =
           TileMapParser._parsePropertiesFromElement(tileNode);
       final image = _findImage(tileNode);
@@ -53,7 +53,7 @@ class Tileset {
     });
   }
 
-  XmlElement _checkIfExtenalTsx(XmlElement element, TsxProvider tsx) {
+  XmlElement _checkIfExtenalTsx(XmlElement element, TsxProvider? tsx) {
     final filename = element.getAttribute('source');
     if (tsx != null && filename != null) {
       return _parseXml(tsx.getSource(filename)).rootElement;
@@ -61,7 +61,7 @@ class Tileset {
     return element;
   }
 
-  Image _findImage(XmlElement element) {
+  Image? _findImage(XmlElement element) {
     final list = element
         .findElements('image')
         .map((XmlElement node) => TileMapParser._parseImage(node));

@@ -1,14 +1,14 @@
 part of tiled;
 
 class TileMap {
-  int tileWidth;
-  int tileHeight;
-  int width;
-  int height;
+  int? tileWidth;
+  int? tileHeight;
+  int? width;
+  int? height;
   List<Tileset> tilesets = [];
   List<Layer> layers = [];
   List<ObjectGroup> objectGroups = [];
-  Map<String, dynamic> properties = {};
+  Map<String?, dynamic> properties = {};
 
   /// Retrieve a tile based on its GID
   ///
@@ -18,12 +18,12 @@ class TileMap {
   /// tileset with the highest firstgid that is still lower or equal than the gid.
   /// The tilesets are always stored with increasing firstgids.
   /// A GID of 0 is always an "empty" tile
-  Tile getTileByGID(int gid) {
+  Tile getTileByGID(int? gid) {
     if (gid == 0) {
       return Tile.emptyTile();
     }
-    final ts = tilesets.lastWhere((tileset) => tileset.firstgid <= gid);
-    return Tile(gid - ts.firstgid, ts);
+    final ts = tilesets.lastWhere((tileset) => tileset.firstgid! <= gid!);
+    return Tile(gid! - ts.firstgid!, ts);
   }
 
   // Returns a tileset based on its name

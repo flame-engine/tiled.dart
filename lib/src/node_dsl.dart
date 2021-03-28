@@ -11,15 +11,15 @@ class NodeDSL {
     return node;
   }
 
-  String strOr(String attrName, String defaultValue) {
+  String? strOr(String attrName, String? defaultValue) {
     return _safely(attrName, defaultValue, (val) => val);
   }
 
-  int intOr(String attrName, int defaultValue) {
+  int? intOr(String attrName, int? defaultValue) {
     return _safely(attrName, defaultValue, (val) => int.parse(val));
   }
 
-  double doubleOr(String attrName, double defaultValue) {
+  double? doubleOr(String attrName, double? defaultValue) {
     return _safely(attrName, defaultValue, (v) => double.parse(v));
   }
 
@@ -27,7 +27,7 @@ class NodeDSL {
     return _safely(attrName, defaultValue, (v) => v == "1");
   }
 
-  String _attr(String attrName) {
+  String? _attr(String attrName) {
     return element.getAttribute(attrName);
   }
 

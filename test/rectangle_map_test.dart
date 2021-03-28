@@ -4,7 +4,7 @@ import 'package:xml/xml.dart';
 import 'dart:io';
 
 void main() {
-  XmlElement xmlRoot;
+  late XmlElement xmlRoot;
 
   setUp(() {
     return File('./test/fixtures/rectangle.tmx').readAsString().then((xml) {
@@ -19,7 +19,7 @@ void main() {
 
       expect(layer.tileMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
       expect(layer.tileMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
-      final flip = layer.tileFlips[1].last;
+      final flip = layer.tileFlips[1].last!;
       expect(flip.vertically, equals(true));
       expect(flip.diagonally, equals(true));
       expect(layer.tileMatrix[2], equals([0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
@@ -37,8 +37,8 @@ void main() {
       final TileMap map = parser.parse(xmlRoot.toString());
       final layer = map.layers.first;
 
-      expect(layer.tiles[0][0].tileId, equals(0));
-      expect(layer.tiles[1].last.flips.vertically, equals(true));
+      expect(layer.tiles![0][0]!.tileId, equals(0));
+      expect(layer.tiles![1].last!.flips!.vertically, equals(true));
     });
   });
 }

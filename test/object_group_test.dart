@@ -4,7 +4,7 @@ import 'package:xml/xml.dart';
 import 'dart:io';
 
 void main() {
-  XmlElement xmlRoot;
+  late XmlElement xmlRoot;
   setUp(() {
     return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
       xmlRoot = XmlDocument.parse(xml).rootElement;
@@ -12,8 +12,8 @@ void main() {
   });
 
   group('ObjectGroup.fromXML', () {
-    ObjectGroup objectGroup;
-    XmlElement xml;
+    late ObjectGroup objectGroup;
+    late XmlElement xml;
 
     setUp(() {
       xml = xmlRoot.findAllElements('objectgroup').first;

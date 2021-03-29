@@ -1,5 +1,3 @@
-part of tiled;
-
 class Image {
   String source;
   num width;

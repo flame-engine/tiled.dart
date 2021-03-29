@@ -6,7 +6,7 @@ import 'dart:io';
 
 void main() {
   final parser = TileMapParser();
-  TileMap map;
+  late TileMap map;
   setUp(() {
     return File('./test/fixtures/test.tmx').readAsString().then((xml) {
       map = parser.parse(xml);
@@ -29,7 +29,7 @@ void main() {
     });
 
     group('and the first tileset', () {
-      Tileset tileset;
+      late Tileset tileset;
       setUp(() => tileset = map.tilesets[0]);
 
       test('has its firstgid = 1', () => expect(tileset.firstgid, equals(1)));
@@ -43,18 +43,18 @@ void main() {
       test('has its image', () => expect(tileset.image, isNotNull));
 
       group('populates its first image correctly and', () {
-        Image image;
+        Image? image;
         setUp(() => image = tileset.image);
 
-        test('has its width = 96', () => expect(image.width, equals(96)));
-        test('has its height = 64', () => expect(image.height, equals(64)));
+        test('has its width = 96', () => expect(image!.width, equals(96)));
+        test('has its height = 64', () => expect(image!.height, equals(64)));
         test('has its source = "icons.png"', () {
-          expect(image.source, equals('icons.png'));
+          expect(image!.source, equals('icons.png'));
         });
       });
 
       group('populates its properties correctly and', () {
-        Map<String, dynamic> properties;
+        late Map<String?, dynamic> properties;
         setUp(() => properties = tileset.properties);
         test('has a key of "test_property" = "test_value"', () {
           expect(properties, equals({'test_property': 'test_value'}));
@@ -62,7 +62,7 @@ void main() {
       });
 
       group('populates its child tile properties correctly by', () {
-        Map<int, Map<String, dynamic>> tileProperties;
+        late Map<int, Map<String?, dynamic>> tileProperties;
         setUp(() => tileProperties = tileset.tileProperties);
 
         test('inserting properties into tileProperties based on Tile GID', () {
@@ -85,7 +85,7 @@ void main() {
     });
 
     group('and the first layer', () {
-      Layer layer;
+      late Layer layer;
       setUp(() => layer = map.layers[0]);
 
       test('has its name = "Tile Layer 1"', () {
@@ -125,7 +125,7 @@ void main() {
     });
 
     group('and the first objectGroup', () {
-      ObjectGroup og;
+      late ObjectGroup og;
       setUp(() => og = map.objectGroups[0]);
 
       test('has the right #map', () => expect(og.map, equals(map)));
@@ -146,9 +146,9 @@ void main() {
     test('and global tileset image', () {
       final tileset = map.getTileset('default');
       final tile1 = map.getTileByGID(tileset.firstgid);
-      expect(tileset.image.source, equals('level1.png'));
+      expect(tileset.image!.source, equals('level1.png'));
       expect(tileset.images.length, equals(1));
-      expect(tile1.image.source, equals('level1.png'));
+      expect(tile1.image!.source, equals('level1.png'));
       expect(tile1.computeDrawRect(), equals(const Rectangle(0, 0, 16, 16)));
       expect(
         map.getTileByGID(tileset.firstgid + 1).computeDrawRect(),
@@ -171,9 +171,9 @@ void main() {
       expect(tileset.image, isNull);
       expect(tileset.images.length, equals(2));
       expect(tileset.images[0].source, equals('image1.png'));
-      expect(tile1.image.source, equals('image1.png'));
+      expect(tile1.image!.source, equals('image1.png'));
       expect(tile1.computeDrawRect(), equals(const Rectangle(0, 0, 32, 32)));
-      expect(tile2.image.source, equals('image2.png'));
+      expect(tile2.image!.source, equals('image2.png'));
       expect(tile2.computeDrawRect(), equals(const Rectangle(0, 0, 32, 32)));
     });
   });
@@ -182,7 +182,7 @@ void main() {
     test('it loads external tsx', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
         map = TileMapParser().parse(xml, tsx: CustomTsxProvider());
-        expect(map.getTileset('external').image.source, equals('level1.png'));
+        expect(map.getTileset('external').image!.source, equals('level1.png'));
       });
     });
   });

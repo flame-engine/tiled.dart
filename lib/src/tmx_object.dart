@@ -1,15 +1,18 @@
-part of tiled;
+import 'dart:math';
+import 'package:xml/xml.dart';
+import 'tile_map_parser.dart';
+import 'node_dsl.dart';
 
 class TmxObject {
-  String name;
-  String type;
+  String name = "";
+  String type = "";
 
-  double x;
-  double y;
+  double x = 0;
+  double y = 0;
   double width = 0;
   double height = 0;
   double rotation = 0;
-  int gid;
+  int gid = 0;
   bool visible = true;
 
   bool isRectangle = false;
@@ -18,7 +21,7 @@ class TmxObject {
   bool isPolyline = false;
 
   List<Point> points = [];
-  Map<String, dynamic> properties = {};
+  Map<String?, dynamic> properties = {};
 
   TmxObject.fromXML(XmlElement element) {
     if (element == null) {
@@ -37,12 +40,12 @@ class TmxObject {
       visible = dsl.boolOr('visible', visible);
     });
 
-    properties = TileMapParser._parsePropertiesFromElement(element);
+    properties = TileMapParser.parsePropertiesFromElement(element);
 
     // TODO: it is implied by the spec that there are only two children to
     // an object node: an optional <properties /> and an optional <ellipse />,
     // <polygon />, or <polyline />
-    final xmlElements = element.children
+    final Iterable<XmlElement> xmlElements = element.children
         .whereType<XmlElement>()
         .where((node) => node.name.local != 'properties');
 
@@ -55,11 +58,11 @@ class TmxObject {
           break;
         case 'polygon':
           isPolygon = true;
-          points = TileMapParser._getPoints(node);
+          points = TileMapParser.getPoints(node);
           break;
         case 'polyline':
           isPolyline = true;
-          points = TileMapParser._getPoints(node);
+          points = TileMapParser.getPoints(node);
           break;
       }
     } else {

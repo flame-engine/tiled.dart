@@ -1,25 +1,30 @@
-part of tiled;
+import 'package:xml/xml.dart';
+import 'tile_map_parser.dart';
+import 'tile_map.dart';
+import 'image.dart';
+import 'node_dsl.dart';
+import 'tsx_provider.dart';
 
 class Tileset {
-  int firstgid;
-  int width;
-  int height;
+  int firstgid = 0;
+  int width = 0;
+  int height = 0;
   int spacing = 0;
   int margin = 0;
-  String name;
-  String source;
+  String name = "";
+  String source = "";
 
-  TileMap map;
+  late TileMap map;
 
-  Image image;
-  List<Image> images = [];
-  Map<String, dynamic> properties = {};
-  Map<int, Map<String, dynamic>> tileProperties = {};
-  Map<int, Image> tileImage = {};
+  late Image? image;
+  late List<Image> images = [];
+  Map<String?, dynamic> properties = {};
+  Map<int, Map<String?, dynamic>> tileProperties = {};
+  Map<int, Image?> tileImage = {};
 
   Tileset(this.firstgid);
 
-  Tileset.fromXML(XmlElement element, {TsxProvider tsx}) {
+  Tileset.fromXML(XmlElement element, {TsxProvider? tsx}) {
     _parseTilesetAttributes(element);
     element = _checkIfExtenalTsx(element, tsx);
     _parseTilesetAttributes(element);
@@ -27,14 +32,14 @@ class Tileset {
     image = _findImage(element);
     _addImage(image);
 
-    properties = TileMapParser._parsePropertiesFromElement(element);
+    properties = TileMapParser.parsePropertiesFromElement(element);
 
     // Parse tile properties, if present.
     element.findElements('tile').forEach((XmlElement tileNode) {
-      final tileId = int.parse(tileNode.getAttribute('id'));
+      final tileId = int.parse(tileNode.getAttribute('id')!);
       final tileGid = tileId + firstgid;
       tileProperties[tileGid] =
-          TileMapParser._parsePropertiesFromElement(tileNode);
+          TileMapParser.parsePropertiesFromElement(tileNode);
       final image = _findImage(tileNode);
       tileImage[tileGid] = image;
       _addImage(image);
@@ -53,19 +58,19 @@ class Tileset {
     });
   }
 
-  XmlElement _checkIfExtenalTsx(XmlElement element, TsxProvider tsx) {
+  XmlElement _checkIfExtenalTsx(XmlElement element, TsxProvider? tsx) {
     final filename = element.getAttribute('source');
     if (tsx != null && filename != null) {
-      return _parseXml(tsx.getSource(filename)).rootElement;
+      return TileMapParser.parseXml(tsx.getSource(filename)).rootElement;
     }
     return element;
   }
 
-  Image _findImage(XmlElement element) {
+  Image? _findImage(XmlElement element) {
     final list = element
         .findElements('image')
-        .map((XmlElement node) => TileMapParser._parseImage(node));
-    if (list.isNotEmpty) {
+        .map((XmlElement node) => TileMapParser.parseImage(node));
+      if (list.isNotEmpty) {
       return list.first;
     }
     return null;

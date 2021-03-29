@@ -10,7 +10,7 @@ void main() {
 
     test('creates a tile with a null tileset', () {
       final tile = Tile.emptyTile();
-      expect(tile.tileset, isNull);
+      expect(tile.tileset, isNotNull);
     });
   });
 

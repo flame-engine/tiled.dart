@@ -1,4 +1,4 @@
-part of tiled;
+import 'package:xml/xml.dart';
 
 class NodeDSL {
   XmlElement element;
@@ -27,7 +27,7 @@ class NodeDSL {
     return _safely(attrName, defaultValue, (v) => v == "1");
   }
 
-  String _attr(String attrName) {
+  String? _attr(String attrName) {
     return element.getAttribute(attrName);
   }
 

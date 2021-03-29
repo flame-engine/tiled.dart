@@ -5,7 +5,7 @@ import 'dart:io';
 import 'dart:math';
 
 void main() {
-  XmlElement xmlRoot;
+  late XmlElement xmlRoot;
   setUp(() {
     return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
       xmlRoot = XmlDocument.parse(xml).rootElement;
@@ -13,11 +13,11 @@ void main() {
   });
 
   group('TmxObject.fromXML', () {
-    List<XmlElement> objects;
+    late List<XmlElement> objects;
     setUp(() => objects = xmlRoot.findAllElements('object').toList());
 
     group('Circle', () {
-      TmxObject tmxObject;
+      late TmxObject tmxObject;
       setUp(() => tmxObject = TmxObject.fromXML(objects[0]));
 
       test('sets name to "Circle"', () {
@@ -52,7 +52,7 @@ void main() {
     });
 
     group('Rectangle', () {
-      TmxObject tmxObject;
+      late TmxObject tmxObject;
       setUp(() => tmxObject = TmxObject.fromXML(objects[1]));
 
       test('sets name to "Rectangle"', () {
@@ -85,7 +85,7 @@ void main() {
     });
 
     group('Polygon', () {
-      TmxObject tmxObject;
+      late TmxObject tmxObject;
       setUp(() => tmxObject = TmxObject.fromXML(objects[2]));
 
       test('sets name to "Polygon"', () {
@@ -115,7 +115,7 @@ void main() {
     });
 
     group('Polyline', () {
-      TmxObject tmxObject;
+      late TmxObject tmxObject;
       setUp(() => tmxObject = TmxObject.fromXML(objects[3]));
 
       test('sets name to "Polyline"', () {

@@ -1,36 +1,38 @@
-part of tiled;
+import 'package:xml/xml.dart';
+import '../tiled.dart';
+import 'tile_map_parser.dart';
+import 'tile_map.dart';
+import 'tile.dart';
+import 'node_dsl.dart';
+import 'flips.dart';
 
 class Layer {
   static const int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
   static const int FLIPPED_VERTICALLY_FLAG = 0x40000000;
   static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
 
-  String name;
-  int width;
-  int height;
-  bool visible;
+  String name = "";
+  int width = 0;
+  int height = 0;
+  bool visible = true;
 
-  Map<String, dynamic> properties = {};
+  Map<String?, dynamic> properties = {};
 
-  TileMap map;
-  List<List<int>> tileMatrix;
-  List<List<Flips>> tileFlips;
+  TileMap? map;
+  late List<List<int>> tileMatrix;
+  late List<List<Flips>> tileFlips;
 
-  List<List<Tile>> _tiles;
-  List<List<Tile>> get tiles {
+  List<List<Tile>>? _tiles;
+  List<List<Tile>>? get tiles {
     if (_tiles == null) {
       _recalculateTiles();
     }
     return _tiles;
   }
 
-  Layer(this.name, this.width, this.height);
+  Layer(this.name, this.width, this.height) : visible = true;
 
   Layer.fromXML(XmlElement element) {
-    if (element == null) {
-      throw 'arg "element" cannot be null';
-    }
-
     NodeDSL.on(element, (dsl) {
       name = dsl.strOr('name', name);
       width = dsl.intOr('width', width);
@@ -38,16 +40,15 @@ class Layer {
       visible = dsl.boolOr('visible', true);
     });
 
-    final dataElement = element.children.firstWhere(
+    final XmlNode dataElement = element.children.firstWhere(
       (node) => node is XmlElement && node.name.local == 'data',
-      orElse: () => null,
     );
     if (dataElement is XmlElement) {
-      final decoder = TileMapParser._getDecoder(
-        dataElement.getAttribute('encoding'),
+      final decoder = TileMapParser.getDecoder(
+        dataElement.getAttribute('encoding')!,
       );
-      final decompressor = TileMapParser._getDecompressor(
-        dataElement.getAttribute('compression'),
+      final decompressor = TileMapParser.getDecompressor(
+        dataElement.getAttribute('compression')!,
       );
 
       final decodedString = decoder(dataElement.text);
@@ -56,13 +57,14 @@ class Layer {
       assembleTileMatrix(inflatedString);
     }
 
-    properties = TileMapParser._parsePropertiesFromElement(element);
+    properties = TileMapParser.parsePropertiesFromElement(element);
   }
 
   // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
   void assembleTileMatrix(var bytes) {
-    tileMatrix = List.generate(height, (_) => List<int>(width));
-    tileFlips = List.generate(height, (_) => List<Flips>(width));
+    tileMatrix = List.generate(height, (_) => List<int>.filled(width, 0));
+    tileFlips = List.generate(height,
+        (_) => List<Flips>.filled(width, const Flips(false, false, false)));
 
     var tileIndex = 0;
     for (var y = 0; y < height; ++y) {
@@ -104,25 +106,26 @@ class Layer {
     int px = 0;
     int py = 0;
 
-    _tiles = List.generate(height, (_) => List<Tile>(width));
-    _tiles.asMap().forEach((j, List<Tile> rows) {
+    _tiles = List.generate(
+        height, (_) => List<Tile>.filled(width, Tile(0, Tileset(0))));
+    _tiles!.asMap().forEach((j, List<Tile> rows) {
       px = 0;
 
       rows.asMap().forEach((i, Tile t) {
         final tileId = tileMatrix[j][i];
         final flips = tileFlips[j][i];
-        final tile = map.getTileByGID(tileId)
+        final tile = map!.getTileByGID(tileId)
           ..x = i
           ..y = j
           ..px = px
           ..py = py
           ..flips = flips;
 
-        _tiles[j][i] = tile;
-        px += map.tileWidth;
+        _tiles![j][i] = tile;
+        px += map!.tileWidth!;
       });
 
-      py += map.tileHeight;
+      py += map!.tileHeight!;
     });
   }
 }

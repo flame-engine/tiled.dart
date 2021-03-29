@@ -5,7 +5,7 @@ import 'dart:async';
 import 'dart:io';
 
 void main() {
-  XmlElement xmlRoot, xmlRootBase64Gzip;
+  late XmlElement xmlRoot, xmlRootBase64Gzip;
 
   // Urgh. var xml = File.read(/* ... */); >:/
   setUp(() {
@@ -54,8 +54,8 @@ void main() {
   });
 
   group('Layer.tiles', () {
-    TileMap map;
-    Layer layer;
+    late TileMap map;
+    late Layer layer;
 
     setUp(() {
       map = TileMapParser().parse(xmlRoot.toString());
@@ -63,15 +63,15 @@ void main() {
     });
 
     test('is the expected size of 100', () {
-      expect(layer.tiles.length, equals(10));
-      layer.tiles.forEach((row) {
+      expect(layer.tiles!.length, equals(10));
+      layer.tiles!.forEach((row) {
         expect(row.length, equals(10));
       });
     });
 
     test('calculates the x and y correctly for every tile', () {
       final coords = <List<int>>[];
-      layer.tiles.forEach(
+      layer.tiles!.forEach(
         (row) => row.forEach((tile) => coords.add([tile.x, tile.y])),
       );
 

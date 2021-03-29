@@ -1,21 +1,22 @@
-part of tiled;
+import 'package:xml/xml.dart';
+import 'tile_map_parser.dart';
+import 'tile_map.dart';
+import 'tmx_object.dart';
+import 'node_dsl.dart';
 
 class ObjectGroup {
-  String name;
-  String color;
+  String name= "";
+  String color = "";
 
   double opacity = 1.0;
   bool visible = true;
 
-  TileMap map;
+  TileMap? map;
 
-  Map<String, dynamic> properties = {};
+  Map<String?, dynamic> properties = {};
   List<TmxObject> tmxObjects = [];
 
   ObjectGroup.fromXML(XmlElement element) {
-    if (element == null) {
-      throw 'arg "element" cannot be null';
-    }
 
     NodeDSL.on(element, (dsl) {
       name = dsl.strOr('name', name);
@@ -23,10 +24,9 @@ class ObjectGroup {
       opacity = dsl.doubleOr('opacity', opacity);
       visible = dsl.boolOr('visible', visible);
     });
+    properties = TileMapParser.parsePropertiesFromElement(element);
 
-    properties = TileMapParser._parsePropertiesFromElement(element);
-
-    final objectNodes = element.children
+    final Iterable<XmlElement> objectNodes = element.children
         .whereType<XmlElement>()
         .where((node) => node.name.local == 'object');
 

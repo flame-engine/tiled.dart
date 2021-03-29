@@ -5,7 +5,7 @@ import 'package:tiled/tiled.dart';
 
 void main() {
   group('Tileset defaults', () {
-    Tileset tileset;
+    late Tileset tileset;
     setUp(() => tileset = Tileset(1));
     test('spacing == 0', () => expect(tileset.spacing, equals(0)));
     test('margin == 0', () => expect(tileset.margin, equals(0)));
@@ -15,7 +15,7 @@ void main() {
   });
 
   group('Tileset.fromXML', () {
-    Tileset tileset;
+   late  Tileset tileset;
     setUp(() {
       return File('./test/fixtures/map_with_spacing_margin.tmx')
           .readAsString()

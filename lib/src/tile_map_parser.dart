@@ -1,20 +1,30 @@
-part of tiled;
+import 'dart:math';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:xml/xml.dart';
+import 'package:archive/archive.dart';
+import 'tile_map.dart';
+import 'tileset.dart';
+import 'image.dart';
+import 'layer.dart';
+import 'object_group.dart';
+import 'tsx_provider.dart';
 
 class TileMapParser {
   TileMapParser();
-
-  TileMap parse(String xml, {TsxProvider tsx}) {
-    final xmlElement = _parseXml(xml).rootElement;
+  static XmlDocument parseXml(String input) => XmlDocument.parse(input);
+  TileMap parse(String xml, {TsxProvider? tsx}) {
+    final xmlElement = parseXml(xml).rootElement;
 
     if (xmlElement.name.local != 'map') {
       throw 'XML is not in TMX format';
     }
 
     final map = TileMap();
-    map.tileWidth = int.parse(xmlElement.getAttribute('tilewidth'));
-    map.tileHeight = int.parse(xmlElement.getAttribute('tileheight'));
-    map.width = int.parse(xmlElement.getAttribute('width'));
-    map.height = int.parse(xmlElement.getAttribute('height'));
+    map.tileWidth = int.parse(xmlElement.getAttribute('tilewidth')!);
+    map.tileHeight = int.parse(xmlElement.getAttribute('tileheight')!);
+    map.width = int.parse(xmlElement.getAttribute('width')!);
+    map.height = int.parse(xmlElement.getAttribute('height')!);
 
     xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
       switch (element.name.local) {
@@ -30,27 +40,27 @@ class TileMapParser {
       }
     });
 
-    map.properties = TileMapParser._parsePropertiesFromElement(xmlElement);
+    map.properties = TileMapParser.parsePropertiesFromElement(xmlElement);
 
     return map;
   }
 
-  static Image _parseImage(XmlElement node) {
+  static Image parseImage(XmlElement node) {
     return Image(
-      node.getAttribute('source'),
-      int.parse(node.getAttribute('width')),
-      int.parse(node.getAttribute('height')),
+      node.getAttribute('source')!,
+      int.parse(node.getAttribute('width')!),
+      int.parse(node.getAttribute('height')!),
     );
   }
 
-  static Map<String, dynamic> _parsePropertiesFromElement(XmlElement element) {
+  static Map<String?, dynamic> parsePropertiesFromElement(XmlElement element) {
     return TileMapParser._parseProperties(
       TileMapParser._getPropertyNodes(element),
     );
   }
 
-  static Map<String, dynamic> _parseProperties(nodes) {
-    final map = <String, dynamic>{};
+  static Map<String?, dynamic> _parseProperties(nodes) {
+    final map = <String?, dynamic>{};
 
     nodes.forEach((property) {
       final attrs = property.getAttribute;
@@ -82,19 +92,20 @@ class TileMapParser {
   }
 
   static Iterable<XmlElement> _getPropertyNodes(XmlElement node) {
-    final propertyNode = node.children.whereType<XmlElement>().firstWhere(
-          (element) => element.name.local == 'properties',
-          orElse: () => null,
-        );
+    final XmlElement? propertyNode =
+        node.children.whereType<XmlElement?>().firstWhere(
+              (element) => element!.name.local == 'properties',
+              orElse: () => null,
+            );
     if (propertyNode == null) {
       return [];
     }
     return propertyNode.findElements('property');
   }
 
-  static List<Point> _getPoints(XmlElement node) {
+  static List<Point> getPoints(XmlElement node) {
     // Format: points="0,0 -5,98 -49,42"
-    final points = node.getAttribute('points').split(' ');
+    final points = node.getAttribute('points')!.split(' ');
     return points.map((point) {
       final arr = point.split(',');
       final p = (str) => double.parse(str);
@@ -102,7 +113,7 @@ class TileMapParser {
     }).toList();
   }
 
-  static Uint8List Function(String) _getDecoder(String encodingType) {
+  static Uint8List Function(String) getDecoder(String encodingType) {
     switch (encodingType) {
       case 'base64':
         return _decodeBase64;
@@ -111,7 +122,7 @@ class TileMapParser {
     }
   }
 
-  static List<int> Function(List<int>) _getDecompressor(
+  static List<int> Function(List<int>)? getDecompressor(
     String compressionType,
   ) {
     switch (compressionType) {

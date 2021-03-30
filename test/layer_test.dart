@@ -63,15 +63,15 @@ void main() {
     });
 
     test('is the expected size of 100', () {
-      expect(layer.tiles!.length, equals(10));
-      layer.tiles!.forEach((row) {
+      expect(layer.tiles.length, equals(10));
+      layer.tiles.forEach((row) {
         expect(row.length, equals(10));
       });
     });
 
     test('calculates the x and y correctly for every tile', () {
       final coords = <List<int>>[];
-      layer.tiles!.forEach(
+      layer.tiles.forEach(
         (row) => row.forEach((tile) => coords.add([tile.x, tile.y])),
       );
 

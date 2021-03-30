@@ -37,8 +37,8 @@ void main() {
       final TileMap map = parser.parse(xmlRoot.toString());
       final layer = map.layers.first;
 
-      expect(layer.tiles![0][0].tileId, equals(0));
-      expect(layer.tiles![1].last.flips!.vertically, equals(true));
+      expect(layer.tiles[0][0].tileId, equals(0));
+      expect(layer.tiles[1].last.flips!.vertically, equals(true));
     });
   });
 }

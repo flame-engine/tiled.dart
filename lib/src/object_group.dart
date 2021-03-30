@@ -26,7 +26,7 @@ class ObjectGroup {
     });
     properties = TileMapParser.parsePropertiesFromElement(element);
 
-    final Iterable<XmlElement> objectNodes = element.children
+    final objectNodes = element.children
         .whereType<XmlElement>()
         .where((node) => node.name.local == 'object');
 

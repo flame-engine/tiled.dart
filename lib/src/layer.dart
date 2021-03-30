@@ -23,11 +23,11 @@ class Layer {
   late List<List<Flips>> tileFlips;
 
   List<List<Tile>>? _tiles;
-  List<List<Tile>>? get tiles {
+  List<List<Tile>> get tiles {
     if (_tiles == null) {
       _recalculateTiles();
     }
-    return _tiles;
+    return _tiles!;
   }
 
   Layer(this.name, this.width, this.height) : visible = true;
@@ -40,7 +40,7 @@ class Layer {
       visible = dsl.boolOr('visible', true);
     });
 
-    final XmlNode dataElement = element.children.firstWhere(
+    final dataElement = element.children.firstWhere(
       (node) => node is XmlElement && node.name.local == 'data',
     );
     if (dataElement is XmlElement) {
@@ -106,8 +106,8 @@ class Layer {
     int px = 0;
     int py = 0;
 
-    _tiles = List.generate(
-        height, (_) => List<Tile>.filled(width, Tile(0, Tileset(0))));
+    _tiles =
+        List.generate(height, (_) => List<Tile>.filled(width, Tile(0, Tileset(0))));
     _tiles!.asMap().forEach((j, List<Tile> rows) {
       px = 0;
 

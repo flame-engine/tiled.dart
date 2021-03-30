@@ -60,7 +60,8 @@ class Layer {
     properties = TileMapParser.parsePropertiesFromElement(element);
   }
 
-  // TMX data format documented here: https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
+  // TMX data format documented here:
+  // https://github.com/bjorn/tiled/wiki/TMX-Map-Format#data
   void assembleTileMatrix(var bytes) {
     tileMatrix = List.generate(height, (_) => List<int>.filled(width, 0));
     tileFlips = List.generate(height,
@@ -106,8 +107,8 @@ class Layer {
     int px = 0;
     int py = 0;
 
-    _tiles =
-        List.generate(height, (_) => List<Tile>.filled(width, Tile(0, Tileset(0))));
+    _tiles = List.generate(
+        height, (_) => List<Tile>.filled(width, Tile(0, Tileset(0))));
     _tiles!.asMap().forEach((j, List<Tile> rows) {
       px = 0;
 

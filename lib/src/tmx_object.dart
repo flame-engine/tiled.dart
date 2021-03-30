@@ -24,10 +24,6 @@ class TmxObject {
   Map<String?, dynamic> properties = {};
 
   TmxObject.fromXML(XmlElement element) {
-    if (element == null) {
-      throw 'arg "element" cannot be null';
-    }
-
     NodeDSL.on(element, (dsl) {
       name = dsl.strOr('name', name);
       type = dsl.strOr('type', type);

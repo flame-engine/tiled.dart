@@ -31,7 +31,7 @@ class Tile {
   }
 
   // Optional X / Y locations for the tile.
-  int x = 0 , y = 0;
+  int x = 0, y = 0;
   int px = 0, py = 0;
 
   bool get isEmpty {

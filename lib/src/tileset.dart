@@ -70,7 +70,7 @@ class Tileset {
     final list = element
         .findElements('image')
         .map((XmlElement node) => TileMapParser.parseImage(node));
-      if (list.isNotEmpty) {
+    if (list.isNotEmpty) {
       return list.first;
     }
     return null;

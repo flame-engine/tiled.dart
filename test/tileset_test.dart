@@ -15,7 +15,7 @@ void main() {
   });
 
   group('Tileset.fromXML', () {
-   late  Tileset tileset;
+    late Tileset tileset;
     setUp(() {
       return File('./test/fixtures/map_with_spacing_margin.tmx')
           .readAsString()

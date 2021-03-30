@@ -21,6 +21,7 @@ class Flips {
 
   @override
   String toString() {
-    return 'Flips { horizontally: $horizontally, vertically: $vertically, diagonally: $diagonally }';
+    return 'Flips { horizontally: $horizontally, '
+        'vertically: $vertically, diagonally: $diagonally }';
   }
 }

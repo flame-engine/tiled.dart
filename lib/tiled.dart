@@ -11,4 +11,3 @@ export 'src/tmx_object.dart';
 export 'src/node_dsl.dart';
 export 'src/tsx_provider.dart';
 export 'src/flips.dart';
-

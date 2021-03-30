@@ -127,7 +127,7 @@ class TileMapParser {
   ) {
     switch (compressionType) {
       case 'zlib':
-        return ZLibDecoder().decodeBytes;
+        return const ZLibDecoder().decodeBytes;
       case 'gzip':
         return GZipDecoder().decodeBytes;
       default:

@@ -18,6 +18,7 @@ class TiledObject {
   double width;
   double x;
   double y;
+  bool rectangle = false;
 
   TiledObject.fromXml(XmlNode xmlElement) {
     x = double.tryParse(xmlElement.getAttribute('x') ?? 0);
@@ -72,6 +73,7 @@ class TiledObject {
           break;
       }
     });
+    rectangle = polyline.isEmpty && polygon.isEmpty && !ellipse && !point;
   }
 
   TiledObject.fromJson(Map<String, dynamic> json) {
@@ -98,4 +100,5 @@ class TiledObject {
   bool get isPolygon => polygon.isNotEmpty;
   bool get isPoint => point;
   bool get isEllipse => ellipse;
+  bool get isRectangle => rectangle;
 }

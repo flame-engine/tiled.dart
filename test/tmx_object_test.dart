@@ -81,10 +81,9 @@ void main() {
         expect(tiledObject.height, equals(43));
       });
 
-      // TODO detection is not ready
-      // test('sets isRectangle to true', () {
-      //   expect(tiledObject.isRectangle, isTrue);
-      // });
+      test('sets isRectangle to true', () {
+        expect(tiledObject.isRectangle, isTrue);
+      });
     });
 
     group('Polygon', () {

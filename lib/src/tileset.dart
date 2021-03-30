@@ -6,12 +6,12 @@ class TileSet {
   int firstGId;
   Grid grid;
   TiledImage image;
-  int margin;
+  int margin = 0;
   String name;
   String objectAlignment;
   List<Property> properties = [];
   String source;
-  int spacing;
+  int spacing = 0;
   List<Terrain> terrains = [];
   int tileCount;
   String tiledVersion;

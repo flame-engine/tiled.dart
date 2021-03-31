@@ -113,7 +113,7 @@ class TileMapParser {
     }).toList();
   }
 
-  static Uint8List Function(String) getDecoder(String encodingType) {
+  static Uint8List Function(String) getDecoder(String? encodingType) {
     switch (encodingType) {
       case 'base64':
         return _decodeBase64;
@@ -123,7 +123,7 @@ class TileMapParser {
   }
 
   static List<int> Function(List<int>)? getDecompressor(
-    String compressionType,
+    String? compressionType,
   ) {
     switch (compressionType) {
       case 'zlib':

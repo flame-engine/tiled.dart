@@ -48,7 +48,7 @@ class Layer {
         dataElement.getAttribute('encoding')!,
       );
       final decompressor = TileMapParser.getDecompressor(
-        dataElement.getAttribute('compression')!,
+        dataElement.getAttribute('compression'),
       );
 
       final decodedString = decoder(dataElement.text);

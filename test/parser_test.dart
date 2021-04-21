@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:math' as math;
+// import 'dart:math' as math;
 
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
@@ -163,8 +163,8 @@ void main() {
     test('and global tileset image', () {
       final TileSet tileset = map.getTilesetByName('default');
       expect(tileset.image.source, equals('level1.png'));
-      final Tile tile1 = map.getTileByGId(tileset.firstGId);
-      // TODO drawRect???
+      // final Tile tile1 = map.getTileByGId(tileset.firstGId);
+      // // TODO drawRect???
       // expect(tileset.computeDrawRect(tile1), equals(const math.Rectangle(0, 0, 16, 16)));
       // expect(
       //   tileset.computeDrawRect(map.getTileByGId(tileset.firstGId + 1)),

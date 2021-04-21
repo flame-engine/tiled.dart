@@ -7,7 +7,9 @@ void main() {
   TiledMap complexMapInfinite;
 
   setUp(() {
-    return File('./test/fixtures/complexmap_infinite.tmx').readAsString().then((xml) {
+    return File('./test/fixtures/complexmap_infinite.tmx')
+        .readAsString()
+        .then((xml) {
       complexMapInfinite = TileMapParser.parseTmx(xml);
     });
   });
@@ -28,7 +30,6 @@ void main() {
       layer.chunks[0].tileIdMatrix.forEach((row) {
         expect(row.length, equals(16));
       });
-
     });
   });
 }

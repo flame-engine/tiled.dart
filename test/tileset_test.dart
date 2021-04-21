@@ -6,7 +6,7 @@ import 'package:tiled/tiled.dart';
 void main() {
   group('Tileset defaults', () {
     TileSet tileset;
-    setUp(() => tileset = TileSet('Humans', 1, 32, 64*32, []));
+    setUp(() => tileset = TileSet('Humans', 1, 32, 64 * 32, []));
     test('spacing == 0', () => expect(tileset.spacing, equals(0)));
     test('margin == 0', () => expect(tileset.margin, equals(0)));
     test('tileProperties == {}', () {

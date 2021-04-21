@@ -25,7 +25,8 @@ void main() {
 
   test('Parser.parse raises an error when the XML is not in TMX format', () {
     const wrongXml = '<xml></xml>';
-    expect(() => TileMapParser.parseTmx(wrongXml), throwsA('XML is not in TMX format'));
+    expect(() => TileMapParser.parseTmx(wrongXml),
+        throwsA('XML is not in TMX format'));
   });
 
   group('Parser.parse returns a populated Map that', () {
@@ -47,8 +48,10 @@ void main() {
         expect(tileset.name, equals('basketball'));
       });
 
-      test('has its tilewidth = 32', () => expect(tileset.tileWidth, equals(32)));
-      test('has its tileheight = 32', () => expect(tileset.tileHeight, equals(32)));
+      test('has its tilewidth = 32',
+          () => expect(tileset.tileWidth, equals(32)));
+      test('has its tileheight = 32',
+          () => expect(tileset.tileHeight, equals(32)));
       // test('has its map = map', () => expect(tileset.map, equals(map)));
       test('has its image', () => expect(tileset.image, isNotNull));
 
@@ -131,12 +134,18 @@ void main() {
     });
 
     test('and objectGroups is the correct length', () {
-      expect(map.layers.where((element) => element.type == LayerType.objectlayer).length, equals(2));
+      expect(
+          map.layers
+              .where((element) => element.type == LayerType.objectlayer)
+              .length,
+          equals(2));
     });
 
     group('and the first objectGroup', () {
       Layer og;
-      setUp(() => og = map.layers.where((element) => element.type == LayerType.objectlayer).toList()[0]);
+      setUp(() => og = map.layers
+          .where((element) => element.type == LayerType.objectlayer)
+          .toList()[0]);
 
       test('has the right #name', () {
         expect(og.name, equals('Test Object Layer 1'));
@@ -193,7 +202,8 @@ void main() {
     test('it loads external tsx', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
         map = TileMapParser.parseTmx(xml, tsx: CustomTsxProvider());
-        expect(map.getTilesetByName('external').image.source, equals('level1.png'));
+        expect(map.getTilesetByName('external').image.source,
+            equals('level1.png'));
       });
     });
   });

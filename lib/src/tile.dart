@@ -40,15 +40,16 @@ class Tile {
           });
           break;
         case 'objectgroup':
-          objectGroup = Layer.fromXml(
-              element);
+          objectGroup = Layer.fromXml(element);
           break;
       }
     });
   }
 
   Tile.fromJson(Map<String, dynamic> json) {
-    animation = (json['animation'] as List)?.map((e) => Frame.fromJson(e))?.toList() ?? [];
+    animation =
+        (json['animation'] as List)?.map((e) => Frame.fromJson(e))?.toList() ??
+            [];
     localId = json['id'];
     if (json['image'] != null) {
       image =
@@ -56,8 +57,12 @@ class Tile {
     }
     objectGroup = json['objectgroup'];
     probability = json['probability'] ?? 0;
-    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
-    terrain = (json['terrain'] as List)?.map((e) => e)?.toList() ?? []; //TODO correct?
+    properties = (json['properties'] as List)
+            ?.map((e) => Property.fromJson(e))
+            ?.toList() ??
+        [];
+    terrain = (json['terrain'] as List)?.map((e) => e)?.toList() ??
+        []; //TODO correct?
     type = json['type'];
   }
 }

@@ -7,7 +7,9 @@ void main() {
   TiledMap mapIso;
 
   setUp(() {
-    return File('./test/fixtures/isometric_grass_and_water.tmx').readAsString().then((xml) {
+    return File('./test/fixtures/isometric_grass_and_water.tmx')
+        .readAsString()
+        .then((xml) {
       mapIso = TileMapParser.parseTmx(xml);
     });
   });

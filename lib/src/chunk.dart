@@ -19,8 +19,8 @@ class Chunk {
     y = int.tryParse(xmlElement.getAttribute('y') ?? '');
     data = Layer.decodeData(xmlElement.text, encoding, compression);
 
-    tileIdMatrix = List.generate(height, (_) => List<int>(width));
-    tileFlips = List.generate(height, (_) => List<Flips>(width));
+    tileIdMatrix = List.generate(height, (_) => List<int>.filled(width, 0));
+    tileFlips = List.generate(height, (_) => List<Flips>.filled(width, null));
     Layer.generateTiles(data, height, width, tileIdMatrix, tileFlips);
   }
 
@@ -32,8 +32,8 @@ class Chunk {
     x = json['x'];
     y = json['y'];
 
-    tileIdMatrix = List.generate(height, (_) => List<int>(width));
-    tileFlips = List.generate(height, (_) => List<Flips>(width));
+    tileIdMatrix = List.generate(height, (_) => List<int>.filled(width, 0));
+    tileFlips = List.generate(height, (_) => List<Flips>.filled(width, null));
     Layer.generateTiles(data, height, width, tileIdMatrix, tileFlips);
   }
 }

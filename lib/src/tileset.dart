@@ -24,19 +24,20 @@ class TileSet {
   num version;
   List<WangSet> wangSets = [];
 
-  TileSet(this.name, this.firstGId, this.columns, this.tileCount, List<Tile> tilelist){
-    if(tileCount == null && tilelist.isNotEmpty){
+  TileSet(this.name, this.firstGId, this.columns, this.tileCount,
+      List<Tile> tilelist) {
+    if (tileCount == null && tilelist.isNotEmpty) {
       tileCount = tilelist.last.localId;
     }
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? iterator.current : Tile(-1);
     for (var i = 0; i <= tileCount; ++i) {
-      if(t.localId == i){
+      if (t.localId == i) {
         tiles.add(t);
-        if(iterator.moveNext()) {
+        if (iterator.moveNext()) {
           t = iterator.current;
         }
-      }else{
+      } else {
         tiles.add(Tile(i));
       }
     }
@@ -83,7 +84,7 @@ class TileSet {
           });
           break;
         case 'tile':
-            tilelist.add(Tile.fromXml(element));
+          tilelist.add(Tile.fromXml(element));
           break;
         case 'wangsets':
           element.nodes.whereType<XmlElement>().forEach((element) {
@@ -95,18 +96,18 @@ class TileSet {
 
     _checkIfExtenalTsx(source, tsx);
 
-    if(tileCount == null && tilelist.isNotEmpty){
+    if (tileCount == null && tilelist.isNotEmpty) {
       tileCount = tilelist.last.localId;
     }
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? iterator.current : Tile(-1);
     for (var i = 0; i <= tileCount; ++i) {
-      if(t.localId == i){
+      if (t.localId == i) {
         tiles.add(t);
-        if(iterator.moveNext()) {
+        if (iterator.moveNext()) {
           t = iterator.current;
         }
-      }else{
+      } else {
         tiles.add(Tile(i));
       }
     }
@@ -147,15 +148,21 @@ class TileSet {
     firstGId = json['firstgid'];
     grid = json['grid'] != null ? Grid.fromJson(json['grid']) : null;
     if (json['image'] != null) {
-      image = TiledImage(json['image'], json['imageheight'], json['imagewidth']);
+      image =
+          TiledImage(json['image'], json['imageheight'], json['imagewidth']);
     }
     margin = json['margin'] ?? 0;
     name = json['name'];
     objectAlignment = json['objectalignment'];
-    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
+    properties = (json['properties'] as List)
+            ?.map((e) => Property.fromJson(e))
+            ?.toList() ??
+        [];
     source = json['source'];
     spacing = json['spacing'] ?? 0;
-    terrains = (json['terrains'] as List)?.map((e) => Terrain.fromJson(e))?.toList() ?? [];
+    terrains =
+        (json['terrains'] as List)?.map((e) => Terrain.fromJson(e))?.toList() ??
+            [];
     tileCount = json['tilecount'];
     tiledVersion = json['tiledversion'];
     tileHeight = json['tileheight'];
@@ -165,18 +172,18 @@ class TileSet {
 
     final tilelist = json['tiles'] ?? <Map<String, dynamic>>[];
 
-    if(tileCount == null && tilelist.isNotEmpty){
+    if (tileCount == null && tilelist.isNotEmpty) {
       tileCount = tilelist.last.localId;
     }
     final iterator = tilelist.iterator;
     Tile t = iterator.moveNext() ? Tile.fromJson(iterator.current) : Tile(-1);
     for (var i = 0; i <= tileCount; ++i) {
-      if(t.localId == i){
+      if (t.localId == i) {
         tiles.add(t);
-        if(iterator.moveNext()) {
+        if (iterator.moveNext()) {
           t = Tile.fromJson(iterator.current);
         }
-      }else{
+      } else {
         tiles.add(Tile(i));
       }
     }
@@ -185,7 +192,9 @@ class TileSet {
     transparentColor = json['transparentcolor'];
     type = json['type'];
     version = json['version'];
-    wangSets = (json['wangsets'] as List)?.map((e) => WangSet.fromJson(e))?.toList() ?? [];
+    wangSets =
+        (json['wangsets'] as List)?.map((e) => WangSet.fromJson(e))?.toList() ??
+            [];
   }
 
   Rectangle computeDrawRect(Tile tile) {

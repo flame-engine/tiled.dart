@@ -7,8 +7,8 @@ class WangColor {
   int tile;
 
   WangColor.fromXml(XmlElement xmlElement) {
-    tile  = int.tryParse(xmlElement.getAttribute('tile') ?? '');
-    probability  = double.tryParse(xmlElement.getAttribute('probability') ?? 0);
+    tile = int.tryParse(xmlElement.getAttribute('tile') ?? '');
+    probability = double.tryParse(xmlElement.getAttribute('probability') ?? 0);
     color = xmlElement.getAttribute('color');
     name = xmlElement.getAttribute('name');
   }

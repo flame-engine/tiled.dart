@@ -30,7 +30,8 @@ void main() {
 
   // TODO no default constructor on Tileset
   test('Tile.properties queries Tileset.tileProperties correctly', () {
-    final tile = Tile(0)..properties.add(Property('tile_property', 'type', 'tile_value'));
+    final tile = Tile(0)
+      ..properties.add(Property('tile_property', 'type', 'tile_value'));
     expect(tile.properties.first.name, equals('tile_property'));
     expect(tile.properties.first.type, equals('type'));
     expect(tile.properties.first.value, equals('tile_value'));

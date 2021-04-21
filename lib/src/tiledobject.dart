@@ -42,7 +42,8 @@ class TiledObject {
           break;
         case 'polygon':
           polygon = [];
-          final List<String> pointString = element.getAttribute('points').split(" "); // "0,0 -4,81 -78,19"
+          final List<String> pointString =
+              element.getAttribute('points').split(" "); // "0,0 -4,81 -78,19"
           for (var i = 0; i < pointString.length; ++i) {
             pointString.forEach((element) {
               final List<String> ps = element.split(",");
@@ -52,7 +53,8 @@ class TiledObject {
           break;
         case 'polyline':
           polyline = [];
-          final List<String> pointString = element.getAttribute('points').split(" "); // "0,0 -4,81 -78,19"
+          final List<String> pointString =
+              element.getAttribute('points').split(" "); // "0,0 -4,81 -78,19"
           for (var i = 0; i < pointString.length; ++i) {
             pointString.forEach((element) {
               final List<String> ps = element.split(",");
@@ -83,11 +85,19 @@ class TiledObject {
     id = json['id'];
     name = json['name'];
     point = json['point'];
-    polygon = (json['polygon'] as List)?.map((e) => Point.fromJson(e))?.toList() ?? [];
-    polyline = (json['polyline'] as List)?.map((e) => Point.fromJson(e))?.toList() ?? [];
-    properties = (json['properties'] as List)?.map((e) => Property.fromJson(e))?.toList() ?? [];
+    polygon =
+        (json['polygon'] as List)?.map((e) => Point.fromJson(e))?.toList() ??
+            [];
+    polyline =
+        (json['polyline'] as List)?.map((e) => Point.fromJson(e))?.toList() ??
+            [];
+    properties = (json['properties'] as List)
+            ?.map((e) => Property.fromJson(e))
+            ?.toList() ??
+        [];
     rotation = json['rotation']?.toDouble();
-    template = json['template'] != null ? Template.fromJson(json['template']) : null;
+    template =
+        json['template'] != null ? Template.fromJson(json['template']) : null;
     text = json['text'] != null ? Text.fromJson(json['text']) : null;
     type = json['type'];
     visible = json['visible'];

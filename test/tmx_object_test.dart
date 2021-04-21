@@ -108,15 +108,16 @@ void main() {
 
       test('populates the points list', () {
         final ps = tiledObject.polygon;
-        expect(ps[0].x, equals(Point(0,0).x));
-        expect(ps[0].y, equals(Point(0,0).y));
-        expect(ps[1].x, equals(Point(-4,81).x));
-        expect(ps[1].y, equals(Point(-4,81).y));
-        expect(ps[2].x, equals(Point(-78,19).x));
-        expect(ps[2].y, equals(Point(-78,19).y));
+        expect(ps[0].x, equals(Point(0, 0).x));
+        expect(ps[0].y, equals(Point(0, 0).y));
+        expect(ps[1].x, equals(Point(-4, 81).x));
+        expect(ps[1].y, equals(Point(-4, 81).y));
+        expect(ps[2].x, equals(Point(-78, 19).x));
+        expect(ps[2].y, equals(Point(-78, 19).y));
       });
 
-      test('sets isPolygon to true', () => expect(tiledObject.isPolygon, isTrue));
+      test('sets isPolygon to true',
+          () => expect(tiledObject.isPolygon, isTrue));
     });
 
     group('Polyline', () {
@@ -137,12 +138,12 @@ void main() {
 
       test('populates the points list', () {
         final ps = tiledObject.polyline;
-        expect(ps[0].x, equals(Point(0,0).x));
-        expect(ps[0].y, equals(Point(0,0).y));
-        expect(ps[1].x, equals(Point(-5,98).x));
-        expect(ps[1].y, equals(Point(-5,98).y));
-        expect(ps[2].x, equals(Point(-49,42).x));
-        expect(ps[2].y, equals(Point(-49,42).y));
+        expect(ps[0].x, equals(Point(0, 0).x));
+        expect(ps[0].y, equals(Point(0, 0).y));
+        expect(ps[1].x, equals(Point(-5, 98).x));
+        expect(ps[1].y, equals(Point(-5, 98).y));
+        expect(ps[2].x, equals(Point(-49, 42).x));
+        expect(ps[2].y, equals(Point(-49, 42).y));
       });
 
       test('sets isPolyline to true', () {

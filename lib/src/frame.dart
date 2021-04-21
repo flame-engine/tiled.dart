@@ -5,8 +5,8 @@ class Frame {
   int tileId;
 
   Frame.fromXml(XmlElement xmlElement) {
-    tileId  = int.tryParse(xmlElement.getAttribute('tileid') ?? '');
-    duration  = int.tryParse(xmlElement.getAttribute('duration') ?? '');
+    tileId = int.tryParse(xmlElement.getAttribute('tileid') ?? '');
+    duration = int.tryParse(xmlElement.getAttribute('duration') ?? '');
   }
 
   Frame.fromJson(Map<String, dynamic> json) {

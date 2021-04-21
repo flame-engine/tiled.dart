@@ -37,16 +37,16 @@ class Text {
     bold = json['bold'];
     color = json['color'];
     fontFamily = json['fontfamily'];
-    hAlign = HAlign.values.firstWhere((e) => e.name == json['halign'],
-        orElse: () => HAlign.left);
+    hAlign = HAlign.values
+        .firstWhere((e) => e.name == json['halign'], orElse: () => HAlign.left);
     italic = json['italic'];
     kerning = json['kerning'];
     pixelSize = json['pixelsize'];
     strikeout = json['strikeout'];
     text = json['text'];
     underline = json['underline'];
-    vAlign = VAlign.values.firstWhere((e) => e.name == json['valign'],
-        orElse: () => VAlign.top);
+    vAlign = VAlign.values
+        .firstWhere((e) => e.name == json['valign'], orElse: () => VAlign.top);
     wrap = json['wrap'];
   }
 }

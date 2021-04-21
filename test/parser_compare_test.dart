@@ -25,7 +25,6 @@ void main() {
     });
   });
 
-
   TiledMap map3;
   setUp(() {
     return File('./test/fixtures/testgzip.json').readAsString().then((xml) {
@@ -33,10 +32,11 @@ void main() {
     });
   });
 
-
   TiledMap map4;
   setUp(() {
-    return File('./test/fixtures/testbase64only.json').readAsString().then((xml) {
+    return File('./test/fixtures/testbase64only.json')
+        .readAsString()
+        .then((xml) {
       map4 = TileMapParser.parseJson(xml);
     });
   });
@@ -54,7 +54,6 @@ void main() {
       tilemapEllipse = TileMapParser.parseTmx(xml);
     });
   });
-
 
   TiledMap map5;
   setUp(() {
@@ -78,16 +77,23 @@ void main() {
   });
 
   group('Parser compare', () {
-    test('toString should be equal', () => expect(oldmap.type, equals(tilemap.type)));
+    test('toString should be equal',
+        () => expect(oldmap.type, equals(tilemap.type)));
 
-    test('toString should be equal', () => expect(map.type, equals(tilemap.type)));
-    test('toString should be equal', () => expect(map2.type, equals(tilemap.type)));
-    test('toString should be equal', () => expect(map3.type, equals(tilemap.type)));
-    test('toString should be equal', () => expect(map4.type, equals(tilemap.type)));
+    test('toString should be equal',
+        () => expect(map.type, equals(tilemap.type)));
+    test('toString should be equal',
+        () => expect(map2.type, equals(tilemap.type)));
+    test('toString should be equal',
+        () => expect(map3.type, equals(tilemap.type)));
+    test('toString should be equal',
+        () => expect(map4.type, equals(tilemap.type)));
 
-    test('toString should be equal', () => expect(map5.type, equals(tilemapComplex.type)));
-    test('toString should be equal', () => expect(map6.type, equals(tilemapComplex.type)));
-    test('toString should be equal', () => expect(tilemapEllipse.type, equals(tilemapComplex.type)));
+    test('toString should be equal',
+        () => expect(map5.type, equals(tilemapComplex.type)));
+    test('toString should be equal',
+        () => expect(map6.type, equals(tilemapComplex.type)));
+    test('toString should be equal',
+        () => expect(tilemapEllipse.type, equals(tilemapComplex.type)));
   });
-
 }

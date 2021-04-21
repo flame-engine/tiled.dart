@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 
@@ -15,7 +12,10 @@ void main() {
       map = TiledMap();
       final tileset1 = TileSet('TileSet_1', 1, 1, 2, [Tile(0), Tile(1)]);
       final tileset2 = TileSet('TileSet_2', 3, 1, 2, [Tile(0), Tile(1)]);
-      final tileset3 = TileSet('TileSet_3', 5, 2, 2, [Tile(0), Tile(2)..properties.add(Property("name", "type", "value"))]);
+      final tileset3 = TileSet('TileSet_3', 5, 2, 2, [
+        Tile(0),
+        Tile(2)..properties.add(Property("name", "type", "value"))
+      ]);
 
       map.tileSets.add(tileset1);
       map.tileSets.add(tileset2);
@@ -40,16 +40,14 @@ void main() {
 
   group('Map.getTileByLocalID', () {
     TiledMap map;
-    final tileset = TileSet('Humans', 1, 32, 64*32, []);
+    final tileset = TileSet('Humans', 1, 32, 64 * 32, []);
     setUp(() {
       map = TiledMap();
       map.tileSets.add(tileset);
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect(
-        map.getTileByGId(0).localId, equals(0)
-      );
+      expect(map.getTileByGId(0).localId, equals(0));
     });
 
     group('returns a tile', () {
@@ -64,7 +62,7 @@ void main() {
 
   group('Map.getTileByPhrase', () {
     TiledMap map;
-    final tileset = TileSet('Humans', 1, 32, 64*32, []);
+    final tileset = TileSet('Humans', 1, 32, 64 * 32, []);
     setUp(() {
       map = TiledMap();
       map.tileSets.add(tileset);
@@ -72,14 +70,14 @@ void main() {
 
     test('errors if tile phrase is not in the correct format', () {
       expect(
-            () => map.getTileByPhrase('Nonexistant Tile'),
+        () => map.getTileByPhrase('Nonexistant Tile'),
         throwsArgumentError,
       );
     });
 
     test('errors if tileset is not present', () {
       expect(
-            () => map.getTileByPhrase('Nonexistant Tile|0'),
+        () => map.getTileByPhrase('Nonexistant Tile|0'),
         throwsArgumentError,
       );
     });
@@ -100,14 +98,15 @@ void main() {
 
   group('Map.getTileSet', () {
     TiledMap map;
-    final tileset = TileSet('Humans', 1, 32, 64*32, []);
+    final tileset = TileSet('Humans', 1, 32, 64 * 32, []);
     setUp(() {
       map = TiledMap();
       map.tileSets.add(tileset);
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect(() => map.getTilesetByName('Quackers'), throwsA(isA<ArgumentError>()));
+      expect(() => map.getTilesetByName('Quackers'),
+          throwsA(isA<ArgumentError>()));
     });
 
     test('returns the expected tileset', () {

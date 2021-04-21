@@ -15,14 +15,12 @@ class EditorSetting {
           break;
       }
     });
-
   }
 
   EditorSetting.fromJson(Map<String, dynamic> json) {
     chunkSize = json['chunksize'] != null
         ? ChunkSize.fromJson(json['chunksize'])
         : null;
-    export =
-        json['export'] != null ? Export.fromJson(json['export']) : null;
+    export = json['export'] != null ? Export.fromJson(json['export']) : null;
   }
 }

@@ -38,9 +38,8 @@ class TiledMap {
 
   Tile getTileByLocalID(String tileSetName, int localId) {
     final TileSet tileset = getTilesetByName(tileSetName);
-    return tileset.tiles.firstWhere(
-            (element) => element.localId == localId,
-        orElse: null);
+    return tileset.tiles
+        .firstWhere((element) => element.localId == localId, orElse: null);
   }
 
   Tile getTileByPhrase(String tilePhrase) {
@@ -66,7 +65,7 @@ class TiledMap {
     }
     for (var i = 0; i < tileSets.length; ++i) {
       if (tileSets[i].firstGId > tileGId) {
-        if(i == 0){
+        if (i == 0) {
           throw ArgumentError('Tileset not found');
         }
         return tileSets[i - 1];
@@ -97,11 +96,13 @@ class TiledMap {
   }
 
   Layer getLayerByName(String name) {
-    return layers.firstWhere((element) => element.name == name, orElse: () => throw ArgumentError('Layer $name not found'));
+    return layers.firstWhere((element) => element.name == name,
+        orElse: () => throw ArgumentError('Layer $name not found'));
   }
 
   TileSet getTilesetByName(String name) {
-    return tileSets.firstWhere((element) => element.name == name, orElse: () => throw ArgumentError('Tileset $name not found'));
+    return tileSets.firstWhere((element) => element.name == name,
+        orElse: () => throw ArgumentError('Tileset $name not found'));
   }
 
   TiledMap.fromXml(XmlElement xmlElement, {TsxProvider tsx}) {

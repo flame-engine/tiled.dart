@@ -33,8 +33,7 @@ class Layer {
 
   Layer.fromXml(XmlNode xmlElement) {
     drawOrder = DrawOrder.values.firstWhere(
-        (e) =>
-            e.name == xmlElement.getAttribute('draworder'),
+        (e) => e.name == xmlElement.getAttribute('draworder'),
         orElse: () => null);
     color = xmlElement.getAttribute('color'); // only ObjectGroup
     height = int.tryParse(xmlElement.getAttribute('height') ?? '');
@@ -115,12 +114,10 @@ class Layer {
   }
 
   Layer.fromJson(Map<String, dynamic> json) {
-    compression = Compression.values.firstWhere(
-        (e) => e.name == json['compression'],
-        orElse: () => null);
-    encoding = FileEncoding.values.firstWhere(
-        (e) => e.name == json['encoding'],
-        orElse: () => null);
+    compression = Compression.values
+        .firstWhere((e) => e.name == json['compression'], orElse: () => null);
+    encoding = FileEncoding.values
+        .firstWhere((e) => e.name == json['encoding'], orElse: () => null);
     chunks = (json['chunks'] as List)
             ?.map((e) => Chunk.fromJson(e, encoding, compression))
             ?.toList() ??
@@ -128,9 +125,8 @@ class Layer {
     data = json['data'] != null
         ? decodeData(json['data'], encoding, compression)
         : [];
-    drawOrder = DrawOrder.values.firstWhere(
-        (e) => e.name == json['draworder'],
-        orElse: () => null);
+    drawOrder = DrawOrder.values
+        .firstWhere((e) => e.name == json['draworder'], orElse: () => null);
     height = json['height'];
     id = json['id'];
     image = json['image'];
@@ -215,8 +211,8 @@ class Layer {
         ) {
       return;
     }
-    tileIDMatrix = List.generate(height, (_) => List<int>(width));
-    tileFlips = List.generate(height, (_) => List<Flips>(width));
+    tileIDMatrix = List.generate(height, (_) => List<int>.filled(width, 0));
+    tileFlips = List.generate(height, (_) => List<Flips>.filled(width, null));
     generateTiles(data, height, width, tileIDMatrix, tileFlips);
   }
 

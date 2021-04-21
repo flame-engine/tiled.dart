@@ -15,9 +15,8 @@ class Grid {
 
   Grid.fromJson(Map<String, dynamic> json) {
     height = json['height'];
-    orientation = GridOrientation.values.firstWhere(
-        (e) => e.name == json['orientation'],
-        orElse: () => null);
+    orientation = GridOrientation.values
+        .firstWhere((e) => e.name == json['orientation'], orElse: () => null);
     width = json['width'];
   }
 }

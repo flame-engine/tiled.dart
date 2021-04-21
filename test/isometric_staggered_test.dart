@@ -8,12 +8,16 @@ void main() {
   TiledMap mapIsoStaggeredTmx;
 
   setUp(() {
-    return File('./test/fixtures/isometric_staggered_grass_and_water.json').readAsString().then((xml) {
+    return File('./test/fixtures/isometric_staggered_grass_and_water.json')
+        .readAsString()
+        .then((xml) {
       mapIsoStaggeredJson = TileMapParser.parseJson(xml);
     });
   });
   setUp(() {
-    return File('./test/fixtures/isometric_staggered_grass_and_water.tmx').readAsString().then((xml) {
+    return File('./test/fixtures/isometric_staggered_grass_and_water.tmx')
+        .readAsString()
+        .then((xml) {
       mapIsoStaggeredTmx = TileMapParser.parseTmx(xml);
     });
   });
@@ -34,7 +38,6 @@ void main() {
       layer.chunks[0].tileIdMatrix.forEach((row) {
         expect(row.length, equals(16));
       });
-
     });
   });
 

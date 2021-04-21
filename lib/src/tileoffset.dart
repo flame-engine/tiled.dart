@@ -5,8 +5,8 @@ class TileOffset {
   int y;
 
   TileOffset.fromXml(XmlElement xmlElement) {
-    x  = int.tryParse(xmlElement.getAttribute('x') ?? '');
-    y  = int.tryParse(xmlElement.getAttribute('y') ?? '');
+    x = int.tryParse(xmlElement.getAttribute('x') ?? '');
+    y = int.tryParse(xmlElement.getAttribute('y') ?? '');
   }
 
   TileOffset.fromJson(Map<String, dynamic> json) {

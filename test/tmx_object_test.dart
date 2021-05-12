@@ -1,144 +1,153 @@
-import 'package:test/test.dart';
-import 'package:tiled/tiled.dart';
-import 'package:xml/xml.dart';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:test/test.dart';
+import 'package:tiled/tiled.dart';
+
 void main() {
-  XmlElement xmlRoot;
+  TiledMap map;
   setUp(() {
     return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
-      xmlRoot = XmlDocument.parse(xml).rootElement;
+      map = TileMapParser.parseTmx(xml);
     });
   });
 
-  group('TmxObject.fromXML', () {
-    List<XmlElement> objects;
-    setUp(() => objects = xmlRoot.findAllElements('object').toList());
+  group('TiledObject', () {
+    List<TiledObject> objects;
+    setUp(() => objects = map.getLayerByName('Test Object Layer 1').objects);
 
     group('Circle', () {
-      TmxObject tmxObject;
-      setUp(() => tmxObject = TmxObject.fromXML(objects[0]));
+      TiledObject tiledObject;
+      setUp(() => tiledObject = objects[0]);
 
       test('sets name to "Circle"', () {
-        expect(tmxObject.name, equals("Circle"));
+        expect(tiledObject.name, equals("Circle"));
       });
 
       test('sets type to "circle"', () {
-        expect(tmxObject.type, equals("circle"));
+        expect(tiledObject.type, equals("circle"));
       });
 
       test('sets x to 344', () {
-        expect(tmxObject.x, equals(344));
+        expect(tiledObject.x, equals(344));
       });
 
       test('sets y to 179', () {
-        expect(tmxObject.y, equals(179));
+        expect(tiledObject.y, equals(179));
       });
 
       test('sets width to 55', () {
-        expect(tmxObject.width, equals(55));
+        expect(tiledObject.width, equals(55));
       });
 
       test('sets height to 53', () {
-        expect(tmxObject.height, equals(53));
+        expect(tiledObject.height, equals(53));
       });
 
       test('sets properties', () {
-        expect(tmxObject.properties['property_name'], equals('property_value'));
+        final List<Property> props = tiledObject.properties;
+        expect(props[0].name, equals('property_name'));
+        expect(props[0].value, equals('property_value'));
       });
 
-      test('sets isEllipse to true', () => expect(tmxObject.isEllipse, isTrue));
+      test('sets isEllipse to true', () => expect(tiledObject.ellipse, isTrue));
     });
 
     group('Rectangle', () {
-      TmxObject tmxObject;
-      setUp(() => tmxObject = TmxObject.fromXML(objects[1]));
+      TiledObject tiledObject;
+      setUp(() => tiledObject = objects[1]);
 
       test('sets name to "Rectangle"', () {
-        expect(tmxObject.name, equals("Rectangle"));
+        expect(tiledObject.name, equals("Rectangle"));
       });
 
       test('sets type to "rectangle"', () {
-        expect(tmxObject.type, equals("rectangle"));
+        expect(tiledObject.type, equals("rectangle"));
       });
 
       test('sets x to 541', () {
-        expect(tmxObject.x, equals(541));
+        expect(tiledObject.x, equals(541));
       });
 
       test('sets y to 271', () {
-        expect(tmxObject.y, equals(271));
+        expect(tiledObject.y, equals(271));
       });
 
       test('sets width to 46', () {
-        expect(tmxObject.width, equals(46));
+        expect(tiledObject.width, equals(46));
       });
 
       test('sets height to 43', () {
-        expect(tmxObject.height, equals(43));
+        expect(tiledObject.height, equals(43));
       });
 
       test('sets isRectangle to true', () {
-        expect(tmxObject.isRectangle, isTrue);
+        expect(tiledObject.isRectangle, isTrue);
       });
     });
 
     group('Polygon', () {
-      TmxObject tmxObject;
-      setUp(() => tmxObject = TmxObject.fromXML(objects[2]));
+      TiledObject tiledObject;
+      setUp(() => tiledObject = objects[2]);
 
       test('sets name to "Polygon"', () {
-        expect(tmxObject.name, equals("Polygon"));
+        expect(tiledObject.name, equals("Polygon"));
       });
 
       test('sets type to "polygon"', () {
-        expect(tmxObject.type, equals("polygon"));
+        expect(tiledObject.type, equals("polygon"));
       });
 
       test('sets x to 752', () {
-        expect(tmxObject.x, equals(752));
+        expect(tiledObject.x, equals(752));
       });
 
       test('sets y to 216', () {
-        expect(tmxObject.y, equals(216));
+        expect(tiledObject.y, equals(216));
       });
 
       test('populates the points list', () {
-        final ps = tmxObject.points;
-        expect(ps[0], equals(const Point(0, 0)));
-        expect(ps[1], equals(const Point(-4, 81)));
-        expect(ps[2], equals(const Point(-78, 19)));
+        final ps = tiledObject.polygon;
+        expect(ps[0].x, equals(Point(0, 0).x));
+        expect(ps[0].y, equals(Point(0, 0).y));
+        expect(ps[1].x, equals(Point(-4, 81).x));
+        expect(ps[1].y, equals(Point(-4, 81).y));
+        expect(ps[2].x, equals(Point(-78, 19).x));
+        expect(ps[2].y, equals(Point(-78, 19).y));
       });
 
-      test('sets isPolygon to true', () => expect(tmxObject.isPolygon, isTrue));
+      test('sets isPolygon to true',
+          () => expect(tiledObject.isPolygon, isTrue));
     });
 
     group('Polyline', () {
-      TmxObject tmxObject;
-      setUp(() => tmxObject = TmxObject.fromXML(objects[3]));
+      TiledObject tiledObject;
+      setUp(() => tiledObject = objects[3]);
 
       test('sets name to "Polyline"', () {
-        expect(tmxObject.name, equals("Polyline"));
+        expect(tiledObject.name, equals("Polyline"));
       });
 
       test('sets x to 1016', () {
-        expect(tmxObject.x, equals(1016));
+        expect(tiledObject.x, equals(1016));
       });
 
       test('sets y to 141', () {
-        expect(tmxObject.y, equals(141));
+        expect(tiledObject.y, equals(141));
       });
 
       test('populates the points list', () {
-        final ps = tmxObject.points;
-        expect(ps[0], equals(const Point(0, 0)));
-        expect(ps[1], equals(const Point(-5, 98)));
-        expect(ps[2], equals(const Point(-49, 42)));
+        final ps = tiledObject.polyline;
+        expect(ps[0].x, equals(Point(0, 0).x));
+        expect(ps[0].y, equals(Point(0, 0).y));
+        expect(ps[1].x, equals(Point(-5, 98).x));
+        expect(ps[1].y, equals(Point(-5, 98).y));
+        expect(ps[2].x, equals(Point(-49, 42).x));
+        expect(ps[2].y, equals(Point(-49, 42).y));
       });
 
       test('sets isPolyline to true', () {
-        expect(tmxObject.isPolyline, isTrue);
+        expect(tiledObject.isPolyline, isTrue);
       });
     });
   });

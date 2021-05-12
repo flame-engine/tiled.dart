@@ -4,13 +4,8 @@ import 'package:tiled/tiled.dart';
 void main() {
   group('Tile.emptyTile()', () {
     test('creates a tile with GID = 0', () {
-      final tile = Tile.emptyTile();
-      expect(tile.gid, equals(0));
-    });
-
-    test('creates a tile with a null tileset', () {
-      final tile = Tile.emptyTile();
-      expect(tile.tileset, isNull);
+      final tile = Tile(0);
+      expect(tile.localId, equals(0));
     });
   });
 
@@ -18,31 +13,27 @@ void main() {
     // My inability to easily create stub methods has resulted in
     // reusing the emptyTile() constructor.
     test('returns true if gid == 0', () {
-      final tile = Tile.emptyTile();
+      final tile = Tile(0);
       expect(tile.isEmpty, isTrue);
     });
 
     test('returns false if gid != 0', () {
-      final tile = Tile.emptyTile()..gid = 1;
+      final tile = Tile(0)..localId = 1;
       expect(tile.isEmpty, isFalse);
     });
   });
 
   test('Tile.properties is present', () {
-    final tile = Tile.emptyTile();
-    expect(tile.properties, isA<Map>());
+    final tile = Tile(0);
+    expect(tile.properties, isA<List>());
   });
 
+  // TODO no default constructor on Tileset
   test('Tile.properties queries Tileset.tileProperties correctly', () {
-    final ts = Tileset(1)..tileProperties[1] = {'tile_property': 'tile_value'};
-    final tile = Tile(0, ts);
-
-    expect(tile.properties, equals({'tile_property': 'tile_value'}));
-  });
-
-  test('Tile.properties matches if Tileset.tileProperties if empty', () {
-    final ts = Tileset(1);
-    final tile = Tile(2, ts);
-    expect(tile.properties, equals({}));
+    final tile = Tile(0)
+      ..properties.add(Property('tile_property', 'type', 'tile_value'));
+    expect(tile.properties.first.name, equals('tile_property'));
+    expect(tile.properties.first.type, equals('type'));
+    expect(tile.properties.first.value, equals('tile_value'));
   });
 }

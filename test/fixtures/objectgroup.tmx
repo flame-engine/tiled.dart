@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
- <layer name="Tile Layer 1" width="100" height="100">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="6">
+ <layer id="1" name="Tile Layer 1" width="100" height="100">
   <data encoding="base64" compression="zlib">
    eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
   </data>
  </layer>
- <objectgroup color="#555500" name="Test Object Layer 1" width="100" height="100" opacity="0.7">
+ <objectgroup color="#555500" id="2" name="Test Object Layer 1" opacity="0.7">
   <properties>
    <property name="objectgroup_property_name" value="objectgroup_property_value"/>
   </properties>
-  <object name="Circle" type="circle" x="344" y="179" width="55" height="53">
+  <object id="1" name="Circle" type="circle" x="344" y="179" width="55" height="53">
    <properties>
     <property name="property_name" value="property_value"/>
    </properties>
    <ellipse/>
   </object>
-  <object name="Rectangle" type="rectangle" x="541" y="271" width="46" height="43"/>
-  <object name="Polygon" type="polygon" x="752" y="216">
+  <object id="2" name="Rectangle" type="rectangle" x="541" y="271" width="46" height="43"/>
+  <object id="3" name="Polygon" type="polygon" x="752" y="216">
    <polygon points="0,0 -4,81 -78,19"/>
   </object>
-  <object name="Polyline" x="1016" y="141">
+  <object id="4" name="Polyline" x="1016" y="141">
    <polyline points="0,0 -5,98 -49,42"/>
   </object>
+  <object id="5" x="644.372" y="355.833" width="105" height="19">
+   <text wrap="1">Hello World</text>
+  </object>
  </objectgroup>
- <objectgroup name="EmptyLayer" width="100" height="100" visible="0"/>
+ <objectgroup id="3" name="EmptyLayer" visible="0"/>
 </map>

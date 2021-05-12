@@ -1,65 +1,68 @@
 part of tiled;
 
 class Tile {
-  // Tile IDs are 0-based, to conform with TMX documentation.
-  int tileId;
-  Tileset tileset;
+  List<Frame> animation = [];
+  int localId;
+  TiledImage image;
+  Layer objectGroup;
+  double probability;
+  List<Property> properties = [];
+  List<int> terrain = []; // index of the terrain
+  String type;
 
-  // Tile global IDs aren't 1-based, but start from "1" (0 being an "null tile").
-  int gid;
+  Tile(this.localId);
 
-  int width;
-  int height;
-  int spacing;
-  int margin;
+  bool get isEmpty => localId == 0;
 
-  Flips flips;
+  Tile.fromXml(XmlElement xmlElement) {
+    localId = int.tryParse(xmlElement.getAttribute('id') ?? '');
+    probability =
+        double.tryParse(xmlElement.getAttribute('probability') ?? '0');
+    type = xmlElement.getAttribute('type');
+    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
+      switch (element.name.local) {
+        case 'image':
+          image = TiledImage.fromXml(element);
+          break;
+        case 'properties':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            properties.add(Property.fromXml(element));
+          });
+          break;
+        case 'terrain':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            terrain.add(int.tryParse(element.getAttribute('id') ?? ''));
+          });
+          break;
+        case 'animation':
+          element.nodes.whereType<XmlElement>().forEach((element) {
+            animation.add(Frame.fromXml(element));
+          });
+          break;
+        case 'objectgroup':
+          objectGroup = Layer.fromXml(element);
+          break;
+      }
+    });
+  }
 
-  Map<String, dynamic> properties = {};
-
-  Image _image;
-
-  Image get image {
-    if (_image == null) {
-      return tileset.image;
+  Tile.fromJson(Map<String, dynamic> json) {
+    animation =
+        (json['animation'] as List)?.map((e) => Frame.fromJson(e))?.toList() ??
+            [];
+    localId = json['id'];
+    if (json['image'] != null) {
+      image =
+          TiledImage(json['image'], json['imageheight'], json['imagewidth']);
     }
-    return _image;
-  }
-
-  // Optional X / Y locations for the tile.
-  int x, y;
-  int px, py;
-
-  bool get isEmpty {
-    return gid == 0;
-  }
-
-  Tile(this.tileId, this.tileset, {this.flips = const Flips.defaults()}) {
-    width = tileset.width;
-    height = tileset.height;
-    spacing = tileset.spacing;
-    margin = tileset.margin;
-    gid = tileId + tileset.firstgid;
-    properties = tileset.tileProperties[gid];
-
-    properties ??= {};
-
-    _image = tileset.tileImage[gid];
-  }
-
-  Tile.emptyTile() {
-    gid = 0;
-  }
-
-  Rectangle computeDrawRect() {
-    if (_image != null) {
-      return Rectangle(0, 0, _image.width, _image.height);
-    }
-    final tilesPerRow = tileset.image.width ~/ (width + spacing);
-    final row = tileId ~/ tilesPerRow;
-    final column = tileId % tilesPerRow;
-    final x = margin + (column * (width + spacing));
-    final y = margin + (row * (height + spacing));
-    return Rectangle(x, y, width + spacing, height + spacing);
+    objectGroup = json['objectgroup'];
+    probability = json['probability'] ?? 0;
+    properties = (json['properties'] as List)
+            ?.map((e) => Property.fromJson(e))
+            ?.toList() ??
+        [];
+    terrain = (json['terrain'] as List)?.map((e) => e)?.toList() ??
+        []; //TODO correct?
+    type = json['type'];
   }
 }

@@ -1,3 +1,3 @@
 #!/bin/bash -e
 
-flutter test test/
+flutter test

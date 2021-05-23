@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {
-  TiledMap map;
+  late TiledMap map;
   setUp(() {
     return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
       map = TileMapParser.parseTmx(xml);
@@ -12,10 +12,10 @@ void main() {
   });
 
   group('Layer.fromXML', () {
-    Layer objectGroup;
+    late ObjectGroup objectGroup;
 
     setUp(() {
-      objectGroup = map.getLayerByName('Test Object Layer 1');
+      objectGroup = map.getLayerByName('Test Object Layer 1') as ObjectGroup;
     });
 
     test('sets name', () {
@@ -32,7 +32,7 @@ void main() {
 
     test('sets visible', () {
       expect(objectGroup.visible, equals(true));
-      objectGroup = map.getLayerByName('EmptyLayer');
+      objectGroup = map.getLayerByName('EmptyLayer') as ObjectGroup;
 
       expect(objectGroup.visible, equals(false));
     });

@@ -1,21 +1,44 @@
 part of tiled;
 
+/// <property>
+/// * name: The name of the property.
+/// * type: The type of the property.
+///   Can be string (default), int, float, bool, color, file or object
+///   (since 0.16, with color and file added in 0.17, and object added in 1.4).
+/// * value: The value of the property.
+///   (default string is “”, default number is 0, default boolean is “false”,
+///   default color is #00000000, default file is “.” (the current file’s
+///   parent directory))
 class Property {
   String name;
-  String type;
+  PropertyType type;
+  // TODO(luan) support other property types
   String value;
 
-  Property(this.name, this.type, this.value);
+  Property({
+    required this.name,
+    required this.type,
+    required this.value,
+  });
 
-  Property.fromXml(XmlNode element) {
-    value = element.getAttribute('value');
-    name = element.getAttribute('name');
-    type = element.getAttribute('type');
+  static Property parse(Parser parser) {
+    return Property(
+      name: parser.getString('name'),
+      type: parser.getPropertyType('type', defaults: PropertyType.string),
+      value: parser.getString('value'),
+    );
   }
+}
 
-  Property.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    type = json['type'];
-    value = json['value'].toString();
+extension PropertiesParser on Parser {
+  List<Property> getProperties() {
+    return formatSpecificParsing(
+      (json) => json.getChildrenAs('properties', Property.parse),
+      (xml) =>
+          xml
+              .getSingleChildOrNull('properties')
+              ?.getChildrenAs('property', Property.parse) ??
+          [],
+    );
   }
 }

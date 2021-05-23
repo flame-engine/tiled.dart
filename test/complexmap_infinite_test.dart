@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {
-  TiledMap complexMapInfinite;
+  late TiledMap complexMapInfinite;
 
   setUp(() {
     return File('./test/fixtures/complexmap_infinite.tmx')
@@ -15,19 +15,16 @@ void main() {
   });
 
   group('Layer.tiles Json', () {
-    Layer layer;
+    late TileLayer layer;
     setUp(() {
-      layer = complexMapInfinite.getLayerByName('top');
+      layer = complexMapInfinite.getLayerByName('top') as TileLayer;
     });
     test('is expected to be infinite with chunks', () {
       expect(complexMapInfinite.infinite, isTrue);
-      expect(layer.tileIDMatrix.length, equals(0));
-      layer.tileIDMatrix.forEach((row) {
-        expect(row.length, equals(0));
-      });
-      expect(layer.chunks.length, equals(9));
-      expect(layer.chunks[0].tileIdMatrix.length, equals(16));
-      layer.chunks[0].tileIdMatrix.forEach((row) {
+      expect(layer.tileData, isNull);
+      expect(layer.chunks!.length, equals(9));
+      expect(layer.chunks![0].tileData.length, equals(16));
+      layer.chunks![0].tileData.forEach((row) {
         expect(row.length, equals(16));
       });
     });

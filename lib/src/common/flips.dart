@@ -1,3 +1,5 @@
+part of tiled;
+
 class Flips {
   final bool horizontally;
   final bool vertically;

@@ -1,27 +1,33 @@
 part of tiled;
 
+/// <template>
+/// The template root element contains the saved map object and a tileset
+/// element that points to an external tileset, if the object is a tile object.
+///
+/// Example of a template file:
+///
+/// ```
+///   <?xml version="1.0" encoding="UTF-8"?>
+///   <template>
+///    <tileset firstgid="1" source="desert.tsx"/>
+///    <object name="cactus" gid="31" width="81" height="101"/>
+///   </template>
+/// ```
+///
+/// Can contain at most one: <tileset>, <object>
 class Template {
-  TileSet tileSet;
-  TiledObject object;
+  Tileset? tileSet;
+  TiledObject? object;
 
-  Template.fromXml(XmlElement xmlElement) {
-    xmlElement.children.whereType<XmlElement>().forEach((XmlElement element) {
-      switch (element.name.local) {
-        case 'tileset':
-          tileSet = TileSet.fromXml(element,
-              tsx: null); // TODO is it possible to have an externel tsx here?
-          break;
-        case 'object':
-          object = TiledObject.fromXml(element);
-          break;
-      }
-    });
-  }
+  Template({
+    this.tileSet,
+    this.object,
+  });
 
-  Template.fromJson(Map<String, dynamic> json) {
-    tileSet =
-        json['tileset'] != null ? TileSet.fromJson(json['tileset']) : null;
-    object =
-        json['object'] != null ? TiledObject.fromJson(json['object']) : null;
+  static Template parse(Parser parser) {
+    return Template(
+      tileSet: parser.getSingleChildOrNullAs('tileset', Tileset.parse),
+      object: parser.getSingleChildOrNullAs('object', TiledObject.parse),
+    );
   }
 }

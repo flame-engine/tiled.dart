@@ -15,7 +15,7 @@ void main() {
     late ObjectGroup objectGroup;
 
     setUp(() {
-      objectGroup = map.getLayerByName('Test Object Layer 1') as ObjectGroup;
+      objectGroup = map.layerByName('Test Object Layer 1') as ObjectGroup;
     });
 
     test('sets name', () {
@@ -32,7 +32,7 @@ void main() {
 
     test('sets visible', () {
       expect(objectGroup.visible, equals(true));
-      objectGroup = map.getLayerByName('EmptyLayer') as ObjectGroup;
+      objectGroup = map.layerByName('EmptyLayer') as ObjectGroup;
 
       expect(objectGroup.visible, equals(false));
     });

@@ -17,7 +17,7 @@ void main() {
   group('Layer.tiles', () {
     late TileLayer layer;
     setUp(() {
-      layer = mapIso.getLayerByName('Tile Layer 1') as TileLayer;
+      layer = mapIso.layerByName('Tile Layer 1') as TileLayer;
     });
     test('is the expected size of 25', () {
       expect(layer.tileData!.length, equals(25));

@@ -106,26 +106,26 @@ class TiledMap {
   });
 
   // Convenience Methods
-  Tile getTileByGid(int tileGid) {
+  Tile tileByGid(int tileGid) {
     if (tileGid == 0) {
       return Tile(localId: 0);
     }
-    final tileset = getTilesetByTileGId(tileGid);
+    final tileset = tilesetByTileGId(tileGid);
     return tileset.tiles.firstWhere(
       (element) => element.localId == (tileGid - tileset.firstGid!),
       orElse: null,
     );
   }
 
-  Tile getTileByLocalID(String tileSetName, int localId) {
-    final tileset = getTilesetByName(tileSetName);
+  Tile tileByLocalId(String tileSetName, int localId) {
+    final tileset = tilesetByName(tileSetName);
     return tileset.tiles.firstWhere(
       (element) => element.localId == localId,
       orElse: null,
     );
   }
 
-  Tile getTileByPhrase(String tilePhrase) {
+  Tile tileByPhrase(String tilePhrase) {
     final split = tilePhrase.split('|');
     if (split.length != 2) {
       throw ArgumentError(
@@ -139,10 +139,10 @@ class TiledMap {
       throw ArgumentError('Local tile ID ${split.last} is not an integer.');
     }
 
-    return getTileByLocalID(tilesetName, tileId);
+    return tileByLocalId(tilesetName, tileId);
   }
 
-  Tileset getTilesetByTileGId(int tileGId) {
+  Tileset tilesetByTileGId(int tileGId) {
     if (tilesets.length == 1) {
       return tilesets.first;
     }
@@ -157,7 +157,7 @@ class TiledMap {
     return tilesets.last;
   }
 
-  List<TiledImage> getTiledImages() {
+  List<TiledImage> tiledImages() {
     final imageSet = <TiledImage>{};
     for (var i = 0; i < tilesets.length; ++i) {
       final image = tilesets[i].image;
@@ -175,14 +175,14 @@ class TiledMap {
     return imageSet.toList();
   }
 
-  Layer getLayerByName(String name) {
+  Layer layerByName(String name) {
     return layers.firstWhere(
       (element) => element.name == name,
       orElse: () => throw ArgumentError('Layer $name not found'),
     );
   }
 
-  Tileset getTilesetByName(String name) {
+  Tileset tilesetByName(String name) {
     return tilesets.firstWhere(
       (element) => element.name == name,
       orElse: () => throw ArgumentError('Tileset $name not found'),

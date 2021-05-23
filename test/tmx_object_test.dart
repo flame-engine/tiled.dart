@@ -14,8 +14,7 @@ void main() {
   group('TiledObject', () {
     late List<TiledObject> objects;
     setUp(() {
-      objects =
-          (map.getLayerByName('Test Object Layer 1') as ObjectGroup).objects;
+      objects = (map.layerByName('Test Object Layer 1') as ObjectGroup).objects;
     });
 
     group('Circle', () {

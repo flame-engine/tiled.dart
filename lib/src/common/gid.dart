@@ -33,9 +33,9 @@ part of tiled;
 /// (x/y axis swap) is done first, followed by the horizontal and vertical
 /// flips.
 class Gid {
-  static const int FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
-  static const int FLIPPED_VERTICALLY_FLAG = 0x40000000;
-  static const int FLIPPED_DIAGONALLY_FLAG = 0x20000000;
+  static const int flippedHorizontallyFlag = 0x80000000;
+  static const int flippedVerticallyFlag = 0x40000000;
+  static const int flippedDiagonallyFlag = 0x20000000;
 
   final int tile;
   final Flips flips;
@@ -58,16 +58,16 @@ class Gid {
         final gid = data[(y * width) + x];
         // get flips from id
         final bool flippedHorizontally =
-            (gid & FLIPPED_HORIZONTALLY_FLAG) == FLIPPED_HORIZONTALLY_FLAG;
+            (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
         final bool flippedVertically =
-            (gid & FLIPPED_VERTICALLY_FLAG) == FLIPPED_VERTICALLY_FLAG;
+            (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
         final bool flippedDiagonally =
-            (gid & FLIPPED_DIAGONALLY_FLAG) == FLIPPED_DIAGONALLY_FLAG;
+            (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
         // clear id from flips
         final tileId = gid &
-            ~(FLIPPED_HORIZONTALLY_FLAG |
-                FLIPPED_VERTICALLY_FLAG |
-                FLIPPED_DIAGONALLY_FLAG);
+            ~(flippedHorizontallyFlag |
+                flippedVerticallyFlag |
+                flippedDiagonallyFlag);
         final flip =
             Flips(flippedHorizontally, flippedVertically, flippedDiagonally);
         return Gid(tileId, flip);

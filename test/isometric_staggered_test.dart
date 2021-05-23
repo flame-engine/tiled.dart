@@ -25,7 +25,7 @@ void main() {
   group('Layer.tiles Json', () {
     late TileLayer layer;
     setUp(() {
-      layer = mapIsoStaggeredJson.getLayerByName('Tile Layer 1') as TileLayer;
+      layer = mapIsoStaggeredJson.layerByName('Tile Layer 1') as TileLayer;
     });
     test('is expected to be infinite with chunks', () {
       expect(mapIsoStaggeredJson.infinite, isTrue);
@@ -41,7 +41,7 @@ void main() {
   group('Layer.tiles Tmx', () {
     late TileLayer layer;
     setUp(() {
-      layer = mapIsoStaggeredTmx.getLayerByName('Tile Layer 1') as TileLayer;
+      layer = mapIsoStaggeredTmx.layerByName('Tile Layer 1') as TileLayer;
     });
     test('is expected to be infinite with chunks', () {
       expect(mapIsoStaggeredTmx.infinite, isTrue);

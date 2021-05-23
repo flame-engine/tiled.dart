@@ -13,7 +13,7 @@ void main() {
 
   group('rectangle', () {
     test('rectangle map works from layer', () {
-      final layer = map.getLayerByName('Tile Layer 1') as TileLayer;
+      final layer = map.layerByName('Tile Layer 1') as TileLayer;
 
       expect(layer.tileData![1].last.flips.vertically, equals(true));
       expect(layer.tileData![1].last.flips.diagonally, equals(true));

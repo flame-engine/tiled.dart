@@ -56,11 +56,11 @@ void main() {
       );
 
       // TileSet_3 - Tile 2 => gid = 7
-      tile = map.getTileByGid(7);
+      tile = map.tileByGid(7);
     });
 
     test('returns an empty Tile if GID is 0', () {
-      tile = map.getTileByGid(0);
+      tile = map.tileByGid(0);
       expect(tile.isEmpty, isTrue);
     });
 
@@ -91,12 +91,12 @@ void main() {
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect(map.getTileByGid(0).localId, equals(0));
+      expect(map.tileByGid(0).localId, equals(0));
     });
 
     group('returns a tile', () {
       late Tile tile;
-      setUp(() => tile = map.getTileByLocalID('Humans', 0));
+      setUp(() => tile = map.tileByLocalId('Humans', 0));
 
       test('with the expected local tile ID', () {
         expect(tile.localId, equals(0));
@@ -124,25 +124,25 @@ void main() {
 
     test('errors if tile phrase is not in the correct format', () {
       expect(
-        () => map.getTileByPhrase('Nonexistant Tile'),
+        () => map.tileByPhrase('Nonexistant Tile'),
         throwsArgumentError,
       );
     });
 
     test('errors if tileset is not present', () {
       expect(
-        () => map.getTileByPhrase('Nonexistant Tile|0'),
+        () => map.tileByPhrase('Nonexistant Tile|0'),
         throwsArgumentError,
       );
     });
 
     test('errors if tile id is not a parsable integer', () {
-      expect(() => map.getTileByPhrase('Humans|cupcake'), throwsArgumentError);
+      expect(() => map.tileByPhrase('Humans|cupcake'), throwsArgumentError);
     });
 
     group('returns a tile', () {
       late Tile tile;
-      setUp(() => tile = map.getTileByPhrase('Humans|0'));
+      setUp(() => tile = map.tileByPhrase('Humans|0'));
 
       test('with the expected local tile ID', () {
         expect(tile.localId, equals(0));
@@ -169,12 +169,12 @@ void main() {
     });
 
     test('raises an ArgumentError if tileset is not present', () {
-      expect(() => map.getTilesetByName('Quackers'),
-          throwsA(isA<ArgumentError>()));
+      expect(
+          () => map.tilesetByName('Quackers'), throwsA(isA<ArgumentError>()));
     });
 
     test('returns the expected tileset', () {
-      expect(map.getTilesetByName('Humans'), equals(tileset));
+      expect(map.tilesetByName('Humans'), equals(tileset));
     });
   });
 }

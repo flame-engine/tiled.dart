@@ -17,7 +17,7 @@ void main() {
   group('Layer.tiles Json', () {
     late TileLayer layer;
     setUp(() {
-      layer = complexMapInfinite.getLayerByName('top') as TileLayer;
+      layer = complexMapInfinite.layerByName('top') as TileLayer;
     });
     test('is expected to be infinite with chunks', () {
       expect(complexMapInfinite.infinite, isTrue);

@@ -166,7 +166,7 @@ void main() {
     });
 
     test('and global tileset image', () {
-      final tileset = map.getTilesetByName('default');
+      final tileset = map.tilesetByName('default');
       expect(tileset.image!.source, equals('level1.png'));
       expect(
         tileset.computeDrawRect(Tile(localId: tileset.firstGid!)),
@@ -187,17 +187,17 @@ void main() {
     });
 
     test('and image per tile', () {
-      final tileset = map.getTilesetByName('other');
+      final tileset = map.tilesetByName('other');
       expect(tileset.image, isNull);
-      final tiledImages = map.getTiledImages();
+      final tiledImages = map.tiledImages();
       expect(tiledImages.length, equals(3));
       expect(
         tiledImages.map((e) => e.source),
         containsAll(['level1.png', 'image1.png', 'image2.png']),
       );
 
-      final tile1 = map.getTileByGid(tileset.firstGid!);
-      final tile2 = map.getTileByGid(tileset.firstGid! + 1);
+      final tile1 = map.tileByGid(tileset.firstGid!);
+      final tile2 = map.tileByGid(tileset.firstGid! + 1);
       expect(tile1.image!.source, equals('image1.png'));
       expect(
         tileset.computeDrawRect(tile1),
@@ -216,7 +216,7 @@ void main() {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
         map = TileMapParser.parseTmx(xml, tsx: CustomTsxProvider());
         expect(
-          map.getTilesetByName('external').image!.source,
+          map.tilesetByName('external').image!.source,
           equals('level1.png'),
         );
       });

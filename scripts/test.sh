@@ -1,3 +1,3 @@
 #!/bin/bash -e
 
-flutter pub run test test/
+flutter test test/

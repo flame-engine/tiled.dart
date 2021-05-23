@@ -135,7 +135,9 @@ abstract class Layer {
         final parseChunk = (e) => Chunk.parse(e, encoding, compression);
         final chunks = parser.getChildrenAs('chunks', parseChunk) +
             (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
-        final data = parseLayerData(parser, encoding, compression);
+        final data = dataNode != null
+            ? parseLayerData(dataNode, encoding, compression)
+            : null;
         layer = TileLayer(
           id: id,
           name: name,

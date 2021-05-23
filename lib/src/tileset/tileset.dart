@@ -167,24 +167,18 @@ class Tileset {
     if (tsx != null && source != null) {
       final tileset = Tileset.parse(tsx.getSource(source));
       // Copy attributes if not null
-      // TODO(luan) cleanup after null vs non-null values are settled
       backgroundColor = tileset.backgroundColor ?? backgroundColor;
       columns = tileset.columns ?? columns;
       firstGid = tileset.firstGid ?? firstGid;
       grid = tileset.grid ?? grid;
       image = tileset.image ?? image;
-      margin = tileset.margin ?? margin;
       name = tileset.name ?? name;
-      objectAlignment = tileset.objectAlignment ?? objectAlignment;
-      spacing = tileset.spacing ?? spacing;
       tileCount = tileset.tileCount ?? tileCount;
       tiledVersion = tileset.tiledVersion ?? tiledVersion;
       tileOffset = tileset.tileOffset ?? tileOffset;
       tileHeight = tileset.tileHeight ?? tileHeight;
       tileWidth = tileset.tileWidth ?? tileWidth;
       transparentColor = tileset.transparentColor ?? transparentColor;
-      type = tileset.type ?? type;
-      version = tileset.version ?? version;
       // Add List-Attributes
       properties.addAll(tileset.properties);
       terrains.addAll(tileset.terrains);

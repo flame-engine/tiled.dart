@@ -77,23 +77,39 @@ void main() {
   });
 
   group('Parser compare', () {
-    test('toString should be equal',
-        () => expect(oldMap.type, equals(tileMap.type)));
+    test(
+      'toString should be equal',
+      () => expect(oldMap.type, equals(tileMap.type)),
+    );
 
-    test('toString should be equal',
-        () => expect(map.type, equals(tileMap.type)));
-    test('toString should be equal',
-        () => expect(map2.type, equals(tileMap.type)));
-    test('toString should be equal',
-        () => expect(map3.type, equals(tileMap.type)));
-    test('toString should be equal',
-        () => expect(map4.type, equals(tileMap.type)));
+    test(
+      'toString should be equal',
+      () => expect(map.type, equals(tileMap.type)),
+    );
+    test(
+      'toString should be equal',
+      () => expect(map2.type, equals(tileMap.type)),
+    );
+    test(
+      'toString should be equal',
+      () => expect(map3.type, equals(tileMap.type)),
+    );
+    test(
+      'toString should be equal',
+      () => expect(map4.type, equals(tileMap.type)),
+    );
 
-    test('toString should be equal',
-        () => expect(map5.type, equals(tileMapComplex.type)));
-    test('toString should be equal',
-        () => expect(map6.type, equals(tileMapComplex.type)));
-    test('toString should be equal',
-        () => expect(tileMapEllipse.type, equals(tileMapComplex.type)));
+    test(
+      'toString should be equal',
+      () => expect(map5.type, equals(tileMapComplex.type)),
+    );
+    test(
+      'toString should be equal',
+      () => expect(map6.type, equals(tileMapComplex.type)),
+    );
+    test(
+      'toString should be equal',
+      () => expect(tileMapEllipse.type, equals(tileMapComplex.type)),
+    );
   });
 }

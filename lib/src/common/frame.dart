@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <frame>
 ///
 /// * tileid: The local ID of a tile within the parent <tileset>.

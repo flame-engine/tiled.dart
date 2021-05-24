@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <tileset>
 ///
 /// * firstgid: The first global tile ID of this tileset (this global ID maps
@@ -187,10 +190,10 @@ class Tileset {
     }
   }
 
-  Rect computeDrawRect(Tile tile) {
+  Rectangle computeDrawRect(Tile tile) {
     final image = tile.image;
     if (image != null) {
-      return Rect.fromLTWH(
+      return Rectangle(
         0,
         0,
         image.width!.toDouble(),
@@ -201,7 +204,7 @@ class Tileset {
     final column = (tile.localId - firstGid!) % columns!;
     final x = margin + (column * (tileWidth! + spacing));
     final y = margin + (row * (tileHeight! + spacing));
-    return Rect.fromLTWH(
+    return Rectangle(
       x.toDouble(),
       y.toDouble(),
       (tileWidth! + spacing).toDouble(),
@@ -212,7 +215,7 @@ class Tileset {
   static List<Tile> _generateTiles(List<Tile> explicitTiles, int tileCount) {
     final tiles = <Tile>[];
     final iterator = explicitTiles.iterator;
-    Tile t = iterator.moveNext() ? iterator.current : Tile(localId: -1);
+    var t = iterator.moveNext() ? iterator.current : Tile(localId: -1);
     for (var i = 0; i <= tileCount; ++i) {
       if (t.localId == i) {
         tiles.add(t);

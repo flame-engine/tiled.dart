@@ -22,11 +22,11 @@ void main() {
       setUp(() => tiledObject = objects[0]);
 
       test('sets name to "Circle"', () {
-        expect(tiledObject.name, equals("Circle"));
+        expect(tiledObject.name, equals('Circle'));
       });
 
       test('sets type to "circle"', () {
-        expect(tiledObject.type, equals("circle"));
+        expect(tiledObject.type, equals('circle'));
       });
 
       test('sets x to 344', () {
@@ -46,7 +46,7 @@ void main() {
       });
 
       test('sets properties', () {
-        final List<Property> props = tiledObject.properties;
+        final props = tiledObject.properties;
         expect(props[0].name, equals('property_name'));
         expect(props[0].value, equals('property_value'));
       });
@@ -59,11 +59,11 @@ void main() {
       setUp(() => tiledObject = objects[1]);
 
       test('sets name to "Rectangle"', () {
-        expect(tiledObject.name, equals("Rectangle"));
+        expect(tiledObject.name, equals('Rectangle'));
       });
 
       test('sets type to "rectangle"', () {
-        expect(tiledObject.type, equals("rectangle"));
+        expect(tiledObject.type, equals('rectangle'));
       });
 
       test('sets x to 541', () {
@@ -92,11 +92,11 @@ void main() {
       setUp(() => tiledObject = objects[2]);
 
       test('sets name to "Polygon"', () {
-        expect(tiledObject.name, equals("Polygon"));
+        expect(tiledObject.name, equals('Polygon'));
       });
 
       test('sets type to "polygon"', () {
-        expect(tiledObject.type, equals("polygon"));
+        expect(tiledObject.type, equals('polygon'));
       });
 
       test('sets x to 752', () {
@@ -117,8 +117,10 @@ void main() {
         expect(ps[2].y, equals(Point(x: -78, y: 19).y));
       });
 
-      test('sets isPolygon to true',
-          () => expect(tiledObject.isPolygon, isTrue));
+      test(
+        'sets isPolygon to true',
+        () => expect(tiledObject.isPolygon, isTrue),
+      );
     });
 
     group('Polyline', () {
@@ -126,7 +128,7 @@ void main() {
       setUp(() => tiledObject = objects[3]);
 
       test('sets name to "Polyline"', () {
-        expect(tiledObject.name, equals("Polyline"));
+        expect(tiledObject.name, equals('Polyline'));
       });
 
       test('sets x to 1016', () {

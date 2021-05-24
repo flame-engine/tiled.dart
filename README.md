@@ -1,6 +1,6 @@
 # Tiled Dart
 
-[![Pub](https://img.shields.io/pub/v/tiled.svg?style=popout)](https://pub.dartlang.org/packages/tiled) ![CI](https://github.com/flame-engine/tiled.dart/workflows/CI/badge.svg?branch=main&event=push) [![Discord](https://img.shields.io/discord/509714518008528896.svg)](https://discord.gg/pxrBmy4)
+[![Pub](https://img.shields.io/pub/v/tiled.svg?style=popout)](https://pub.dartlang.org/packages/tiled) ![cicd](https://github.com/flame-engine/tiled.dart/workflows/cicd/badge.svg?branch=main&event=push) [![Discord](https://img.shields.io/discord/509714518008528896.svg)](https://discord.gg/pxrBmy4)
 
 A Dart Tiled library.
 
@@ -34,9 +34,10 @@ If your tmx file includes a external tsx reference, you have to add a CustomPars
 ```dart
 class CustomTsxProvider extends TsxProvider {
   @override
-  XmlNode getSource(String filename) {
-    final String xml = File(filename).readAsStringSync();
-    return XmlDocument.parse(xml).rootElement;
+  Parser getSource(String fileName) {
+    final xml = File(fileName).readAsStringSync();
+    final node = XmlDocument.parse(xml).rootElement;
+    return XmlParser(node);
   }
 }
 ```

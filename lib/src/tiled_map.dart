@@ -1,6 +1,10 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <map>
+///
 /// * version: The TMX format version. Was “1.0” so far, and will be incremented
 ///   to match minor Tiled releases.
 /// * tiledversion: The Tiled version used to save the file (since Tiled 1.0.1).
@@ -83,7 +87,7 @@ class TiledMap {
 
   TiledMap({
     this.type = TileMapType.map,
-    this.version = "1.0",
+    this.version = '1.0',
     this.tiledVersion,
     required this.width,
     required this.height,
@@ -208,7 +212,7 @@ class TiledMap {
     final tileHeight = parser.getInt('tileheight');
     final tileWidth = parser.getInt('tilewidth');
     final type = parser.getTileMapType('type', defaults: TileMapType.map);
-    final version = parser.getString('version', defaults: "1.0");
+    final version = parser.getString('version', defaults: '1.0');
     final width = parser.getInt('width');
 
     final tilesets = parser.getChildrenAs(

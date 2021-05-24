@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <chunk>
 ///
 /// * x: The x coordinate of the chunk in tiles.
@@ -13,7 +16,7 @@ part of tiled;
 ///
 /// The data inside is a compressed (encoded) representation of a list
 /// (that sequentially represents a matrix) of integers representing
-/// [TileData]s.
+/// [Gid]s.
 class Chunk {
   List<int> data;
 

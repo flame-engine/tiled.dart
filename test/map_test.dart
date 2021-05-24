@@ -47,7 +47,7 @@ void main() {
                     name: 'name',
                     type: PropertyType.string,
                     value: 'value',
-                  )
+                  ),
                 ],
               ),
             ],
@@ -67,7 +67,7 @@ void main() {
     group('returns a valid Tile for GID 4', () {
       test('with tileId = 2', () {
         expect(tile.localId, equals(2));
-        expect(tile.properties.first.name, equals("name"));
+        expect(tile.properties.first.name, equals('name'));
       });
     });
   });
@@ -170,7 +170,9 @@ void main() {
 
     test('raises an ArgumentError if tileset is not present', () {
       expect(
-          () => map.tilesetByName('Quackers'), throwsA(isA<ArgumentError>()));
+        () => map.tilesetByName('Quackers'),
+        throwsA(isA<ArgumentError>()),
+      );
     });
 
     test('returns the expected tileset', () {

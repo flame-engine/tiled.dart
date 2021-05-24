@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <wangcolor>
 /// A color that can be used to define the corner and/or edge of a Wang tile.
 ///

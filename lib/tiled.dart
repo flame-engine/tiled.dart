@@ -2,7 +2,7 @@ library tiled;
 
 import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:math' show Rectangle;
 
 import 'package:archive/archive.dart';
 import 'package:xml/xml.dart';

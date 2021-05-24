@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <object>
 ///
 /// * id: Unique ID of the object. Each object that is placed on a map gets a

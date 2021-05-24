@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// All <tileset> tags shall occur before the first <layer> tag so that parsers
 /// may rely on having the tilesets before needing to resolve tiles.
 ///
@@ -280,7 +283,7 @@ abstract class Layer {
     List<int> decompressed;
     switch (compression) {
       case Compression.zlib:
-        decompressed = const ZLibDecoder().decodeBytes(decodedString);
+        decompressed = ZLibDecoder().decodeBytes(decodedString);
         break;
       case Compression.gzip:
         decompressed = GZipDecoder().decodeBytes(decodedString);

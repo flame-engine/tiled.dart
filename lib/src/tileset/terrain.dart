@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <terrain>
 ///
 /// * name: The name of the terrain type.

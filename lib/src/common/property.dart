@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <property>
 /// * name: The name of the property.
 /// * type: The type of the property.

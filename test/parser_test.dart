@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:ui';
+import 'dart:math' show Rectangle;
 
 import 'package:test/test.dart';
 import 'package:tiled/src/parser.dart';
@@ -170,19 +170,19 @@ void main() {
       expect(tileset.image!.source, equals('level1.png'));
       expect(
         tileset.computeDrawRect(Tile(localId: tileset.firstGid!)),
-        equals(const Rect.fromLTWH(0, 0, 16, 16)),
+        equals(const Rectangle(0, 0, 16, 16)),
       );
       expect(
         tileset.computeDrawRect(Tile(localId: tileset.firstGid! + 1)),
-        equals(const Rect.fromLTWH(16, 0, 16, 16)),
+        equals(const Rectangle(16, 0, 16, 16)),
       );
       expect(
         tileset.computeDrawRect(Tile(localId: tileset.firstGid! + 17)),
-        equals(const Rect.fromLTWH(0, 16, 16, 16)),
+        equals(const Rectangle(0, 16, 16, 16)),
       );
       expect(
         tileset.computeDrawRect(Tile(localId: tileset.firstGid! + 19)),
-        equals(const Rect.fromLTWH(32, 16, 16, 16)),
+        equals(const Rectangle(32, 16, 16, 16)),
       );
     });
 
@@ -201,12 +201,12 @@ void main() {
       expect(tile1.image!.source, equals('image1.png'));
       expect(
         tileset.computeDrawRect(tile1),
-        equals(const Rect.fromLTWH(0, 0, 32, 32)),
+        equals(const Rectangle(0, 0, 32, 32)),
       );
       expect(tile2.image!.source, equals('image2.png'));
       expect(
         tileset.computeDrawRect(tile2),
-        equals(const Rect.fromLTWH(0, 0, 32, 32)),
+        equals(const Rectangle(0, 0, 32, 32)),
       );
     });
   });

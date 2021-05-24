@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <wangset>
 ///
 /// Defines a list of corner colors and a list of edge colors, and any number

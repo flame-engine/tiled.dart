@@ -1,5 +1,8 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <tileoffset>
 ///
 /// x: Horizontal offset in pixels. (defaults to 0)

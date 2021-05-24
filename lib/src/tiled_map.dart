@@ -1,6 +1,10 @@
 part of tiled;
 
+/// Below is Tiled's documentation about how this structure is represented
+/// on XML files:
+///
 /// <map>
+///
 /// * version: The TMX format version. Was “1.0” so far, and will be incremented
 ///   to match minor Tiled releases.
 /// * tiledversion: The Tiled version used to save the file (since Tiled 1.0.1).

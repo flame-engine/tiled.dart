@@ -22,6 +22,7 @@ Import the package like this:
 ```
 
 ### Load Tmx Files
+
 Load a TMX file into a string by any means, and then pass the string to TileMapParser.parseXml():
 
 ```dart
@@ -54,4 +55,5 @@ Alternatively load a json file.
 ```
 
 ### Implementation
-For further information look at the examples in flame_tiled
+
+For further information and more usage examples, please take a look at the examples in [flame_tiled](https://github.com/flame-engine/flame_tiled).

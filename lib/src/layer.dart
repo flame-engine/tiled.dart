@@ -283,7 +283,7 @@ abstract class Layer {
     List<int> decompressed;
     switch (compression) {
       case Compression.zlib:
-        decompressed = ZLibDecoder().decodeBytes(decodedString);
+        decompressed = const ZLibDecoder().decodeBytes(decodedString);
         break;
       case Compression.gzip:
         decompressed = GZipDecoder().decodeBytes(decodedString);

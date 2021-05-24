@@ -3,7 +3,7 @@ import 'package:tiled/tiled.dart';
 import 'dart:io';
 
 void main() {
-  TiledMap map;
+  late TiledMap map;
 
   setUp(() {
     return File('./test/fixtures/rectangle.tmx').readAsString().then((xml) {
@@ -13,36 +13,31 @@ void main() {
 
   group('rectangle', () {
     test('rectangle map works from layer', () {
-      final layer = map.getLayerByName('Tile Layer 1');
+      final layer = map.layerByName('Tile Layer 1') as TileLayer;
 
-      expect(
-          layer.tileIDMatrix[0], equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-      expect(
-          layer.tileIDMatrix[1], equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
-      expect(layer.tileFlips[1].last.vertically, equals(true));
-      expect(layer.tileFlips[1].last.diagonally, equals(true));
-      expect(
-          layer.tileIDMatrix[2], equals([0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-      expect(
-          layer.tileIDMatrix[3], equals([0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
-      expect(
-          layer.tileIDMatrix[4], equals([0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]));
-      expect(
-          layer.tileIDMatrix[5], equals([0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]));
-      expect(
-          layer.tileIDMatrix[6], equals([0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]));
-      expect(
-          layer.tileIDMatrix[7], equals([0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]));
-      expect(
-          layer.tileIDMatrix[8], equals([0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]));
-      expect(
-          layer.tileIDMatrix[9], equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]));
+      expect(layer.tileData![1].last.flips.vertically, equals(true));
+      expect(layer.tileData![1].last.flips.diagonally, equals(true));
+
+      List<int> getDataRow(int idx) {
+        return layer.tileData![idx].map((e) => e.tile).toList();
+      }
+
+      expect(getDataRow(0), equals([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+      expect(getDataRow(1), equals([0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]));
+      expect(getDataRow(2), equals([0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+      expect(getDataRow(3), equals([0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]));
+      expect(getDataRow(4), equals([0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]));
+      expect(getDataRow(5), equals([0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]));
+      expect(getDataRow(6), equals([0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]));
+      expect(getDataRow(7), equals([0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]));
+      expect(getDataRow(8), equals([0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]));
+      expect(getDataRow(9), equals([0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]));
     });
 
     test('rectangle map works from map', () {
-      final layer = map.layers.first;
-      expect(layer.tileIDMatrix[0][0], equals(1));
-      expect(layer.tileFlips[1].last.vertically, equals(true));
+      final layer = map.layers.first as TileLayer;
+      expect(layer.tileData![0][0].tile, equals(1));
+      expect(layer.tileData![1].last.flips.vertically, equals(true));
     });
   });
 }

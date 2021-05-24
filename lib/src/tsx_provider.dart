@@ -1,5 +1,5 @@
 part of tiled;
 
 abstract class TsxProvider {
-  XmlNode getSource(String filename);
+  Parser getSource(String filename);
 }

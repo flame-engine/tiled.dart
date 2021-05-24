@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {
-  TiledMap mapIso;
+  late TiledMap mapIso;
 
   setUp(() {
     return File('./test/fixtures/isometric_grass_and_water.tmx')
@@ -15,13 +15,13 @@ void main() {
   });
 
   group('Layer.tiles', () {
-    Layer layer;
+    late TileLayer layer;
     setUp(() {
-      layer = mapIso.getLayerByName('Tile Layer 1');
+      layer = mapIso.layerByName('Tile Layer 1') as TileLayer;
     });
     test('is the expected size of 25', () {
-      expect(layer.tileIDMatrix.length, equals(25));
-      layer.tileIDMatrix.forEach((row) {
+      expect(layer.tileData!.length, equals(25));
+      layer.tileData!.forEach((row) {
         expect(row.length, equals(25));
       });
     });

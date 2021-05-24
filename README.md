@@ -1,6 +1,6 @@
 # Tiled Dart
 
-[![Pub](https://img.shields.io/pub/v/tiled.svg?style=popout)](https://pub.dartlang.org/packages/tiled) ![cicd](https://github.com/flame-engine/tiled.dart/workflows/cicd/badge.svg?branch=master&event=push) [![Discord](https://img.shields.io/discord/509714518008528896.svg)](https://discord.gg/pxrBmy4)
+[![Pub](https://img.shields.io/pub/v/tiled.svg?style=popout)](https://pub.dartlang.org/packages/tiled) ![cicd](https://github.com/flame-engine/tiled.dart/workflows/cicd/badge.svg?branch=main&event=push) [![Discord](https://img.shields.io/discord/509714518008528896.svg)](https://discord.gg/pxrBmy4)
 
 A Dart Tiled library.
 
@@ -22,6 +22,7 @@ Import the package like this:
 ```
 
 ### Load Tmx Files
+
 Load a TMX file into a string by any means, and then pass the string to TileMapParser.parseXml():
 
 ```dart
@@ -55,4 +56,5 @@ Alternatively load a json file.
 ```
 
 ### Implementation
-For further information look at the examples in flame_tiled
+
+For further information and more usage examples, please take a look at the examples in [flame_tiled](https://github.com/flame-engine/flame_tiled).

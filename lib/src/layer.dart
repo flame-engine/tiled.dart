@@ -135,7 +135,7 @@ abstract class Layer {
         final encoding = parser.getFileEncodingOrNull('encoding') ??
             dataNode?.getFileEncodingOrNull('encoding') ??
             FileEncoding.csv;
-        final parseChunk = (e) => Chunk.parse(e, encoding, compression);
+        Chunk parseChunk(Parser e) => Chunk.parse(e, encoding, compression);
         final chunks = parser.getChildrenAs('chunks', parseChunk) +
             (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
         final data = dataNode != null
@@ -255,7 +255,7 @@ abstract class Layer {
     FileEncoding encoding,
     Compression? compression,
   ) {
-    final data = parser.formatSpecificParsing(
+    final dynamic data = parser.formatSpecificParsing<dynamic>(
       (json) => json.json['data'],
       (xml) {
         if (xml.element.children.length != 1) {
@@ -274,11 +274,11 @@ abstract class Layer {
     }
 
     if (encoding == FileEncoding.csv) {
-      return data.cast<int>();
+      return (data as List).cast<int>();
     }
     // Ok, its base64
-    final trim = data.toString().replaceAll("\n", "").trim();
-    final Uint8List decodedString = base64.decode(trim);
+    final trim = data.toString().replaceAll('\n', '').trim();
+    final decodedString = base64.decode(trim);
     // zlib, gzip, zstd or empty
     List<int> decompressed;
     switch (compression) {
@@ -290,7 +290,7 @@ abstract class Layer {
         break;
       case Compression.zstd:
         // TODO(luan) zstd compression not supported in dart
-        throw UnsupportedError("zstd is an unsupported compression");
+        throw UnsupportedError('zstd is an unsupported compression');
       case null:
         decompressed = decodedString;
         break;

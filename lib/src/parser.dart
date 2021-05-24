@@ -49,7 +49,7 @@ class JsonParser extends Parser {
       return [];
     }
     return (json[name] as List<dynamic>)
-        .map((e) => JsonParser(e as Map<String, dynamic>))
+        .map((dynamic e) => JsonParser(e as Map<String, dynamic>))
         .toList();
   }
 

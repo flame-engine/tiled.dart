@@ -87,7 +87,7 @@ class TiledMap {
 
   TiledMap({
     this.type = TileMapType.map,
-    this.version = "1.0",
+    this.version = '1.0',
     this.tiledVersion,
     required this.width,
     required this.height,
@@ -212,7 +212,7 @@ class TiledMap {
     final tileHeight = parser.getInt('tileheight');
     final tileWidth = parser.getInt('tilewidth');
     final type = parser.getTileMapType('type', defaults: TileMapType.map);
-    final version = parser.getString('version', defaults: "1.0");
+    final version = parser.getString('version', defaults: '1.0');
     final width = parser.getInt('width');
 
     final tilesets = parser.getChildrenAs(

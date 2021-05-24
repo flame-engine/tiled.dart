@@ -215,7 +215,7 @@ class Tileset {
   static List<Tile> _generateTiles(List<Tile> explicitTiles, int tileCount) {
     final tiles = <Tile>[];
     final iterator = explicitTiles.iterator;
-    Tile t = iterator.moveNext() ? iterator.current : Tile(localId: -1);
+    var t = iterator.moveNext() ? iterator.current : Tile(localId: -1);
     for (var i = 0; i <= tileCount; ++i) {
       if (t.localId == i) {
         tiles.add(t);

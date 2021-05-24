@@ -1,5 +1,10 @@
 ## [next]
 
+## 0.7.0
+* Adds JSON support
+* Adds Null-safety support
+* Improve and refactor codebase
+
 ## 0.6.0
 * Fixes bug with int points instead of double for objects.
 

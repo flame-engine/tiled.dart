@@ -16,7 +16,7 @@ part of tiled;
 ///
 /// The data inside is a compressed (encoded) representation of a list
 /// (that sequentially represents a matrix) of integers representing
-/// [TileData]s.
+/// [Gid]s.
 class Chunk {
   List<int> data;
 

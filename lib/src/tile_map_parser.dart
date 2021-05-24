@@ -2,7 +2,7 @@ part of tiled;
 
 class TileMapParser {
   static TiledMap parseJson(String json) {
-    final parser = JsonParser(jsonDecode(json));
+    final parser = JsonParser(jsonDecode(json) as Map<String, dynamic>);
     return TiledMap.parse(parser);
   }
 

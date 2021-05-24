@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
-import 'dart:io';
 
 void main() {
   late TiledMap map;

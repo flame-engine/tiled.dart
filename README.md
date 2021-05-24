@@ -33,9 +33,10 @@ If your tmx file includes a external tsx reference, you have to add a CustomPars
 ```dart
 class CustomTsxProvider extends TsxProvider {
   @override
-  XmlNode getSource(String filename) {
-    final String xml = File(filename).readAsStringSync();
-    return XmlDocument.parse(xml).rootElement;
+  Parser getSource(String fileName) {
+    final xml = File(fileName).readAsStringSync();
+    final node = XmlDocument.parse(xml).rootElement;
+    return XmlParser(node);
   }
 }
 ```

@@ -12,4 +12,6 @@ dependencies:
   xml: ^5.0.2
 
 dev_dependencies:
-   test: any
+  test: any
+  dart_code_metrics: ^3.2.2
+  dartdoc: ^0.42.0

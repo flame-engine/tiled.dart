@@ -10,3 +10,5 @@ pubspec.lock
 .packages
 .dart_tool
 .vscode/
+coverage/
+doc/

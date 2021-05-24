@@ -208,7 +208,7 @@ extension LayerTypeExtension on LayerType {
   }
 
   static LayerType parseFromTmx(String name) {
-    if (name == "layer") {
+    if (name == 'layer') {
       return LayerType.tileLayer;
     }
     return LayerType.values.firstWhere((e) => e.name == name);

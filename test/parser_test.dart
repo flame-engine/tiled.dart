@@ -49,11 +49,14 @@ void main() {
         expect(tileset.name, equals('basketball'));
       });
 
-      test('has its tilewidth = 32',
-          () => expect(tileset.tileWidth, equals(32)));
-      test('has its tileheight = 32',
-          () => expect(tileset.tileHeight, equals(32)));
-      // test('has its map = map', () => expect(tileset.map, equals(map)));
+      test(
+        'has its tilewidth = 32',
+        () => expect(tileset.tileWidth, equals(32)),
+      );
+      test(
+        'has its tileheight = 32',
+        () => expect(tileset.tileHeight, equals(32)),
+      );
       test('has its image', () => expect(tileset.image, isNotNull));
 
       group('populates its first image correctly and', () {
@@ -140,10 +143,11 @@ void main() {
 
     test('and objectGroups is the correct length', () {
       expect(
-          map.layers
-              .where((element) => element.type == LayerType.objectGroup)
-              .length,
-          equals(2));
+        map.layers
+            .where((element) => element.type == LayerType.objectGroup)
+            .length,
+        equals(2),
+      );
     });
 
     group('and the first objectGroup', () {
@@ -193,7 +197,7 @@ void main() {
       expect(tiledImages.length, equals(3));
       expect(
         tiledImages.map((e) => e.source),
-        containsAll(['level1.png', 'image1.png', 'image2.png']),
+        containsAll(<String>['level1.png', 'image1.png', 'image2.png']),
       );
 
       final tile1 = map.tileByGid(tileset.firstGid!);

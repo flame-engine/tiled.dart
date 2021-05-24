@@ -1,23 +1,17 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
 
-if [[ $(flutter format -n .) ]]; then
-    echo "flutter format issue"
-    exit 1
-fi
-
-result=$(dartanalyzer lib/)
-if ! echo "$result" | grep -q "No issues found!"; then
-  echo "$result"
-  echo "dartanalyzer issue: lib"
+./scripts/format.sh
+if [ $? -eq 1 ]; then
+  echo "Formatting failed!"
   exit 1
 fi
 
-result=$(dartanalyzer test/)
-if ! echo "$result" | grep -q "No issues found!"; then
-  echo "$result"
-  echo "dartanalyzer issue: test"
+echo ""
+
+./scripts/analyze.sh
+if [ $? -eq 1 ]; then
+  echo "Analyzing failed!"
   exit 1
 fi
 
-echo "success"
-exit 0
+echo "Succesfully linted!"

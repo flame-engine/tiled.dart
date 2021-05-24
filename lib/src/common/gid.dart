@@ -57,11 +57,11 @@ class Gid {
       return List.generate(width, (x) {
         final gid = data[(y * width) + x];
         // get flips from id
-        final bool flippedHorizontally =
+        final flippedHorizontally =
             (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
-        final bool flippedVertically =
+        final flippedVertically =
             (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
-        final bool flippedDiagonally =
+        final flippedDiagonally =
             (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
         // clear id from flips
         final tileId = gid &

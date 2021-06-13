@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'package:archive/archive.dart';
 import 'package:xml/xml.dart';
 
-import 'src/parser.dart';
+part 'src/parser.dart';
 
 part 'src/chunk.dart';
 part 'src/common/enums.dart';

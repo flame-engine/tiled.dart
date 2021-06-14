@@ -115,8 +115,9 @@ class TiledMap {
       return Tile(localId: 0);
     }
     final tileset = tilesetByTileGId(tileGid);
+    final firstGid = (tileset.firstGid ?? 1) - 1;
     return tileset.tiles.firstWhere(
-      (element) => element.localId == (tileGid - tileset.firstGid!),
+      (element) => element.localId == (tileGid - firstGid),
       orElse: null,
     );
   }

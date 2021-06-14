@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:tiled/src/parser.dart';
 import 'package:xml/xml.dart';
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';

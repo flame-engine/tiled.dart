@@ -8,7 +8,6 @@ import 'package:archive/archive.dart';
 import 'package:xml/xml.dart';
 
 part 'src/parser.dart';
-
 part 'src/chunk.dart';
 part 'src/common/enums.dart';
 part 'src/common/flips.dart';

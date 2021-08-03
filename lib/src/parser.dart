@@ -1,4 +1,4 @@
-import 'package:xml/xml.dart';
+part of tiled;
 
 class ParsingException implements Exception {
   final String name;

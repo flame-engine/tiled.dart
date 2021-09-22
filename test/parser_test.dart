@@ -172,19 +172,19 @@ void main() {
       final tileset = map.tilesetByName('default');
       expect(tileset.image!.source, equals('level1.png'));
       expect(
-        tileset.computeDrawRect(Tile(localId: tileset.firstGid!)),
+        tileset.computeDrawRect(Tile(localId: 0)),
         equals(const Rectangle(0, 0, 16, 16)),
       );
       expect(
-        tileset.computeDrawRect(Tile(localId: tileset.firstGid! + 1)),
+        tileset.computeDrawRect(Tile(localId: 1)),
         equals(const Rectangle(16, 0, 16, 16)),
       );
       expect(
-        tileset.computeDrawRect(Tile(localId: tileset.firstGid! + 17)),
+        tileset.computeDrawRect(Tile(localId: 17)),
         equals(const Rectangle(0, 16, 16, 16)),
       );
       expect(
-        tileset.computeDrawRect(Tile(localId: tileset.firstGid! + 19)),
+        tileset.computeDrawRect(Tile(localId: 19)),
         equals(const Rectangle(32, 16, 16, 16)),
       );
     });
@@ -199,7 +199,7 @@ void main() {
         containsAll(<String>['level1.png', 'image1.png', 'image2.png']),
       );
 
-      final gid = tileset.firstGid! - 1;
+      final gid = tileset.firstGid!;
 
       final tile1 = map.tileByGid(gid);
       expect(tile1.image!.source, equals('image1.png'));

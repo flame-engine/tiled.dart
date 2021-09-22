@@ -115,7 +115,7 @@ class TiledMap {
       return Tile(localId: 0);
     }
     final tileset = tilesetByTileGId(tileGid);
-    final firstGid = (tileset.firstGid ?? 1) - 1;
+    final firstGid = tileset.firstGid ?? 0;
     return tileset.tiles.firstWhere(
       (element) => element.localId == (tileGid - firstGid),
       orElse: null,
@@ -153,7 +153,7 @@ class TiledMap {
     }
     for (var i = 0; i < tilesets.length; ++i) {
       final tileset = tilesets[i];
-      final firstGid = (tileset.firstGid ?? 1) - 1;
+      final firstGid = tileset.firstGid ?? 0;
       if (firstGid > tileGId) {
         if (i == 0) {
           throw ArgumentError('Tileset not found');

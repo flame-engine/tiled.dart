@@ -62,8 +62,8 @@ void main() {
 
     test('GID = 4 && with tileId = 2', () {
       // TileSet_3 - first gid = 5
-      // Tile 2 => gid = (5 - 1) + 2 = 6
-      final tile = map.tileByGid(6);
+      // Tile 2 => gid = 5 + 2 = 6
+      final tile = map.tileByGid(7);
 
       expect(tile.localId, equals(2));
       expect(tile.properties.first.name, equals('name'));

@@ -200,8 +200,8 @@ class Tileset {
         image.height!.toDouble(),
       );
     }
-    final row = (tile.localId - firstGid!) ~/ columns!;
-    final column = (tile.localId - firstGid!) % columns!;
+    final row = tile.localId ~/ columns!;
+    final column = tile.localId % columns!;
     final x = margin + (column * (tileWidth! + spacing));
     final y = margin + (row * (tileHeight! + spacing));
     return Rectangle(

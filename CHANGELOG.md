@@ -1,5 +1,8 @@
 ## [next]
 
+## 0.7.2
+* Fix localGid bug
+
 ## 0.7.1
 * Expose Parser
 

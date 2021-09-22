@@ -199,13 +199,16 @@ void main() {
         containsAll(<String>['level1.png', 'image1.png', 'image2.png']),
       );
 
-      final tile1 = map.tileByGid(tileset.firstGid!);
-      final tile2 = map.tileByGid(tileset.firstGid! + 1);
+      final gid = tileset.firstGid! - 1;
+
+      final tile1 = map.tileByGid(gid);
       expect(tile1.image!.source, equals('image1.png'));
       expect(
         tileset.computeDrawRect(tile1),
         equals(const Rectangle(0, 0, 32, 32)),
       );
+
+      final tile2 = map.tileByGid(gid + 1);
       expect(tile2.image!.source, equals('image2.png'));
       expect(
         tileset.computeDrawRect(tile2),

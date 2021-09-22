@@ -152,7 +152,9 @@ class TiledMap {
       return tilesets.first;
     }
     for (var i = 0; i < tilesets.length; ++i) {
-      if (tilesets[i].firstGid! > tileGId) {
+      final tileset = tilesets[i];
+      final firstGid = (tileset.firstGid ?? 1) - 1;
+      if (firstGid > tileGId) {
         if (i == 0) {
           throw ArgumentError('Tileset not found');
         }

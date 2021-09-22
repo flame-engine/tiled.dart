@@ -4,7 +4,6 @@ import 'package:tiled/tiled.dart';
 void main() {
   //GID is 1-based
   group('Map.getTileByGID', () {
-    late Tile tile;
     late TiledMap map;
     setUp(() {
       map = TiledMap(
@@ -54,21 +53,20 @@ void main() {
           ),
         ],
       );
-
-      // TileSet_3 - Tile 2 => gid = 7
-      tile = map.tileByGid(7);
     });
 
     test('returns an empty Tile if GID is 0', () {
-      tile = map.tileByGid(0);
+      final tile = map.tileByGid(0);
       expect(tile.isEmpty, isTrue);
     });
 
-    group('returns a valid Tile for GID 4', () {
-      test('with tileId = 2', () {
-        expect(tile.localId, equals(2));
-        expect(tile.properties.first.name, equals('name'));
-      });
+    test('GID = 4 && with tileId = 2', () {
+      // TileSet_3 - first gid = 5
+      // Tile 2 => gid = (5 - 1) + 2 = 6
+      final tile = map.tileByGid(6);
+
+      expect(tile.localId, equals(2));
+      expect(tile.properties.first.name, equals('name'));
     });
   });
 

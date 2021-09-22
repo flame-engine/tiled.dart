@@ -10,7 +10,7 @@ Include the following in your `pubspec.yaml`:
 
 ```yaml
     dependencies:
-      tiled: 0.7.0
+      tiled: 0.7.1
 ```
 
 ## Usage

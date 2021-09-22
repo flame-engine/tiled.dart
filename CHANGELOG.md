@@ -1,5 +1,8 @@
 ## [next]
 
+## 0.7.1
+* Expose Parser
+
 ## 0.7.0
 * Adds JSON support
 * Adds Null-safety support

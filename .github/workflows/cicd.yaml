@@ -5,44 +5,36 @@ on:
     branches:
       - main
   pull_request:
+    types: [opened, reopened, synchronize]
 
 jobs:
   # BEGIN LINTING STAGE
   dartdoc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
+      - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: ./scripts/dartdoc.sh
+      - uses: flame-engine/flame-dartdoc-action@v2
 
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
+      - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: ./scripts/format.sh
+      - uses: flame-engine/flame-format-action@v1
 
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
+      - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: ./scripts/analyze.sh
+      - uses: flame-engine/flame-analyze-action@v2
   # END LINTING STAGE
 
   # BEGIN TESTING STAGE
@@ -50,12 +42,9 @@ jobs:
     needs: [dartdoc, format, analyze]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
+      - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: ./scripts/test.sh
+      - uses: flame-engine/flame-test-action@v1
   # END TESTING STAGE

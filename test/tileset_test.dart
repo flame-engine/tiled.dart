@@ -35,4 +35,41 @@ void main() {
     test('spacing = 1', () => expect(tileset.spacing, equals(1)));
     test('margin = 2', () => expect(tileset.margin, equals(2)));
   });
+
+  group('Standalone Tileset with ObjectGroups', () {
+    late Tileset tileset;
+    setUp(() {
+      return File('./test/fixtures/map_with_tile_collision.tsx')
+          .readAsString()
+          .then((xml) {
+        final tilesetXml = XmlDocument.parse(xml).rootElement;
+        tileset = Tileset.parse(XmlParser(tilesetXml));
+      });
+    });
+    test(
+      'non-null first objectgroup',
+      () => expect(
+        (tileset.tiles.first.objectGroup as ObjectGroup?) != null,
+        true,
+      ),
+    );
+    test(
+      'first objectgroup object = ellipsis',
+      () => expect(
+        ((tileset.tiles.first.objectGroup as ObjectGroup?)!.objects.first)
+            .isEllipse,
+        true,
+      ),
+    );
+    test(
+      'second objectgroup object = rectangle',
+      () => expect(
+        (tileset.tiles.elementAt(1).objectGroup as ObjectGroup?)!
+            .objects
+            .first
+            .isRectangle,
+        true,
+      ),
+    );
+  });
 }

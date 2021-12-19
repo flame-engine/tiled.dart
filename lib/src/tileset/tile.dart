@@ -56,7 +56,7 @@ class Tile {
               .toList() ??
           [],
       image: parser.getSingleChildOrNullAs('image', TiledImage.parse),
-      objectGroup: parser.getSingleChildOrNullAs('objectGroup', Layer.parse),
+      objectGroup: parser.getSingleChildOrNullAs('objectgroup', Layer.parse),
       animation: parser.formatSpecificParsing(
         (json) => json.getChildrenAs('animation', Frame.parse),
         (xml) =>

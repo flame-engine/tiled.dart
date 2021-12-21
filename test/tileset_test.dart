@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:xml/xml.dart';
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
+import 'package:xml/xml.dart';
 
 void main() {
   group('Tileset defaults', () {

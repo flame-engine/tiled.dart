@@ -5,6 +5,7 @@ import 'dart:math' show Rectangle;
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:meta/meta.dart';
 import 'package:xml/xml.dart';
 
 part 'src/parser.dart';

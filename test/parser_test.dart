@@ -151,9 +151,11 @@ void main() {
 
     group('and the first objectGroup', () {
       late Layer og;
-      setUp(() => og = map.layers
-          .where((element) => element.type == LayerType.objectGroup)
-          .toList()[0]);
+      setUp(
+        () => og = map.layers
+            .where((element) => element.type == LayerType.objectGroup)
+            .toList()[0],
+      );
 
       test('has the right #name', () {
         expect(og.name, equals('Test Object Layer 1'));

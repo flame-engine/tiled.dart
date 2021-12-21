@@ -16,14 +16,15 @@ part of tiled;
 /// * width: The image width in pixels (optional, used for tile index correction
 ///   when the image changes)
 /// * height: The image height in pixels (optional)
+@immutable
 class TiledImage {
-  String? source;
-  String? format;
-  int? width;
-  int? height;
-  String? trans;
+  final String? source;
+  final String? format;
+  final int? width;
+  final int? height;
+  final String? trans;
 
-  TiledImage({
+  const TiledImage({
     this.source,
     this.format,
     this.width,

@@ -164,7 +164,8 @@ void main() {
   group('Parser.parse fills Map with tileset & different img configs', () {
     setUp(() {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(xml, tsx: CustomTsxProvider());
+        map = TileMapParser.parseTmx(xml,
+            tsx: CustomTsxProvider('./test/fixtures/tileset.tsx'));
       });
     });
 
@@ -220,7 +221,8 @@ void main() {
   group('Parser.parse with tsx provider', () {
     test('it loads external tsx', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(xml, tsx: CustomTsxProvider());
+        map = TileMapParser.parseTmx(xml,
+            tsx: CustomTsxProvider('./test/fixtures/tileset.tsx'));
         expect(
           map.tilesetByName('external').image!.source,
           equals('level1.png'),
@@ -232,17 +234,84 @@ void main() {
   group('Parser.parse with multiple layers', () {
     test('it has 2 layers', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(xml, tsx: CustomTsxProvider());
+        map = TileMapParser.parseTmx(xml,
+            tsx: CustomTsxProvider('./test/fixtures/tileset.tsx'));
         expect(map.layers.length, equals(2));
       });
+    });
+  });
+
+  group('Map Parses Multiple Tilesets', () {
+    late TiledMap map;
+    CustomTsxProvider? tsxProvider;
+    setUp(() {
+      return File('./test/fixtures/map_with_multiple_tilesets.tmx')
+          .readAsString()
+          .then((xml) {
+        final tilemapXml = XmlDocument.parse(xml).rootElement;
+        final tsxSourcePath = tilemapXml.children
+            .whereType<XmlElement>()
+            .firstWhere((element) => element.name.local == 'tileset')
+            .getAttribute('source');
+        if (tsxSourcePath != null) {
+          tsxProvider = CustomTsxProvider('./test/fixtures/$tsxSourcePath');
+        }
+        map = TileMapParser.parseTmx(xml, tsx: tsxProvider);
+        return;
+      });
+    });
+    test(
+      'correct number of tilests',
+      () => expect(
+        map.tilesets.length == 2,
+        true,
+      ),
+    );
+
+    test('tilesets firstgid correct', () {
+      expect(
+        map.tilesets.first.firstGid == 1,
+        true,
+      );
+
+      expect(
+        map.tilesets.last.firstGid == 137,
+        true,
+      );
+    });
+    test('first tileset details correct', () {
+      expect(
+        map.tilesets.first.name == 'level1',
+        true,
+      );
+
+      expect(
+        map.tilesets.first.tileCount == 136,
+        true,
+      );
+    });
+    test('second tileset details correct', () {
+      expect(
+        map.tilesets.last.name == 'level2',
+        true,
+      );
+
+      expect(
+        map.tilesets.last.tileCount == 288,
+        true,
+      );
     });
   });
 }
 
 class CustomTsxProvider extends TsxProvider {
+  final String filepath;
+
+  CustomTsxProvider(this.filepath);
+
   @override
   Parser getSource(String key) {
-    final xml = File('./test/fixtures/tileset.tsx').readAsStringSync();
+    final xml = File(filepath).readAsStringSync();
     final node = XmlDocument.parse(xml).rootElement;
     return XmlParser(node);
   }

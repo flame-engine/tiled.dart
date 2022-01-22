@@ -196,7 +196,10 @@ class TiledMap {
     );
   }
 
-  static TiledMap parse(Parser parser, {TsxProvider? tsx}) {
+  static TiledMap parse(
+      Parser parser,
+      {@Deprecated('TsxProvider will be generated from parsed map. Avoid passing in a provider.')
+          TsxProvider? tsx}) {
     final backgroundColor = parser.getStringOrNull('backgroundcolor');
     final compressionLevel = parser.getInt('compressionlevel', defaults: -1);
     final height = parser.getInt('height');

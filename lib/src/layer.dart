@@ -274,7 +274,14 @@ abstract class Layer {
     }
 
     if (encoding == FileEncoding.csv) {
-      return (data as List).cast<int>();
+      if (data is List) {
+        return data.cast<int>();
+      } else {
+        // csv data must be parsed
+        return List.from(
+          (data as String).split(',').map<int>((s) => int.parse(s.trim())),
+        );
+      }
     }
     // Ok, its base64
     final trim = data.toString().replaceAll('\n', '').trim();

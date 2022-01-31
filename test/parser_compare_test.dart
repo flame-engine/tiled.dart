@@ -41,6 +41,13 @@ void main() {
     });
   });
 
+  late TiledMap tileMapCsv;
+  setUp(() {
+    return File('./test/fixtures/test_csv.tmx').readAsString().then((xml) {
+      tileMapCsv = TileMapParser.parseTmx(xml);
+    });
+  });
+
   late TiledMap tileMap;
   setUp(() {
     return File('./test/fixtures/test.tmx').readAsString().then((xml) {
@@ -97,6 +104,10 @@ void main() {
     test(
       'toString should be equal',
       () => expect(map4.type, equals(tileMap.type)),
+    );
+    test(
+      'toString should be equal',
+      () => expect(tileMapCsv.type, equals(tileMap.type)),
     );
 
     test(

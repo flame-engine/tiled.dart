@@ -1,4 +1,5 @@
-## [next]
+## 0.7.3
+* tileset parser fix for ObjectGroup
 
 ## 0.7.2
 * Fix localGid bug

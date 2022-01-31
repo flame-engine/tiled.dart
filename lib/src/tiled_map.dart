@@ -221,13 +221,12 @@ class TiledMap {
     final tilesets = parser.getChildrenAs(
       'tileset',
       (tilesetData) {
-        if (tsxList == null || tsxList.isEmpty) {
+        final tilesetSource = tilesetData.getStringOrNull('source');
+        if (tilesetSource == null || tsxList == null) {
           return Tileset.parse(tilesetData);
         }
         final matchingTsx = tsxList.where(
-          (tsx) =>
-              tsx.getChachedSource() != null &&
-              tsx.filename == tilesetData.getStringOrNull('source'),
+          (tsx) => tsx.filename == tilesetSource,
         );
 
         return Tileset.parse(

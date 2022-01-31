@@ -166,7 +166,7 @@ class Tileset {
     return result;
   }
 
-  void _checkIfExtenalTsx(String? source, TsxProvider? tsx) async {
+  void _checkIfExtenalTsx(String? source, TsxProvider? tsx) {
     if (tsx != null && source != null) {
       final tileset = Tileset.parse(
         tsx.getChachedSource() ?? tsx.getSource(source),

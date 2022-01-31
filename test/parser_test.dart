@@ -166,8 +166,10 @@ void main() {
   group('Parser.parse fills Map with tileset & different img configs', () {
     setUp(() {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(xml,
-            tsx: CustomTsxProvider('./test/fixtures/tileset.tsx'));
+        map = TileMapParser.parseTmx(
+          xml,
+          tsxList: [CustomTsxProvider.parse('tileset.tsx')],
+        );
       });
     });
 
@@ -223,8 +225,10 @@ void main() {
   group('Parser.parse with tsx provider', () {
     test('it loads external tsx', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(xml,
-            tsx: CustomTsxProvider('./test/fixtures/tileset.tsx'));
+        map = TileMapParser.parseTmx(
+          xml,
+          tsxList: [CustomTsxProvider.parse('tileset.tsx')],
+        );
         expect(
           map.tilesetByName('external').image!.source,
           equals('level1.png'),
@@ -236,8 +240,10 @@ void main() {
   group('Parser.parse with multiple layers', () {
     test('it has 2 layers', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(xml,
-            tsx: CustomTsxProvider('./test/fixtures/tileset.tsx'));
+        map = TileMapParser.parseTmx(
+          xml,
+          tsxList: [CustomTsxProvider.parse('tileset.tsx')],
+        );
         expect(map.layers.length, equals(2));
       });
     });
@@ -251,14 +257,19 @@ void main() {
           .readAsString()
           .then((xml) {
         final tilemapXml = XmlDocument.parse(xml).rootElement;
-        final tsxSourcePath = tilemapXml.children
+        final tsxSourcePaths = tilemapXml.children
             .whereType<XmlElement>()
-            .firstWhere((element) => element.name.local == 'tileset')
-            .getAttribute('source');
-        if (tsxSourcePath != null) {
-          tsxProvider = CustomTsxProvider('./test/fixtures/$tsxSourcePath');
-        }
-        map = TileMapParser.parseTmx(xml, tsx: tsxProvider);
+            .where((element) => element.name.local == 'tileset')
+            .map((tsx) => tsx.getAttribute('source'));
+
+        final tsxProviders = tsxSourcePaths
+            .where((key) => key != null)
+            .map((key) => CustomTsxProvider.parse(key!));
+
+        map = TileMapParser.parseTmx(
+          xml,
+          tsxList: tsxProviders.isEmpty ? null : tsxProviders.toList(),
+        );
         return;
       });
     });
@@ -307,14 +318,27 @@ void main() {
 }
 
 class CustomTsxProvider extends TsxProvider {
-  final String filepath;
+  final String _filename;
+  final String data;
 
-  CustomTsxProvider(this.filepath);
+  CustomTsxProvider._(this.data, this._filename);
+
+  @override
+  String get filename => _filename;
 
   @override
   Parser getSource(String key) {
-    final xml = File(filepath).readAsStringSync();
-    final node = XmlDocument.parse(xml).rootElement;
+    final node = XmlDocument.parse(data).rootElement;
     return XmlParser(node);
+  }
+
+  @override
+  Parser? getChachedSource() {
+    return getSource('');
+  }
+
+  static CustomTsxProvider parse(String filename) {
+    final xml = File('./test/fixtures/$filename').readAsStringSync();
+    return CustomTsxProvider._(xml, filename);
   }
 }

@@ -166,9 +166,11 @@ class Tileset {
     return result;
   }
 
-  void _checkIfExtenalTsx(String? source, TsxProvider? tsx) {
+  void _checkIfExtenalTsx(String? source, TsxProvider? tsx) async {
     if (tsx != null && source != null) {
-      final tileset = Tileset.parse(tsx.getSource(source));
+      final tileset = Tileset.parse(
+        tsx.getChachedSource() ?? tsx.getSource(source),
+      );
       // Copy attributes if not null
       backgroundColor = tileset.backgroundColor ?? backgroundColor;
       columns = tileset.columns ?? columns;

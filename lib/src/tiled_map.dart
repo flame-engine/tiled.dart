@@ -196,10 +196,7 @@ class TiledMap {
     );
   }
 
-  static TiledMap parse(
-      Parser parser,
-      {@Deprecated('TsxProvider will be generated from parsed map. Avoid passing in a provider.')
-          TsxProvider? tsx}) {
+  static TiledMap parse(Parser parser, {List<TsxProvider>? tsxList}) {
     final backgroundColor = parser.getStringOrNull('backgroundcolor');
     final compressionLevel = parser.getInt('compressionlevel', defaults: -1);
     final height = parser.getInt('height');
@@ -223,7 +220,21 @@ class TiledMap {
 
     final tilesets = parser.getChildrenAs(
       'tileset',
-      (e) => Tileset.parse(e, tsx: tsx),
+      (tilesetData) {
+        if (tsxList == null || tsxList.isEmpty) {
+          return Tileset.parse(tilesetData);
+        }
+        final matchingTsx = tsxList.where(
+          (tsx) =>
+              tsx.getChachedSource() != null &&
+              tsx.filename == tilesetData.getStringOrNull('source'),
+        );
+
+        return Tileset.parse(
+          tilesetData,
+          tsx: matchingTsx.isNotEmpty ? matchingTsx.first : null,
+        );
+      },
     );
     final layers = Layer.parseLayers(parser);
     final properties = parser.getProperties();

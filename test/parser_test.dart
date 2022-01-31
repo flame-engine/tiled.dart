@@ -276,7 +276,7 @@ void main() {
     test(
       'correct number of tilests',
       () => expect(
-        map.tilesets.length == 2,
+        map.tilesets.length == 3,
         true,
       ),
     );
@@ -288,7 +288,7 @@ void main() {
       );
 
       expect(
-        map.tilesets.last.firstGid == 137,
+        map.tilesets.last.firstGid == 273,
         true,
       );
     });
@@ -303,7 +303,13 @@ void main() {
         true,
       );
     });
-    test('second tileset details correct', () {
+    test('embedded tileset details correct', () {
+      expect(
+        map.tilesets[1].name == 'level_embed',
+        true,
+      );
+    });
+    test('third tileset details correct', () {
       expect(
         map.tilesets.last.name == 'level2',
         true,

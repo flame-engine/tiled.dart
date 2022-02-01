@@ -6,12 +6,16 @@ class TileMapParser {
     return TiledMap.parse(parser);
   }
 
-  static TiledMap parseTmx(String xml, {TsxProvider? tsx}) {
+  /// Parses the provided map xml.
+  ///
+  /// Accepts an optional list of external TsxProviders for external tilesets
+  /// referenced in the map file.
+  static TiledMap parseTmx(String xml, {List<TsxProvider>? tsxList}) {
     final xmlElement = XmlDocument.parse(xml).rootElement;
     if (xmlElement.name.local != 'map') {
       throw 'XML is not in TMX format';
     }
     final parser = XmlParser(xmlElement);
-    return TiledMap.parse(parser, tsx: tsx);
+    return TiledMap.parse(parser, tsxList: tsxList);
   }
 }

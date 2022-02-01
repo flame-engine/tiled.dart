@@ -251,7 +251,6 @@ void main() {
 
   group('Map Parses Multiple Tilesets', () {
     late TiledMap map;
-    CustomTsxProvider? tsxProvider;
     setUp(() {
       return File('./test/fixtures/map_with_multiple_tilesets.tmx')
           .readAsString()

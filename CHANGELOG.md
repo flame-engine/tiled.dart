@@ -1,3 +1,7 @@
+## 0.8.0
+* Possibility to use multiple external tilesets (#37)
+* Support in `parseTmx` for CSV-formatted files (#36)
+
 ## 0.7.3
 * tileset parser fix for ObjectGroup
 

@@ -24,7 +24,7 @@ class Tile {
   double probability;
 
   /// List of indexes of the terrain.
-  List<int> terrain;
+  List<int?> terrain;
 
   TiledImage? image;
   Layer? objectGroup;
@@ -52,7 +52,7 @@ class Tile {
       terrain: parser
               .getStringOrNull('terrain')
               ?.split(',')
-              .map(int.parse)
+              .map(int.tryParse)
               .toList() ??
           [],
       image: parser.getSingleChildOrNullAs('image', TiledImage.parse),

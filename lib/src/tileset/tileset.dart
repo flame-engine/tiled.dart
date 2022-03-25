@@ -209,8 +209,8 @@ class Tileset {
     return Rectangle(
       x.toDouble(),
       y.toDouble(),
-      (tileWidth! + spacing).toDouble(),
-      (tileHeight! + spacing).toDouble(),
+      tileWidth!.toDouble(),
+      tileHeight!.toDouble(),
     );
   }
 

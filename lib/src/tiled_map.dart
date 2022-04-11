@@ -109,10 +109,10 @@ class TiledMap {
     this.properties = const [],
   });
 
-  /// Takes a sting [contents] and converts it to a [TiledMap] with the help of
+  /// Takes a string [contents] and converts it to a [TiledMap] with the help of
   /// the [TsxProvider]s returned from the [tsxProviderFunction].
-  /// The [tsxProviderFunction] is most commonly your static
-  /// [TsxProvider.parse] implementation.
+  /// The [tsxProviderFunction] is most commonly your static [TsxProvider.parse]
+  /// implementation.
   static Future<TiledMap> fromString(
     String contents,
     Future<TsxProvider> Function(String key) tsxProviderFunction,

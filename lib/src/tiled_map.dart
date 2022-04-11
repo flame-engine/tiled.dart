@@ -109,6 +109,33 @@ class TiledMap {
     this.properties = const [],
   });
 
+  /// Takes a sting [contents] and converts it to a [TiledMap] with the help of
+  /// the [TsxProvider]s returned from the [tsxProviderFunction].
+  /// The [tsxProviderFunction] is most commonly your static
+  /// [TsxProvider.parse] implementation.
+  static Future<TiledMap> fromString(
+    String contents,
+    Future<TsxProvider> Function(String key) tsxProviderFunction,
+  ) async {
+    final tsxSourcePaths = XmlDocument.parse(contents)
+        .rootElement
+        .children
+        .whereType<XmlElement>()
+        .where((element) => element.name.local == 'tileset')
+        .map((e) => e.getAttribute('source'));
+
+    final tsxProviders = await Future.wait(
+      tsxSourcePaths
+          .where((key) => key != null)
+          .map((key) async => tsxProviderFunction(key!)),
+    );
+
+    return TileMapParser.parseTmx(
+      contents,
+      tsxList: tsxProviders.isEmpty ? null : tsxProviders,
+    );
+  }
+
   // Convenience Methods
   Tile tileByGid(int tileGid) {
     if (tileGid == 0) {

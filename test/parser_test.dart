@@ -338,7 +338,7 @@ class CustomTsxProvider extends TsxProvider {
   }
 
   @override
-  Parser? getChachedSource() {
+  Parser? getCachedSource() {
     return getSource('');
   }
 

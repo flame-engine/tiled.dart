@@ -11,5 +11,10 @@ abstract class TsxProvider {
 
   /// Used when provider implementations cache the data. Returns the cached
   /// data for the exernal tileset.
-  Parser? getChachedSource();
+  Parser? getCachedSource();
+
+  /// Parses a file returning a [TsxProvider].
+  static Future<TsxProvider> parse(String key) {
+    throw UnimplementedError();
+  }
 }

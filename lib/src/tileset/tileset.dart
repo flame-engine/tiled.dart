@@ -162,11 +162,11 @@ class Tileset {
       transparentColor: transparentColor,
       type: type,
     );
-    result._checkIfExtenalTsx(source, tsx);
+    result._checkIfExternalTsx(source, tsx);
     return result;
   }
 
-  void _checkIfExtenalTsx(String? source, TsxProvider? tsx) {
+  void _checkIfExternalTsx(String? source, TsxProvider? tsx) {
     if (tsx != null && source != null) {
       final tileset = Tileset.parse(
         tsx.getChachedSource() ?? tsx.getSource(source),
@@ -178,6 +178,7 @@ class Tileset {
       grid = tileset.grid ?? grid;
       image = tileset.image ?? image;
       name = tileset.name ?? name;
+      spacing = tileset.spacing;
       tileCount = tileset.tileCount ?? tileCount;
       tiledVersion = tileset.tiledVersion ?? tiledVersion;
       tileOffset = tileset.tileOffset ?? tileOffset;

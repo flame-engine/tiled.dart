@@ -179,6 +179,7 @@ class Tileset {
       image = tileset.image ?? image;
       name = tileset.name ?? name;
       spacing = tileset.spacing;
+      margin = tileset.margin;
       tileCount = tileset.tileCount ?? tileCount;
       tiledVersion = tileset.tiledVersion ?? tiledVersion;
       tileOffset = tileset.tileOffset ?? tileOffset;

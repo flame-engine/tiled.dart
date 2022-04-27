@@ -1,3 +1,6 @@
+## 0.8.1
+* Possibility to parse string content of a tilemap in `TiledMap`
+
 ## 0.8.0
 * Possibility to use multiple external tilesets (#37)
 * Support in `parseTmx` for CSV-formatted files (#36)

@@ -169,7 +169,7 @@ class Tileset {
   void _checkIfExternalTsx(String? source, TsxProvider? tsx) {
     if (tsx != null && source != null) {
       final tileset = Tileset.parse(
-        tsx.getChachedSource() ?? tsx.getSource(source),
+        tsx.getCachedSource() ?? tsx.getSource(source),
       );
       // Copy attributes if not null
       backgroundColor = tileset.backgroundColor ?? backgroundColor;

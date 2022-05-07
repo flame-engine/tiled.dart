@@ -80,7 +80,7 @@ class Tileset {
     this.margin = 0,
     this.tileCount,
     this.columns,
-    this.objectAlignment = ObjectAlignment.unespecified,
+    this.objectAlignment = ObjectAlignment.unspecified,
     List<Tile> tiles = const [],
     this.image,
     this.tileOffset,
@@ -105,9 +105,8 @@ class Tileset {
     final firstGid = parser.getIntOrNull('firstgid');
     final margin = parser.getInt('margin', defaults: 0);
     final name = parser.getStringOrNull('name');
-    final objectAlignment = parser.getObjectAlignment(
-      'objectalignment',
-      defaults: ObjectAlignment.unespecified,
+    final objectAlignment = ObjectAlignment.values.byName(
+      parser.getString('objectalignment', defaults: 'unspecified'),
     );
     final source = parser.getStringOrNull('source');
     final spacing = parser.getInt('spacing', defaults: 0);
@@ -178,6 +177,7 @@ class Tileset {
       grid = tileset.grid ?? grid;
       image = tileset.image ?? image;
       name = tileset.name ?? name;
+      objectAlignment = tileset.objectAlignment;
       tileCount = tileset.tileCount ?? tileCount;
       tiledVersion = tileset.tiledVersion ?? tiledVersion;
       tileOffset = tileset.tileOffset ?? tileOffset;

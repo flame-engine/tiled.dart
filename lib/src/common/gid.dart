@@ -42,6 +42,24 @@ class Gid {
 
   const Gid(this.tile, this.flips);
 
+  factory Gid.fromInt(int gid) {
+    // get flips from id
+    final flippedHorizontally =
+        (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
+    final flippedVertically =
+        (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
+    final flippedDiagonally =
+        (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
+    // clear id from flips
+    final tileId = gid &
+        ~(flippedHorizontallyFlag |
+            flippedVerticallyFlag |
+            flippedDiagonallyFlag);
+    final flip =
+        Flips(flippedHorizontally, flippedVertically, flippedDiagonally);
+    return Gid(tileId, flip);
+  }
+
   Gid copyWith({
     int? tile,
     Flips? flips,
@@ -56,21 +74,7 @@ class Gid {
     return List.generate(height, (y) {
       return List.generate(width, (x) {
         final gid = data[(y * width) + x];
-        // get flips from id
-        final flippedHorizontally =
-            (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
-        final flippedVertically =
-            (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
-        final flippedDiagonally =
-            (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
-        // clear id from flips
-        final tileId = gid &
-            ~(flippedHorizontallyFlag |
-                flippedVerticallyFlag |
-                flippedDiagonallyFlag);
-        final flip =
-            Flips(flippedHorizontally, flippedVertically, flippedDiagonally);
-        return Gid(tileId, flip);
+        return Gid.fromInt(gid);
       });
     });
   }

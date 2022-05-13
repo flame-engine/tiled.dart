@@ -94,7 +94,7 @@ class Tileset {
     this.transparentColor,
     this.type = TilesetType.tileset,
   }) : tiles = _generateTiles(tiles, tileCount ?? 0) {
-    tileCount ??= tiles.length;
+    tileCount = this.tiles.length;
   }
 
   static Tileset parse(Parser parser, {TsxProvider? tsx}) {
@@ -216,16 +216,15 @@ class Tileset {
 
   static List<Tile> _generateTiles(List<Tile> explicitTiles, int tileCount) {
     final tiles = <Tile>[];
-    final iterator = explicitTiles.iterator;
-    var t = iterator.moveNext() ? iterator.current : Tile(localId: -1);
-    for (var i = 0; i < tileCount; ++i) {
-      if (t.localId == i) {
-        tiles.add(t);
-        if (iterator.moveNext()) {
-          t = iterator.current;
-        }
+    for (var i = 0; i < tileCount; i += 1) {
+      tiles.add(Tile(localId: i));
+    }
+
+    for (final tile in explicitTiles) {
+      if (tile.localId >= tiles.length) {
+        tiles.add(tile);
       } else {
-        tiles.add(Tile(localId: i));
+        tiles[tile.localId] = tile;
       }
     }
     return tiles;

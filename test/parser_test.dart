@@ -222,6 +222,23 @@ void main() {
     });
   });
 
+  group('External tileset tile parsing', () {
+    test('it parsed the first tile', () {
+      return File('./test/fixtures/external_tileset_map.tmx')
+          .readAsString()
+          .then((xml) {
+        final map = TileMapParser.parseTmx(
+          xml,
+          tsxList: [CustomTsxProvider.parse('tileid_over_tilecount.tsx')],
+        );
+        expect(map.tilesets[0].tileCount, 137);
+        final tile = map.tileByGid(1);
+        expect(tile.localId, 0);
+        expect(tile.type, 'first_tile');
+      });
+    });
+  });
+
   group('Parser.parse with tsx provider', () {
     test('it loads external tsx', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
@@ -275,48 +292,48 @@ void main() {
     test(
       'correct number of tilests',
       () => expect(
-        map.tilesets.length == 3,
-        true,
+        map.tilesets.length,
+        3,
       ),
     );
 
     test('tilesets firstgid correct', () {
       expect(
-        map.tilesets.first.firstGid == 1,
-        true,
+        map.tilesets.first.firstGid,
+        1,
       );
 
       expect(
-        map.tilesets.last.firstGid == 273,
-        true,
+        map.tilesets.last.firstGid,
+        273,
       );
     });
     test('first tileset details correct', () {
       expect(
-        map.tilesets.first.name == 'level1',
-        true,
+        map.tilesets.first.name,
+        'level1',
       );
 
       expect(
-        map.tilesets.first.tileCount == 136,
-        true,
+        map.tilesets.first.tileCount,
+        136,
       );
     });
     test('embedded tileset details correct', () {
       expect(
-        map.tilesets[1].name == 'level_embed',
-        true,
+        map.tilesets[1].name,
+        'level_embed',
       );
     });
     test('third tileset details correct', () {
       expect(
-        map.tilesets.last.name == 'level2',
-        true,
+        map.tilesets.last.name,
+        'level2',
       );
 
       expect(
-        map.tilesets.last.tileCount == 288,
-        true,
+        map.tilesets.last.tileCount,
+        288,
       );
     });
   });

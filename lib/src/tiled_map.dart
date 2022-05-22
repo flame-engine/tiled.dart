@@ -139,7 +139,7 @@ class TiledMap {
   // Convenience Methods
   Tile tileByGid(int tileGid) {
     if (tileGid == 0) {
-      return Tile(localId: 0);
+      return Tile(localId: -1);
     }
     final tileset = tilesetByTileGId(tileGid);
     final firstGid = tileset.firstGid ?? 0;

@@ -42,7 +42,7 @@ class Tile {
     this.properties = const [],
   });
 
-  bool get isEmpty => localId == 0;
+  bool get isEmpty => localId == -1;
 
   static Tile parse(Parser parser) {
     return Tile(

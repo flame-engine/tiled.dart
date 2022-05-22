@@ -36,11 +36,37 @@ class Gid {
   static const int flippedHorizontallyFlag = 0x80000000;
   static const int flippedVerticallyFlag = 0x40000000;
   static const int flippedDiagonallyFlag = 0x20000000;
+  static const int flippedAntiDiagonallyFlag = 0x10000000;
 
   final int tile;
   final Flips flips;
 
   const Gid(this.tile, this.flips);
+
+  factory Gid.fromInt(int gid) {
+    // get flips from id
+    final flippedHorizontally =
+        (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
+    final flippedVertically =
+        (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
+    final flippedDiagonally =
+        (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
+    final flippedAntiDiagonally =
+        gid & flippedAntiDiagonallyFlag == flippedAntiDiagonallyFlag;
+    // clear id from flips
+    final tileId = gid &
+        ~(flippedHorizontallyFlag |
+            flippedVerticallyFlag |
+            flippedDiagonallyFlag |
+            flippedAntiDiagonallyFlag);
+    final flip = Flips(
+      flippedHorizontally,
+      flippedVertically,
+      flippedDiagonally,
+      flippedAntiDiagonally,
+    );
+    return Gid(tileId, flip);
+  }
 
   Gid copyWith({
     int? tile,
@@ -56,21 +82,7 @@ class Gid {
     return List.generate(height, (y) {
       return List.generate(width, (x) {
         final gid = data[(y * width) + x];
-        // get flips from id
-        final flippedHorizontally =
-            (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
-        final flippedVertically =
-            (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
-        final flippedDiagonally =
-            (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
-        // clear id from flips
-        final tileId = gid &
-            ~(flippedHorizontallyFlag |
-                flippedVerticallyFlag |
-                flippedDiagonallyFlag);
-        final flip =
-            Flips(flippedHorizontally, flippedVertically, flippedDiagonally);
-        return Gid(tileId, flip);
+        return Gid.fromInt(gid);
       });
     });
   }

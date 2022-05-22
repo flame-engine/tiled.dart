@@ -88,8 +88,8 @@ void main() {
       );
     });
 
-    test('raises an ArgumentError if tileset is not present', () {
-      expect(map.tileByGid(0).localId, equals(0));
+    test('there should be no tile with a Gid of 0', () {
+      expect(map.tileByGid(0).localId, equals(-1));
     });
 
     group('returns a tile', () {

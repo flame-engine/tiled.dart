@@ -372,7 +372,7 @@ extension TilesetTypeParser on Parser {
 }
 
 enum ObjectAlignment {
-  unespecified,
+  unspecified,
   topLeft,
   top,
   topRight,
@@ -387,8 +387,8 @@ enum ObjectAlignment {
 extension ObjectAlignmentExtension on ObjectAlignment {
   String get name {
     switch (this) {
-      case ObjectAlignment.unespecified:
-        return 'unespecified';
+      case ObjectAlignment.unspecified:
+        return 'unspecified';
       case ObjectAlignment.topLeft:
         return 'topLeft';
       case ObjectAlignment.top:

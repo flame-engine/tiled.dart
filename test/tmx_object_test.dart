@@ -25,8 +25,9 @@ void main() {
         expect(tiledObject.name, equals('Circle'));
       });
 
-      test('sets type to "circle"', () {
+      test('sets type and class to "circle"', () {
         expect(tiledObject.type, equals('circle'));
+        expect(tiledObject.class_, equals('circle'));
       });
 
       test('sets x to 344', () {
@@ -62,8 +63,9 @@ void main() {
         expect(tiledObject.name, equals('Rectangle'));
       });
 
-      test('sets type to "rectangle"', () {
+      test('sets type and class to "rectangle"', () {
         expect(tiledObject.type, equals('rectangle'));
+        expect(tiledObject.class_, equals('rectangle'));
       });
 
       test('sets x to 541', () {
@@ -95,8 +97,9 @@ void main() {
         expect(tiledObject.name, equals('Polygon'));
       });
 
-      test('sets type to "polygon"', () {
+      test('sets type and class to "polygon"', () {
         expect(tiledObject.type, equals('polygon'));
+        expect(tiledObject.class_, equals('polygon'));
       });
 
       test('sets x to 752', () {

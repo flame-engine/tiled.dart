@@ -1,3 +1,6 @@
+## 0.8.2
+* Add support for class, which is replacing type in tiled 1.9
+
 ## 0.8.1
 * Possibility to parse string content of a tilemap in `TiledMap`
 

@@ -10,6 +10,8 @@ part of tiled;
 ///   Can not be changed in Tiled. (since Tiled 0.11)
 /// * name: The name of the object. An arbitrary string. (defaults to “”)
 /// * type: The type of the object. An arbitrary string. (defaults to “”)
+/// * class_: The class of the object. An arbitrary string. (defaults to “”).
+///           It replaces "type" property starting 1.9.
 /// * x: The x coordinate of the object in pixels. (defaults to 0)
 /// * y: The y coordinate of the object in pixels. (defaults to 0)
 /// * width: The width of the object in pixels. (defaults to 0)
@@ -65,6 +67,10 @@ class TiledObject {
   List<Point> polyline;
   List<Property> properties;
 
+  // The "Class" property, a.k.a "Type" prior to Tiled 1.9.
+  /// Will be same as [type].
+  String get class_ => type;
+
   TiledObject({
     required this.id,
     this.name = '',
@@ -102,7 +108,13 @@ class TiledObject {
     final id = parser.getInt('id');
     final gid = parser.getIntOrNull('gid');
     final name = parser.getString('name', defaults: '');
-    final type = parser.getString('type', defaults: '');
+
+    // Tiled 1.9 and above versions running in compatibilty mode set to "Tiled 1.8" will
+    // still write out "Class" property as "type". So try both before using default value.
+    final type = parser.getString(
+      'class',
+      defaults: parser.getString('type', defaults: ''),
+    );
 
     final ellipse = parser.formatSpecificParsing(
       (json) => json.getBool('ellipse'),

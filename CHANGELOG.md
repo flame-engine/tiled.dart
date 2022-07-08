@@ -1,3 +1,6 @@
+## 0.8.3
+* Downgrade meta dependency
+
 ## 0.8.2
 * Add support for class, which is replacing type in tiled 1.9
 

@@ -47,7 +47,7 @@ class Tile {
   static Tile parse(Parser parser) {
     return Tile(
       localId: parser.getInt('id'),
-      type: parser.getStringOrNull('type'),
+      type: parser.getStringOrNull('type') ?? parser.getStringOrNull('class'), /// Tiled 1.9 "type" has been moved to "class"
       probability: parser.getDouble('probability', defaults: 0),
       terrain: parser
               .getStringOrNull('terrain')

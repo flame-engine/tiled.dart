@@ -1,3 +1,6 @@
+## 0.8.2
+* Adding support for `tile.type` using the "class" attribute for Tiled 1.9's Unified Custom Types
+
 ## 0.8.1
 * Possibility to parse string content of a tilemap in `TiledMap`
 

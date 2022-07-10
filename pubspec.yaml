@@ -1,5 +1,5 @@
 name: tiled
-version: 0.8.1
+version: 0.8.3
 description: A Dart Tiled library. Parse your TMX files into useful representations. Compatible with Flame.
 homepage: https://github.com/flame-engine/tiled.dart
 
@@ -8,9 +8,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  archive: ^3.1.2
+  archive: ^3.3.0
   meta: ^1.7.0
-  xml: ^5.0.2
+  xml: ^5.4.1
 
 dev_dependencies:
   test: any

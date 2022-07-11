@@ -49,7 +49,7 @@ class Tile {
       localId: parser.getInt('id'),
 
       /// Tiled 1.9 "type" has been moved to "class"
-      type: parser.getStringOrNull('type') ?? parser.getStringOrNull('class'),
+      type: parser.getStringOrNull('class') ?? parser.getStringOrNull('type'),
 
       probability: parser.getDouble('probability', defaults: 0),
       terrain: parser

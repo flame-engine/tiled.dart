@@ -43,6 +43,10 @@ abstract class Layer {
   /// Each type is associated with a concrete implementation of [Layer].
   LayerType type;
 
+  /// The "Class" specified in Tiled, introduced in Tiled 1.9 to support
+  /// custom types on any object. This is NOT the same as [type]
+  String? class_;
+
   /// Horizontal layer offset in tiles. Always 0.
   int x;
 
@@ -86,6 +90,7 @@ abstract class Layer {
     this.id,
     required this.name,
     required this.type,
+    this.class_,
     this.x = 0,
     this.y = 0,
     this.offsetX = 0,
@@ -108,6 +113,7 @@ abstract class Layer {
 
     final id = parser.getIntOrNull('id');
     final name = parser.getString('name', defaults: '');
+    final class_ = parser.getStringOrNull('class');
     final x = parser.getInt('x', defaults: 0);
     final y = parser.getInt('y', defaults: 0);
     final offsetX = parser.getDouble('offsetx', defaults: 0);
@@ -144,6 +150,7 @@ abstract class Layer {
         layer = TileLayer(
           id: id,
           name: name,
+          class_: class_,
           x: x,
           y: y,
           offsetX: offsetX,
@@ -174,6 +181,7 @@ abstract class Layer {
         layer = ObjectGroup(
           id: id,
           name: name,
+          class_: class_,
           x: x,
           y: y,
           offsetX: offsetX,
@@ -197,6 +205,7 @@ abstract class Layer {
         layer = ImageLayer(
           id: id,
           name: name,
+          class_: class_,
           x: x,
           y: y,
           offsetX: offsetX,
@@ -218,6 +227,7 @@ abstract class Layer {
         layer = Group(
           id: id,
           name: name,
+          class_: class_,
           x: x,
           y: y,
           offsetX: offsetX,
@@ -348,6 +358,7 @@ class TileLayer extends Layer {
   TileLayer({
     int? id,
     required String name,
+    String? class_,
     int x = 0,
     int y = 0,
     double offsetX = 0,
@@ -371,6 +382,7 @@ class TileLayer extends Layer {
           id: id,
           name: name,
           type: LayerType.tileLayer,
+          class_: class_,
           x: x,
           y: y,
           offsetX: offsetX,
@@ -410,6 +422,7 @@ class ObjectGroup extends Layer {
   ObjectGroup({
     int? id,
     required String name,
+    String? class_,
     int x = 0,
     int y = 0,
     double offsetX = 0,
@@ -429,6 +442,7 @@ class ObjectGroup extends Layer {
           id: id,
           name: name,
           type: LayerType.objectGroup,
+          class_: class_,
           x: x,
           y: y,
           offsetX: offsetX,
@@ -454,6 +468,7 @@ class ImageLayer extends Layer {
   ImageLayer({
     int? id,
     required String name,
+    String? class_,
     int x = 0,
     int y = 0,
     double offsetX = 0,
@@ -472,6 +487,7 @@ class ImageLayer extends Layer {
           id: id,
           name: name,
           type: LayerType.imageLayer,
+          class_: class_,
           x: x,
           y: y,
           offsetX: offsetX,
@@ -494,6 +510,7 @@ class Group extends Layer {
   Group({
     int? id,
     required String name,
+    String? class_,
     int x = 0,
     int y = 0,
     double offsetX = 0,
@@ -511,6 +528,7 @@ class Group extends Layer {
           id: id,
           name: name,
           type: LayerType.imageLayer,
+          class_: class_,
           x: x,
           y: y,
           offsetX: offsetX,

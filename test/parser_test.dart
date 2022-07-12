@@ -78,6 +78,23 @@ void main() {
         });
       });
 
+      group('populates its data correctly,', () {
+        late Tile tile0;
+        late Tile tile1;
+        setUp(() {
+          tile0 = tileset.tiles[0];
+          tile1 = tileset.tiles[1];
+        });
+
+        test('type and class should be the same', () {
+          expect(tile0.class_, equals('tile0Class'));
+          expect(tile0.type, equals('tile0Class'));
+
+          expect(tile1.class_, equals('tile1Type'));
+          expect(tile1.type, equals('tile1Type'));
+        });
+      });
+
       group('populates its child tile properties correctly by', () {
         late List<Property> tile1Properties;
         late List<Property> tile2Properties;
@@ -107,6 +124,10 @@ void main() {
 
       test('has its name = "Tile Layer 1"', () {
         expect(layer.name, equals('Tile Layer 1'));
+      });
+
+      test('has a class_ value', () {
+        expect(layer.class_, equals('layer1Class'));
       });
 
       test('has its width  = 10', () => expect(layer.width, equals(10)));
@@ -159,6 +180,10 @@ void main() {
 
       test('has the right #name', () {
         expect(og.name, equals('Test Object Layer 1'));
+      });
+
+      test('has the right class_', () {
+        expect(og.class_, equals('objectLayer1Class'));
       });
     });
   });

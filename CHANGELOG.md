@@ -1,5 +1,9 @@
 ## 0.8.4
-* Adding support for `tile.type` using the "class" attribute for Tiled 1.9's Unified Custom Types
+* Adding "class" attribute for Tiled 1.9's Unified Custom Types:
+  ** On `Tile` accessible as `class_` or `type`, backwards compatible with "type" property
+  ** On `Layer` accessible as `class_`, works on all kinds of layers (tile, object, group, image)
+  ** (since 0.8.2) On `Object` accessible as `class_` or `type`,
+     backwards compatible with "type" property
 
 ## 0.8.3
 * Downgrade meta dependency

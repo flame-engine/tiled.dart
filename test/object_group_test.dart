@@ -22,6 +22,10 @@ void main() {
       expect(objectGroup.name, equals('Test Object Layer 1'));
     });
 
+    test('sets class_', () {
+      expect(objectGroup.class_, equals('objectLayer1Class'));
+    });
+
     test('sets color', () {
       expect(objectGroup.color, equals('#555500'));
     });

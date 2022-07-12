@@ -5,18 +5,18 @@
    <property name="test_property" value="test_value"/>
   </properties>
   <image source="icons.png" width="32" height="32"/>
-  <tile id="0">
+  <tile id="0" class="tile0Class">
    <properties>
     <property name="tile_0_property_name" value="tile_0_property_value"/>
    </properties>
   </tile>
-  <tile id="1">
+  <tile id="1" type="tile1Type">
    <properties>
     <property name="tile_1_property_name" value="tile_1_property_value"/>
    </properties>
   </tile>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="10" height="10">
+ <layer id="1" name="Tile Layer 1" width="10" height="10" class="layer1Class">
   <data encoding="base64" compression="zlib">
    eJxjZCAeMI6qpblaAAl0AAs=
   </data>

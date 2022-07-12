@@ -18,7 +18,7 @@ Include the following in your `pubspec.yaml`:
 Import the package like this:
 
 ```dart
-    import 'package:tiled/tiled.dart'
+    import 'package:tiled/tiled.dart';
 ```
 
 ### Load Tmx Files

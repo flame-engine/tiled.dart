@@ -4,6 +4,7 @@
     * On `Layer` accessible as `class_`, works on all kinds of layers (tile, object, group, image)
     * (since 0.8.2) On `Object` accessible as `class_` or `type`,
       backwards compatible with "type" property
+* Add support for `repeatX` and `repeatY` on `ImageLayer`
 
 ## 0.8.3
 * Downgrade meta dependency

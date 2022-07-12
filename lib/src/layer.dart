@@ -202,6 +202,8 @@ abstract class Layer {
       case LayerType.imageLayer:
         final transparentColor = parser.getStringOrNull('transparentcolor');
         final image = parser.getSingleChildAs('image', TiledImage.parse);
+        final repeatX = parser.getBool('repeatx', defaults: false);
+        final repeatY = parser.getBool('repeaty', defaults: false);
         layer = ImageLayer(
           id: id,
           name: name,
@@ -212,6 +214,8 @@ abstract class Layer {
           offsetY: offsetY,
           parallaxX: parallaxX,
           parallaxY: parallaxY,
+          repeatX: repeatX,
+          repeatY: repeatY,
           startX: startX,
           startY: startY,
           tintColor: tintColor,
@@ -465,6 +469,12 @@ class ImageLayer extends Layer {
   /// Hex-formatted color (#RRGGBB) (optional).
   String? transparentColor;
 
+  /// Whether or not to repeat the image on the X-axis
+  bool repeatX;
+
+  /// Whether or not to repeat the image on the Y-axis
+  bool repeatY;
+
   ImageLayer({
     int? id,
     required String name,
@@ -482,6 +492,8 @@ class ImageLayer extends Layer {
     bool visible = true,
     List<Property> properties = const [],
     required this.image,
+    required this.repeatX,
+    required this.repeatY,
     this.transparentColor,
   }) : super(
           id: id,

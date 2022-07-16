@@ -256,10 +256,12 @@ abstract class Layer {
     return parser.formatSpecificParsing(
       (json) => json.getChildrenAs('layers', Layer.parse),
       (xml) {
-        return xml.getChildrenAs('layer', Layer.parse) +
-            xml.getChildrenAs('objectgroup', Layer.parse) +
-            xml.getChildrenAs('imagelayer', Layer.parse) +
-            xml.getChildrenAs('group', Layer.parse);
+        // It's very important not change the order of the layers
+        // during parsing!
+        // Order in the map determines rendering order.
+        final xmlLayers = xml.getChildrenWithNames(
+            {'layer', 'objectgroup', 'imagelayer', 'group'});
+        return xmlLayers.map(Layer.parse).toList();
       },
     );
   }

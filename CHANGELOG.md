@@ -5,6 +5,7 @@
     * (since 0.8.2) On `Object` accessible as `class_` or `type`,
       backwards compatible with "type" property
 * Add support for `repeatX` and `repeatY` on `ImageLayer`
+* Fixing bug causing XML maps to be parsed with layers in the wrong order
 
 ## 0.8.3
 * Downgrade meta dependency

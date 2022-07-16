@@ -260,7 +260,8 @@ abstract class Layer {
         // during parsing!
         // Order in the map determines rendering order.
         final xmlLayers = xml.getChildrenWithNames(
-            {'layer', 'objectgroup', 'imagelayer', 'group'});
+          {'layer', 'objectgroup', 'imagelayer', 'group'},
+        );
         return xmlLayers.map(Layer.parse).toList();
       },
     );

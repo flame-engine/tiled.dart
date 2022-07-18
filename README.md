@@ -10,7 +10,7 @@ Include the following in your `pubspec.yaml`:
 
 ```yaml
     dependencies:
-      tiled: 0.8.1
+      tiled: 0.8.4
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ Include the following in your `pubspec.yaml`:
 Import the package like this:
 
 ```dart
-    import 'package:tiled/tiled.dart'
+    import 'package:tiled/tiled.dart';
 ```
 
 ### Load Tmx Files

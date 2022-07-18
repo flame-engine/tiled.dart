@@ -67,7 +67,7 @@ class TiledObject {
   List<Point> polyline;
   List<Property> properties;
 
-  // The "Class" property, a.k.a "Type" prior to Tiled 1.9.
+  /// The "Class" property, a.k.a "Type" prior to Tiled 1.9.
   /// Will be same as [type].
   String get class_ => type;
 

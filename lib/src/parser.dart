@@ -25,6 +25,14 @@ class XmlParser extends Parser {
         .toList();
   }
 
+  List<Parser> getChildrenWithNames(Set<String> names) {
+    return element.children
+        .whereType<XmlElement>()
+        .where((e) => names.contains(e.name.local))
+        .map((e) => XmlParser(e))
+        .toList();
+  }
+
   @override
   T formatSpecificParsing<T>(
     T Function(JsonParser) json,

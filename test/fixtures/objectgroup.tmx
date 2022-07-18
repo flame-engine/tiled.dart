@@ -5,7 +5,7 @@
    eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
   </data>
  </layer>
- <objectgroup color="#555500" id="2" name="Test Object Layer 1" opacity="0.7">
+ <objectgroup color="#555500" id="2" name="Test Object Layer 1" opacity="0.7" class="objectLayer1Class">
   <properties>
    <property name="objectgroup_property_name" value="objectgroup_property_value"/>
   </properties>

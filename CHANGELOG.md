@@ -1,3 +1,12 @@
+## 0.8.4
+* Adding "class" attribute for Tiled 1.9's Unified Custom Types:
+    * On `Tile` accessible as `class_` or `type`, backwards compatible with "type" property 
+    * On `Layer` accessible as `class_`, works on all kinds of layers (tile, object, group, image)
+    * (since 0.8.2) On `Object` accessible as `class_` or `type`,
+      backwards compatible with "type" property
+* Add support for `repeatX` and `repeatY` on `ImageLayer`
+* Fixing bug causing XML maps to be parsed with layers in the wrong order
+
 ## 0.8.3
 * Downgrade meta dependency
 

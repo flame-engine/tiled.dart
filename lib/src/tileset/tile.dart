@@ -44,10 +44,17 @@ class Tile {
 
   bool get isEmpty => localId == -1;
 
+  /// The "Class" property, a.k.a "Type" prior to Tiled 1.9.
+  /// Will be same as [type].
+  String? get class_ => type;
+
   static Tile parse(Parser parser) {
     return Tile(
       localId: parser.getInt('id'),
-      type: parser.getStringOrNull('type'),
+
+      /// Tiled 1.9 "type" has been moved to "class"
+      type: parser.getStringOrNull('class') ?? parser.getStringOrNull('type'),
+
       probability: parser.getDouble('probability', defaults: 0),
       terrain: parser
               .getStringOrNull('terrain')

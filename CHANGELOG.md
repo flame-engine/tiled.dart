@@ -1,3 +1,6 @@
+## 0.8.5
+* Adding support for searching `Group` layer children when using `map.layerByName`.
+
 ## 0.8.4
 * Adding "class" attribute for Tiled 1.9's Unified Custom Types:
     * On `Tile` accessible as `class_` or `type`, backwards compatible with "type" property 

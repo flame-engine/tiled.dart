@@ -209,11 +209,32 @@ class TiledMap {
     return imageSet.toList();
   }
 
+  /// Finds the first layer with the matching [name], or throw an
+  /// [ArgumentError] if one cannot be found.
+  /// Will search recursively through [Group] children.
   Layer layerByName(String name) {
-    return layers.firstWhere(
-      (element) => element.name == name,
-      orElse: () => throw ArgumentError('Layer $name not found'),
-    );
+    final toSearch = Queue<List<Layer>>();
+    toSearch.add(layers);
+
+    Layer? found;
+    while (found == null && toSearch.isNotEmpty) {
+      final currentLayers = toSearch.removeFirst();
+      currentLayers.forEach((layer) {
+        if (layer.name == name) {
+          found = layer;
+          return;
+        } else if (layer is Group) {
+          toSearch.add(layer.layers);
+        }
+      });
+    }
+
+    if (found != null) {
+      return found!;
+    }
+
+    // Couldn't find it in any layer
+    throw ArgumentError('Layer $name not found');
   }
 
   Tileset tilesetByName(String name) {

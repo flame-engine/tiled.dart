@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math' show Rectangle;
+import 'dart:ui';
 
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
@@ -37,6 +38,12 @@ void main() {
   group('Parser.parse populates Map with tilesets', () {
     test('and Map.tilesets is the correct size', () {
       expect(map.tilesets.length, equals(1));
+    });
+
+    test('and Map.backgroundColor is the correct', () {
+      expect(map.backgroundColor, equals('#ccddaaff'));
+      expect(map.backgroundColor_,
+          equals(const Color.fromARGB(204, 221, 170, 255)));
     });
 
     group('and the first tileset', () {

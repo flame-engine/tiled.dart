@@ -70,6 +70,7 @@ class TiledMap {
   List<Layer> layers;
 
   String? backgroundColor;
+  Color? backgroundColor_;
   int compressionLevel;
 
   int? nextLayerId;
@@ -97,6 +98,7 @@ class TiledMap {
     this.tilesets = const [],
     this.layers = const [],
     this.backgroundColor,
+    this.backgroundColor_,
     this.compressionLevel = -1,
     this.hexSideLength,
     this.nextLayerId,
@@ -225,6 +227,7 @@ class TiledMap {
 
   static TiledMap parse(Parser parser, {List<TsxProvider>? tsxList}) {
     final backgroundColor = parser.getStringOrNull('backgroundcolor');
+    final backgroundColor_ = parser.getColorOrNull('backgroundcolor');
     final compressionLevel = parser.getInt('compressionlevel', defaults: -1);
     final height = parser.getInt('height');
     final hexSideLength = parser.getIntOrNull('hexsidelength');
@@ -281,6 +284,7 @@ class TiledMap {
       tilesets: tilesets,
       layers: layers,
       backgroundColor: backgroundColor,
+      backgroundColor_: backgroundColor_,
       compressionLevel: compressionLevel,
       hexSideLength: hexSideLength,
       nextLayerId: nextLayerId,

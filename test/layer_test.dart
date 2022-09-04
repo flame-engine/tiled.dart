@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
@@ -69,6 +70,12 @@ void main() {
       layer.tileData!.forEach((row) {
         expect(row.length, equals(10));
       });
+    });
+
+    test('parsed colors', () {
+      expect(layer.tintColor, equals('#ffaabb'));
+      expect(
+          layer.tintColor_, equals(const Color.fromARGB(255, 255, 170, 187)));
     });
   });
 }

@@ -73,9 +73,11 @@ void main() {
     });
 
     test('parsed colors', () {
-      expect(layer.tintColor, equals('#ffaabb'));
+      expect(layer.tintColorHex, equals('#ffaabb'));
       expect(
-          layer.tintColor_, equals(const Color.fromARGB(255, 255, 170, 187)));
+        layer.tintColor,
+        equals(Color(int.parse('0xffffaabb'))),
+      );
     });
   });
 }

@@ -41,9 +41,11 @@ void main() {
     });
 
     test('and Map.backgroundColor is the correct', () {
-      expect(map.backgroundColor, equals('#ccddaaff'));
-      expect(map.backgroundColor_,
-          equals(const Color.fromARGB(204, 221, 170, 255)));
+      expect(map.backgroundColorHex, equals('#ccddaaff'));
+      expect(
+        map.backgroundColor,
+        equals(Color(int.parse('0xccddaaff'))),
+      );
     });
 
     group('and the first tileset', () {

@@ -1,4 +1,4 @@
-## 0.8.5
+## [Next]
 * Adding support for searching `Group` layer children when using `map.layerByName`.
 
 ## 0.8.4

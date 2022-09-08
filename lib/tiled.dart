@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math' show Rectangle;
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:archive/archive.dart';
 import 'package:meta/meta.dart';

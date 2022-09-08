@@ -1,4 +1,5 @@
 ## [Next]
+* Adding support for searching `Group` layer children when using `map.layerByName`.
 * Add parser support for Tiled hex colors as `ui.Color`
 * BREAKING CHANGE: re-named string color fields to `colorHex` such as `layer.tintColorHex` and 
   added a new `color` field paired with each `colorHex` field of type `ui.Color`.

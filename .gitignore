@@ -18,6 +18,7 @@ ios/
 desktop/
 build/
 _build/
+**/doc/
 
 coverage
 **/failures

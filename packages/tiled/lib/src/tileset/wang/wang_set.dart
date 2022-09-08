@@ -32,7 +32,7 @@ class WangSet {
     this.properties = const [],
   });
 
-  static WangSet parse(Parser parser) {
+  factory WangSet.parse(Parser parser) {
     final colors = parser.formatSpecificParsing(
       (json) => [
         json.getChildrenAs('cornercolors', WangColor.parse),

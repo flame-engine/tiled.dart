@@ -20,10 +20,9 @@ class TileOffset {
     required this.y,
   });
 
-  static TileOffset parse(Parser parser) {
-    return TileOffset(
-      x: parser.getInt('x', defaults: 0),
-      y: parser.getInt('y', defaults: 0),
-    );
-  }
+  TileOffset.parse(Parser parser)
+      : this(
+          x: parser.getInt('x', defaults: 0),
+          y: parser.getInt('y', defaults: 0),
+        );
 }

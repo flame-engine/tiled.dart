@@ -28,7 +28,8 @@ part of tiled;
 /// * staggerindex: For staggered and hexagonal maps, determines whether the
 ///   “even” or “odd” indexes along the staggered axis are shifted. (since 0.11)
 /// * backgroundcolor: The background color of the map. (optional, may include
-///   alpha value since 0.15 in the form #AARRGGBB. Defaults to fully transparent.)
+///   alpha value since 0.15 in the form #AARRGGBB.)
+///   Defaults to fully transparent.
 /// * nextlayerid: Stores the next available ID for new layers. This number is
 ///   stored to prevent reuse of the same ID after layers have been removed.
 ///   (since 1.2) (defaults to the highest layer id in the file + 1)
@@ -148,27 +149,25 @@ class TiledMap {
   }
 
   // Convenience Methods
-  Tile tileByGid(int tileGid) {
+  Tile? tileByGid(int tileGid) {
     if (tileGid == 0) {
       return Tile(localId: -1);
     }
     final tileset = tilesetByTileGId(tileGid);
     final firstGid = tileset.firstGid ?? 0;
-    return tileset.tiles.firstWhere(
+    return tileset.tiles.firstWhereOrNull(
       (element) => element.localId == (tileGid - firstGid),
-      orElse: null,
     );
   }
 
-  Tile tileByLocalId(String tileSetName, int localId) {
+  Tile? tileByLocalId(String tileSetName, int localId) {
     final tileset = tilesetByName(tileSetName);
-    return tileset.tiles.firstWhere(
+    return tileset.tiles.firstWhereOrNull(
       (element) => element.localId == localId,
-      orElse: null,
     );
   }
 
-  Tile tileByPhrase(String tilePhrase) {
+  Tile? tileByPhrase(String tilePhrase) {
     final split = tilePhrase.split('|');
     if (split.length != 2) {
       throw ArgumentError(
@@ -255,7 +254,7 @@ class TiledMap {
     );
   }
 
-  static TiledMap parse(Parser parser, {List<TsxProvider>? tsxList}) {
+  factory TiledMap.parse(Parser parser, {List<TsxProvider>? tsxList}) {
     final backgroundColorHex = parser.getStringOrNull('backgroundcolor');
     final backgroundColor = parser.getColorOrNull('backgroundcolor');
     final compressionLevel = parser.getInt('compressionlevel', defaults: -1);

@@ -48,31 +48,32 @@ class Tile {
   /// Will be same as [type].
   String? get class_ => type;
 
-  static Tile parse(Parser parser) {
-    return Tile(
-      localId: parser.getInt('id'),
+  Tile.parse(Parser parser)
+      : this(
+          localId: parser.getInt('id'),
 
-      /// Tiled 1.9 "type" has been moved to "class"
-      type: parser.getStringOrNull('class') ?? parser.getStringOrNull('type'),
+          /// Tiled 1.9 "type" has been moved to "class"
+          type:
+              parser.getStringOrNull('class') ?? parser.getStringOrNull('type'),
 
-      probability: parser.getDouble('probability', defaults: 0),
-      terrain: parser
-              .getStringOrNull('terrain')
-              ?.split(',')
-              .map(int.parse)
-              .toList() ??
-          [],
-      image: parser.getSingleChildOrNullAs('image', TiledImage.parse),
-      objectGroup: parser.getSingleChildOrNullAs('objectgroup', Layer.parse),
-      animation: parser.formatSpecificParsing(
-        (json) => json.getChildrenAs('animation', Frame.parse),
-        (xml) =>
-            xml
-                .getSingleChildOrNull('animation')
-                ?.getChildrenAs('frame', Frame.parse) ??
-            [],
-      ),
-      properties: parser.getProperties(),
-    );
-  }
+          probability: parser.getDouble('probability', defaults: 0),
+          terrain: parser
+                  .getStringOrNull('terrain')
+                  ?.split(',')
+                  .map(int.parse)
+                  .toList() ??
+              [],
+          image: parser.getSingleChildOrNullAs('image', TiledImage.parse),
+          objectGroup:
+              parser.getSingleChildOrNullAs('objectgroup', Layer.parse),
+          animation: parser.formatSpecificParsing(
+            (json) => json.getChildrenAs('animation', Frame.parse),
+            (xml) =>
+                xml
+                    .getSingleChildOrNull('animation')
+                    ?.getChildrenAs('frame', Frame.parse) ??
+                [],
+          ),
+          properties: parser.getProperties(),
+        );
 }

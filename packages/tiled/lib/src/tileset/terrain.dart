@@ -20,11 +20,10 @@ class Terrain {
     this.properties = const [],
   });
 
-  static Terrain parse(Parser parser) {
-    return Terrain(
-      name: parser.getString('name'),
-      tile: parser.getInt('name'),
-      properties: parser.getProperties(),
-    );
-  }
+  Terrain.parse(Parser parser)
+      : this(
+          name: parser.getString('name'),
+          tile: parser.getInt('name'),
+          properties: parser.getProperties(),
+        );
 }

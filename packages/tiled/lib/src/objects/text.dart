@@ -69,20 +69,19 @@ class Text {
     this.wrap = false,
   });
 
-  static Text parse(Parser parser) {
-    return Text(
-      fontFamily: parser.getString('fontFamily', defaults: 'sans-serif'),
-      pixelSize: parser.getInt('pixelSize', defaults: 16),
-      color: parser.getString('color', defaults: '#000000'),
-      text: parser.getString('text', defaults: ''),
-      hAlign: parser.getHAlign('hAlign', defaults: HAlign.left),
-      vAlign: parser.getVAlign('vAlign', defaults: VAlign.top),
-      bold: parser.getBool('bold', defaults: false),
-      italic: parser.getBool('italic', defaults: false),
-      underline: parser.getBool('underline', defaults: false),
-      strikeout: parser.getBool('strikeout', defaults: false),
-      kerning: parser.getBool('kerning', defaults: true),
-      wrap: parser.getBool('wrap', defaults: false),
-    );
-  }
+  Text.parse(Parser parser)
+      : this(
+          fontFamily: parser.getString('fontFamily', defaults: 'sans-serif'),
+          pixelSize: parser.getInt('pixelSize', defaults: 16),
+          color: parser.getString('color', defaults: '#000000'),
+          text: parser.getString('text', defaults: ''),
+          hAlign: parser.getHAlign('hAlign', defaults: HAlign.left),
+          vAlign: parser.getVAlign('vAlign', defaults: VAlign.top),
+          bold: parser.getBool('bold', defaults: false),
+          italic: parser.getBool('italic', defaults: false),
+          underline: parser.getBool('underline', defaults: false),
+          strikeout: parser.getBool('strikeout', defaults: false),
+          kerning: parser.getBool('kerning', defaults: true),
+          wrap: parser.getBool('wrap', defaults: false),
+        );
 }

@@ -23,11 +23,10 @@ class Grid {
     required this.orientation,
   });
 
-  static Grid parse(Parser parser) {
-    return Grid(
-      width: parser.getInt('width'),
-      height: parser.getInt('height'),
-      orientation: parser.getGridOrientation('orientation'),
-    );
-  }
+  Grid.parse(Parser parser)
+      : this(
+          width: parser.getInt('width'),
+          height: parser.getInt('height'),
+          orientation: parser.getGridOrientation('orientation'),
+        );
 }

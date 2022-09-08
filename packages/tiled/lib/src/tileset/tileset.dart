@@ -97,7 +97,7 @@ class Tileset {
     tileCount = this.tiles.length;
   }
 
-  static Tileset parse(Parser parser, {TsxProvider? tsx}) {
+  factory Tileset.parse(Parser parser, {TsxProvider? tsx}) {
     final backgroundColor = parser.getStringOrNull('backgroundcolor');
     final columns = parser.getIntOrNull('columns');
     final firstGid = parser.getIntOrNull('firstgid');

@@ -28,10 +28,9 @@ class Template {
     this.object,
   });
 
-  static Template parse(Parser parser) {
-    return Template(
-      tileSet: parser.getSingleChildOrNullAs('tileset', Tileset.parse),
-      object: parser.getSingleChildOrNullAs('object', TiledObject.parse),
-    );
-  }
+  Template.parse(Parser parser)
+      : this(
+          tileSet: parser.getSingleChildOrNullAs('tileset', Tileset.parse),
+          object: parser.getSingleChildOrNullAs('object', TiledObject.parse),
+        );
 }

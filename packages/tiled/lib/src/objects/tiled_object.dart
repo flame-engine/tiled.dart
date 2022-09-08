@@ -98,7 +98,7 @@ class TiledObject {
   bool get isEllipse => ellipse;
   bool get isRectangle => rectangle;
 
-  static TiledObject parse(Parser parser) {
+  factory TiledObject.parse(Parser parser) {
     final x = parser.getDouble('x', defaults: 0);
     final y = parser.getDouble('y', defaults: 0);
     final height = parser.getDouble('height', defaults: 0);
@@ -109,8 +109,9 @@ class TiledObject {
     final gid = parser.getIntOrNull('gid');
     final name = parser.getString('name', defaults: '');
 
-    // Tiled 1.9 and above versions running in compatibilty mode set to "Tiled 1.8" will
-    // still write out "Class" property as "type". So try both before using default value.
+    // Tiled 1.9 and above versions running in compatibilty mode set to
+    // "Tiled 1.8" will still write out "Class" property as "type". So try both
+    // before using default value.
     final type = parser.getString(
       'class',
       defaults: parser.getString('type', defaults: ''),

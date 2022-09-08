@@ -57,7 +57,7 @@ void main() {
 
     test('returns an empty Tile if GID is 0', () {
       final tile = map.tileByGid(0);
-      expect(tile.isEmpty, isTrue);
+      expect(tile?.isEmpty, isTrue);
     });
 
     test('GID = 4 && with tileId = 2', () {
@@ -65,8 +65,8 @@ void main() {
       // Tile 2 => gid = 5 + 2 = 6
       final tile = map.tileByGid(7);
 
-      expect(tile.localId, equals(2));
-      expect(tile.properties.first.name, equals('name'));
+      expect(tile?.localId, equals(2));
+      expect(tile?.properties.first.name, equals('name'));
     });
   });
 
@@ -89,12 +89,12 @@ void main() {
     });
 
     test('there should be no tile with a Gid of 0', () {
-      expect(map.tileByGid(0).localId, equals(-1));
+      expect(map.tileByGid(0)?.localId, equals(-1));
     });
 
     group('returns a tile', () {
       late Tile tile;
-      setUp(() => tile = map.tileByLocalId('Humans', 0));
+      setUp(() => tile = map.tileByLocalId('Humans', 0)!);
 
       test('with the expected local tile ID', () {
         expect(tile.localId, equals(0));
@@ -140,7 +140,7 @@ void main() {
 
     group('returns a tile', () {
       late Tile tile;
-      setUp(() => tile = map.tileByPhrase('Humans|0'));
+      setUp(() => tile = map.tileByPhrase('Humans|0')!);
 
       test('with the expected local tile ID', () {
         expect(tile.localId, equals(0));

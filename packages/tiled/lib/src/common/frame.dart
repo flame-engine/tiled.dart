@@ -17,10 +17,9 @@ class Frame {
     required this.duration,
   });
 
-  static Frame parse(Parser parser) {
-    return Frame(
-      tileId: parser.getInt('tileid'),
-      duration: parser.getInt('duration'),
-    );
-  }
+  Frame.parse(Parser parser)
+      : this(
+          tileId: parser.getInt('tileid'),
+          duration: parser.getInt('duration'),
+        );
 }

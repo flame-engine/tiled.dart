@@ -16,10 +16,9 @@ class Export {
     required this.target,
   });
 
-  static Export parse(Parser parser) {
-    return Export(
-      format: parser.getString('format'),
-      target: parser.getString('target'),
-    );
-  }
+  Export.parse(Parser parser)
+      : this(
+          format: parser.getString('format'),
+          target: parser.getString('target'),
+        );
 }

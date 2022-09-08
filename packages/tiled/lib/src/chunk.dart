@@ -41,7 +41,7 @@ class Chunk {
     required this.width,
   }) : tileData = Gid.generate(data, width, height);
 
-  static Chunk parse(
+  factory Chunk.parse(
     Parser parser,
     FileEncoding encoding,
     Compression? compression,

@@ -5,7 +5,8 @@ part of tiled;
 ///
 /// <image>
 ///
-/// * format: Used for embedded images, in combination with a data child element.
+/// * format: Used for embedded images, in combination with a data child
+///   element.
 ///   Valid values are file extensions like png, gif, jpg, bmp, etc.
 /// * source: The reference to the tileset image file (Tiled supports most
 ///   common image formats). Only used if the image is not embedded.
@@ -32,15 +33,14 @@ class TiledImage {
     this.trans,
   });
 
-  static TiledImage parse(Parser parser) {
-    return TiledImage(
-      source: parser.getStringOrNull('source'),
-      format: parser.getStringOrNull('format'),
-      width: parser.getIntOrNull('width'),
-      height: parser.getIntOrNull('height'),
-      trans: parser.getStringOrNull('trans'),
-    );
-  }
+  TiledImage.parse(Parser parser)
+      : this(
+          source: parser.getStringOrNull('source'),
+          format: parser.getStringOrNull('format'),
+          width: parser.getIntOrNull('width'),
+          height: parser.getIntOrNull('height'),
+          trans: parser.getStringOrNull('trans'),
+        );
 
   /// Needed for getTiledImages in TileMap;
   /// Images are equal if their source is equal.

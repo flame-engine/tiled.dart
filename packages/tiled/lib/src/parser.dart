@@ -21,7 +21,7 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => e.name.local == name)
-        .map((e) => XmlParser(e))
+        .map(XmlParser.new)
         .toList();
   }
 
@@ -29,7 +29,7 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => names.contains(e.name.local))
-        .map((e) => XmlParser(e))
+        .map(XmlParser.new)
         .toList();
   }
 

@@ -15,7 +15,7 @@ part of tiled;
 class Property {
   String name;
   PropertyType type;
-  // TODO(luan) support other property types
+  // TODO(luan): support other property types
   String value;
 
   Property({
@@ -24,13 +24,12 @@ class Property {
     required this.value,
   });
 
-  static Property parse(Parser parser) {
-    return Property(
-      name: parser.getString('name'),
-      type: parser.getPropertyType('type', defaults: PropertyType.string),
-      value: parser.getString('value'),
-    );
-  }
+  Property.parse(Parser parser)
+      : this(
+          name: parser.getString('name'),
+          type: parser.getPropertyType('type', defaults: PropertyType.string),
+          value: parser.getString('value'),
+        );
 }
 
 extension PropertiesParser on Parser {

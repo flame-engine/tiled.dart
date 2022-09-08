@@ -9,7 +9,8 @@ part of tiled;
 /// * name: The name of this color.
 /// * color: The color in #RRGGBB format (example: #c17d11).
 /// * tile: The tile ID of the tile representing this color.
-/// * probability: The relative probability that this color is chosen over others in case of multiple options. (defaults to 0)
+/// * probability: The relative probability that this color is chosen over
+///   others in case of multiple options. (defaults to 0)
 ///
 /// Can contain at most one: <properties>
 class WangColor {
@@ -28,13 +29,12 @@ class WangColor {
     this.properties = const [],
   });
 
-  static WangColor parse(Parser parser) {
-    return WangColor(
-      name: parser.getString('name'),
-      color: parser.getString('color'),
-      tile: parser.getInt('tile'),
-      probability: parser.getDouble('probability', defaults: 0),
-      properties: parser.getProperties(),
-    );
-  }
+  WangColor.parse(Parser parser)
+      : this(
+          name: parser.getString('name'),
+          color: parser.getString('color'),
+          tile: parser.getInt('tile'),
+          probability: parser.getDouble('probability', defaults: 0),
+          properties: parser.getProperties(),
+        );
 }

@@ -142,8 +142,10 @@ void main() {
       test('has its width  = 10', () => expect(layer.width, equals(10)));
       test('has its height = 10', () => expect(layer.height, equals(10)));
 
-      // This test is very simple. Theoretically, if this case works, they should all work.
-      // It's a 10x10 matrix because anything smaller seems to default to gzip in Tiled (bug?).
+      // This test is very simple. Theoretically, if this case works, they
+      // should all work.
+      // It's a 10x10 matrix because anything smaller seems to default to gzip
+      // in Tiled (bug?).
       test('populates its tile matrix', () {
         List<int> getDataRow(int idx) {
           return layer.tileData![idx].map((e) => e.tile).toList();
@@ -240,14 +242,14 @@ void main() {
 
       final gid = tileset.firstGid!;
 
-      final tile1 = map.tileByGid(gid);
+      final tile1 = map.tileByGid(gid)!;
       expect(tile1.image!.source, equals('image1.png'));
       expect(
         tileset.computeDrawRect(tile1),
         equals(const Rectangle(0, 0, 32, 32)),
       );
 
-      final tile2 = map.tileByGid(gid + 1);
+      final tile2 = map.tileByGid(gid + 1)!;
       expect(tile2.image!.source, equals('image2.png'));
       expect(
         tileset.computeDrawRect(tile2),
@@ -266,7 +268,7 @@ void main() {
           tsxList: [CustomTsxProvider.parse('tileid_over_tilecount.tsx')],
         );
         expect(map.tilesets[0].tileCount, 137);
-        final tile = map.tileByGid(1);
+        final tile = map.tileByGid(1)!;
         expect(tile.localId, 0);
         expect(tile.type, 'first_tile');
       });
@@ -379,6 +381,11 @@ class CustomTsxProvider extends TsxProvider {
 
   CustomTsxProvider._(this.data, this._filename);
 
+  factory CustomTsxProvider.parse(String filename) {
+    final xml = File('./test/fixtures/$filename').readAsStringSync();
+    return CustomTsxProvider._(xml, filename);
+  }
+
   @override
   String get filename => _filename;
 
@@ -391,10 +398,5 @@ class CustomTsxProvider extends TsxProvider {
   @override
   Parser? getCachedSource() {
     return getSource('');
-  }
-
-  static CustomTsxProvider parse(String filename) {
-    final xml = File('./test/fixtures/$filename').readAsStringSync();
-    return CustomTsxProvider._(xml, filename);
   }
 }

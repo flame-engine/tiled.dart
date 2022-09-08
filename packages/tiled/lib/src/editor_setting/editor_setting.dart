@@ -14,10 +14,10 @@ class EditorSetting {
 
   EditorSetting({required this.chunkSize, required this.export});
 
-  static EditorSetting parse(Parser parser) {
-    return EditorSetting(
-      chunkSize: parser.getSingleChildOrNullAs('chunksize', ChunkSize.parse),
-      export: parser.getSingleChildOrNullAs('export', Export.parse),
-    );
-  }
+  EditorSetting.parse(Parser parser)
+      : this(
+          chunkSize:
+              parser.getSingleChildOrNullAs('chunksize', ChunkSize.parse),
+          export: parser.getSingleChildOrNullAs('export', Export.parse),
+        );
 }

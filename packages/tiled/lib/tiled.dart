@@ -7,10 +7,10 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:archive/archive.dart';
+import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
 import 'package:xml/xml.dart';
 
-part 'src/parser.dart';
 part 'src/chunk.dart';
 part 'src/common/enums.dart';
 part 'src/common/flips.dart';
@@ -25,6 +25,7 @@ part 'src/editor_setting/export.dart';
 part 'src/layer.dart';
 part 'src/objects/text.dart';
 part 'src/objects/tiled_object.dart';
+part 'src/parser.dart';
 part 'src/template.dart';
 part 'src/tile_map_parser.dart';
 part 'src/tiled_map.dart';

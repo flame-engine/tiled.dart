@@ -13,10 +13,9 @@ class ChunkSize {
 
   ChunkSize({required this.width, required this.height});
 
-  static ChunkSize parse(Parser parser) {
-    return ChunkSize(
-      width: parser.getInt('width', defaults: 16),
-      height: parser.getInt('height', defaults: 16),
-    );
-  }
+  ChunkSize.parse(Parser parser)
+      : this(
+          width: parser.getInt('width', defaults: 16),
+          height: parser.getInt('height', defaults: 16),
+        );
 }

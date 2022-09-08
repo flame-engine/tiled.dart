@@ -197,6 +197,35 @@ abstract class Parser {
     return result;
   }
 
+  Color? getColorOrNull(String name, {Color? defaults}) {
+    final tiledColor = getStringOrNull(name);
+
+    // Tiled colors are stored as either ARGB or RGB hex values, so we can
+    // parse them as hex numbers with a little coercing.
+    int? colorValue;
+    if (tiledColor?.length == 7) {
+      // parse '#rrbbgg'  as hex '0xaarrggbb' with the alpha channel on full
+      colorValue = int.tryParse(tiledColor!.replaceFirst('#', '0xff'));
+    } else if (tiledColor?.length == 9) {
+      // parse '#aarrbbgg'  as hex '0xaarrggbb'
+      colorValue = int.tryParse(tiledColor!.replaceFirst('#', '0x'));
+    }
+
+    if (colorValue != null) {
+      return Color(colorValue);
+    } else {
+      return defaults;
+    }
+  }
+
+  Color getColor(String name, {Color? defaults}) {
+    final result = getColorOrNull(name, defaults: defaults);
+    if (result == null) {
+      throw ParsingException(name, null, 'Missing required color field');
+    }
+    return result;
+  }
+
   T? getRawEnumOrNull<T>(
     List<T> values,
     String Function(T) namer,

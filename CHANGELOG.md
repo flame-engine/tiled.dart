@@ -1,3 +1,8 @@
+## [Next]
+* Add parser support for Tiled hex colors as `ui.Color`
+* BREAKING CHANGE: re-named string color fields to `colorHex` such as `layer.tintColorHex` and 
+  added a new `color` field paired with each `colorHex` field of type `ui.Color`.
+
 ## 0.8.4
 * Adding "class" attribute for Tiled 1.9's Unified Custom Types:
     * On `Tile` accessible as `class_` or `type`, backwards compatible with "type" property 

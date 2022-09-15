@@ -48,8 +48,8 @@ void main() {
 
       test('sets properties', () {
         final props = tiledObject.properties;
-        expect(props[0].name, equals('property_name'));
-        expect(props[0].value, equals('property_value'));
+        expect(props['property_name']!.name, equals('property_name'));
+        expect(props['property_name']!.value, equals('property_value'));
       });
 
       test('sets isEllipse to true', () => expect(tiledObject.ellipse, isTrue));

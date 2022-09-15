@@ -89,7 +89,7 @@ class TiledMap {
   RenderOrder renderOrder;
 
   List<EditorSetting> editorSettings;
-  List<Property> properties;
+  Map<String, Property> properties;
 
   // only for hexagonal maps:
   int? hexSideLength;
@@ -118,7 +118,7 @@ class TiledMap {
     this.staggerAxis,
     this.staggerIndex,
     this.editorSettings = const [],
-    this.properties = const [],
+    this.properties = const {},
   });
 
   /// Takes a string [contents] and converts it to a [TiledMap] with the help of

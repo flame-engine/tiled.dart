@@ -12,12 +12,12 @@ part of tiled;
 class Terrain {
   String name;
   int tile;
-  List<Property> properties;
+  Map<String, Property> properties;
 
   Terrain({
     required this.name,
     required this.tile,
-    this.properties = const [],
+    this.properties = const {},
   });
 
   Terrain.parse(Parser parser)

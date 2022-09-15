@@ -29,7 +29,7 @@ class Tile {
   TiledImage? image;
   Layer? objectGroup;
   List<Frame> animation;
-  List<Property> properties;
+  Map<String, Property> properties;
 
   Tile({
     required this.localId,
@@ -39,7 +39,7 @@ class Tile {
     this.image,
     this.objectGroup,
     this.animation = const [],
-    this.properties = const [],
+    this.properties = const {},
   });
 
   bool get isEmpty => localId == -1;

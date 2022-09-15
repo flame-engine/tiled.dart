@@ -23,6 +23,6 @@ void main() {
 
   test('Tile.properties is present', () {
     final tile = Tile(localId: -1);
-    expect(tile.properties, isA<List>());
+    expect(tile.properties, isA<Map<String, Property>>());
   });
 }

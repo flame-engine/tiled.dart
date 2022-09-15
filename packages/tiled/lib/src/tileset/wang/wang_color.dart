@@ -19,14 +19,14 @@ class WangColor {
   int tile;
   double probability;
 
-  List<Property> properties;
+  Map<String, Property> properties;
 
   WangColor({
     required this.name,
     required this.color,
     required this.tile,
     this.probability = 0,
-    this.properties = const [],
+    this.properties = const {},
   });
 
   WangColor.parse(Parser parser)

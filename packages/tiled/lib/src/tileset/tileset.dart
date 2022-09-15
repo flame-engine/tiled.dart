@@ -60,7 +60,7 @@ class Tileset {
   TiledImage? image;
   TileOffset? tileOffset;
   Grid? grid;
-  List<Property> properties = [];
+  Map<String, Property> properties = {};
   List<Terrain> terrains = [];
   List<WangSet> wangSets = [];
 
@@ -85,7 +85,7 @@ class Tileset {
     this.image,
     this.tileOffset,
     this.grid,
-    this.properties = const [],
+    this.properties = const {},
     this.terrains = const [],
     this.wangSets = const [],
     this.version = '1.0',

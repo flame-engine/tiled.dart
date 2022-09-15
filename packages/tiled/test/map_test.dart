@@ -41,13 +41,13 @@ void main() {
               Tile(localId: 0),
               Tile(
                 localId: 2,
-                properties: [
-                  Property(
+                properties: {
+                  'name': Property(
                     name: 'name',
                     type: PropertyType.string,
-                    value: 'value',
+                    value: 'tile2-prop-value',
                   ),
-                ],
+                },
               ),
             ],
           ),
@@ -66,7 +66,7 @@ void main() {
       final tile = map.tileByGid(7);
 
       expect(tile?.localId, equals(2));
-      expect(tile?.properties.first.name, equals('name'));
+      expect(tile?.properties['name']!.value, equals('tile2-prop-value'));
     });
   });
 

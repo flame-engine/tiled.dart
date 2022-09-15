@@ -21,7 +21,7 @@ class WangSet {
   List<WangColor> cornerColors;
   List<WangColor> edgeColors;
   List<WangTile> wangTiles;
-  List<Property> properties;
+  Map<String, Property> properties;
 
   WangSet({
     required this.name,
@@ -29,7 +29,7 @@ class WangSet {
     this.cornerColors = const [],
     this.edgeColors = const [],
     this.wangTiles = const [],
-    this.properties = const [],
+    this.properties = const {},
   });
 
   factory WangSet.parse(Parser parser) {

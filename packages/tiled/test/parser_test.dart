@@ -79,11 +79,11 @@ void main() {
       });
 
       group('populates its properties correctly and', () {
-        late List<Property> properties;
+        late Map<String, Property> properties;
         setUp(() => properties = tileset.properties);
         test('has a key of "test_property" = "test_value"', () {
-          expect(properties[0].name, equals('test_property'));
-          expect(properties[0].value, equals('test_value'));
+          expect(properties.values.first.name, equals('test_property'));
+          expect(properties['test_property']!.value, equals('test_value'));
         });
       });
 
@@ -105,18 +105,30 @@ void main() {
       });
 
       group('populates its child tile properties correctly by', () {
-        late List<Property> tile1Properties;
-        late List<Property> tile2Properties;
+        late Map<String, Property> tile1Properties;
+        late Map<String, Property> tile2Properties;
         setUp(() {
           tile1Properties = tileset.tiles[0].properties;
           tile2Properties = tileset.tiles[1].properties;
         });
 
         test('inserting properties into tileProperties based on Tile GID', () {
-          expect(tile1Properties[0].name, equals('tile_0_property_name'));
-          expect(tile1Properties[0].value, equals('tile_0_property_value'));
-          expect(tile2Properties[0].name, equals('tile_1_property_name'));
-          expect(tile2Properties[0].value, equals('tile_1_property_value'));
+          expect(
+            tile1Properties['tile_0_property_name']!.name,
+            equals('tile_0_property_name'),
+          );
+          expect(
+            tile1Properties['tile_0_property_name']!.value,
+            equals('tile_0_property_value'),
+          );
+          expect(
+            tile2Properties['tile_1_property_name']!.name,
+            equals('tile_1_property_name'),
+          );
+          expect(
+            tile2Properties['tile_1_property_name']!.value,
+            equals('tile_1_property_value'),
+          );
         });
       });
     });

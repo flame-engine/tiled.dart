@@ -33,8 +33,8 @@ class Property {
 }
 
 extension PropertiesParser on Parser {
-  List<Property> getProperties() {
-    return formatSpecificParsing(
+  Map<String, Property> getProperties() {
+    final properties = formatSpecificParsing(
       (json) => json.getChildrenAs('properties', Property.parse),
       (xml) =>
           xml
@@ -42,5 +42,12 @@ extension PropertiesParser on Parser {
               ?.getChildrenAs('property', Property.parse) ??
           [],
     );
+
+    return properties.groupFoldBy((prop) => prop.name, (previous, element) {
+      if (previous != null) {
+        throw ArgumentError("Can't have two properties with the same name.");
+      }
+      return element;
+    });
   }
 }

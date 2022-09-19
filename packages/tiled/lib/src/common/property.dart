@@ -88,15 +88,43 @@ class Property<T> {
   }
 }
 
+/// A wrapper for a Tiled property set
+///
+/// Accessing an int value
+/// ```dart
+/// properties.get<int>('foo') == 3
+/// ```
+///
+/// Accessing an int property:
+/// ```dart
+/// properties.getProp<IntProperty>('foo') ==
+///     IntProperty(name: 'foo', value: 3);
+/// ```
 class CustomProperties extends Iterable<Property> {
   static const empty = CustomProperties({});
 
+  /// The properties, indexed by name
   final Map<String, Property> byName;
 
   const CustomProperties(this.byName);
 
+  /// Get a property value by its name.
+  ///
+  /// [T] must be the type of the value, which depends on the property type.
+  /// The following Tiled properties map to the follow Dart types:
+  ///  - int property -> int
+  ///  - float property -> double
+  ///  - boolean property -> bool
+  ///  - string property -> string
+  ///  - color property -> ui.Color
+  ///  - file property -> string (path)
+  ///  - object property -> int (ID)
+  T get<T>(String name) {
+    return getProp(name).value as T;
+  }
+
   /// Get a typed property by its name
-  T named<T extends Property<dynamic>>(String name) {
+  T getProp<T extends Property<dynamic>>(String name) {
     return byName[name]! as T;
   }
 

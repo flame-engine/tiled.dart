@@ -66,7 +66,7 @@ void main() {
 
       expect(tile?.localId, equals(2));
       expect(
-        tile?.properties.named<StringProperty>('name').value,
+        tile?.properties.get<String>('name'),
         equals('tile2-prop-value'),
       );
     });

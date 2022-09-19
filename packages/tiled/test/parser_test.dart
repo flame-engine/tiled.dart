@@ -79,11 +79,42 @@ void main() {
       });
 
       group('populates its properties correctly and', () {
-        late Map<String, Property> properties;
+        late CustomProperties properties;
         setUp(() => properties = tileset.properties);
         test('has a key of "test_property" = "test_value"', () {
-          expect(properties.values.first.name, equals('test_property'));
-          expect(properties['test_property']!.value, equals('test_value'));
+          expect(properties.first.name, equals('string property'));
+          expect(
+            properties.named<StringProperty>('string property').value,
+            equals('test_value'),
+          );
+          expect(
+            properties.named<StringProperty>('multiline string').value,
+            equals('Hello,\nWorld'),
+          );
+          expect(
+            properties.named<IntProperty>('integer property').value,
+            equals(42),
+          );
+          expect(
+            properties.named<ColorProperty>('color property').hexValue,
+            equals('#00112233'),
+          );
+          expect(
+            properties.named<ColorProperty>('color property').value,
+            equals(const Color(0x00112233)),
+          );
+          expect(
+            properties.named<FloatProperty>('float property').value,
+            equals(1.56),
+          );
+          expect(
+            properties.named<FileProperty>('file property').value,
+            equals('./icons.png'),
+          );
+          expect(
+            properties.named<ObjectProperty>('object property').value,
+            equals(32),
+          );
         });
       });
 
@@ -105,8 +136,8 @@ void main() {
       });
 
       group('populates its child tile properties correctly by', () {
-        late Map<String, Property> tile1Properties;
-        late Map<String, Property> tile2Properties;
+        late CustomProperties tile1Properties;
+        late CustomProperties tile2Properties;
         setUp(() {
           tile1Properties = tileset.tiles[0].properties;
           tile2Properties = tileset.tiles[1].properties;
@@ -114,19 +145,15 @@ void main() {
 
         test('inserting properties into tileProperties based on Tile GID', () {
           expect(
-            tile1Properties['tile_0_property_name']!.name,
-            equals('tile_0_property_name'),
+            tile1Properties.named<StringProperty>('tile_0_property_name'),
+            isNotNull,
           );
           expect(
-            tile1Properties['tile_0_property_name']!.value,
+            tile1Properties.named<StringProperty>('tile_0_property_name').value,
             equals('tile_0_property_value'),
           );
           expect(
-            tile2Properties['tile_1_property_name']!.name,
-            equals('tile_1_property_name'),
-          );
-          expect(
-            tile2Properties['tile_1_property_name']!.value,
+            tile2Properties.named<StringProperty>('tile_1_property_name').value,
             equals('tile_1_property_value'),
           );
         });

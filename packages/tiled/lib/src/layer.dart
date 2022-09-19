@@ -90,7 +90,7 @@ abstract class Layer {
   bool visible;
 
   /// List of [Property].
-  Map<String, Property> properties;
+  CustomProperties properties;
 
   Layer({
     this.id,
@@ -109,7 +109,7 @@ abstract class Layer {
     this.tintColor,
     this.opacity = 1,
     this.visible = true,
-    this.properties = const {},
+    this.properties = CustomProperties.empty,
   });
 
   static Layer parse(Parser parser) {

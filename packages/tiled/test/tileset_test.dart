@@ -17,7 +17,7 @@ void main() {
     test('spacing == 0', () => expect(tileset.spacing, equals(0)));
     test('margin == 0', () => expect(tileset.margin, equals(0)));
     test('tileProperties == {}', () {
-      expect(tileset.properties, equals(<String, Property>{}));
+      expect(tileset.properties.byName, equals(<String, Property>{}));
     });
   });
 

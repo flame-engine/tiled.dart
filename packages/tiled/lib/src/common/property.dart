@@ -12,11 +12,10 @@ part of tiled;
 ///   (default string is “”, default number is 0, default boolean is “false”,
 ///   default color is #00000000, default file is “.” (the current file’s
 ///   parent directory))
-class Property {
+class Property<T> {
   String name;
   PropertyType type;
-  // TODO(luan): support other property types
-  String value;
+  T value;
 
   Property({
     required this.name,
@@ -24,16 +23,148 @@ class Property {
     required this.value,
   });
 
-  Property.parse(Parser parser)
-      : this(
-          name: parser.getString('name'),
-          type: parser.getPropertyType('type', defaults: PropertyType.string),
-          value: parser.getString('value'),
+  static Property parse(Parser parser) {
+    final name = parser.getString('name');
+    final type = parser.getPropertyType('type', defaults: PropertyType.string);
+
+    switch (type) {
+      case PropertyType.object:
+        return ObjectProperty(
+          name: name,
+          value: parser.getInt('value', defaults: 0),
         );
+
+      case PropertyType.color:
+        return ColorProperty(
+          name: name,
+          value: parser.getColor('value', defaults: const Color(0x00000000)),
+          hexValue: parser.getString('value', defaults: '#00000000'),
+        );
+
+      case PropertyType.bool:
+        return BoolProperty(
+          name: name,
+          value: parser.getBool('value', defaults: false),
+        );
+
+      case PropertyType.float:
+        return FloatProperty(
+          name: name,
+          value: parser.getDouble('value', defaults: 0),
+        );
+
+      case PropertyType.int:
+        return IntProperty(
+          name: name,
+          value: parser.getInt('value', defaults: 0),
+        );
+
+      case PropertyType.file:
+        return FileProperty(
+          name: name,
+          value: parser.getString('value', defaults: '.'),
+        );
+
+      case PropertyType.string:
+        final value = parser.formatSpecificParsing((json) {
+          return json.getString('value', defaults: '');
+        }, (xml) {
+          final attrString = parser.getStringOrNull('value');
+          if (attrString != null) {
+            return attrString;
+          } else {
+            // In tmx files, multi-line text property values can be stored
+            // inside the <property> node itself instead of in the 'value'
+            // attribute
+            return xml.element.innerText;
+          }
+        });
+
+        return StringProperty(
+          name: name,
+          value: value,
+        );
+    }
+  }
+}
+
+class CustomProperties extends Iterable<Property> {
+  static const empty = CustomProperties({});
+
+  final Map<String, Property> byName;
+
+  const CustomProperties(this.byName);
+
+  /// Get a typed property by its name
+  T named<T extends Property<dynamic>>(String name) {
+    return byName[name]! as T;
+  }
+
+  @override
+  Iterator<Property> get iterator => byName.values.iterator;
+}
+
+/// [value] is the ID of the object
+class ObjectProperty extends Property<int> {
+  ObjectProperty({
+    required super.name,
+    required super.value,
+  }) : super(type: PropertyType.object);
+}
+
+/// [value] is the color
+class ColorProperty extends Property<Color> {
+  final String hexValue;
+
+  ColorProperty({
+    required super.name,
+    required super.value,
+    required this.hexValue,
+  }) : super(type: PropertyType.color);
+}
+
+/// [value] is the string text
+class StringProperty extends Property<String> {
+  StringProperty({
+    required super.name,
+    required super.value,
+  }) : super(type: PropertyType.string);
+}
+
+/// [value] is the path to the file
+class FileProperty extends Property<String> {
+  FileProperty({
+    required super.name,
+    required super.value,
+  }) : super(type: PropertyType.file);
+}
+
+/// [value] is the integer number
+class IntProperty extends Property<int> {
+  IntProperty({
+    required super.name,
+    required super.value,
+  }) : super(type: PropertyType.int);
+}
+
+/// [value] is the double-percision floating-point number
+class FloatProperty extends Property<double> {
+  FloatProperty({
+    required super.name,
+    required super.value,
+  }) : super(type: PropertyType.float);
+}
+
+/// [value] is the boolean
+class BoolProperty extends Property<bool> {
+  BoolProperty({
+    required super.name,
+    required super.value,
+  }) : super(type: PropertyType.bool);
 }
 
 extension PropertiesParser on Parser {
-  Map<String, Property> getProperties() {
+  CustomProperties getProperties() {
     final properties = formatSpecificParsing(
       (json) => json.getChildrenAs('properties', Property.parse),
       (xml) =>
@@ -43,11 +174,13 @@ extension PropertiesParser on Parser {
           [],
     );
 
-    return properties.groupFoldBy((prop) => prop.name, (previous, element) {
-      if (previous != null) {
-        throw ArgumentError("Can't have two properties with the same name.");
-      }
+    // NOTE: two properties should never have the same name, if they do
+    // one will simply override the other
+    final byName =
+        properties.groupFoldBy((prop) => prop.name, (previous, element) {
       return element;
     });
+
+    return CustomProperties(byName);
   }
 }

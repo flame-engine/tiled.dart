@@ -23,7 +23,7 @@ class Property<T> {
     required this.value,
   });
 
-  static Property parse(Parser parser) {
+  static Property<Object> parse(Parser parser) {
     final name = parser.getString('name');
     final type = parser.getPropertyType('type', defaults: PropertyType.string);
 
@@ -100,11 +100,11 @@ class Property<T> {
 /// properties.getProp<IntProperty>('foo') ==
 ///     IntProperty(name: 'foo', value: 3);
 /// ```
-class CustomProperties extends Iterable<Property> {
+class CustomProperties extends Iterable<Property<Object>> {
   static const empty = CustomProperties({});
 
   /// The properties, indexed by name
-  final Map<String, Property> byName;
+  final Map<String, Property<Object>> byName;
 
   const CustomProperties(this.byName);
 
@@ -120,16 +120,16 @@ class CustomProperties extends Iterable<Property> {
   ///  - file property -> string (path)
   ///  - object property -> int (ID)
   T? getValue<T>(String name) {
-    return getProperty(name)?.value as T;
+    return getProperty(name)?.value as T?;
   }
 
   /// Get a typed property by its name
-  T? getProperty<T extends Property<dynamic>>(String name) {
-    return byName[name]! as T;
+  T? getProperty<T extends Property<Object>>(String name) {
+    return byName[name] as T?;
   }
 
   /// Get a property by its name
-  Property? operator [](String name) {
+  Property<Object>? operator [](String name) {
     return byName[name];
   }
 
@@ -139,7 +139,7 @@ class CustomProperties extends Iterable<Property> {
   }
 
   @override
-  Iterator<Property> get iterator => byName.values.iterator;
+  Iterator<Property<Object>> get iterator => byName.values.iterator;
 }
 
 /// [value] is the ID of the object

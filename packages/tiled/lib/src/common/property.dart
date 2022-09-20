@@ -119,18 +119,23 @@ class CustomProperties extends Iterable<Property> {
   ///  - color property -> ui.Color
   ///  - file property -> string (path)
   ///  - object property -> int (ID)
-  T getValue<T>(String name) {
-    return getProperty(name).value as T;
+  T? getValue<T>(String name) {
+    return getProperty(name)?.value as T;
   }
 
   /// Get a typed property by its name
-  T getProperty<T extends Property<dynamic>>(String name) {
+  T? getProperty<T extends Property<dynamic>>(String name) {
     return byName[name]! as T;
   }
 
   /// Get a property by its name
-  Property<dynamic> operator [](String name) {
-    return getProperty(name);
+  Property? operator [](String name) {
+    return byName[name];
+  }
+
+  /// Returns whether or not a property with [name] exists.
+  bool has(String name) {
+    return byName.containsKey(name);
   }
 
   @override

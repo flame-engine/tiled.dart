@@ -96,7 +96,7 @@ void main() {
             equals(42),
           );
           expect(
-            properties.getProperty<ColorProperty>('color property').hexValue,
+            properties.getProperty<ColorProperty>('color property')!.hexValue,
             equals('#00112233'),
           );
           expect(
@@ -144,6 +144,10 @@ void main() {
         });
 
         test('inserting properties into tileProperties based on Tile GID', () {
+          expect(
+            tile1Properties.has('tile_0_property_name'),
+            isTrue,
+          );
           expect(
             tile1Properties.getValue<String>('tile_0_property_name'),
             equals('tile_0_property_value'),

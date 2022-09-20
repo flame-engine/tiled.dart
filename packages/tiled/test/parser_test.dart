@@ -84,35 +84,35 @@ void main() {
         test('has a key of "test_property" = "test_value"', () {
           expect(properties.first.name, equals('string property'));
           expect(
-            properties.get<String>('string property'),
+            properties.getValue<String>('string property'),
             equals('test_value'),
           );
           expect(
-            properties.get<String>('multiline string'),
+            properties.getValue<String>('multiline string'),
             equals('Hello,\nWorld'),
           );
           expect(
-            properties.get<int>('integer property'),
+            properties.getValue<int>('integer property'),
             equals(42),
           );
           expect(
-            properties.getProp<ColorProperty>('color property').hexValue,
+            properties.getProperty<ColorProperty>('color property').hexValue,
             equals('#00112233'),
           );
           expect(
-            properties.get<Color>('color property'),
+            properties.getValue<Color>('color property'),
             equals(const Color(0x00112233)),
           );
           expect(
-            properties.get<double>('float property'),
+            properties.getValue<double>('float property'),
             equals(1.56),
           );
           expect(
-            properties.get<String>('file property'),
+            properties.getValue<String>('file property'),
             equals('./icons.png'),
           );
           expect(
-            properties.get<int>('object property'),
+            properties.getValue<int>('object property'),
             equals(32),
           );
         });
@@ -145,11 +145,11 @@ void main() {
 
         test('inserting properties into tileProperties based on Tile GID', () {
           expect(
-            tile1Properties.get<String>('tile_0_property_name'),
+            tile1Properties.getValue<String>('tile_0_property_name'),
             equals('tile_0_property_value'),
           );
           expect(
-            tile2Properties.get<String>('tile_1_property_name'),
+            tile2Properties.getValue<String>('tile_1_property_name'),
             equals('tile_1_property_value'),
           );
         });

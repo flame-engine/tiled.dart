@@ -65,8 +65,9 @@ void main() {
       final tile = map.tileByGid(7);
 
       expect(tile?.localId, equals(2));
+      expect(tile?.properties['name'], isA<StringProperty>());
       expect(
-        tile?.properties.get<String>('name'),
+        tile?.properties.getValue<String>('name'),
         equals('tile2-prop-value'),
       );
     });

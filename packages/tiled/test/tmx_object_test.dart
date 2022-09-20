@@ -50,7 +50,7 @@ void main() {
         final props = tiledObject.properties;
         expect(props.first.name, equals('property_name'));
         expect(
-          props.get<String>('property_name'),
+          props.getValue<String>('property_name'),
           equals('property_value'),
         );
       });

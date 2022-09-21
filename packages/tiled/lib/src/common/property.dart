@@ -97,8 +97,13 @@ class Property<T> {
 ///
 /// Accessing an int property:
 /// ```dart
-/// properties.getProp<IntProperty>('foo') ==
+/// properties.getProperty<IntProperty>('foo') ==
 ///     IntProperty(name: 'foo', value: 3);
+/// ```
+///
+/// You can also use an accessor:
+/// ```dart
+/// properties['foo'] == IntProperty(name: 'foo', value: 3);
 /// ```
 class CustomProperties extends Iterable<Property<Object>> {
   static const empty = CustomProperties({});

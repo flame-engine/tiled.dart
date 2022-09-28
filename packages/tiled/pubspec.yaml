@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   meta: ^1.7.0
-  xml: ^5.4.1
+  xml: ^6.1.0
 
 dev_dependencies:
   dartdoc: ^4.1.0

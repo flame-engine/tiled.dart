@@ -1,3 +1,9 @@
+## 0.9.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **CHORE**: Introduce Melos and bump versions ([#53](https://github.com/flame-engine/tiled.dart/issues/53)). ([9222d018](https://github.com/flame-engine/tiled.dart/commit/9222d018258fffbff54c4ab3d2c441019d48d234))
+
 ## [Next]
 * Adding support for searching `Group` layer children when using `map.layerByName`.
 * Add parser support for Tiled hex colors as `ui.Color`

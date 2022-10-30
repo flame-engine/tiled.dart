@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" name="test tileset" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="tileset_16x16.png" width="256" height="256"/>
+  <terraintypes>
+   <terrain name="test bright" tile="2"/>
+   <terrain name="test normal" tile="50"/>
+   <terrain name="test dark" tile="98"/>
+  </terraintypes>
+  <tile id="0" terrain=",,,0"/>
+  <tile id="1" terrain="0,0,0,"/>
+  <tile id="2" terrain="0,0,,"/>
+  <tile id="3" terrain="0,0,,0"/>
+  <tile id="4" terrain=",,,0"/>
+  <tile id="5" terrain=",,0,"/>
+  <tile id="50" terrain="1,1,,"/>
+  <tile id="98" terrain="2,2,,"/>
+ </tileset>
+</map>

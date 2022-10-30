@@ -373,6 +373,18 @@ void main() {
       );
     });
   });
+
+  group('Parser tiles', () {
+    test('support empty terrain values', () {
+      final xml = File('./test/fixtures/map_with_empty_terrains.tmx')
+          .readAsStringSync();
+      final tiledMap = TileMapParser.parseTmx(xml);
+
+      final tileset = tiledMap.tilesets.first;
+      final tile = tileset.tiles.first;
+      expect(tile.terrain, anyElement(isNull));
+    });
+  });
 }
 
 class CustomTsxProvider extends TsxProvider {

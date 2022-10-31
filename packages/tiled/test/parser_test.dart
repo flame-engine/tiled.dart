@@ -79,11 +79,42 @@ void main() {
       });
 
       group('populates its properties correctly and', () {
-        late List<Property> properties;
+        late CustomProperties properties;
         setUp(() => properties = tileset.properties);
         test('has a key of "test_property" = "test_value"', () {
-          expect(properties[0].name, equals('test_property'));
-          expect(properties[0].value, equals('test_value'));
+          expect(properties.first.name, equals('string property'));
+          expect(
+            properties.getValue<String>('string property'),
+            equals('test_value'),
+          );
+          expect(
+            properties.getValue<String>('multiline string'),
+            equals('Hello,\nWorld'),
+          );
+          expect(
+            properties.getValue<int>('integer property'),
+            equals(42),
+          );
+          expect(
+            properties.getProperty<ColorProperty>('color property')!.hexValue,
+            equals('#00112233'),
+          );
+          expect(
+            properties.getValue<Color>('color property'),
+            equals(const Color(0x00112233)),
+          );
+          expect(
+            properties.getValue<double>('float property'),
+            equals(1.56),
+          );
+          expect(
+            properties.getValue<String>('file property'),
+            equals('./icons.png'),
+          );
+          expect(
+            properties.getValue<int>('object property'),
+            equals(32),
+          );
         });
       });
 
@@ -105,18 +136,26 @@ void main() {
       });
 
       group('populates its child tile properties correctly by', () {
-        late List<Property> tile1Properties;
-        late List<Property> tile2Properties;
+        late CustomProperties tile1Properties;
+        late CustomProperties tile2Properties;
         setUp(() {
           tile1Properties = tileset.tiles[0].properties;
           tile2Properties = tileset.tiles[1].properties;
         });
 
         test('inserting properties into tileProperties based on Tile GID', () {
-          expect(tile1Properties[0].name, equals('tile_0_property_name'));
-          expect(tile1Properties[0].value, equals('tile_0_property_value'));
-          expect(tile2Properties[0].name, equals('tile_1_property_name'));
-          expect(tile2Properties[0].value, equals('tile_1_property_value'));
+          expect(
+            tile1Properties.has('tile_0_property_name'),
+            isTrue,
+          );
+          expect(
+            tile1Properties.getValue<String>('tile_0_property_name'),
+            equals('tile_0_property_value'),
+          );
+          expect(
+            tile2Properties.getValue<String>('tile_1_property_name'),
+            equals('tile_1_property_value'),
+          );
         });
       });
     });

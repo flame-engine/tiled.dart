@@ -2,7 +2,15 @@
 <map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1" backgroundcolor="#ccddaaff">
  <tileset firstgid="1" name="basketball" tilewidth="32" tileheight="32" tilecount="2" columns="1">
   <properties>
-   <property name="test_property" value="test_value"/>
+   <property name="string property" value="test_value"/>
+   <property name="multiline string">Hello,
+World</property>
+   <property name="integer property" type="int" value="42"/>
+   <property name="bool property" type="bool" value="true"/>
+   <property name="color property" type="color" value="#00112233"/>
+   <property name="float property" type="float" value="1.56"/>
+   <property name="file property" type="file" value="./icons.png"/>
+   <property name="object property" type="object" value="32"/>
   </properties>
   <image source="icons.png" width="32" height="32"/>
   <tile id="0" class="tile0Class">

@@ -60,7 +60,7 @@ class Tileset {
   TiledImage? image;
   TileOffset? tileOffset;
   Grid? grid;
-  List<Property> properties = [];
+  CustomProperties properties;
   List<Terrain> terrains = [];
   List<WangSet> wangSets = [];
 
@@ -85,7 +85,7 @@ class Tileset {
     this.image,
     this.tileOffset,
     this.grid,
-    this.properties = const [],
+    this.properties = CustomProperties.empty,
     this.terrains = const [],
     this.wangSets = const [],
     this.version = '1.0',
@@ -185,7 +185,7 @@ class Tileset {
       tileWidth = tileset.tileWidth ?? tileWidth;
       transparentColor = tileset.transparentColor ?? transparentColor;
       // Add List-Attributes
-      properties.addAll(tileset.properties);
+      properties.byName.addAll(tileset.properties.byName);
       terrains.addAll(tileset.terrains);
       tiles.addAll(tileset.tiles);
       wangSets.addAll(tileset.wangSets);

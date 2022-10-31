@@ -65,7 +65,7 @@ class TiledObject {
 
   List<Point> polygon;
   List<Point> polyline;
-  List<Property> properties;
+  CustomProperties properties;
 
   /// The "Class" property, a.k.a "Type" prior to Tiled 1.9.
   /// Will be same as [type].
@@ -89,7 +89,7 @@ class TiledObject {
     this.visible = true,
     this.polygon = const [],
     this.polyline = const [],
-    this.properties = const [],
+    this.properties = CustomProperties.empty,
   });
 
   bool get isPolyline => polyline.isNotEmpty;

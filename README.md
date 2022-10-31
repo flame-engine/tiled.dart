@@ -6,11 +6,10 @@ A Dart Tiled library.
 
 ## Install from Dart Pub Repository
 
-Include the following in your `pubspec.yaml`:
+To include the package as a depencency in your `pubspec.yaml`, run the following (or add it manually):
 
-```yaml
-    dependencies:
-      tiled: 0.8.4
+```sh
+dart pub add tiled
 ```
 
 ## Usage

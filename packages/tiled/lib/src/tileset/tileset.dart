@@ -93,7 +93,14 @@ class Tileset {
     this.backgroundColor,
     this.transparentColor,
     this.type = TilesetType.tileset,
-  }) : tiles = _generateTiles(tiles, tileCount ?? 0) {
+  }) : tiles = _generateTiles(
+          tiles,
+          tileCount ?? 0,
+          columns,
+          tileWidth,
+          tileHeight,
+          image,
+        ) {
     tileCount = this.tiles.length;
   }
 
@@ -214,10 +221,37 @@ class Tileset {
     );
   }
 
-  static List<Tile> _generateTiles(List<Tile> explicitTiles, int tileCount) {
+  static List<Tile> _generateTiles(
+    List<Tile> explicitTiles,
+    int tileCount,
+    int? columns,
+    int? tileWidth,
+    int? tileHeight,
+    TiledImage? image,
+  ) {
     final tiles = <Tile>[];
-    for (var i = 0; i < tileCount; i += 1) {
-      tiles.add(Tile(localId: i));
+
+    for (var i = 0; i < tileCount; ++i) {
+      Rect? imageRect;
+
+      if (columns != null &&
+          tileWidth != null &&
+          tileHeight != null &&
+          image != null) {
+        final x = (i % columns) * tileWidth;
+        final y = i ~/ columns * tileHeight;
+
+        imageRect = Rect.fromLTWH(
+          x.toDouble(),
+          y.toDouble(),
+          tileWidth.toDouble(),
+          tileHeight.toDouble(),
+        );
+      }
+
+      tiles.add(
+        Tile(localId: i, image: image, imageRect: imageRect),
+      );
     }
 
     for (final tile in explicitTiles) {

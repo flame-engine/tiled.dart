@@ -235,6 +235,7 @@ class Tileset {
       Rect? imageRect;
 
       if (columns != null &&
+          columns != 0 &&
           tileWidth != null &&
           tileHeight != null &&
           image != null) {

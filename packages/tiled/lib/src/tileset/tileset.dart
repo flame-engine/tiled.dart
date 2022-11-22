@@ -99,7 +99,6 @@ class Tileset {
           columns,
           tileWidth,
           tileHeight,
-          image,
         ) {
     tileCount = this.tiles.length;
   }
@@ -227,7 +226,6 @@ class Tileset {
     int? columns,
     int? tileWidth,
     int? tileHeight,
-    TiledImage? image,
   ) {
     final tiles = <Tile>[];
 
@@ -237,8 +235,7 @@ class Tileset {
       if (columns != null &&
           columns != 0 &&
           tileWidth != null &&
-          tileHeight != null &&
-          image != null) {
+          tileHeight != null) {
         final x = (i % columns) * tileWidth;
         final y = i ~/ columns * tileHeight;
 
@@ -251,7 +248,7 @@ class Tileset {
       }
 
       tiles.add(
-        Tile(localId: i, image: image, imageRect: imageRect),
+        Tile(localId: i, imageRect: imageRect),
       );
     }
 

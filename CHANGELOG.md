@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2022-11-26
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`tiled` - `v0.10.1`](#tiled---v0101)
+
+---
+
+#### `tiled` - `v0.10.1`
+
+ - **FEAT**: Add `imageRect` for `Tile` ([#64](https://github.com/flame-engine/tiled.dart/issues/64)). ([33d99b70](https://github.com/flame-engine/tiled.dart/commit/33d99b70e9c0c9b11483d9a25abfc1375869c87f))
+
+
 ## 2022-10-31
 
 ### Changes

@@ -27,6 +27,7 @@ class Tile {
   List<int?> terrain;
 
   TiledImage? image;
+  Rect? imageRect;
   Layer? objectGroup;
   List<Frame> animation;
   CustomProperties properties;
@@ -37,6 +38,7 @@ class Tile {
     this.probability = 0,
     this.terrain = const [],
     this.image,
+    this.imageRect,
     this.objectGroup,
     this.animation = const [],
     this.properties = CustomProperties.empty,
@@ -64,6 +66,12 @@ class Tile {
                   .toList() ??
               [],
           image: parser.getSingleChildOrNullAs('image', TiledImage.parse),
+          imageRect: Rect.fromLTWH(
+            parser.getDoubleOrNull('x') ?? 0,
+            parser.getDoubleOrNull('y') ?? 0,
+            parser.getDoubleOrNull('width') ?? 0,
+            parser.getDoubleOrNull('height') ?? 0,
+          ),
           objectGroup:
               parser.getSingleChildOrNullAs('objectgroup', Layer.parse),
           animation: parser.formatSpecificParsing(

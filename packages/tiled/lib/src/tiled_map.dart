@@ -219,6 +219,26 @@ class TiledMap {
     return imageSet.toList();
   }
 
+  List<TiledImage> getImagesInLayer(TileLayer layer) {
+    final usedTilesets = <Tileset>{};
+    final inspectedGids = <int>{};
+    const emptyTile = 0;
+    layer.tileData?.forEach((ty) {
+      ty.forEach((gid) {
+        if (gid.tile == emptyTile || inspectedGids.contains(gid.tile)) {
+          return;
+        }
+        inspectedGids.add(gid.tile);
+        usedTilesets.add(tilesetByTileGId(gid.tile));
+      });
+    });
+
+    return usedTilesets
+        .map((e) => [e.image, ...e.tiles.map((e) => e.image)].whereNotNull())
+        .expand((images) => images)
+        .toList();
+  }
+
   /// Finds the first layer with the matching [name], or throw an
   /// [ArgumentError] if one cannot be found.
   /// Will search recursively through [Group] children.

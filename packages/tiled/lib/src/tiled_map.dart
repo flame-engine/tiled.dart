@@ -223,7 +223,7 @@ class TiledMap {
     if (layer is ImageLayer) {
       return [layer.image];
     } else if (layer is Group) {
-      return layer.layers.map(collectImagesInLayer).expand((e) => e).toList();
+      return layer.layers.map(collectImagesInLayer).flattened.toList();
     } else if (layer is TileLayer) {
       final usedTilesets = <Tileset>{};
       final inspectedGids = <int>{};
@@ -242,7 +242,7 @@ class TiledMap {
 
       return usedTilesets
           .map((e) => [e.image, ...e.tiles.map((e) => e.image)].whereNotNull())
-          .expand((images) => images)
+          .flattened
           .toList();
     }
 

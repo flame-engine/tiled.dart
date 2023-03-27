@@ -228,15 +228,17 @@ class TiledMap {
       final usedTilesets = <Tileset>{};
       final inspectedGids = <int>{};
       const emptyTile = 0;
-      layer.tileData?.forEach((ty) {
-        ty.forEach((gid) {
-          if (gid.tile == emptyTile || inspectedGids.contains(gid.tile)) {
-            return;
+      for (final row in layer.tileData ?? <List<Gid>>[]) {
+        for (final gid in row) {
+          final tileGid = gid.tile;
+
+          if (tileGid == emptyTile || inspectedGids.contains(tileGid)) {
+            continue;
           }
-          inspectedGids.add(gid.tile);
-          usedTilesets.add(tilesetByTileGId(gid.tile));
-        });
-      });
+          inspectedGids.add(tileGid);
+          usedTilesets.add(tilesetByTileGId(tileGid));
+        }
+      }
 
       return usedTilesets
           .map((e) => [e.image, ...e.tiles.map((e) => e.image)].whereNotNull())

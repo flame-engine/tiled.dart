@@ -219,24 +219,32 @@ class TiledMap {
     return imageSet.toList();
   }
 
-  List<TiledImage> getImagesInLayer(TileLayer layer) {
-    final usedTilesets = <Tileset>{};
-    final inspectedGids = <int>{};
-    const emptyTile = 0;
-    layer.tileData?.forEach((ty) {
-      ty.forEach((gid) {
-        if (gid.tile == emptyTile || inspectedGids.contains(gid.tile)) {
-          return;
-        }
-        inspectedGids.add(gid.tile);
-        usedTilesets.add(tilesetByTileGId(gid.tile));
+  List<TiledImage> collectImagesInLayer(Layer layer) {
+    if (layer is ImageLayer) {
+      return [layer.image];
+    } else if (layer is Group) {
+      return layer.layers.map(collectImagesInLayer).expand((e) => e).toList();
+    } else if (layer is TileLayer) {
+      final usedTilesets = <Tileset>{};
+      final inspectedGids = <int>{};
+      const emptyTile = 0;
+      layer.tileData?.forEach((ty) {
+        ty.forEach((gid) {
+          if (gid.tile == emptyTile || inspectedGids.contains(gid.tile)) {
+            return;
+          }
+          inspectedGids.add(gid.tile);
+          usedTilesets.add(tilesetByTileGId(gid.tile));
+        });
       });
-    });
 
-    return usedTilesets
-        .map((e) => [e.image, ...e.tiles.map((e) => e.image)].whereNotNull())
-        .expand((images) => images)
-        .toList();
+      return usedTilesets
+          .map((e) => [e.image, ...e.tiles.map((e) => e.image)].whereNotNull())
+          .expand((images) => images)
+          .toList();
+    }
+
+    return [];
   }
 
   /// Finds the first layer with the matching [name], or throw an

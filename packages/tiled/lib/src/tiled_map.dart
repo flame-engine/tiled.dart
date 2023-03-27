@@ -223,26 +223,21 @@ class TiledMap {
     if (layer is ImageLayer) {
       return [layer.image];
     } else if (layer is Group) {
-      return layer.layers.map(collectImagesInLayer).flattened.toList();
+      return layer.layers.expand(collectImagesInLayer).toList();
     } else if (layer is TileLayer) {
-      final usedTilesets = <Tileset>{};
-      final inspectedGids = <int>{};
       const emptyTile = 0;
-      for (final row in layer.tileData ?? <List<Gid>>[]) {
-        for (final gid in row) {
-          final tileGid = gid.tile;
-
-          if (tileGid == emptyTile || inspectedGids.contains(tileGid)) {
-            continue;
-          }
-          inspectedGids.add(tileGid);
-          usedTilesets.add(tilesetByTileGId(tileGid));
-        }
-      }
-
-      return usedTilesets
-          .map((e) => [e.image, ...e.tiles.map((e) => e.image)].whereNotNull())
-          .flattened
+      final rows = layer.tileData ?? <List<Gid>>[];
+      return rows
+          .expand((row) => row.map((gid) => gid.tile))
+          .where((gid) => gid != emptyTile)
+          .toSet()
+          .map(tilesetByTileGId)
+          .toSet()
+          .expand(
+            (tileset) =>
+                [tileset.image, ...tileset.tiles.map((tile) => tile.image)],
+          )
+          .whereNotNull()
           .toList();
     }
 

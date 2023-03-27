@@ -190,6 +190,12 @@ void main() {
             repeatY: false,
           ),
           ObjectGroup(name: 'object layer 1', objects: []),
+          TileLayer(
+            name: 'tile layer 3 (empty)',
+            width: 2,
+            height: 2,
+            data: [0, 0, 0, 0],
+          ),
         ],
         tilesets: [
           Tileset(
@@ -242,6 +248,14 @@ void main() {
       expect(images2, hasLength(2));
       expect(images2[0].source, equals('tileset_1.png'));
       expect(images2[1].source, equals('tileset_2.png'));
+    });
+
+    test('gets no image if TileLayer is empty', () {
+      final tileLayer = map.layerByName('tile layer 3 (empty)');
+
+      final images = map.collectImagesInLayer(tileLayer);
+
+      expect(images, hasLength(0));
     });
 
     test('gets all images recursively in the Group', () {

@@ -227,12 +227,14 @@ class TiledMap {
     } else if (layer is TileLayer) {
       const emptyTile = 0;
       final rows = layer.tileData ?? <List<Gid>>[];
-      return rows
+      final gids = rows
           .expand((row) => row.map((gid) => gid.tile))
           .where((gid) => gid != emptyTile)
-          .toSet()
+          .toSet();
+
+      return gids
           .map(tilesetByTileGId)
-          .toSet()
+          .toSet() // The different gid can be in the same tileset
           .expand(
             (tileset) =>
                 [tileset.image, ...tileset.tiles.map((tile) => tile.image)],

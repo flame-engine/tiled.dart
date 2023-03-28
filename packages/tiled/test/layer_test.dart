@@ -1,8 +1,7 @@
-import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {

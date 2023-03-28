@@ -205,17 +205,22 @@ class TiledMap {
     final imageSet = <TiledImage>{};
     for (var i = 0; i < tilesets.length; ++i) {
       final image = tilesets[i].image;
-      if (image != null) {
-        imageSet.add(image);
+      if (image?.source != null) {
+        imageSet.add(image!);
       }
       for (var j = 0; j < tilesets[i].tiles.length; ++j) {
         final image = tilesets[i].tiles[j].image;
-        if (image != null) {
-          imageSet.add(image);
+        if (image?.source != null) {
+          imageSet.add(image!);
         }
       }
     }
-    imageSet.addAll(layers.whereType<ImageLayer>().map((e) => e.image));
+    imageSet.addAll(
+      layers
+          .whereType<ImageLayer>()
+          .map((e) => e.image)
+          .where((e) => e.source != null),
+    );
     return imageSet.toList();
   }
 

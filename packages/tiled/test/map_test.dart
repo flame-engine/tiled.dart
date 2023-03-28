@@ -287,6 +287,70 @@ void main() {
     });
   });
 
+  group('Map.tiledImages', () {
+    late TiledMap map;
+    setUp(() {
+      map = TiledMap(
+        width: 10,
+        height: 10,
+        tileWidth: 16,
+        tileHeight: 16,
+        layers: [
+          ImageLayer(
+            name: 'image layer 1',
+            image: const TiledImage(),
+            repeatX: false,
+            repeatY: false,
+          ),
+          ImageLayer(
+            name: 'image layer 2',
+            image: const TiledImage(source: 'image_layer_2.png'),
+            repeatX: false,
+            repeatY: false,
+          ),
+        ],
+        tilesets: [
+          Tileset(
+            name: 'tileset 1',
+            image: const TiledImage(source: 'tileset_1.png'),
+          ),
+          Tileset(
+            name: 'tileset 2',
+            image: const TiledImage(),
+          ),
+          Tileset(
+            name: 'tileset 3',
+            tiles: [
+              Tile(
+                localId: 0,
+                image: const TiledImage(source: 'tile_0.png'),
+              ),
+              Tile(
+                localId: 1,
+                image: const TiledImage(),
+              ),
+            ],
+          )
+        ],
+      );
+    });
+    test('returns images with source', () {
+      final imageSources = map.tiledImages().map((e) => e.source);
+
+      expect(imageSources, hasLength(3));
+      expect(
+        imageSources,
+        containsAll(
+          <String>[
+            'image_layer_2.png',
+            'tileset_1.png',
+            'tile_0.png',
+          ],
+        ),
+      );
+    });
+  });
+
   group('Map.getTileSet', () {
     late TiledMap map;
     final tileset = Tileset(

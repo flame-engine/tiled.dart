@@ -425,7 +425,7 @@ class TileLayer extends Layer {
 }
 
 class ObjectGroup extends Layer {
-  static const defaultColor = ColorData.rgb(160, 160, 164);
+  static const defaultColor = ColorData.rgb(160, 160, 164, 255);
   static const defaultColorHex = '%a0a0a4';
 
   /// topdown (default) or index (indexOrder).

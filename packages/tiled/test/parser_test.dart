@@ -88,10 +88,10 @@ void main() {
             equals('test_value'),
           );
           expect(
-            properties.getValue<String>('multiline string'),
-            Platform.isWindows
-                ? equals('Hello,\r\nWorld')
-                : equals('Hello,\nWorld'),
+            properties
+                .getValue<String>('multiline string')
+                ?.replaceAll('\r\n', '\n'),
+            equals('Hello,\nWorld'),
           );
           expect(
             properties.getValue<int>('integer property'),

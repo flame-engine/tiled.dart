@@ -81,7 +81,7 @@ abstract class Layer {
   /// child layers (optional).
   ///
   /// Parsed from [tintColorHex], will be null if parsing fails for any reason.
-  Color? tintColor;
+  ColorModel? tintColor;
 
   /// The opacity of the layer as a value from 0 to 1. Defaults to 1.
   double opacity;
@@ -420,7 +420,7 @@ class TileLayer extends Layer {
 }
 
 class ObjectGroup extends Layer {
-  static const defaultColor = Color.fromARGB(255, 160, 160, 164);
+  static const defaultColor = RgbColor(160, 160, 164, 255);
   static const defaultColorHex = '%a0a0a4';
 
   /// topdown (default) or index (indexOrder).
@@ -438,7 +438,7 @@ class ObjectGroup extends Layer {
   ///
   /// Parsed from [colorHex], will be fallback to [defaultColor] if parsing
   /// fails for any reason.
-  Color color;
+  ColorModel color;
 
   ObjectGroup({
     super.id,
@@ -478,7 +478,7 @@ class ImageLayer extends Layer {
   ///
   /// Parsed from [transparentColorHex], will be null if parsing fails for any
   /// reason.
-  Color? transparentColor;
+  ColorModel? transparentColor;
 
   /// Whether or not to repeat the image on the X-axis
   bool repeatX;

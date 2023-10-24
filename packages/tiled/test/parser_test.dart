@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math' show Rectangle;
-import 'dart:ui';
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
+import 'package:tiled/src/common/color.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
@@ -89,7 +89,7 @@ void main() {
           );
           expect(
             properties.getValue<String>('multiline string'),
-            equals('Hello,\nWorld'),
+            equals('Hello,\r\nWorld'),
           );
           expect(
             properties.getValue<int>('integer property'),
@@ -101,7 +101,7 @@ void main() {
           );
           expect(
             properties.getValue<Color>('color property'),
-            equals(const Color(0x00112233)),
+            equals(Color(0x00112233)),
           );
           expect(
             properties.getValue<double>('float property'),

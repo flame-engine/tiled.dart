@@ -4,11 +4,13 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math' show Rectangle;
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:archive/archive.dart';
 import 'package:collection/collection.dart';
+import 'package:color_models/color_models.dart';
 import 'package:meta/meta.dart';
+import 'package:tiled/src/common/color.dart';
+import 'package:tiled/src/common/rect.dart';
 import 'package:xml/xml.dart';
 
 part 'src/chunk.dart';

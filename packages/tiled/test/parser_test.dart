@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math' show Rectangle;
 
 import 'package:test/test.dart';
-import 'package:tiled/src/common/color.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 

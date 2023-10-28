@@ -1,4 +1,4 @@
-import 'package:color_models/color_models.dart';
+part of tiled;
 
 const _mask = 0xff;
 int _sub(int hex, int index) => (hex & (_mask << index * 8)) >> index * 8;

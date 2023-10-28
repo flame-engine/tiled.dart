@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:test/test.dart';
-import 'package:tiled/src/common/color.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {

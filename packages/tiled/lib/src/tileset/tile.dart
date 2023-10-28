@@ -27,7 +27,7 @@ class Tile {
   List<int?> terrain;
 
   TiledImage? image;
-  Rect? imageRect;
+  Rectangle? imageRect;
   Layer? objectGroup;
   List<Frame> animation;
   CustomProperties properties;
@@ -66,7 +66,7 @@ class Tile {
                   .toList() ??
               [],
           image: parser.getSingleChildOrNullAs('image', TiledImage.parse),
-          imageRect: Rect.fromLTWH(
+          imageRect: Rectangle(
             parser.getDoubleOrNull('x') ?? 0,
             parser.getDoubleOrNull('y') ?? 0,
             parser.getDoubleOrNull('width') ?? 0,

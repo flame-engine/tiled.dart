@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:test/test.dart';
-import 'package:tiled/src/common/rect.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
@@ -58,8 +58,8 @@ void main() {
         final tile1 = tileset1.tiles.firstWhere((t) => t.localId == 0);
         final tile2 = tileset1.tiles.firstWhere((t) => t.localId == 1);
 
-        expect(tile1.imageRect, Rect.fromLTWH(64, 96, 32, 32));
-        expect(tile2.imageRect, Rect.fromLTWH(0, 0, 20, 20));
+        expect(tile1.imageRect, Rectangle(64, 96, 32, 32));
+        expect(tile2.imageRect, Rectangle(0, 0, 20, 20));
       });
 
       test(
@@ -70,10 +70,10 @@ void main() {
           final tile3 = tileset2.tiles.firstWhere((t) => t.localId == 129);
           final tile4 = tileset2.tiles.firstWhere((t) => t.localId == 11);
 
-          expect(tile1.imageRect, Rect.fromLTWH(112, 48, 16, 16));
-          expect(tile2.imageRect, Rect.fromLTWH(64, 96, 16, 16));
-          expect(tile3.imageRect, Rect.fromLTWH(160, 112, 16, 16));
-          expect(tile4.imageRect, Rect.fromLTWH(176, 0, 16, 16));
+          expect(tile1.imageRect, Rectangle(112, 48, 16, 16));
+          expect(tile2.imageRect, Rectangle(64, 96, 16, 16));
+          expect(tile3.imageRect, Rectangle(160, 112, 16, 16));
+          expect(tile4.imageRect, Rectangle(176, 0, 16, 16));
         },
       );
     },

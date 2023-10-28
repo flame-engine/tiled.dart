@@ -9,8 +9,6 @@ import 'package:archive/archive.dart';
 import 'package:collection/collection.dart';
 import 'package:color_models/color_models.dart';
 import 'package:meta/meta.dart';
-import 'package:tiled/src/common/color.dart';
-import 'package:tiled/src/common/rect.dart';
 import 'package:xml/xml.dart';
 
 part 'src/chunk.dart';
@@ -21,6 +19,7 @@ part 'src/common/gid.dart';
 part 'src/common/point.dart';
 part 'src/common/property.dart';
 part 'src/common/tiled_image.dart';
+part 'src/common/color.dart';
 part 'src/editor_setting/chunk_size.dart';
 part 'src/editor_setting/editor_setting.dart';
 part 'src/editor_setting/export.dart';

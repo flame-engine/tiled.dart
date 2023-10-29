@@ -32,11 +32,14 @@ part of tiled;
 /// When rendering a tile, the order of operation matters. The diagonal flip
 /// (x/y axis swap) is done first, followed by the horizontal and vertical
 /// flips.
-class Gid {
+class Gid extends UnaryExportable {
   static const int flippedHorizontallyFlag = 0x80000000;
   static const int flippedVerticallyFlag = 0x40000000;
   static const int flippedDiagonallyFlag = 0x20000000;
   static const int flippedAntiDiagonallyFlag = 0x10000000;
+
+  static const int flagBits =
+      flippedHorizontallyFlag | flippedVerticallyFlag | flippedDiagonallyFlag | flippedAntiDiagonallyFlag;
 
   final int tile;
   final Flips flips;
@@ -45,20 +48,13 @@ class Gid {
 
   factory Gid.fromInt(int gid) {
     // get flips from id
-    final flippedHorizontally =
-        (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
-    final flippedVertically =
-        (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
-    final flippedDiagonally =
-        (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
-    final flippedAntiDiagonally =
-        gid & flippedAntiDiagonallyFlag == flippedAntiDiagonallyFlag;
+    final flippedHorizontally = (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
+    final flippedVertically = (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
+    final flippedDiagonally = (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
+    final flippedAntiDiagonally = gid & flippedAntiDiagonallyFlag == flippedAntiDiagonallyFlag;
     // clear id from flips
-    final tileId = gid &
-        ~(flippedHorizontallyFlag |
-            flippedVerticallyFlag |
-            flippedDiagonallyFlag |
-            flippedAntiDiagonallyFlag);
+    final tileId =
+        gid & ~(flippedHorizontallyFlag | flippedVerticallyFlag | flippedDiagonallyFlag | flippedAntiDiagonallyFlag);
     final flip = Flips(
       flippedHorizontally,
       flippedVertically,
@@ -86,4 +82,12 @@ class Gid {
       });
     });
   }
+
+  @override
+  String export() => ((tile & ~flagBits) |
+          (flips.horizontally ? flippedHorizontallyFlag : 0) |
+          (flips.vertically ? flippedVerticallyFlag : 0) |
+          (flips.diagonally ? flippedDiagonallyFlag : 0) |
+          (flips.antiDiagonally ? flippedAntiDiagonallyFlag : 0))
+      .toString();
 }

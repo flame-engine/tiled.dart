@@ -8,9 +8,12 @@ import 'dart:typed_data';
 import 'package:archive/archive.dart';
 import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
+import 'package:tiled/src/common/map.dart';
 import 'package:xml/xml.dart';
 
 part 'src/chunk.dart';
+part 'src/exportable.dart';
+part 'src/exporter.dart';
 part 'src/common/enums.dart';
 part 'src/common/flips.dart';
 part 'src/common/frame.dart';

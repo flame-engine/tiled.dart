@@ -112,6 +112,8 @@ abstract class Layer {
     this.properties = CustomProperties.empty,
   });
 
+  T export<T>(Exporter<T> exporter);
+
   static Layer parse(Parser parser) {
     final type = parser.formatSpecificParsing(
       (json) => json.getLayerType('type'),
@@ -144,17 +146,13 @@ abstract class Layer {
           (json) => null, // data is just a string or list of int on JSON
           (xml) => xml.getSingleChildOrNull('data'),
         );
-        final compression = parser.getCompressionOrNull('compression') ??
-            dataNode?.getCompressionOrNull('compression');
-        final encoding = parser.getFileEncodingOrNull('encoding') ??
-            dataNode?.getFileEncodingOrNull('encoding') ??
-            FileEncoding.csv;
+        final compression = parser.getCompressionOrNull('compression') ?? dataNode?.getCompressionOrNull('compression');
+        final encoding =
+            parser.getFileEncodingOrNull('encoding') ?? dataNode?.getFileEncodingOrNull('encoding') ?? FileEncoding.csv;
         Chunk parseChunk(Parser e) => Chunk.parse(e, encoding, compression);
-        final chunks = parser.getChildrenAs('chunks', parseChunk) +
-            (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
-        final data = dataNode != null
-            ? parseLayerData(dataNode, encoding, compression)
-            : null;
+        final chunks =
+            parser.getChildrenAs('chunks', parseChunk) + (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
+        final data = dataNode != null ? parseLayerData(dataNode, encoding, compression) : null;
         layer = TileLayer(
           id: id,
           name: name,
@@ -185,10 +183,8 @@ abstract class Layer {
           'draworder',
           defaults: DrawOrder.topDown,
         );
-        final colorHex =
-            parser.getString('color', defaults: ObjectGroup.defaultColorHex);
-        final color =
-            parser.getColor('color', defaults: ObjectGroup.defaultColor);
+        final colorHex = parser.getString('color', defaults: ObjectGroup.defaultColorHex);
+        final color = parser.getColor('color', defaults: ObjectGroup.defaultColor);
         final objects = parser.getChildrenAs('object', TiledObject.parse);
         layer = ObjectGroup(
           id: id,
@@ -417,6 +413,27 @@ class TileLayer extends Layer {
     }
     return Gid.generate(data, width, height);
   }
+
+  @override
+  T export<T>(Exporter<T> exporter, {Compression compression = Compression.zlib, FileEncoding encoding = FileEncoding.base64}) => exporter.exportElement(
+        'layer',
+        {
+          'class': class_?.toExport(),
+          'name': name.toExport(),
+          'height': height.toExport(),
+          'width': width.toExport(),
+          'x': x.toExport(),
+          'y': y.toExport(),
+          'opacity': opacity.toExport(),
+          'type': type.name.toExport(),
+          'visible': visible.toExport(),
+          'compression': (data == null ? compression : null)?.name.toExport(),
+        }.nonNulls(),
+        {
+          'chunks': chunks?.map((e) => e.export(exporter, compression: compression, encoding: encoding)),
+          'data': da
+        }.nonNulls(),
+      );
 }
 
 class ObjectGroup extends Layer {

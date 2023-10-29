@@ -197,7 +197,7 @@ abstract class Parser {
     return result;
   }
 
-  ColorModel? getColorOrNull(String name, {ColorModel? defaults}) {
+  Color? getColorOrNull(String name, {Color? defaults}) {
     final tiledColor = getStringOrNull(name);
 
     // Tiled colors are stored as either ARGB or RGB hex values, so we can
@@ -212,13 +212,13 @@ abstract class Parser {
     }
 
     if (colorValue != null) {
-      return Color(colorValue);
+      return Color.hex(colorValue);
     } else {
       return defaults;
     }
   }
 
-  ColorModel getColor(String name, {ColorModel? defaults}) {
+  Color getColor(String name, {Color? defaults}) {
     final result = getColorOrNull(name, defaults: defaults);
     if (result == null) {
       throw ParsingException(name, null, 'Missing required color field');

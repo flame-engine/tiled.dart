@@ -37,7 +37,7 @@ class Property<T> {
       case PropertyType.color:
         return ColorProperty(
           name: name,
-          value: parser.getColor('value', defaults: Color(0x00000000)),
+          value: parser.getColor('value', defaults: Color.hex(0x00000000)),
           hexValue: parser.getString('value', defaults: '#00000000'),
         );
 
@@ -156,7 +156,7 @@ class ObjectProperty extends Property<int> {
 }
 
 /// [value] is the color
-class ColorProperty extends Property<ColorModel> {
+class ColorProperty extends Property<Color> {
   final String hexValue;
 
   ColorProperty({

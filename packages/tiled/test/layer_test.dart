@@ -74,7 +74,7 @@ void main() {
       expect(layer.tintColorHex, equals('#ffaabb'));
       expect(
         layer.tintColor,
-        equals(Color(int.parse('0xffffaabb'))),
+        equals(Color.hex(int.parse('0xffffaabb'))),
       );
     });
   });

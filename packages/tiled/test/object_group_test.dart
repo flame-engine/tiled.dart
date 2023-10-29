@@ -30,7 +30,7 @@ void main() {
       expect(objectGroup.colorHex, equals('#555500'));
       expect(
         objectGroup.color,
-        equals(Color(int.parse('0xff555500'))),
+        equals(Color.hex(int.parse('0xff555500'))),
       );
     });
 

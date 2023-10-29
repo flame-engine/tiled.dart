@@ -43,7 +43,7 @@ void main() {
       expect(map.backgroundColorHex, equals('#ccddaaff'));
       expect(
         map.backgroundColor,
-        equals(Color(int.parse('0xccddaaff'))),
+        equals(Color.hex(int.parse('0xccddaaff'))),
       );
     });
 
@@ -100,7 +100,7 @@ void main() {
           );
           expect(
             properties.getValue<Color>('color property'),
-            equals(Color(0x00112233)),
+            equals(Color.hex(0x00112233)),
           );
           expect(
             properties.getValue<double>('float property'),

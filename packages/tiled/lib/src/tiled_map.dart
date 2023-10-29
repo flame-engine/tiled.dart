@@ -79,7 +79,7 @@ class TiledMap {
   ///
   /// Parsed from [backgroundColorHex], will be null if parsing fails for any
   /// reason.
-  ColorModel? backgroundColor;
+  Color? backgroundColor;
 
   int compressionLevel;
 

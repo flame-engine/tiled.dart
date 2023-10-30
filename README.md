@@ -63,10 +63,10 @@ class SingleTsxProvider extends TsxProvider {
   }
 }
 ```
-And use it in the parseTmx method
+And use it in the parseTmx method. Keep in mind that the first TsxProvider that can provide a source is used!
 ```dart
     final String tmxBody = /* ... */;
-    final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody, tsx: CustomTsxProvider());
+    final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody, tsxProviders: [SingleTsxProvider(), MultipleTsxProvider()]);
 
 ```
 

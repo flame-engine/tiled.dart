@@ -13,7 +13,7 @@ part of tiled;
 ///   others in case of multiple options. (defaults to 0)
 ///
 /// Can contain at most one: <properties>
-class WangColor {
+class WangColor implements Exportable {
   String name;
   String color;
   int tile;
@@ -37,4 +37,18 @@ class WangColor {
           probability: parser.getDouble('probability', defaults: 0),
           properties: parser.getProperties(),
         );
+
+  @override
+  ExportResolver export(ExportSettings settings) => ExportElement(
+        'wangcolor',
+        {
+          'name': name.toExport(),
+          // 'class': , Not supported by this class
+          'color': color.toExport(),
+          'tile': tile.toExport(),
+          'probability': probability.toExport(),
+        },
+        {},
+        properties,
+      );
 }

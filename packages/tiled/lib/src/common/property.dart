@@ -86,6 +86,14 @@ class Property<T> {
         );
     }
   }
+
+  ExportValue get exportValue => value.toString().toExport();
+
+  ExportElement export() => ExportElement('property', {
+        'name': name.toExport(),
+        'type': type.name.toExport(),
+        'value': exportValue,
+      }, {});
 }
 
 /// A wrapper for a Tiled property set
@@ -164,6 +172,9 @@ class ColorProperty extends Property<ColorData> {
     required super.value,
     required this.hexValue,
   }) : super(type: PropertyType.color);
+
+  @override
+  ExportValue get exportValue => value.toExport();
 }
 
 /// [value] is the string text
@@ -180,6 +191,10 @@ class FileProperty extends Property<String> {
     required super.name,
     required super.value,
   }) : super(type: PropertyType.file);
+
+  @override
+  ExportValue get exportValue =>
+      value.isNotEmpty ? value.toExport() : '.'.toExport();
 }
 
 /// [value] is the integer number

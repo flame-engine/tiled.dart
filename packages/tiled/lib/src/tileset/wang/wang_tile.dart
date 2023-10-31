@@ -19,7 +19,7 @@ part of tiled;
 /// * hflip: Whether the tile is flipped horizontally (removed in Tiled 1.5).
 /// * vflip: Whether the tile is flipped vertically (removed in Tiled 1.5).
 /// * dflip: Whether the tile is flipped on its diagonal (removed in Tiled 1.5).
-class WangTile {
+class WangTile implements Exportable {
   int tileId;
   List<int> wangId;
   bool hFlip;
@@ -59,5 +59,32 @@ class WangTile {
       }
     }
     return uint32;
+  }
+
+  @override
+  ExportResolver export(ExportSettings settings) {
+    final common = {
+      'tileid': tileId.toExport(),
+    };
+
+    // Flips are deprecated!
+    return ExportFormatSpecific(
+      xml: ExportElement(
+        'wangtile',
+        {
+          ...common,
+          'wangid': wangId.join(',').toExport(),
+        },
+        {},
+      ),
+      json: ExportElement(
+        'wangtile',
+        {
+          ...common,
+          'wangid': ExportLiteral(wangId),
+        },
+        {},
+      ),
+    );
   }
 }

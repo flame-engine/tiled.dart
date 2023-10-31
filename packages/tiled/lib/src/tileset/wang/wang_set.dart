@@ -15,7 +15,7 @@ part of tiled;
 /// Can contain up to 255: <wangcolor> (since Tiled 1.5)
 ///
 /// Can contain any number: <wangtile>
-class WangSet {
+class WangSet extends Exportable {
   String name;
   int tile;
   List<WangColor> cornerColors;
@@ -51,6 +51,24 @@ class WangSet {
       edgeColors: colors[1],
       wangTiles: parser.getChildrenAs('wangtiles', WangTile.parse),
       properties: parser.getProperties(),
+    );
+  }
+
+  @override
+  ExportResolver export(ExportSettings settings) {
+    final colors = cornerColors..addAll(edgeColors);
+
+    return ExportElement(
+      'wangset',
+      {
+        'name': name.toExport(),
+        'tile': tile.toExport(),
+      },
+      {
+        'colors': ExportList.from(colors, settings),
+        'wangtiles': ExportList.from(wangTiles, settings),
+      },
+      properties,
     );
   }
 }

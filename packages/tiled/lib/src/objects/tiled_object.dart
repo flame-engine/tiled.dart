@@ -43,7 +43,7 @@ part of tiled;
 ///
 /// Can contain at most one: <properties>, <ellipse> (since 0.9),
 /// <point> (since 1.1), <polygon>, <polyline>, <text> (since 1.0)
-class TiledObject {
+class TiledObject extends Exportable {
   int id;
   String name;
   String type;
@@ -93,9 +93,13 @@ class TiledObject {
   });
 
   bool get isPolyline => polyline.isNotEmpty;
+
   bool get isPolygon => polygon.isNotEmpty;
+
   bool get isPoint => point;
+
   bool get isEllipse => ellipse;
+
   bool get isRectangle => rectangle;
 
   factory TiledObject.parse(Parser parser) {
@@ -168,6 +172,64 @@ class TiledObject {
             .toList();
         return points ?? [];
       },
+    );
+  }
+
+  @override
+  ExportResolver export(ExportSettings settings) {
+    final common = {
+      'id': id.toExport(),
+      'name': name.toExport(),
+      'type': type.toExport(),
+      'x': x.toExport(),
+      'y': y.toExport(),
+      'width': width.toExport(),
+      'height': height.toExport(),
+      'rotation': rotation.toExport(),
+      'gid': gid?.toExport(),
+      'visible': visible.toExport(),
+      // 'template': not supported, not possible to support currently, see #73
+    }.nonNulls();
+
+    return ExportFormatSpecific(
+      xml: ExportElement(
+        'object',
+        common,
+        {
+          if (ellipse) 'ellipse': ExportElement('ellipse', {}, {}),
+          if (point) 'point': ExportElement('point', {}, {}),
+          if (polygon.isNotEmpty)
+            'polygon': ExportElement(
+              'polygon',
+              {
+                'points': polygon.toExport(),
+              },
+              {},
+            ),
+          if (polyline.isNotEmpty)
+            'polyline': ExportElement(
+              'polyline',
+              {
+                'points': polygon.toExport(),
+              },
+              {},
+              properties,
+            ),
+          if (text != null) 'text': text!.export(settings),
+        },
+      ),
+      json: ExportElement(
+        'object',
+        {
+          ...common,
+          if (ellipse) 'ellipse': ellipse.toExport(),
+          if (point) 'point': point.toExport(),
+          if (polygon.isNotEmpty) 'polygon': polygon.toExport(),
+          if (polyline.isNotEmpty) 'polyline': polyline.toExport(),
+        },
+        {},
+        properties,
+      ),
     );
   }
 }

@@ -42,7 +42,7 @@ part of tiled;
 /// (since 1.5)
 ///
 /// Can contain any number: <tile>
-class Tileset {
+class Tileset implements Exportable {
   int? firstGid;
   String? source;
   String? name;
@@ -260,5 +260,71 @@ class Tileset {
       }
     }
     return tiles;
+  }
+
+  @override
+  ExportResolver export(ExportSettings settings) => source == null
+      ? _export(settings, false)
+      : ExportElement(
+          'tileset',
+          {
+            'firstgid': firstGid!.toExport(),
+            'source': source!.toExport(),
+          }.nonNulls(),
+          {},
+        );
+
+  ExportResolver exportExternal(ExportSettings settings) =>
+      _export(settings, true);
+
+  ExportResolver _export(ExportSettings settings, bool external) {
+    final fields = {
+      if (!external) 'firstgid': firstGid!.toExport(),
+      'name': name!.toExport(),
+      'class': type.name.toExport(),
+      'type': type.name.toExport(),
+
+      'tilewidth': tileWidth!.toExport(),
+      'tileheigth': tileHeight!.toExport(),
+      'spacing': spacing.toExport(),
+      'margin': margin.toExport(),
+
+      'tilecount': tileCount!.toExport(),
+      'columns': columns!.toExport(),
+      'objectalignment': objectAlignment.name.toExport(),
+      // 'tilerendersize': , Not supported by this class
+      // 'fillmode': , Not supported by this class
+    };
+
+    final common = {
+      if (image != null)
+        'image': image!.export(settings)
+      else
+        'tiles': ExportList.from(tiles, settings),
+      'tileoffset': tileOffset?.export(settings),
+      'grid': grid?.export(settings),
+      // 'terraintypes': , DEPRECATED
+      // 'transformations': ExportList.from(transformations, settings), Not supported by this class
+    }.nonNulls();
+
+    final wangsets = ExportElement(
+      'wangsets',
+      {},
+      {'wangsets': ExportList.from(wangSets, settings)},
+      properties,
+    );
+
+    return ExportFormatSpecific(
+      xml: ExportElement(
+        'wangsets',
+        fields,
+        {
+          ...common,
+          'wangsets': wangsets,
+        },
+        properties,
+      ),
+      json: wangsets,
+    );
   }
 }

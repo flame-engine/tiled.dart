@@ -11,7 +11,7 @@ part of tiled;
 /// This element is used to specify an offset in pixels, to be applied when
 /// drawing a tile from the related tileset.
 /// When not present, no offset is applied.
-class TileOffset {
+class TileOffset extends Exportable {
   int x;
   int y;
 
@@ -25,4 +25,14 @@ class TileOffset {
           x: parser.getInt('x', defaults: 0),
           y: parser.getInt('y', defaults: 0),
         );
+
+  @override
+  ExportResolver export(ExportSettings settings) => ExportElement(
+        'tileoffset',
+        {
+          'x': x.toExport(),
+          'y': y.toExport(),
+        },
+        {},
+      );
 }

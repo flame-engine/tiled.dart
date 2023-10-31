@@ -17,7 +17,7 @@ part of tiled;
 /// The data inside is a compressed (encoded) representation of a list
 /// (that sequentially represents a matrix) of integers representing
 /// [Gid]s.
-class Chunk {
+class Chunk extends Exportable {
   List<int> data;
 
   int x;
@@ -58,5 +58,23 @@ class Chunk {
     final height = parser.getInt('height');
 
     return Chunk(data: data, x: x, y: y, width: width, height: height);
+  }
+
+  @override
+  ExportElement export(ExportSettings settings) {
+    final common = {
+      'x': x.toExport(),
+      'y': y.toExport(),
+      'width': width.toExport(),
+      'height': height.toExport(),
+    };
+
+    return ExportElement(
+      'chunk',
+      common,
+      {
+        'data': TileData(data).export(settings),
+      },
+    );
   }
 }

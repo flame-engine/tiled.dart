@@ -37,7 +37,7 @@ part of tiled;
 ///
 /// If the text is larger than the object’s bounds, it is clipped to the bounds
 /// of the object.
-class Text {
+class Text extends Exportable {
   String fontFamily;
   int pixelSize;
   String color;
@@ -84,4 +84,22 @@ class Text {
           kerning: parser.getBool('kerning', defaults: true),
           wrap: parser.getBool('wrap', defaults: false),
         );
+
+  @override
+  ExportElement export(ExportSettings settings) =>
+      ExportElement('text', {
+        'fontfamily': fontFamily.toExport(),
+        'pixelsize': pixelSize.toExport(),
+        'wrap': wrap.toExport(),
+        'color': color.toExport(),
+        'bold': bold.toExport(),
+        'italic': italic.toExport(),
+        'underline': underline.toExport(),
+        'strikeout': strikeout.toExport(),
+        'kerning': kerning.toExport(),
+        'halign': hAlign.name.toExport(),
+        'valign': vAlign.name.toExport(),
+      }, {
+          'text': text.toExport(),
+      });
 }

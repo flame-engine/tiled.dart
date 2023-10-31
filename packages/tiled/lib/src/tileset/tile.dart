@@ -18,7 +18,7 @@ part of tiled;
 ///
 /// Can contain at most one: <properties>, <image> (since 0.9), <objectgroup>,
 /// <animation>.
-class Tile {
+class Tile implements Exportable {
   int localId;
   String? type;
   double probability;
@@ -84,4 +84,50 @@ class Tile {
           ),
           properties: parser.getProperties(),
         );
+
+  @override
+  ExportResolver export(ExportSettings settings) {
+    final fields = {
+      'id': localId.toExport(),
+      'class': type?.toExport(),
+      'probability': probability.toExport(),
+      'x': imageRect?.left.toExport(),
+      'y': imageRect?.top.toExport(),
+      'width': imageRect?.width.toExport(),
+      'height': imageRect?.height.toExport(),
+    }.nonNulls();
+
+    final children = {
+      'image': image!.export(settings),
+      'objectgroup': objectGroup?.export(settings)
+    }.nonNulls();
+
+    return ExportFormatSpecific(
+      xml: ExportElement(
+        'tile',
+        fields,
+        {
+          ...children,
+          if (animation.isNotEmpty)
+            'animations': ExportElement(
+              'animation',
+              {},
+              {
+                'frames': ExportList.from(animation, settings),
+              },
+            ),
+        },
+        properties,
+      ),
+      json: ExportElement(
+        'tile',
+        fields,
+        {
+          ...children,
+          'animation': ExportList.from(animation, settings),
+        },
+        properties,
+      ),
+    );
+  }
 }

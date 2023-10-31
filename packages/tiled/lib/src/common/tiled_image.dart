@@ -18,7 +18,7 @@ part of tiled;
 ///   when the image changes)
 /// * height: The image height in pixels (optional)
 @immutable
-class TiledImage {
+class TiledImage implements Exportable {
   final String? source;
   final String? format;
   final int? width;
@@ -53,4 +53,19 @@ class TiledImage {
 
   @override
   int get hashCode => source.hashCode;
+
+  @override
+  ExportElement export(ExportSettings settings) => ExportElement(
+        'image',
+        {
+          'width': width?.toExport(),
+          'height': height?.toExport(),
+          'format': format?.toExport(),
+          'source': source?.toExport(),
+          'trans': trans?.toExport(),
+        }.nonNulls(),
+        {
+          // missing data, tiled.dart does not support embedded images
+        },
+      );
 }

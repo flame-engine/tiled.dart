@@ -12,7 +12,7 @@ part of tiled;
 ///
 /// This element is only used in case of isometric orientation, and determines
 /// how tile overlays for terrain and collision information are rendered.
-class Grid {
+class Grid extends Exportable {
   int width;
   int height;
   GridOrientation orientation;
@@ -29,4 +29,15 @@ class Grid {
           height: parser.getInt('height'),
           orientation: parser.getGridOrientation('orientation'),
         );
+
+  @override
+  ExportResolver export(ExportSettings settings) => ExportElement(
+        'grid',
+        {
+          'orientation': orientation.name.toExport(),
+          'width': width.toExport(),
+          'height': height.toExport(),
+        },
+        {},
+      );
 }

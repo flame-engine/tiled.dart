@@ -137,7 +137,9 @@ class TiledMap {
         .map((e) => e.getAttribute('source'));
 
     final tsxProviders = await Future.wait(
-      tsxSourcePaths.where((key) => key != null).map((key) async => tsxProviderFunction(key!)),
+      tsxSourcePaths
+          .where((key) => key != null)
+          .map((key) async => tsxProviderFunction(key!)),
     );
 
     return TileMapParser.parseTmx(
@@ -214,7 +216,10 @@ class TiledMap {
       }
     }
     imageSet.addAll(
-      layers.whereType<ImageLayer>().map((e) => e.image).where((e) => e.source != null),
+      layers
+          .whereType<ImageLayer>()
+          .map((e) => e.image)
+          .where((e) => e.source != null),
     );
     return imageSet.toList();
   }
@@ -227,13 +232,17 @@ class TiledMap {
     } else if (layer is TileLayer) {
       const emptyTile = 0;
       final rows = layer.tileData ?? <List<Gid>>[];
-      final gids = rows.expand((row) => row.map((gid) => gid.tile)).where((gid) => gid != emptyTile).toSet();
+      final gids = rows
+          .expand((row) => row.map((gid) => gid.tile))
+          .where((gid) => gid != emptyTile)
+          .toSet();
 
       return gids
           .map(tilesetByTileGId)
           .toSet() // The different gid can be in the same tileset
           .expand(
-            (tileset) => [tileset.image, ...tileset.tiles.map((tile) => tile.image)],
+            (tileset) =>
+                [tileset.image, ...tileset.tiles.map((tile) => tile.image)],
           )
           .whereNotNull()
           .toList();
@@ -350,17 +359,35 @@ class TiledMap {
     );
   }
 
-  T export<T>(Exporter<T> exporter, {bool embedTilesets = true}) => exporter.exportElement(
+  ExportElement export(ExportSettings settings) => ExportElement(
         'map',
         {
-          'backgroundColor': backgroundColor?.toExport(),
-          'compressionlevel': compressionLevel.toExport(),
+          'version': '1.10'.toExport(),
+          'type': type.name.toExport(),
+
+          'orientation': orientation?.name.toExport(),
+          'renderorder': renderOrder.name.toExport(),
+          'compressionLevel': '-1'.toExport(),
+
+          'width': width.toExport(),
           'height': height.toExport(),
+          'tilewidth': tileWidth.toExport(),
+          'tileheight': tileHeight.toExport(),
+
           'hexsidelength': hexSideLength?.toExport(),
+          'staggeraxis': staggerAxis?.name.toExport(),
+          'staggerindex': staggerIndex?.name.toExport(),
+          // 'parallaxoriginx': , 'parallaxoriginy': , Not supplied by this class
+
+          'backgroundColor': backgroundColor?.toExport(),
+          'nextlayerid': nextLayerId?.toExport(),
+          'nextobjectid': nextObjectId?.toExport(),
           'infinite': infinite.toExport(),
         }.nonNulls(),
         {
-          'layers': layers.map((e) => e.export()),
+          'layers': ExportList.from(layers, settings),
+          'tilesets': ExportList.from(tilesets, settings),
         },
+        properties,
       );
 }

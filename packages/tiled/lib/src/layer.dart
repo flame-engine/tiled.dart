@@ -32,7 +32,7 @@ part of tiled;
 ///   Defaults to 1. (since 1.5)
 ///
 /// Can contain at most one: <properties>, <data>
-abstract class Layer {
+abstract class Layer extends Exportable {
   /// Incremental ID - unique across all layers
   int? id;
 
@@ -112,8 +112,6 @@ abstract class Layer {
     this.properties = CustomProperties.empty,
   });
 
-  T export<T>(Exporter<T> exporter);
-
   static Layer parse(Parser parser) {
     final type = parser.formatSpecificParsing(
       (json) => json.getLayerType('type'),
@@ -146,13 +144,17 @@ abstract class Layer {
           (json) => null, // data is just a string or list of int on JSON
           (xml) => xml.getSingleChildOrNull('data'),
         );
-        final compression = parser.getCompressionOrNull('compression') ?? dataNode?.getCompressionOrNull('compression');
-        final encoding =
-            parser.getFileEncodingOrNull('encoding') ?? dataNode?.getFileEncodingOrNull('encoding') ?? FileEncoding.csv;
+        final compression = parser.getCompressionOrNull('compression') ??
+            dataNode?.getCompressionOrNull('compression');
+        final encoding = parser.getFileEncodingOrNull('encoding') ??
+            dataNode?.getFileEncodingOrNull('encoding') ??
+            FileEncoding.csv;
         Chunk parseChunk(Parser e) => Chunk.parse(e, encoding, compression);
-        final chunks =
-            parser.getChildrenAs('chunks', parseChunk) + (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
-        final data = dataNode != null ? parseLayerData(dataNode, encoding, compression) : null;
+        final chunks = parser.getChildrenAs('chunks', parseChunk) +
+            (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
+        final data = dataNode != null
+            ? parseLayerData(dataNode, encoding, compression)
+            : null;
         layer = TileLayer(
           id: id,
           name: name,
@@ -183,8 +185,10 @@ abstract class Layer {
           'draworder',
           defaults: DrawOrder.topDown,
         );
-        final colorHex = parser.getString('color', defaults: ObjectGroup.defaultColorHex);
-        final color = parser.getColor('color', defaults: ObjectGroup.defaultColor);
+        final colorHex =
+            parser.getString('color', defaults: ObjectGroup.defaultColorHex);
+        final color =
+            parser.getColor('color', defaults: ObjectGroup.defaultColor);
         final objects = parser.getChildrenAs('object', TiledObject.parse);
         layer = ObjectGroup(
           id: id,
@@ -346,6 +350,9 @@ abstract class Layer {
     }
     return uint32;
   }
+
+  @override
+  ExportElement export(ExportSettings settings);
 }
 
 class TileLayer extends Layer {
@@ -415,7 +422,7 @@ class TileLayer extends Layer {
   }
 
   @override
-  T export<T>(Exporter<T> exporter, {Compression compression = Compression.zlib, FileEncoding encoding = FileEncoding.base64}) => exporter.exportElement(
+  ExportElement export(ExportSettings settings) => ExportElement(
         'layer',
         {
           'class': class_?.toExport(),
@@ -430,9 +437,9 @@ class TileLayer extends Layer {
           'compression': (data == null ? compression : null)?.name.toExport(),
         }.nonNulls(),
         {
-          'chunks': chunks?.map((e) => e.export(exporter, compression: compression, encoding: encoding)),
-          'data': da
-        }.nonNulls(),
+          if (chunks != null) 'chunks': ExportList.from(chunks!, settings),
+          if (data != null) 'data': TileData(data!).export(settings),
+        },
       );
 }
 
@@ -481,6 +488,31 @@ class ObjectGroup extends Layer {
   }) : super(
           type: LayerType.objectGroup,
         );
+
+  @override
+  ExportElement export(ExportSettings settings) => ExportElement(
+        'objectgroup',
+        {
+          'id': id?.toExport(),
+          'name': name.toExport(),
+          'class': class_?.toExport(),
+          'type': type.name.toExport(),
+          'x': x.toExport(),
+          'y': y.toExport(),
+          'color': color.toExport(),
+          'tintcolor': tintColor?.toExport(),
+          'opacity': opacity.toExport(),
+          'visible': (visible ? 1 : 0).toExport(),
+          'offsetx': offsetX.toExport(),
+          'offsety': offsetY.toExport(),
+          'parallaxx': parallaxX.toExport(),
+          'parallaxy': parallaxY.toExport(),
+          'draworder': drawOrder.name.toExport(),
+        }.nonNulls(),
+        {
+          'objects': ExportList.from(objects, settings),
+        },
+      );
 }
 
 class ImageLayer extends Layer {
@@ -528,6 +560,30 @@ class ImageLayer extends Layer {
   }) : super(
           type: LayerType.imageLayer,
         );
+
+  @override
+  ExportElement export(ExportSettings settings) => ExportElement(
+          'imagelayer',
+          {
+            'id': id?.toExport(),
+            'name': name.toExport(),
+            'class': class_?.toExport(),
+            'type': type.name.toExport(),
+            'x': x.toExport(),
+            'y': y.toExport(),
+            'tintcolor': tintColor?.toExport(),
+            'opacity': opacity.toExport(),
+            'visible': (visible ? 1 : 0).toExport(),
+            'offsetx': offsetX.toExport(),
+            'offsety': offsetY.toExport(),
+            'parallaxx': parallaxX.toExport(),
+            'parallaxy': parallaxY.toExport(),
+            'repeatx': repeatX.toExport(),
+            'repeaty': repeatY.toExport(),
+          }.nonNulls(),
+          {
+            'image': image.export(settings),
+          });
 }
 
 class Group extends Layer {
@@ -555,4 +611,26 @@ class Group extends Layer {
   }) : super(
           type: LayerType.imageLayer,
         );
+
+  @override
+  ExportElement export(ExportSettings settings) => ExportElement(
+        'group',
+        {
+          'id': id?.toExport(),
+          'name': name.toExport(),
+          'class': class_?.toExport(),
+          'type': type.name.toExport(),
+          'tintcolor': tintColor?.toExport(),
+          'opacity': opacity.toExport(),
+          'visible': (visible ? 1 : 0).toExport(),
+          'offsetx': offsetX.toExport(),
+          'offsety': offsetY.toExport(),
+          'parallaxx': parallaxX.toExport(),
+          'parallaxy': parallaxY.toExport(),
+        }.nonNulls(),
+        {
+          'layers': ExportList.from(layers, settings),
+        },
+    properties,
+      );
 }

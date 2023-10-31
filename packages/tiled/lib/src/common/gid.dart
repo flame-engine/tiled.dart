@@ -32,7 +32,7 @@ part of tiled;
 /// When rendering a tile, the order of operation matters. The diagonal flip
 /// (x/y axis swap) is done first, followed by the horizontal and vertical
 /// flips.
-class Gid extends UnaryExportable {
+class Gid extends ExportValue {
   static const int flippedHorizontallyFlag = 0x80000000;
   static const int flippedVerticallyFlag = 0x40000000;
   static const int flippedDiagonallyFlag = 0x20000000;
@@ -83,11 +83,16 @@ class Gid extends UnaryExportable {
     });
   }
 
-  @override
   String export() => ((tile & ~flagBits) |
           (flips.horizontally ? flippedHorizontallyFlag : 0) |
           (flips.vertically ? flippedVerticallyFlag : 0) |
           (flips.diagonally ? flippedDiagonallyFlag : 0) |
           (flips.antiDiagonally ? flippedAntiDiagonallyFlag : 0))
       .toString();
+
+  @override
+  String get json => export();
+
+  @override
+  String get xml => export();
 }

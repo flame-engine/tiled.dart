@@ -373,15 +373,15 @@ extension TilesetTypeParser on Parser {
 
 enum ObjectAlignment {
   unspecified,
-  topLeft,
+  topleft,
   top,
-  topRight,
+  topright,
   left,
   center,
   right,
-  bottomLeft,
+  bottomleft,
   bottom,
-  bottomRight,
+  bottomright,
 }
 
 extension ObjectAlignmentExtension on ObjectAlignment {
@@ -389,24 +389,24 @@ extension ObjectAlignmentExtension on ObjectAlignment {
     switch (this) {
       case ObjectAlignment.unspecified:
         return 'unspecified';
-      case ObjectAlignment.topLeft:
-        return 'topLeft';
+      case ObjectAlignment.topleft:
+        return 'topleft';
       case ObjectAlignment.top:
         return 'top';
-      case ObjectAlignment.topRight:
-        return 'topRight';
+      case ObjectAlignment.topright:
+        return 'topright';
       case ObjectAlignment.left:
         return 'left';
       case ObjectAlignment.center:
         return 'center';
       case ObjectAlignment.right:
         return 'right';
-      case ObjectAlignment.bottomLeft:
-        return 'bottomLeft';
+      case ObjectAlignment.bottomleft:
+        return 'bottomleft';
       case ObjectAlignment.bottom:
         return 'bottom';
-      case ObjectAlignment.bottomRight:
-        return 'bottomRight';
+      case ObjectAlignment.bottomright:
+        return 'bottomright';
     }
   }
 }

@@ -18,7 +18,7 @@ part of tiled;
 ///
 /// Can contain at most one: <properties>, <image> (since 0.9), <objectgroup>,
 /// <animation>.
-class Tile implements Exportable {
+class Tile with Exportable {
   int localId;
   String? type;
   double probability;
@@ -50,40 +50,44 @@ class Tile implements Exportable {
   /// Will be same as [type].
   String? get class_ => type;
 
-  Tile.parse(Parser parser)
-      : this(
-          localId: parser.getInt('id'),
+  factory Tile.parse(Parser parser) {
+    final image = parser.getSingleChildOrNullAs('image', TiledImage.parse);
+    final x = parser.getDoubleOrNull('x');
+    final y = parser.getDoubleOrNull('y');
+    final width = parser.getDoubleOrNull('width');
+    final height = parser.getDoubleOrNull('height');
 
-          /// Tiled 1.9 "type" has been moved to "class"
-          type:
-              parser.getStringOrNull('class') ?? parser.getStringOrNull('type'),
+    final imageRect = [image, x, y, width, height].contains(null)
+        ? null
+        : Rectangle(x!, y!, width!, height!);
 
-          probability: parser.getDouble('probability', defaults: 0),
-          terrain: parser
-                  .getStringOrNull('terrain')
-                  ?.split(',')
-                  .map((str) => str.isEmpty ? null : int.parse(str))
-                  .toList() ??
-              [],
-          image: parser.getSingleChildOrNullAs('image', TiledImage.parse),
-          imageRect: Rectangle(
-            parser.getDoubleOrNull('x') ?? 0,
-            parser.getDoubleOrNull('y') ?? 0,
-            parser.getDoubleOrNull('width') ?? 0,
-            parser.getDoubleOrNull('height') ?? 0,
-          ),
-          objectGroup:
-              parser.getSingleChildOrNullAs('objectgroup', Layer.parse),
-          animation: parser.formatSpecificParsing(
-            (json) => json.getChildrenAs('animation', Frame.parse),
-            (xml) =>
-                xml
-                    .getSingleChildOrNull('animation')
-                    ?.getChildrenAs('frame', Frame.parse) ??
-                [],
-          ),
-          properties: parser.getProperties(),
-        );
+    return Tile(
+      localId: parser.getInt('id'),
+
+      /// Tiled 1.9 "type" has been moved to "class"
+      type: parser.getStringOrNull('class') ?? parser.getStringOrNull('type'),
+
+      probability: parser.getDouble('probability', defaults: 0),
+      terrain: parser
+              .getStringOrNull('terrain')
+              ?.split(',')
+              .map((str) => str.isEmpty ? null : int.parse(str))
+              .toList() ??
+          [],
+      image: image,
+      imageRect: imageRect,
+      objectGroup: parser.getSingleChildOrNullAs('objectgroup', Layer.parse),
+      animation: parser.formatSpecificParsing(
+        (json) => json.getChildrenAs('animation', Frame.parse),
+        (xml) =>
+            xml
+                .getSingleChildOrNull('animation')
+                ?.getChildrenAs('frame', Frame.parse) ??
+            [],
+      ),
+      properties: parser.getProperties(),
+    );
+  }
 
   @override
   ExportResolver export(ExportSettings settings) {
@@ -98,7 +102,7 @@ class Tile implements Exportable {
     }.nonNulls();
 
     final children = {
-      'image': image!.export(settings),
+      'image': image?.export(settings),
       'objectgroup': objectGroup?.export(settings)
     }.nonNulls();
 

@@ -24,15 +24,12 @@ class ExportElement implements ExportResolver {
   @override
   XmlElement exportXml() {
     final _children = children.values.expand((e) {
-      switch (e.runtimeType) {
-        case ExportList:
-          return (e as ExportList).map((e) => e.exportXml());
-        case ExportResolver:
-          return [(e as ExportResolver).exportXml()];
-        case ExportValue:
-          return [XmlText((e as ExportValue).xml)];
-        default:
-          throw 'Bad State: ExportChild switch should have been exhaustive';
+      if (e is ExportList) {
+        return e.map((e) => e.exportXml());
+      } else if (e is ExportResolver) {
+        return [e.exportXml()];
+      } else {
+        throw 'Bad State: ExportObject switch should have been exhaustive';
       }
     });
 
@@ -41,11 +38,12 @@ class ExportElement implements ExportResolver {
       fields.entries.map((e) => XmlAttribute(XmlName(e.key), e.value.xml)),
       [
         ..._children,
-        XmlElement(
-          XmlName('properties'),
-          [],
-          properties.map((e) => e.export().exportXml()),
-        ),
+        if (properties.isNotEmpty)
+          XmlElement(
+            XmlName('properties'),
+            [],
+            properties.map((e) => e.export().exportXml()).toList(),
+          ),
       ],
     );
   }
@@ -56,22 +54,18 @@ class ExportElement implements ExportResolver {
           (key, value) => MapEntry<String, dynamic>(key, value.json),
         ),
         ...children.map<String, dynamic>((key, e) {
-          switch (e.runtimeType) {
-            case ExportList:
-              return MapEntry<String, Iterable<dynamic>>(
-                key,
-                (e as ExportList).map<dynamic>((e) => e.exportJson()),
-              );
-            case ExportResolver:
-              return MapEntry<String, dynamic>(
-                key,
-                (e as ExportElement).exportJson(),
-              );
-            default:
-              throw 'Bad State: ExportChild switch should have been exhaustive';
+          if (e is ExportList) {
+            return MapEntry<String, Iterable<dynamic>>(
+              key,
+              e.map<dynamic>((e) => e.exportJson()).toList(),
+            );
+          } else if (e is ExportResolver) {
+            return MapEntry<String, dynamic>(key, e.exportJson());
+          } else {
+            throw 'Bad State: ExportChild switch should have been exhaustive';
           }
         }),
-        'properties': properties.map((e) => e.export().exportJson()),
+        'properties': properties.map((e) => e.export().exportJson()).toList(),
       };
 }
 

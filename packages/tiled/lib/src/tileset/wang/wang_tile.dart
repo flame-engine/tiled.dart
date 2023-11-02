@@ -19,7 +19,7 @@ part of tiled;
 /// * hflip: Whether the tile is flipped horizontally (removed in Tiled 1.5).
 /// * vflip: Whether the tile is flipped vertically (removed in Tiled 1.5).
 /// * dflip: Whether the tile is flipped on its diagonal (removed in Tiled 1.5).
-class WangTile implements Exportable {
+class WangTile with Exportable {
   int tileId;
   List<int> wangId;
   bool hFlip;

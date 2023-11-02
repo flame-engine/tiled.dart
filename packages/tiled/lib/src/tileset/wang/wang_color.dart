@@ -13,7 +13,7 @@ part of tiled;
 ///   others in case of multiple options. (defaults to 0)
 ///
 /// Can contain at most one: <properties>
-class WangColor implements Exportable {
+class WangColor with Exportable {
   String name;
   String color;
   int tile;

@@ -42,7 +42,7 @@ part of tiled;
 /// (since 1.5)
 ///
 /// Can contain any number: <tile>
-class Tileset implements Exportable {
+class Tileset with Exportable {
   int? firstGid;
   String? source;
   String? name;
@@ -284,23 +284,21 @@ class Tileset implements Exportable {
       'class': type.name.toExport(),
       'type': type.name.toExport(),
 
-      'tilewidth': tileWidth!.toExport(),
-      'tileheigth': tileHeight!.toExport(),
+      'tilewidth': tileWidth?.toExport(),
+      'tileheigth': tileHeight?.toExport(),
       'spacing': spacing.toExport(),
       'margin': margin.toExport(),
 
-      'tilecount': tileCount!.toExport(),
-      'columns': columns!.toExport(),
+      'tilecount': tileCount?.toExport(),
+      'columns': columns?.toExport(),
       'objectalignment': objectAlignment.name.toExport(),
       // 'tilerendersize': , Not supported by this class
       // 'fillmode': , Not supported by this class
-    };
+    }.nonNulls();
 
     final common = {
-      if (image != null)
-        'image': image!.export(settings)
-      else
-        'tiles': ExportList.from(tiles, settings),
+      'image': image?.export(settings),
+      'tiles': ExportList.from(tiles, settings),
       'tileoffset': tileOffset?.export(settings),
       'grid': grid?.export(settings),
       // 'terraintypes': , DEPRECATED
@@ -316,15 +314,22 @@ class Tileset implements Exportable {
 
     return ExportFormatSpecific(
       xml: ExportElement(
-        'wangsets',
+        'tileset',
         fields,
         {
           ...common,
-          'wangsets': wangsets,
+          if (wangSets.isNotEmpty) 'wangsets': wangsets,
         },
         properties,
       ),
-      json: wangsets,
+      json: ExportElement(
+        'tileset',
+        fields,
+        {
+          ...common,
+          'wangsets': ExportList.from(wangSets, settings),
+        },
+      ),
     );
   }
 }

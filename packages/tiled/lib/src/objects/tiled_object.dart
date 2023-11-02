@@ -213,10 +213,10 @@ class TiledObject extends Exportable {
                 'points': polygon.toExport(),
               },
               {},
-              properties,
             ),
           if (text != null) 'text': text!.export(settings),
         },
+        properties
       ),
       json: ExportElement(
         'object',

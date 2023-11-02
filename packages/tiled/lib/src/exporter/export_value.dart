@@ -55,8 +55,7 @@ class _ExportableColor extends ExportValue {
   const _ExportableColor(this.color);
 
   static String _hex(int value) {
-    final str = value.toRadixString(16).padLeft(2, '0');
-    return str.substring(str.length - 2, str.length - 1);
+    return value.toRadixString(16).padLeft(2, '0');
   }
 
   String get export =>

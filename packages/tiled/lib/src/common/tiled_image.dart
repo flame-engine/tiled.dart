@@ -18,7 +18,7 @@ part of tiled;
 ///   when the image changes)
 /// * height: The image height in pixels (optional)
 @immutable
-class TiledImage implements Exportable {
+class TiledImage with Exportable {
   final String? source;
   final String? format;
   final int? width;

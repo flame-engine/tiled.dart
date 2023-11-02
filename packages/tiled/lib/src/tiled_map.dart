@@ -55,7 +55,7 @@ part of tiled;
 ///
 /// Can contain any number: <tileset>, <layer>, <objectgroup>, <imagelayer>,
 /// <group> (since 1.0), <editorsettings> (since 1.3)
-class TiledMap {
+class TiledMap with Exportable {
   TileMapType type;
   String version;
   String? tiledVersion;
@@ -359,6 +359,7 @@ class TiledMap {
     );
   }
 
+  @override
   ExportElement export(ExportSettings settings) => ExportElement(
         'map',
         {
@@ -367,7 +368,7 @@ class TiledMap {
 
           'orientation': orientation?.name.toExport(),
           'renderorder': renderOrder.name.toExport(),
-          'compressionLevel': '-1'.toExport(),
+          'compressionlevel': '-1'.toExport(),
 
           'width': width.toExport(),
           'height': height.toExport(),
@@ -379,14 +380,14 @@ class TiledMap {
           'staggerindex': staggerIndex?.name.toExport(),
           // 'parallaxoriginx': , 'parallaxoriginy': , Not supplied by this class
 
-          'backgroundColor': backgroundColor?.toExport(),
+          'backgroundcolor': backgroundColor?.toExport(),
           'nextlayerid': nextLayerId?.toExport(),
           'nextobjectid': nextObjectId?.toExport(),
           'infinite': infinite.toExport(),
         }.nonNulls(),
         {
-          'layers': ExportList.from(layers, settings),
           'tilesets': ExportList.from(tilesets, settings),
+          'layers': ExportList.from(layers, settings),
         },
         properties,
       );

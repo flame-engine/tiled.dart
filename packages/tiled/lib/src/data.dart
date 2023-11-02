@@ -1,6 +1,6 @@
 part of tiled;
 
-class TileData extends DelegatingList<int> implements Exportable {
+class TileData extends DelegatingList<int> with Exportable {
   TileData(super.base);
 
   @override
@@ -40,33 +40,34 @@ class TileData extends DelegatingList<int> implements Exportable {
   }
 
   String _base64(ExportSettings settings) {
-    // Compression
-    List<int> compressed;
-    switch (settings.compression) {
-      case Compression.zlib:
-        compressed = const ZLibEncoder().encode(this);
-        break;
-      case Compression.gzip:
-        compressed = GZipEncoder().encode(this)!;
-        break;
-      case Compression.zstd:
-        throw UnsupportedError('zstd is an unsupported compression');
-      case null:
-        compressed = this;
-        break;
-    }
-
     // Conversion to Uint8List
-    final uint32 = Uint32List.fromList(compressed);
-    final dv = ByteData(compressed.length * 4);
+    final uint32 = Uint32List.fromList(this);
+    final dv = ByteData(this.length * 4);
 
-    for (var i = 0; i < compressed.length; ++i) {
+    for (var i = 0; i < this.length; ++i) {
       dv.setInt32(i * 4, uint32[i], Endian.little);
     }
 
     final uint8 = dv.buffer.asUint8List();
 
+    // Compression
+    List<int> compressed;
+    print(settings.compression);
+    switch (settings.compression) {
+      case Compression.zlib:
+        compressed = const ZLibEncoder().encode(uint8);
+        break;
+      case Compression.gzip:
+        compressed = GZipEncoder().encode(uint8)!;
+        break;
+      case Compression.zstd:
+        throw UnsupportedError('zstd is an unsupported compression');
+      case null:
+        compressed = uint8;
+        break;
+    }
+
     // encoding
-    return base64Encode(uint8);
+    return base64Encode(compressed);
   }
 }

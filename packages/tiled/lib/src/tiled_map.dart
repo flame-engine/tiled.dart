@@ -97,14 +97,14 @@ class TiledMap {
   StaggerIndex? staggerIndex;
 
   TiledMap({
+    required this.width,
+    required this.height,
+    required this.tileWidth,
+    required this.tileHeight,
     this.type = TileMapType.map,
     this.version = '1.0',
     this.tiledVersion,
-    required this.width,
-    required this.height,
     this.infinite = false,
-    required this.tileWidth,
-    required this.tileHeight,
     this.tilesets = const [],
     this.layers = const [],
     this.backgroundColorHex,

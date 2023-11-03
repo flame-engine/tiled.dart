@@ -60,10 +60,10 @@ class Gid {
             flippedDiagonallyFlag |
             flippedAntiDiagonallyFlag);
     final flip = Flips(
-      flippedHorizontally,
-      flippedVertically,
-      flippedDiagonally,
-      flippedAntiDiagonally,
+      horizontally: flippedHorizontally,
+      vertically: flippedVertically,
+      diagonally: flippedDiagonally,
+      antiDiagonally: flippedAntiDiagonally,
     );
     return Gid(tileId, flip);
   }

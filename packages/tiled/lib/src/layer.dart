@@ -93,9 +93,9 @@ abstract class Layer {
   CustomProperties properties;
 
   Layer({
-    this.id,
     required this.name,
     required this.type,
+    this.id,
     this.class_,
     this.x = 0,
     this.y = 0,
@@ -298,7 +298,7 @@ abstract class Layer {
         }
         final text = xml.element.children.first;
         if (text is XmlText) {
-          return text.text;
+          return text.value;
         }
         return null;
       },
@@ -380,8 +380,10 @@ class TileLayer extends Layer {
   List<List<Gid>>? tileData;
 
   TileLayer({
-    super.id,
     required super.name,
+    required this.width,
+    required this.height,
+    super.id,
     super.class_,
     super.x,
     super.y,
@@ -396,8 +398,6 @@ class TileLayer extends Layer {
     super.opacity,
     super.visible,
     super.properties,
-    required this.width,
-    required this.height,
     this.compression,
     this.encoding = FileEncoding.csv,
     this.chunks,
@@ -441,8 +441,9 @@ class ObjectGroup extends Layer {
   Color color;
 
   ObjectGroup({
-    super.id,
     required super.name,
+    required this.objects,
+    super.id,
     super.class_,
     super.x,
     super.y,
@@ -458,7 +459,6 @@ class ObjectGroup extends Layer {
     super.visible,
     super.properties,
     this.drawOrder = DrawOrder.topDown,
-    required this.objects,
     this.colorHex = defaultColorHex,
     this.color = defaultColor,
   }) : super(
@@ -487,8 +487,11 @@ class ImageLayer extends Layer {
   bool repeatY;
 
   ImageLayer({
-    super.id,
     required super.name,
+    required this.image,
+    required this.repeatX,
+    required this.repeatY,
+    super.id,
     super.class_,
     super.x,
     super.y,
@@ -503,9 +506,6 @@ class ImageLayer extends Layer {
     super.opacity,
     super.visible,
     super.properties,
-    required this.image,
-    required this.repeatX,
-    required this.repeatY,
     this.transparentColorHex,
     this.transparentColor,
   }) : super(
@@ -518,8 +518,9 @@ class Group extends Layer {
   List<Layer> layers;
 
   Group({
-    super.id,
     required super.name,
+    required this.layers,
+    super.id,
     super.class_,
     super.x,
     super.y,
@@ -534,7 +535,6 @@ class Group extends Layer {
     super.opacity,
     super.visible,
     super.properties,
-    required this.layers,
   }) : super(
           type: LayerType.imageLayer,
         );

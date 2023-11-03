@@ -14,7 +14,10 @@ void main() {
       expect(ObjectAlignment.fromName('left'), ObjectAlignment.left);
       expect(ObjectAlignment.fromName('center'), ObjectAlignment.center);
       expect(ObjectAlignment.fromName('right'), ObjectAlignment.right);
-      expect(ObjectAlignment.fromName('bottomleft'), ObjectAlignment.bottomLeft);
+      expect(
+        ObjectAlignment.fromName('bottomleft'),
+        ObjectAlignment.bottomLeft,
+      );
       expect(ObjectAlignment.fromName('bottom'), ObjectAlignment.bottom);
       expect(
         ObjectAlignment.fromName('bottomright'),

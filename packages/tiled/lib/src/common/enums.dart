@@ -381,7 +381,19 @@ enum ObjectAlignment {
   right,
   bottomLeft,
   bottom,
-  bottomRight,
+  bottomRight;
+
+  /// Returns the [ObjectAlignment] based on given [name].
+  ///
+  /// Throws an [ArgumentError] if no match is found.
+  static ObjectAlignment byName(String name) {
+    for (final value in ObjectAlignment.values) {
+      if (value.name == name) {
+        return value;
+      }
+    }
+    throw ArgumentError.value(name, 'name', 'No enum value with that name');
+  }
 }
 
 extension ObjectAlignmentExtension on ObjectAlignment {

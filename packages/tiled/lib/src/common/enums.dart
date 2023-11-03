@@ -386,7 +386,7 @@ enum ObjectAlignment {
   /// Returns the [ObjectAlignment] based on given [name].
   ///
   /// Throws an [ArgumentError] if no match is found.
-  static ObjectAlignment byName(String name) {
+  static ObjectAlignment fromName(String name) {
     for (final value in ObjectAlignment.values) {
       if (value.name == name) {
         return value;

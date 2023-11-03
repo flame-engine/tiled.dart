@@ -5,19 +5,19 @@ void main() {
   group('ObjectAlignment', () {
     test('ObjectAlignment.byName', () {
       expect(
-        ObjectAlignment.byName('unspecified'),
+        ObjectAlignment.fromName('unspecified'),
         ObjectAlignment.unspecified,
       );
-      expect(ObjectAlignment.byName('topleft'), ObjectAlignment.topLeft);
-      expect(ObjectAlignment.byName('top'), ObjectAlignment.top);
-      expect(ObjectAlignment.byName('topright'), ObjectAlignment.topRight);
-      expect(ObjectAlignment.byName('left'), ObjectAlignment.left);
-      expect(ObjectAlignment.byName('center'), ObjectAlignment.center);
-      expect(ObjectAlignment.byName('right'), ObjectAlignment.right);
-      expect(ObjectAlignment.byName('bottomleft'), ObjectAlignment.bottomLeft);
-      expect(ObjectAlignment.byName('bottom'), ObjectAlignment.bottom);
+      expect(ObjectAlignment.fromName('topleft'), ObjectAlignment.topLeft);
+      expect(ObjectAlignment.fromName('top'), ObjectAlignment.top);
+      expect(ObjectAlignment.fromName('topright'), ObjectAlignment.topRight);
+      expect(ObjectAlignment.fromName('left'), ObjectAlignment.left);
+      expect(ObjectAlignment.fromName('center'), ObjectAlignment.center);
+      expect(ObjectAlignment.fromName('right'), ObjectAlignment.right);
+      expect(ObjectAlignment.fromName('bottomleft'), ObjectAlignment.bottomLeft);
+      expect(ObjectAlignment.fromName('bottom'), ObjectAlignment.bottom);
       expect(
-        ObjectAlignment.byName('bottomright'),
+        ObjectAlignment.fromName('bottomright'),
         ObjectAlignment.bottomRight,
       );
     });

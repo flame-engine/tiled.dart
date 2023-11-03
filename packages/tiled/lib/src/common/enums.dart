@@ -381,7 +381,19 @@ enum ObjectAlignment {
   right,
   bottomLeft,
   bottom,
-  bottomRight,
+  bottomRight;
+
+  /// Returns the [ObjectAlignment] based on given [name].
+  ///
+  /// Throws an [ArgumentError] if no match is found.
+  static ObjectAlignment fromName(String name) {
+    for (final value in ObjectAlignment.values) {
+      if (value.name == name) {
+        return value;
+      }
+    }
+    throw ArgumentError.value(name, 'name', 'No enum value with that name');
+  }
 }
 
 extension ObjectAlignmentExtension on ObjectAlignment {
@@ -390,11 +402,11 @@ extension ObjectAlignmentExtension on ObjectAlignment {
       case ObjectAlignment.unspecified:
         return 'unspecified';
       case ObjectAlignment.topLeft:
-        return 'topLeft';
+        return 'topleft';
       case ObjectAlignment.top:
         return 'top';
       case ObjectAlignment.topRight:
-        return 'topRight';
+        return 'topright';
       case ObjectAlignment.left:
         return 'left';
       case ObjectAlignment.center:
@@ -402,11 +414,11 @@ extension ObjectAlignmentExtension on ObjectAlignment {
       case ObjectAlignment.right:
         return 'right';
       case ObjectAlignment.bottomLeft:
-        return 'bottomLeft';
+        return 'bottomleft';
       case ObjectAlignment.bottom:
         return 'bottom';
       case ObjectAlignment.bottomRight:
-        return 'bottomRight';
+        return 'bottomright';
     }
   }
 }

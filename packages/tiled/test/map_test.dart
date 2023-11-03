@@ -330,7 +330,7 @@ void main() {
                 image: const TiledImage(),
               ),
             ],
-          )
+          ),
         ],
       );
     });

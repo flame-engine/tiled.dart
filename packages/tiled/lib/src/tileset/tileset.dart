@@ -109,7 +109,7 @@ class Tileset {
     final firstGid = parser.getIntOrNull('firstgid');
     final margin = parser.getInt('margin', defaults: 0);
     final name = parser.getStringOrNull('name');
-    final objectAlignment = ObjectAlignment.values.byName(
+    final objectAlignment = ObjectAlignment.fromName(
       parser.getString('objectalignment', defaults: 'unspecified'),
     );
     final source = parser.getStringOrNull('source');

@@ -6,14 +6,20 @@ class Flips {
   final bool diagonally;
   final bool antiDiagonally;
 
-  const Flips(
-    this.horizontally,
-    this.vertically,
-    this.diagonally,
-    this.antiDiagonally,
-  );
+  const Flips({
+    required this.horizontally,
+    required this.vertically,
+    required this.diagonally,
+    required this.antiDiagonally,
+  });
 
-  const Flips.defaults() : this(false, false, false, false);
+  const Flips.defaults()
+      : this(
+          horizontally: false,
+          vertically: false,
+          diagonally: false,
+          antiDiagonally: false,
+        );
 
   Flips copyWith({
     bool? horizontally,
@@ -22,10 +28,10 @@ class Flips {
     bool? antiDiagonally,
   }) {
     return Flips(
-      horizontally ?? this.horizontally,
-      vertically ?? this.vertically,
-      diagonally ?? this.diagonally,
-      antiDiagonally ?? this.antiDiagonally,
+      horizontally: horizontally ?? this.horizontally,
+      vertically: vertically ?? this.vertically,
+      diagonally: diagonally ?? this.diagonally,
+      antiDiagonally: antiDiagonally ?? this.antiDiagonally,
     );
   }
 }

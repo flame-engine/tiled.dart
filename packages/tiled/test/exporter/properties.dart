@@ -4,8 +4,6 @@ import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
 void main() {
-  final settings = ExportSettings(encoding: null, compression: null);
-
   late TiledObject export;
   late CustomProperties byName;
   setUp(() {
@@ -28,10 +26,10 @@ void main() {
 
   group('Exporter - CustomProperties', () {
     test('Xml',
-        () => testSuite(XmlParser(export.exportXml(settings) as XmlElement)));
+        () => testSuite(XmlParser(export.exportXml() as XmlElement)));
     test(
         'Json',
         () => testSuite(
-            JsonParser(export.exportJson(settings) as Map<String, dynamic>)));
+            JsonParser(export.exportJson() as Map<String, dynamic>)));
   });
 }

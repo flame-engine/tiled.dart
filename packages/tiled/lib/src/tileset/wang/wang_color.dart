@@ -39,7 +39,7 @@ class WangColor with Exportable {
         );
 
   @override
-  ExportResolver export(ExportSettings settings) => ExportElement(
+  ExportResolver export() => ExportElement(
         'wangcolor',
         {
           'name': name.toExport(),

@@ -263,8 +263,8 @@ class Tileset with Exportable {
   }
 
   @override
-  ExportResolver export(ExportSettings settings) => source == null
-      ? _export(settings, false)
+  ExportResolver export() => source == null
+      ? _export(false)
       : ExportElement(
           'tileset',
           {
@@ -274,10 +274,10 @@ class Tileset with Exportable {
           {},
         );
 
-  ExportResolver exportExternal(ExportSettings settings) =>
-      _export(settings, true);
+  ExportResolver exportExternal() =>
+      _export(true);
 
-  ExportResolver _export(ExportSettings settings, bool external) {
+  ExportResolver _export(bool external) {
     final fields = {
       if (!external) 'firstgid': firstGid!.toExport(),
       'name': name!.toExport(),
@@ -297,18 +297,18 @@ class Tileset with Exportable {
     }.nonNulls();
 
     final common = {
-      'image': image?.export(settings),
-      'tiles': ExportList.from(tiles, settings),
-      'tileoffset': tileOffset?.export(settings),
-      'grid': grid?.export(settings),
+      'image': image?.export(),
+      'tiles': ExportList.from(tiles),
+      'tileoffset': tileOffset?.export(),
+      'grid': grid?.export(),
       // 'terraintypes': , DEPRECATED
-      // 'transformations': ExportList.from(transformations, settings), Not supported by this class
+      // 'transformations': ExportList.from(transformations), Not supported by this class
     }.nonNulls();
 
     final wangsets = ExportElement(
       'wangsets',
       {},
-      {'wangsets': ExportList.from(wangSets, settings)},
+      {'wangsets': ExportList.from(wangSets)},
       properties,
     );
 
@@ -327,7 +327,7 @@ class Tileset with Exportable {
         fields,
         {
           ...common,
-          'wangsets': ExportList.from(wangSets, settings),
+          'wangsets': ExportList.from(wangSets),
         },
       ),
     );

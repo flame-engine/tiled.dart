@@ -90,7 +90,7 @@ class Tile with Exportable {
   }
 
   @override
-  ExportResolver export(ExportSettings settings) {
+  ExportResolver export() {
     final fields = {
       'id': localId.toExport(),
       'class': type?.toExport(),
@@ -102,8 +102,8 @@ class Tile with Exportable {
     }.nonNulls();
 
     final children = {
-      'image': image?.export(settings),
-      'objectgroup': objectGroup?.export(settings)
+      'image': image?.export(),
+      'objectgroup': objectGroup?.export()
     }.nonNulls();
 
     return ExportFormatSpecific(
@@ -117,7 +117,7 @@ class Tile with Exportable {
               'animation',
               {},
               {
-                'frames': ExportList.from(animation, settings),
+                'frames': ExportList.from(animation),
               },
             ),
         },
@@ -128,7 +128,7 @@ class Tile with Exportable {
         fields,
         {
           ...children,
-          'animation': ExportList.from(animation, settings),
+          'animation': ExportList.from(animation),
         },
         properties,
       ),

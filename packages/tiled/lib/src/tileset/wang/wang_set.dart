@@ -55,7 +55,7 @@ class WangSet extends Exportable {
   }
 
   @override
-  ExportResolver export(ExportSettings settings) {
+  ExportResolver export() {
     final colors = cornerColors..addAll(edgeColors);
 
     return ExportElement(
@@ -65,8 +65,8 @@ class WangSet extends Exportable {
         'tile': tile.toExport(),
       },
       {
-        'colors': ExportList.from(colors, settings),
-        'wangtiles': ExportList.from(wangTiles, settings),
+        'colors': ExportList.from(colors),
+        'wangtiles': ExportList.from(wangTiles),
       },
       properties,
     );

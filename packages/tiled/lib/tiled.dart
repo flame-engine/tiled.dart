@@ -15,7 +15,6 @@ part 'src/data.dart';
 part 'src/exporter/exportable.dart';
 part 'src/exporter/export_value.dart';
 part 'src/exporter/export_element.dart';
-part 'src/exporter/export_settings.dart';
 part 'src/exporter/json.dart';
 part 'src/common/enums.dart';
 part 'src/common/flips.dart';

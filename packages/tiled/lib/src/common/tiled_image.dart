@@ -55,7 +55,7 @@ class TiledImage with Exportable {
   int get hashCode => source.hashCode;
 
   @override
-  ExportElement export(ExportSettings settings) => ExportElement(
+  ExportElement export() => ExportElement(
         'image',
         {
           'width': width?.toExport(),

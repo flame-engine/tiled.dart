@@ -61,7 +61,7 @@ class Chunk extends Exportable {
   }
 
   @override
-  ExportElement export(ExportSettings settings) {
+  ExportElement export({FileEncoding? encoding, Compression? compression}) {
     final common = {
       'x': x.toExport(),
       'y': y.toExport(),
@@ -73,7 +73,11 @@ class Chunk extends Exportable {
       'chunk',
       common,
       {
-        'data': TileData(data).export(settings),
+        'data': TileDataEncoder(
+          data: data,
+          compression: compression,
+          encoding: encoding,
+        ).export(),
       },
     );
   }

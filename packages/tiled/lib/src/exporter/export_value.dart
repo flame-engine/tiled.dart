@@ -1,19 +1,19 @@
 part of tiled;
 
-abstract class ExportValue implements ExportObject, ExportResolver {
+abstract class ExportValue<T> implements ExportObject, ExportResolver {
   const ExportValue();
 
   String get xml;
-  dynamic get json;
+  T get json;
 
   @override
   XmlNode exportXml() => XmlText(xml);
 
   @override
-  dynamic exportJson() => json;
+  JsonValue<T> exportJson() => JsonValue(json);
 }
 
-class ExportLiteral<T> extends ExportValue {
+class ExportLiteral<T> extends ExportValue<T> {
   final T value;
 
   const ExportLiteral(this.value);
@@ -33,7 +33,7 @@ extension ExportableNum on num {
   ExportValue toExport() => ExportLiteral<num>(this);
 }
 
-class _ExportableBool extends ExportValue {
+class _ExportableBool extends ExportValue<bool> {
   final bool value;
 
   _ExportableBool(this.value);
@@ -49,7 +49,7 @@ extension ExportableBool on bool {
   ExportValue toExport() => _ExportableBool(this);
 }
 
-class _ExportableColor extends ExportValue {
+class _ExportableColor extends ExportValue<String> {
   final Color color;
 
   const _ExportableColor(this.color);
@@ -72,16 +72,16 @@ extension ExportableColor on Color {
   ExportValue toExport() => _ExportableColor(this);
 }
 
-class _ExportablePointList extends ExportValue {
+class _ExportablePointList extends ExportValue<List<Map<String, double>>> {
   final List<Point> points;
 
   _ExportablePointList(this.points);
 
   @override
-  Iterable<Map<String, double>> get json => points.map((e) => {
+  List<Map<String, double>> get json => points.map((e) => {
         'x': e.x,
         'y': e.y,
-      });
+      }).toList();
 
   @override
   String get xml => points.map((e) => '${e.x},${e.y}').join(' ');

@@ -27,7 +27,7 @@ class TileOffset extends Exportable {
         );
 
   @override
-  ExportResolver export(ExportSettings settings) => ExportElement(
+  ExportResolver export() => ExportElement(
         'tileoffset',
         {
           'x': x.toExport(),

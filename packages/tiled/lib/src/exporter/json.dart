@@ -5,7 +5,7 @@ abstract class JsonObject {
 }
 
 class JsonList extends DelegatingList<JsonObject> implements JsonObject {
-  JsonList([super.base = const []]);
+  JsonList([Iterable<JsonObject>? base]) : super(base?.toList() ?? []);
 
   @override
   List<JsonObject> get value => this;
@@ -18,7 +18,9 @@ class JsonMap extends DelegatingMap<String, JsonObject> implements JsonObject {
   Map<String, JsonObject> get value => this;
 }
 
-class JsonValue implements JsonObject {
+class JsonValue<T> implements JsonObject {
   @override
-  dynamic get value => this;
+  final T value;
+
+  JsonValue(this.value);
 }

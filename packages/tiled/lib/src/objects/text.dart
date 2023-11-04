@@ -86,7 +86,7 @@ class Text extends Exportable {
         );
 
   @override
-  ExportElement export(ExportSettings settings) =>
+  ExportElement export() =>
       ExportElement('text', {
         'fontfamily': fontFamily.toExport(),
         'pixelsize': pixelSize.toExport(),

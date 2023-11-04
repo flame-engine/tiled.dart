@@ -31,7 +31,7 @@ class Grid extends Exportable {
         );
 
   @override
-  ExportResolver export(ExportSettings settings) => ExportElement(
+  ExportResolver export() => ExportElement(
         'grid',
         {
           'orientation': orientation.name.toExport(),

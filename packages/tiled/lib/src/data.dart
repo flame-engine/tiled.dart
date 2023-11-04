@@ -1,28 +1,33 @@
 part of tiled;
 
-class TileData extends DelegatingList<int> with Exportable {
-  TileData(super.base);
+class TileDataEncoder extends DelegatingList<int> with Exportable {
+  final FileEncoding? encoding;
+  final Compression? compression;
+
+  TileDataEncoder({
+    required List<int> data,
+    required this.encoding,
+    required this.compression,
+  }) : super(data);
 
   @override
-  ExportResolver export(ExportSettings settings) {
+  ExportResolver export() {
     String? data;
-    switch (settings.encoding) {
+    switch (encoding) {
       case null:
         break;
       case FileEncoding.csv:
         data = join(', ');
         break;
       case FileEncoding.base64:
-        data = _base64(settings);
+        data = _base64();
         break;
     }
 
     return ExportFormatSpecific(
       xml: ExportElement('data', {
-        if (settings.encoding != null)
-          'encoding': settings.encoding!.name.toExport(),
-        if (settings.compression != null)
-          'compression': settings.compression!.name.toExport(),
+        if (encoding != null) 'encoding': encoding!.name.toExport(),
+        if (compression != null) 'compression': compression!.name.toExport(),
       }, {
         if (data == null)
           'tiles': ExportList(map(
@@ -39,7 +44,7 @@ class TileData extends DelegatingList<int> with Exportable {
     );
   }
 
-  String _base64(ExportSettings settings) {
+  String _base64() {
     // Conversion to Uint8List
     final uint32 = Uint32List.fromList(this);
     final dv = ByteData(this.length * 4);
@@ -52,8 +57,8 @@ class TileData extends DelegatingList<int> with Exportable {
 
     // Compression
     List<int> compressed;
-    print(settings.compression);
-    switch (settings.compression) {
+    print(compression);
+    switch (compression) {
       case Compression.zlib:
         compressed = const ZLibEncoder().encode(uint8);
         break;

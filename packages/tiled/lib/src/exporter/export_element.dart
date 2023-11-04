@@ -5,7 +5,7 @@ abstract class ExportObject {}
 abstract class ExportResolver implements ExportObject {
   XmlNode exportXml();
 
-  dynamic exportJson();
+  JsonObject exportJson();
 }
 
 class ExportElement implements ExportResolver {
@@ -49,34 +49,34 @@ class ExportElement implements ExportResolver {
   }
 
   @override
-  Map<String, dynamic> exportJson() => <String, dynamic>{
-        ...fields.map<String, dynamic>(
-          (key, value) => MapEntry<String, dynamic>(key, value.json),
+  JsonMap exportJson() => JsonMap({
+        ...fields.map(
+          (key, value) => MapEntry(key, value.exportJson()),
         ),
-        ...children.map<String, dynamic>((key, e) {
+        ...children.map((key, e) {
           if (e is ExportList) {
-            return MapEntry<String, Iterable<dynamic>>(
+            return MapEntry(
               key,
-              e.map<dynamic>((e) => e.exportJson()).toList(),
+              JsonList(e.map((e) => e.exportJson())),
             );
           } else if (e is ExportResolver) {
-            return MapEntry<String, dynamic>(key, e.exportJson());
+            return MapEntry(key, e.exportJson());
           } else {
             throw 'Bad State: ExportChild switch should have been exhaustive';
           }
         }),
-        'properties': properties.map((e) => e.export().exportJson()).toList(),
-      };
+        'properties': JsonList(properties.map((e) => e.exportJson())),
+      });
 }
 
 class ExportDirect implements ExportResolver {
   final XmlElement xml;
-  final dynamic json;
+  final JsonObject json;
 
   ExportDirect({required this.xml, required this.json});
 
   @override
-  dynamic exportJson() => json;
+  JsonObject exportJson() => json;
 
   @override
   XmlElement exportXml() => xml;
@@ -89,7 +89,7 @@ class ExportFormatSpecific implements ExportResolver {
   ExportFormatSpecific({required this.xml, required this.json});
 
   @override
-  dynamic exportJson() => json.exportJson();
+  JsonObject exportJson() => json.exportJson();
 
   @override
   XmlNode exportXml() => xml.exportXml();
@@ -99,6 +99,6 @@ class ExportList extends DelegatingList<ExportResolver>
     implements ExportObject {
   ExportList(Iterable<ExportResolver> base) : super(base.toList());
 
-  ExportList.from(Iterable<Exportable> source, ExportSettings settings)
-      : super(source.map((e) => e.export(settings)).toList());
+  ExportList.from(Iterable<Exportable> source)
+      : super(source.map((e) => e.export()).toList());
 }

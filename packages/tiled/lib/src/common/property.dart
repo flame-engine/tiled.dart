@@ -12,7 +12,7 @@ part of tiled;
 ///   (default string is “”, default number is 0, default boolean is “false”,
 ///   default color is #00000000, default file is “.” (the current file’s
 ///   parent directory))
-class Property<T> {
+class Property<T> with Exportable {
   String name;
   PropertyType type;
   T value;

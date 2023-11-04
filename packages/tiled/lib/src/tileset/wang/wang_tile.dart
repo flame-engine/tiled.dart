@@ -62,7 +62,7 @@ class WangTile with Exportable {
   }
 
   @override
-  ExportResolver export(ExportSettings settings) {
+  ExportResolver export() {
     final common = {
       'tileid': tileId.toExport(),
     };
@@ -81,7 +81,7 @@ class WangTile with Exportable {
         'wangtile',
         {
           ...common,
-          'wangid': ExportLiteral(wangId),
+          'wangid': ExportLiteral<List<int>>(wangId),
         },
         {},
       ),

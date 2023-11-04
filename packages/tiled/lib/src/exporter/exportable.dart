@@ -1,8 +1,8 @@
 part of tiled;
 
 abstract class Exportable {
-  ExportResolver export(ExportSettings settings);
+  ExportResolver export();
 
-  XmlNode exportXml(ExportSettings settings) => export(settings).exportXml();
-  dynamic exportJson(ExportSettings settings) => export(settings).exportJson();
+  XmlNode exportXml() => export().exportXml();
+  JsonObject exportJson() => export().exportJson();
 }

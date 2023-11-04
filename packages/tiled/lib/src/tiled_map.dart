@@ -360,7 +360,7 @@ class TiledMap with Exportable {
   }
 
   @override
-  ExportElement export(ExportSettings settings) => ExportElement(
+  ExportElement export() => ExportElement(
         'map',
         {
           'version': '1.10'.toExport(),
@@ -386,8 +386,8 @@ class TiledMap with Exportable {
           'infinite': infinite.toExport(),
         }.nonNulls(),
         {
-          'tilesets': ExportList.from(tilesets, settings),
-          'layers': ExportList.from(layers, settings),
+          'tilesets': ExportList.from(tilesets),
+          'layers': ExportList.from(layers),
         },
         properties,
       );

@@ -176,7 +176,7 @@ class TiledObject extends Exportable {
   }
 
   @override
-  ExportResolver export(ExportSettings settings) {
+  ExportResolver export() {
     final common = {
       'id': id.toExport(),
       'name': name.toExport(),
@@ -214,7 +214,7 @@ class TiledObject extends Exportable {
               },
               {},
             ),
-          if (text != null) 'text': text!.export(settings),
+          if (text != null) 'text': text!.export(),
         },
         properties
       ),

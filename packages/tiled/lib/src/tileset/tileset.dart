@@ -285,7 +285,7 @@ class Tileset with Exportable {
       'type': type.name.toExport(),
 
       'tilewidth': tileWidth?.toExport(),
-      'tileheigth': tileHeight?.toExport(),
+      'tileheight': tileHeight?.toExport(),
       'spacing': spacing.toExport(),
       'margin': margin.toExport(),
 

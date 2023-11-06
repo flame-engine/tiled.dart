@@ -49,29 +49,6 @@ extension ExportableBool on bool {
   ExportValue toExport() => _ExportableBool(this);
 }
 
-class _ExportableColor extends ExportValue<String> {
-  final Color color;
-
-  const _ExportableColor(this.color);
-
-  static String _hex(int value) {
-    return value.toRadixString(16).padLeft(2, '0');
-  }
-
-  String get export =>
-      '#${_hex(color.alpha)}${_hex(color.red)}${_hex(color.green)}${_hex(color.blue)}';
-
-  @override
-  String get json => export;
-
-  @override
-  String get xml => export;
-}
-
-extension ExportableColor on Color {
-  ExportValue toExport() => _ExportableColor(this);
-}
-
 class _ExportablePointList extends ExportValue<List<Map<String, double>>> {
   final List<Point> points;
 

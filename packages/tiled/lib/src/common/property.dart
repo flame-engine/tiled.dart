@@ -174,7 +174,7 @@ class ColorProperty extends Property<ColorData> {
   }) : super(type: PropertyType.color);
 
   @override
-  ExportValue get exportValue => value.toExport();
+  ExportValue get exportValue => value;
 }
 
 /// [value] is the string text

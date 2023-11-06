@@ -1,6 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
@@ -16,7 +14,7 @@ void main() {
         hexSideLength: 24,
         staggerAxis: StaggerAxis.y,
         staggerIndex: StaggerIndex.even,
-        backgroundColor: const Color(0xaa252627),
+        backgroundColor: Color.hex(0xaa252627),
         nextLayerId: 24,
         nextObjectId: 56,
         infinite: false,

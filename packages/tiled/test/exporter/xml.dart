@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:xml/xml.dart';
 
 class XmlDeepMatcher extends Matcher {

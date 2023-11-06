@@ -380,7 +380,7 @@ class TiledMap with Exportable {
           'staggerindex': staggerIndex?.name.toExport(),
           // 'parallaxoriginx': , 'parallaxoriginy': , Not supplied by this class
 
-          'backgroundcolor': backgroundColor?.toExport(),
+          'backgroundcolor': backgroundColor,
           'nextlayerid': nextLayerId?.toExport(),
           'nextobjectid': nextObjectId?.toExport(),
           'infinite': infinite.toExport(),

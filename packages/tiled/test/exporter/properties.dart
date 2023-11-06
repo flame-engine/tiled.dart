@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 

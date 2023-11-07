@@ -256,6 +256,8 @@ class Tileset with Exportable {
       if (tile.localId >= tiles.length) {
         tiles.add(tile);
       } else {
+        final generated = tiles[tile.localId];
+        if (tile.imageRect == null) tile.imageRect = generated.imageRect;
         tiles[tile.localId] = tile;
       }
     }

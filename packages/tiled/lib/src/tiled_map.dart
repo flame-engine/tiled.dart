@@ -91,6 +91,9 @@ class TiledMap {
   List<EditorSetting> editorSettings;
   CustomProperties properties;
 
+  // Cache the object by ID when accessed.
+  Map<int, TiledObject>? _cachedObjects;
+
   // only for hexagonal maps:
   int? hexSideLength;
   StaggerAxis? staggerAxis;
@@ -277,6 +280,27 @@ class TiledMap {
 
     // Couldn't find it in any layer
     throw ArgumentError('Layer $name not found');
+  }
+
+  /// Finds the [TiledObject] in this map with the unique [id].
+  /// Objects have map wide unique IDs which are never reused.
+  /// https://doc.mapeditor.org/en/stable/reference/tmx-map-format/#object
+  ///
+  /// This reads through a cached map of all the objects so it does not
+  /// need to loop through all the object layers each time.
+  ///
+  /// Returns null if not found.
+  TiledObject? objectById(int id) {
+    if (_cachedObjects == null) {
+      _cachedObjects = {};
+      layers.whereType<ObjectGroup>().forEach((objectGroup) {
+        for (final object in objectGroup.objects) {
+          _cachedObjects![object.id] = object;
+        }
+      });
+    }
+
+    return _cachedObjects?[id];
   }
 
   Tileset tilesetByName(String name) {

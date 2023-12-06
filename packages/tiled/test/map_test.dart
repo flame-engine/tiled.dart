@@ -380,4 +380,55 @@ void main() {
       expect(map.tilesetByName('Humans'), equals(tileset));
     });
   });
+
+  group('Map.objectById', () {
+    late TiledMap map;
+    setUp(() {
+      map = TiledMap(
+        width: 2,
+        height: 2,
+        tileWidth: 8,
+        tileHeight: 8,
+        layers: [
+          TileLayer(
+            name: 'tile layer 1',
+            width: 2,
+            height: 2,
+            data: [1, 0, 2, 0],
+          ),
+          ObjectGroup(
+            name: 'object layer 1',
+            objects: [
+              TiledObject(id: 1, name: 'object one'),
+              TiledObject(id: 5, name: 'object five'),
+            ],
+          ),
+        ],
+        tilesets: [
+          Tileset(
+            name: 'TileSet_1',
+            image: const TiledImage(source: 'tileset_1.png'),
+            firstGid: 1,
+            columns: 1,
+            tileCount: 2,
+            tiles: [
+              Tile(localId: 0),
+              Tile(localId: 1),
+            ],
+          ),
+        ],
+      );
+    });
+
+    test('gets images only in use on each TileLayer', () {
+      final object1 = map.objectById(1);
+      expect(object1?.name, equals('object one'));
+
+      final object5 = map.objectById(5);
+      expect(object5?.name, equals('object five'));
+
+      final object3 = map.objectById(3);
+      expect(object3, equals(null));
+    });
+  });
 }

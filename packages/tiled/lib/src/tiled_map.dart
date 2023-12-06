@@ -286,6 +286,9 @@ class TiledMap {
   /// Objects have map wide unique IDs which are never reused.
   /// https://doc.mapeditor.org/en/stable/reference/tmx-map-format/#object
   ///
+  /// This reads through a cached map of all the objects so it does not
+  /// need to loop through all the object layers each time.
+  ///
   /// Returns null if not found.
   TiledObject? objectById(int id) {
     if (_cachedObjects == null) {

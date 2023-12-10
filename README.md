@@ -29,9 +29,15 @@ Load a TMX file into a string by any means, and then pass the string to TileMapP
     final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody);
 ```
 
-If your tmx file includes a external tsx reference, you have to add a CustomParser
+If your tmx file includes a external tsx reference, you have to add a CustomParser. This can either be done by using extending the TsxProviderBase, which can match multiple files, or by extending TsxProvider, which only matches on file by its name.
 ```dart
-class CustomTsxProvider extends TsxProvider {
+class MultipleTsxProvider extends TsxProviderBase {
+  @override
+  bool checkProvidable(String filename) => ["external1.tsx", "external2.tsx"].contains(filename);
+  
+  @override
+  Parser? getCachedSource(String filename) => null;
+  
   @override
   Parser getSource(String fileName) {
     final xml = File(fileName).readAsStringSync();
@@ -40,10 +46,27 @@ class CustomTsxProvider extends TsxProvider {
   }
 }
 ```
-And use it in the parseTmx method
+
+```dart
+class SingleTsxProvider extends TsxProvider {
+  @override
+  String get filename => "external.tsx";
+  
+  @override
+  Parser? getCachedSource() => null;
+  
+  @override
+  Parser getSource(String _) {
+    final xml = File(filename).readAsStringSync();
+    final node = XmlDocument.parse(xml).rootElement;
+    return XmlParser(node);
+  }
+}
+```
+And use it in the parseTmx method. Keep in mind that the first TsxProvider that can provide a source is used!
 ```dart
     final String tmxBody = /* ... */;
-    final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody, tsx: CustomTsxProvider());
+    final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody, tsxProviders: [SingleTsxProvider(), MultipleTsxProvider()]);
 
 ```
 

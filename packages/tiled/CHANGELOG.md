@@ -1,3 +1,10 @@
+## 0.10.2
+
+ - **FIX**: `ObjectAlignment` enum names ([#74](https://github.com/flame-engine/tiled.dart/issues/74)). ([628f1f6c](https://github.com/flame-engine/tiled.dart/commit/628f1f6cc89f6dd9b0a9cadcdd619549cf180e35))
+ - **FEAT**: Adding a method to get any object in a map by its unique ID ([#75](https://github.com/flame-engine/tiled.dart/issues/75)). ([4faf43b4](https://github.com/flame-engine/tiled.dart/commit/4faf43b45002e19c8fdbf2af8dd09969bcf4781c))
+ - **FEAT**: Omit TiledImage without source from TiledMap.tiledImages ([#68](https://github.com/flame-engine/tiled.dart/issues/68)). ([41c9439f](https://github.com/flame-engine/tiled.dart/commit/41c9439f9c0f1345b8b803b9b33d3a507e45bf1a))
+ - **FEAT**: Add convenience method for getting images in each layer ([#66](https://github.com/flame-engine/tiled.dart/issues/66)). ([1d3043f7](https://github.com/flame-engine/tiled.dart/commit/1d3043f75dc59449e98c9f2f637141b8ac127508))
+
 ## 0.10.1
 
  - **FEAT**: Add `imageRect` for `Tile` ([#64](https://github.com/flame-engine/tiled.dart/issues/64)). ([33d99b70](https://github.com/flame-engine/tiled.dart/commit/33d99b70e9c0c9b11483d9a25abfc1375869c87f))

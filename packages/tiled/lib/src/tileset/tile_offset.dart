@@ -11,7 +11,7 @@ part of tiled;
 /// This element is used to specify an offset in pixels, to be applied when
 /// drawing a tile from the related tileset.
 /// When not present, no offset is applied.
-class TileOffset extends Exportable {
+class TileOffset with Exportable {
   int x;
   int y;
 

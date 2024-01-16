@@ -32,7 +32,7 @@ part of tiled;
 ///   Defaults to 1. (since 1.5)
 ///
 /// Can contain at most one: <properties>, <data>
-abstract class Layer extends Exportable {
+abstract class Layer with Exportable {
   /// Incremental ID - unique across all layers
   int? id;
 
@@ -438,23 +438,27 @@ class TileLayer extends Layer {
         }.nonNulls(),
         {
           if (chunks != null)
-            'chunks': ExportList(chunks!.map((e) => e.export(
+            'chunks': ExportList(
+              chunks!.map(
+                (e) => e.export(
                   encoding: encoding,
                   compression: compression,
-                ))),
+                ),
+              ),
+            ),
           if (data != null)
             'data': ExportTileData(
               data: data!,
               compression: compression,
               encoding: encoding,
-            ).export(),
+            ),
         },
         properties,
       );
 }
 
 class ObjectGroup extends Layer {
-  static const defaultColor = ColorData.rgb(160, 160, 164, 255);
+  static const defaultColor = ColorData.rgb(160, 160, 164);
   static const defaultColorHex = '%a0a0a4';
 
   /// topdown (default) or index (indexOrder).
@@ -593,7 +597,7 @@ class ImageLayer extends Layer {
           'repeaty': repeatY.toExport(),
         }.nonNulls(),
         {
-          'image': image.export(),
+          'image': image,
         },
         properties,
       );

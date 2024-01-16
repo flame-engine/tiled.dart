@@ -14,7 +14,9 @@ class XmlDeepMatcher extends Matcher {
 
   @override
   bool matches(dynamic item, Map matchState) {
-    if (item is! XmlElement) return false;
+    if (item is! XmlElement) {
+      return false;
+    }
     return _match(item, expected);
   }
 
@@ -29,7 +31,9 @@ class XmlDeepMatcher extends Matcher {
               a.value.trim() == b.value.trim(),
         ) &&
         _deepIterable(_cleanNodes(a.children), _cleanNodes(b.children), (a, b) {
-          if (a.runtimeType != b.runtimeType) return false;
+          if (a.runtimeType != b.runtimeType) {
+            return false;
+          }
 
           if (a is XmlText) {
             return a.value.trim() == b.value!.trim();
@@ -46,7 +50,9 @@ class XmlDeepMatcher extends Matcher {
     Iterable<T> b,
     bool Function(T a, T b) equals,
   ) {
-    if (a.length != b.length) return false;
+    if (a.length != b.length) {
+      return false;
+    }
     return a.every((aa) => b.any((bb) => equals(aa, bb)));
   }
 

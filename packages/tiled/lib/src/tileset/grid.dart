@@ -12,7 +12,7 @@ part of tiled;
 ///
 /// This element is only used in case of isometric orientation, and determines
 /// how tile overlays for terrain and collision information are rendered.
-class Grid extends Exportable {
+class Grid with Exportable {
   int width;
   int height;
   GridOrientation orientation;

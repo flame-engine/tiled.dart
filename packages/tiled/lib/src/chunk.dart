@@ -17,7 +17,7 @@ part of tiled;
 /// The data inside is a compressed (encoded) representation of a list
 /// (that sequentially represents a matrix) of integers representing
 /// [Gid]s.
-class Chunk extends Exportable {
+class Chunk with Exportable {
   List<int> data;
 
   int x;
@@ -77,7 +77,7 @@ class Chunk extends Exportable {
           data: data,
           compression: compression,
           encoding: encoding,
-        ).export(),
+        ),
       },
     );
   }

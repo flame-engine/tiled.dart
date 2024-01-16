@@ -5,8 +5,8 @@ import 'package:test/scaffolding.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {
-  group("ColorData.hex", () {
-    test("parse", () {
+  group('ColorData.hex', () {
+    test('parse', () {
       final random = Random();
       final red = random.nextInt(256);
       final green = random.nextInt(256);

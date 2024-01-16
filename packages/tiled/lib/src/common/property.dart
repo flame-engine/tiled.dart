@@ -89,11 +89,16 @@ class Property<T> with Exportable {
 
   ExportValue get exportValue => value.toString().toExport();
 
-  ExportElement export() => ExportElement('property', {
-        'name': name.toExport(),
-        'type': type.name.toExport(),
-        'value': exportValue,
-      }, {});
+  @override
+  ExportElement export() => ExportElement(
+        'property',
+        {
+          'name': name.toExport(),
+          'type': type.name.toExport(),
+          'value': exportValue,
+        },
+        {},
+      );
 }
 
 /// A wrapper for a Tiled property set

@@ -102,8 +102,8 @@ class Tile with Exportable {
     }.nonNulls();
 
     final children = {
-      'image': image?.export(),
-      'objectgroup': objectGroup?.export()
+      'image': image,
+      'objectgroup': objectGroup,
     }.nonNulls();
 
     return ExportFormatSpecific(

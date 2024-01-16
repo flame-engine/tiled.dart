@@ -43,7 +43,7 @@ part of tiled;
 ///
 /// Can contain at most one: <properties>, <ellipse> (since 0.9),
 /// <point> (since 1.1), <polygon>, <polyline>, <text> (since 1.0)
-class TiledObject extends Exportable {
+class TiledObject with Exportable {
   int id;
   String name;
   String type;
@@ -196,8 +196,8 @@ class TiledObject extends Exportable {
           'object',
           common,
           {
-            if (ellipse) 'ellipse': ExportElement('ellipse', {}, {}),
-            if (point) 'point': ExportElement('point', {}, {}),
+            if (ellipse) 'ellipse': const ExportElement('ellipse', {}, {}),
+            if (point) 'point': const ExportElement('point', {}, {}),
             if (polygon.isNotEmpty)
               'polygon': ExportElement(
                 'polygon',
@@ -214,7 +214,7 @@ class TiledObject extends Exportable {
                 },
                 {},
               ),
-            if (text != null) 'text': text!.export(),
+            if (text != null) 'text': text!,
           },
           properties),
       json: ExportElement(

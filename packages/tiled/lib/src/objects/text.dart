@@ -37,7 +37,7 @@ part of tiled;
 ///
 /// If the text is larger than the object’s bounds, it is clipped to the bounds
 /// of the object.
-class Text extends Exportable {
+class Text with Exportable {
   String fontFamily;
   int pixelSize;
   String color;

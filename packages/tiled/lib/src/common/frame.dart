@@ -8,7 +8,7 @@ part of tiled;
 /// * tileid: The local ID of a tile within the parent <tileset>.
 /// * duration: How long (in milliseconds) this frame should be displayed
 ///   before advancing to the next frame.
-class Frame extends Exportable {
+class Frame with Exportable {
   int tileId;
   int duration;
 
@@ -24,8 +24,12 @@ class Frame extends Exportable {
         );
 
   @override
-  ExportResolver export() => ExportElement('frame', {
-        'tileid': tileId.toExport(),
-        'duration': duration.toExport(),
-      }, {});
+  ExportResolver export() => ExportElement(
+        'frame',
+        {
+          'tileid': tileId.toExport(),
+          'duration': duration.toExport(),
+        },
+        {},
+      );
 }

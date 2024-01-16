@@ -7,9 +7,11 @@ void main() {
   late TiledObject export;
   late CustomProperties byName;
   setUp(() {
-    byName = CustomProperties([
-      StringProperty(name: 'test_string', value: 'test'),
-    ].groupFoldBy((e) => e.name, (old, e) => e));
+    byName = CustomProperties(
+      [
+        StringProperty(name: 'test_string', value: 'test'),
+      ].groupFoldBy((e) => e.name, (old, e) => e),
+    );
 
     export = TiledObject(id: 5, properties: byName);
   });

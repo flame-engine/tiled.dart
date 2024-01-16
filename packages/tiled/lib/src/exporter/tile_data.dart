@@ -1,11 +1,12 @@
 part of tiled;
 
+/// Export element encoding the tile data
 class ExportTileData with Exportable {
   final FileEncoding? encoding;
   final Compression? compression;
   final List<int> data;
 
-  ExportTileData({
+  const ExportTileData({
     required this.data,
     required this.encoding,
     required this.compression,
@@ -26,29 +27,38 @@ class ExportTileData with Exportable {
     }
 
     return ExportFormatSpecific(
-      xml: ExportElement('data', {
-        if (encoding != null) 'encoding': encoding!.name.toExport(),
-        if (compression != null) 'compression': compression!.name.toExport(),
-      }, {
-        if (encodedData == null)
-          'tiles': exportTiles()
-        else
-          'data': encodedData.toExport(),
-      }),
-      json: ExportLiteral(this),
+      xml: ExportElement(
+        'data',
+        {
+          if (encoding != null) 'encoding': encoding!.name.toExport(),
+          if (compression != null) 'compression': compression!.name.toExport(),
+        },
+        {
+          if (encodedData == null)
+            'tiles': exportTiles()
+          else
+            'data': encodedData.toExport(),
+        },
+      ),
+      json: ExportLiteral(data),
     );
   }
 
-  ExportList exportTiles() => ExportList(data.map(
-        (gid) => ExportElement(
-          'tile',
-          {'gid': gid.toExport()},
-          {},
+  /// Exports tiles for xml elements
+  ExportList exportTiles() => ExportList(
+        data.map(
+          (gid) => ExportElement(
+            'tile',
+            {'gid': gid.toExport()},
+            {},
+          ),
         ),
-      ));
+      );
 
+  /// Encodes tiles as csv
   String encodeCsv() => data.join(', ');
 
+  /// Encodes tiles as base64
   String encodeBase64() {
     // Conversion to Uint8List
     final uint32 = Uint32List.fromList(data);

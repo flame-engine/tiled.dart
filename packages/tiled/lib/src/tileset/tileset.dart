@@ -298,10 +298,10 @@ class Tileset with Exportable {
     }.nonNulls();
 
     final common = {
-      'image': image?.export(),
+      'image': image,
       'tiles': ExportList.from(tiles),
-      'tileoffset': tileOffset?.export(),
-      'grid': grid?.export(),
+      'tileoffset': tileOffset,
+      'grid': grid,
       // 'terraintypes': , DEPRECATED
       // 'transformations': ExportList.from(transformations), Not supported by this class
     }.nonNulls();

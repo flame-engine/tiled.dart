@@ -4,30 +4,32 @@ import 'package:xml/xml.dart';
 
 void main() {
   late TiledMap export;
-  setUp(() => export = TiledMap(
-        width: 576,
-        height: 432,
-        tileWidth: 48,
-        tileHeight: 48,
-        orientation: MapOrientation.hexagonal,
-        renderOrder: RenderOrder.leftUp,
-        hexSideLength: 24,
-        staggerAxis: StaggerAxis.y,
-        staggerIndex: StaggerIndex.even,
-        backgroundColor: ColorData.hex(0xaa252627),
-        nextLayerId: 24,
-        nextObjectId: 56,
-        infinite: false,
-        layers: [
-          TileLayer(name: 'test1', width: 48, height: 48),
-          TileLayer(name: 'test2', width: 48, height: 48),
-          TileLayer(name: 'test3', width: 48, height: 48),
-        ],
-        tilesets: [
-          Tileset(firstGid: 1, source: 'xyz.png'),
-          Tileset(firstGid: 20, source: 'xyz.png'),
-        ],
-      ));
+  setUp(
+    () => export = TiledMap(
+      width: 576,
+      height: 432,
+      tileWidth: 48,
+      tileHeight: 48,
+      orientation: MapOrientation.hexagonal,
+      renderOrder: RenderOrder.leftUp,
+      hexSideLength: 24,
+      staggerAxis: StaggerAxis.y,
+      staggerIndex: StaggerIndex.even,
+      backgroundColor: ColorData.hex(0xaa252627),
+      nextLayerId: 24,
+      nextObjectId: 56,
+      infinite: false,
+      layers: [
+        TileLayer(name: 'test1', width: 48, height: 48),
+        TileLayer(name: 'test2', width: 48, height: 48),
+        TileLayer(name: 'test3', width: 48, height: 48),
+      ],
+      tilesets: [
+        Tileset(firstGid: 1, source: 'xyz.png'),
+        Tileset(firstGid: 20, source: 'xyz.png'),
+      ],
+    ),
+  );
 
   group('Exporter - Map', () {
     test(

@@ -15,7 +15,7 @@ part of tiled;
 /// Can contain up to 255: <wangcolor> (since Tiled 1.5)
 ///
 /// Can contain any number: <wangtile>
-class WangSet extends Exportable {
+class WangSet with Exportable {
   String name;
   int tile;
   List<WangColor> cornerColors;

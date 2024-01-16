@@ -1,5 +1,7 @@
 part of tiled;
 
+/// Basic data class holding a Color in ARGB format.
+/// This can be converted to dart:ui's Color using the flame_tiled package
 class ColorData {
   static int _sub(int hex, int index) => (hex >> index * 8) & 0x000000ff;
 
@@ -8,7 +10,7 @@ class ColorData {
   final int blue;
   final int alpha;
 
-  /// Format: aarrggbb
+  /// Parses the Color from an int using the lower 32-bits and tiled's format: 0xaarrggbb
   ColorData.hex(int hex)
       : alpha = _sub(hex, 3),
         red = _sub(hex, 2),

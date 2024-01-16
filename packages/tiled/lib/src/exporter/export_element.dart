@@ -12,13 +12,13 @@ class ExportElement implements ExportResolver {
   final String name;
   final Map<String, ExportValue> fields;
   final Map<String, ExportObject> children;
-  final CustomProperties properties;
+  final CustomProperties? properties;
 
   ExportElement(
     this.name,
     this.fields,
     this.children, [
-    this.properties = CustomProperties.empty,
+    this.properties,
   ]);
 
   @override
@@ -38,11 +38,11 @@ class ExportElement implements ExportResolver {
       fields.entries.map((e) => XmlAttribute(XmlName(e.key), e.value.xml)),
       [
         ..._children,
-        if (properties.isNotEmpty)
+        if (properties != null && properties!.isNotEmpty)
           XmlElement(
             XmlName('properties'),
             [],
-            properties.map((e) => e.export().exportXml()).toList(),
+            properties!.map((e) => e.export().exportXml()).toList(),
           ),
       ],
     );
@@ -65,7 +65,10 @@ class ExportElement implements ExportResolver {
             throw 'Bad State: ExportChild switch should have been exhaustive';
           }
         }),
-        'properties': JsonList(properties.map((e) => e.exportJson())),
+        if (properties != null)
+          'properties': JsonList(
+            properties!.map((e) => e.exportJson()),
+          ),
       });
 }
 
@@ -95,10 +98,8 @@ class ExportFormatSpecific implements ExportResolver {
   XmlNode exportXml() => xml.exportXml();
 }
 
-class ExportList extends DelegatingList<ExportResolver>
-    implements ExportObject {
+class ExportList extends DelegatingList<ExportResolver> implements ExportObject {
   ExportList(Iterable<ExportResolver> base) : super(base.toList());
 
-  ExportList.from(Iterable<Exportable> source)
-      : super(source.map((e) => e.export()).toList());
+  ExportList.from(Iterable<Exportable> source) : super(source.map((e) => e.export()).toList());
 }

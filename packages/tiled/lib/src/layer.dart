@@ -443,6 +443,7 @@ class TileLayer extends Layer {
               encoding: encoding,
             ).export(),
         },
+        properties,
       );
 }
 
@@ -515,6 +516,7 @@ class ObjectGroup extends Layer {
         {
           'objects': ExportList.from(objects),
         },
+        properties,
       );
 }
 
@@ -566,27 +568,29 @@ class ImageLayer extends Layer {
 
   @override
   ExportElement export() => ExportElement(
-          'imagelayer',
-          {
-            'id': id?.toExport(),
-            'name': name.toExport(),
-            'class': class_?.toExport(),
-            'type': type.name.toExport(),
-            'x': x.toExport(),
-            'y': y.toExport(),
-            'tintcolor': tintColor,
-            'opacity': opacity.toExport(),
-            'visible': (visible ? 1 : 0).toExport(),
-            'offsetx': offsetX.toExport(),
-            'offsety': offsetY.toExport(),
-            'parallaxx': parallaxX.toExport(),
-            'parallaxy': parallaxY.toExport(),
-            'repeatx': repeatX.toExport(),
-            'repeaty': repeatY.toExport(),
-          }.nonNulls(),
-          {
-            'image': image.export(),
-          });
+        'imagelayer',
+        {
+          'id': id?.toExport(),
+          'name': name.toExport(),
+          'class': class_?.toExport(),
+          'type': type.name.toExport(),
+          'x': x.toExport(),
+          'y': y.toExport(),
+          'tintcolor': tintColor,
+          'opacity': opacity.toExport(),
+          'visible': (visible ? 1 : 0).toExport(),
+          'offsetx': offsetX.toExport(),
+          'offsety': offsetY.toExport(),
+          'parallaxx': parallaxX.toExport(),
+          'parallaxy': parallaxY.toExport(),
+          'repeatx': repeatX.toExport(),
+          'repeaty': repeatY.toExport(),
+        }.nonNulls(),
+        {
+          'image': image.export(),
+        },
+        properties,
+      );
 }
 
 class Group extends Layer {

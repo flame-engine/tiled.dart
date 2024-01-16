@@ -77,11 +77,11 @@ abstract class Layer {
   /// any graphics drawn by this layer or any child layers (optional).
   String? tintColorHex;
 
-  /// [Color] that is multiplied with any graphics drawn by this layer or any
+  /// [ColorData] that is multiplied with any graphics drawn by this layer or any
   /// child layers (optional).
   ///
   /// Parsed from [tintColorHex], will be null if parsing fails for any reason.
-  Color? tintColor;
+  ColorData? tintColor;
 
   /// The opacity of the layer as a value from 0 to 1. Defaults to 1.
   double opacity;
@@ -420,7 +420,7 @@ class TileLayer extends Layer {
 }
 
 class ObjectGroup extends Layer {
-  static const defaultColor = Color.rgb(160, 160, 164, 255);
+  static const defaultColor = ColorData.rgb(160, 160, 164, 255);
   static const defaultColorHex = '%a0a0a4';
 
   /// topdown (default) or index (indexOrder).
@@ -433,12 +433,12 @@ class ObjectGroup extends Layer {
   /// this group. (defaults to gray (“#a0a0a4”))
   String colorHex;
 
-  /// [Color] used to display the objects in this group.
+  /// [ColorData] used to display the objects in this group.
   /// (defaults to gray (“#a0a0a4”))
   ///
   /// Parsed from [colorHex], will be fallback to [defaultColor] if parsing
   /// fails for any reason.
-  Color color;
+  ColorData color;
 
   ObjectGroup({
     super.id,
@@ -474,11 +474,11 @@ class ImageLayer extends Layer {
   /// (optional).
   String? transparentColorHex;
 
-  /// [Color] to be rendered as transparent (optional).
+  /// [ColorData] to be rendered as transparent (optional).
   ///
   /// Parsed from [transparentColorHex], will be null if parsing fails for any
   /// reason.
-  Color? transparentColor;
+  ColorData? transparentColor;
 
   /// Whether or not to repeat the image on the X-axis
   bool repeatX;

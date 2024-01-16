@@ -11,8 +11,8 @@ import 'package:meta/meta.dart';
 import 'package:xml/xml.dart';
 
 part 'src/chunk.dart';
-part 'src/data.dart';
 part 'src/exporter/exportable.dart';
+part 'src/exporter/export_tile_data.dart';
 part 'src/exporter/export_value.dart';
 part 'src/exporter/export_element.dart';
 part 'src/exporter/json.dart';

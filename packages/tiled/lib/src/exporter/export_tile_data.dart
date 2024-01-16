@@ -1,26 +1,27 @@
 part of tiled;
 
-class TileDataEncoder extends DelegatingList<int> with Exportable {
+class ExportTileData with Exportable {
   final FileEncoding? encoding;
   final Compression? compression;
+  final List<int> data;
 
-  TileDataEncoder({
-    required List<int> data,
+  ExportTileData({
+    required this.data,
     required this.encoding,
     required this.compression,
-  }) : super(data);
+  });
 
   @override
   ExportResolver export() {
-    String? data;
+    String? encodedData;
     switch (encoding) {
       case null:
         break;
       case FileEncoding.csv:
-        data = join(', ');
+        encodedData = encodeCsv();
         break;
       case FileEncoding.base64:
-        data = _base64();
+        encodedData = encodeBase64();
         break;
     }
 
@@ -29,35 +30,34 @@ class TileDataEncoder extends DelegatingList<int> with Exportable {
         if (encoding != null) 'encoding': encoding!.name.toExport(),
         if (compression != null) 'compression': compression!.name.toExport(),
       }, {
-        if (data == null)
-          'tiles': ExportList(map(
-            (gid) => ExportElement(
-              'tile',
-              {'gid': gid.toExport()},
-              {},
-            ),
-          ))
+        if (encodedData == null)
+          'tiles': exportTiles()
         else
-          'data': data.toExport(),
+          'data': encodedData.toExport(),
       }),
       json: ExportLiteral(this),
     );
   }
 
-  String _base64() {
+  ExportList exportTiles() =>
+      ExportList(data.map(
+            (gid) =>
+            ExportElement(
+              'tile',
+              {'gid': gid.toExport()},
+              {},
+            ),
+      ));
+
+  String encodeCsv() => data.join(', ');
+
+  String encodeBase64() {
     // Conversion to Uint8List
-    final uint32 = Uint32List.fromList(this);
-    final dv = ByteData(this.length * 4);
-
-    for (var i = 0; i < this.length; ++i) {
-      dv.setInt32(i * 4, uint32[i], Endian.little);
-    }
-
-    final uint8 = dv.buffer.asUint8List();
+    final uint32 = Uint32List.fromList(data);
+    final uint8 = uint32.buffer.asUint8List();
 
     // Compression
     List<int> compressed;
-    print(compression);
     switch (compression) {
       case Compression.zlib:
         compressed = const ZLibEncoder().encode(uint8);

@@ -437,7 +437,7 @@ class TileLayer extends Layer {
                   compression: compression,
                 ))),
           if (data != null)
-            'data': TileDataEncoder(
+            'data': ExportTileData(
               data: data!,
               compression: compression,
               encoding: encoding,

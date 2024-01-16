@@ -73,7 +73,7 @@ class Chunk extends Exportable {
       'chunk',
       common,
       {
-        'data': TileDataEncoder(
+        'data': ExportTileData(
           data: data,
           compression: compression,
           encoding: encoding,

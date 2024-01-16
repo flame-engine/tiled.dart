@@ -318,8 +318,16 @@ class TiledMap {
     );
   }
 
-  static TiledMap parseJson(String json) {
-    final parser = JsonParser(jsonDecode(json) as Map<String, dynamic>);
+  static TiledMap parseJson(
+    String json, {
+    List<ParserProvider>? tsxProviders,
+    List<ParserProvider>? templateProviders,
+  }) {
+    final parser = JsonParser(
+      jsonDecode(json) as Map<String, dynamic>,
+      templateProviders: templateProviders,
+      tsxProviders: tsxProviders,
+    );
     return TiledMap.parse(parser);
   }
 
@@ -327,31 +335,24 @@ class TiledMap {
   ///
   /// Accepts an optional list of external TsxProviders for external tilesets
   /// referenced in the map file.
-  static TiledMap parseTmx(
+  factory TiledMap.parseTmx(
     String xml, {
     List<ParserProvider>? tsxProviders,
     List<ParserProvider>? templateProviders,
-    List<ImagePathProvider>? imageProviders,
   }) {
     final xmlElement = XmlDocument.parse(xml).rootElement;
     if (xmlElement.name.local != 'map') {
       throw 'XML is not in TMX format';
     }
-    final parser = XmlParser(xmlElement);
-    return TiledMap.parse(
-      parser,
+    final parser = XmlParser(
+      xmlElement,
       tsxProviders: tsxProviders,
       templateProviders: templateProviders,
-      imageProviders: imageProviders,
     );
+    return TiledMap.parse(parser);
   }
 
-  factory TiledMap.parse(
-    Parser parser, {
-    List<ParserProvider>? tsxProviders,
-    List<ParserProvider>? templateProviders,
-    List<ImagePathProvider>? imageProviders,
-  }) {
+  factory TiledMap.parse(Parser parser) {
     final backgroundColorHex = parser.getStringOrNull('backgroundcolor');
     final backgroundColor = parser.getColorOrNull('backgroundcolor');
     final compressionLevel = parser.getInt('compressionlevel', defaults: -1);
@@ -378,10 +379,11 @@ class TiledMap {
       'tileset',
       (tilesetData) {
         final tilesetSource = tilesetData.getStringOrNull('source');
-        if (tilesetSource == null || tsxProviders == null) {
+        if (tilesetSource == null || parser.tsxProviders == null) {
           return Tileset.parse(tilesetData);
         }
-        final matchingTsx = tsxProviders.where(
+
+        final matchingTsx = parser.tsxProviders!.where(
           (tsx) => tsx.canProvide(tilesetSource),
         );
 

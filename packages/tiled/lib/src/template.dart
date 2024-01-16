@@ -34,3 +34,7 @@ class Template {
           object: parser.getSingleChildOrNullAs('object', TiledObject.parse),
         );
 }
+
+class TemplateReference {
+
+}

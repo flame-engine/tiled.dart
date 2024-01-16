@@ -12,10 +12,18 @@ class ParsingException implements Exception {
 class XmlParser extends Parser {
   final XmlElement element;
 
-  XmlParser(this.element);
+  XmlParser(this.element, {super.tsxProviders, super.templateProviders});
 
-  factory XmlParser.fromString(String string) =>
-      XmlParser(XmlDocument.parse(string).rootElement);
+  factory XmlParser.fromString(
+    String string, {
+    List<ParserProvider>? tsxProviders,
+    List<ParserProvider>? templateProviders,
+  }) =>
+      XmlParser(
+        XmlDocument.parse(string).rootElement,
+        tsxProviders: tsxProviders,
+        templateProviders: templateProviders,
+      );
 
   @override
   String? getInnerTextOrNull() =>
@@ -31,7 +39,11 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => e.name.local == name)
-        .map(XmlParser.new)
+        .map((e) => XmlParser(
+              e,
+              templateProviders: templateProviders,
+              tsxProviders: tsxProviders,
+            ))
         .toList();
   }
 
@@ -39,7 +51,11 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => names.contains(e.name.local))
-        .map(XmlParser.new)
+        .map((e) => XmlParser(
+              e,
+              tsxProviders: tsxProviders,
+              templateProviders: templateProviders,
+            ))
         .toList();
   }
 
@@ -55,8 +71,18 @@ class XmlParser extends Parser {
 class JsonParser extends Parser {
   final Map<String, dynamic> json;
 
-  JsonParser(this.json);
-  factory JsonParser.fromString(String string) => JsonParser(jsonDecode(string) as Map<String, dynamic>);
+  JsonParser(this.json, {super.tsxProviders, super.templateProviders});
+
+  factory JsonParser.fromString(
+    String string, {
+    List<ParserProvider>? tsxProviders,
+    List<ParserProvider>? templateProviders,
+  }) =>
+      JsonParser(
+        jsonDecode(string) as Map<String, dynamic>,
+        tsxProviders: tsxProviders,
+        templateProviders: templateProviders,
+      );
 
   @override
   String? getInnerTextOrNull() => null;
@@ -72,7 +98,11 @@ class JsonParser extends Parser {
       return [];
     }
     return (json[name] as List<dynamic>)
-        .map((dynamic e) => JsonParser(e as Map<String, dynamic>))
+        .map((dynamic e) => JsonParser(
+              e as Map<String, dynamic>,
+              templateProviders: templateProviders,
+              tsxProviders: tsxProviders,
+            ))
         .toList();
   }
 
@@ -90,6 +120,11 @@ class JsonParser extends Parser {
 }
 
 abstract class Parser {
+  final List<ParserProvider>? templateProviders;
+  final List<ParserProvider>? tsxProviders;
+
+  Parser({this.tsxProviders, this.templateProviders});
+
   String? getInnerTextOrNull();
 
   String? getStringOrNull(String name, {String? defaults});

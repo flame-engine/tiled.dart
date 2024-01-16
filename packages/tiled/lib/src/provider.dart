@@ -1,10 +1,10 @@
 part of tiled;
 
 abstract class Provider<T> {
-  bool canProvide(String filename);
+  bool canProvide(String path);
 
-  T getSource(String filename);
-  T? getCachedSource(String filename);
+  T getSource(String path);
+  T? getCachedSource(String path);
 }
 
 typedef ParserProvider = Provider<Parser>;

@@ -59,7 +59,9 @@ class TiledObject {
   bool point;
   bool rectangle;
 
+  String? templatePath;
   Template? template;
+
   Text? text;
   bool visible;
 
@@ -84,6 +86,7 @@ class TiledObject {
     this.ellipse = false,
     this.point = false,
     this.rectangle = false,
+    this.templatePath,
     this.template,
     this.text,
     this.visible = true,
@@ -93,12 +96,17 @@ class TiledObject {
   });
 
   bool get isPolyline => polyline.isNotEmpty;
+
   bool get isPolygon => polygon.isNotEmpty;
+
   bool get isPoint => point;
+
   bool get isEllipse => ellipse;
+
   bool get isRectangle => rectangle;
 
-  factory TiledObject.parse(Parser parser) {
+  factory TiledObject.parse(
+    Parser parser) {
     final x = parser.getDouble('x', defaults: 0);
     final y = parser.getDouble('y', defaults: 0);
     final height = parser.getDouble('height', defaults: 0);
@@ -126,7 +134,17 @@ class TiledObject {
       (xml) => xml.getChildren('point').isNotEmpty,
     );
     final text = parser.getSingleChildOrNullAs('text', Text.parse);
-    final template = parser.getSingleChildOrNullAs('template', Template.parse);
+    final templatePath = parser.getStringOrNull('template');
+    final templateProvider = templatePath == null
+        ? null
+        : parser.templateProviders?.firstWhere((e) => e.canProvide(templatePath));
+    final template = templateProvider == null
+        ? null
+        : Template.parse(
+            templateProvider.getCachedSource(templatePath!) ??
+                templateProvider.getSource(templatePath),
+          );
+
     final properties = parser.getProperties();
 
     final polygon = parsePointList(parser, 'polygon');
@@ -147,6 +165,7 @@ class TiledObject {
       ellipse: ellipse,
       point: point,
       rectangle: rectangle,
+      templatePath: templatePath,
       template: template,
       text: text,
       visible: visible,

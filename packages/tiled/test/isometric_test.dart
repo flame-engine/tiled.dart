@@ -10,7 +10,7 @@ void main() {
     return File('./test/fixtures/isometric_grass_and_water.tmx')
         .readAsString()
         .then((xml) {
-      mapIso = TileMapParser.parseTmx(xml);
+      mapIso = TiledMap.parseTmx(xml);
     });
   });
 

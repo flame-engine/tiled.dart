@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math' show Rectangle;
 
 import 'package:collection/collection.dart';
+import 'package:path/path.dart' as paths;
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
@@ -10,14 +11,14 @@ void main() {
   late TiledMap map;
   setUp(() {
     return File('./test/fixtures/test.tmx').readAsString().then((xml) {
-      map = TileMapParser.parseTmx(xml);
+      map = TiledMap.parseTmx(xml);
     });
   });
 
   test('Parser.parse raises an error when the XML is empty', () {
     const wrongXml = '';
     expect(
-      () => TileMapParser.parseTmx(wrongXml),
+      () => TiledMap.parseTmx(wrongXml),
       throwsA(const TypeMatcher<XmlParserException>()),
     );
   });
@@ -25,7 +26,7 @@ void main() {
   test('Parser.parse raises an error when the XML is not in TMX format', () {
     const wrongXml = '<xml></xml>';
     expect(
-      () => TileMapParser.parseTmx(wrongXml),
+      () => TiledMap.parseTmx(wrongXml),
       throwsA('XML is not in TMX format'),
     );
   });
@@ -209,7 +210,7 @@ void main() {
   group('Parser.parse populates Map with objectgroups', () {
     setUp(() {
       return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(xml);
+        map = TiledMap.parseTmx(xml);
       });
     });
 
@@ -252,9 +253,9 @@ void main() {
   group('Parser.parse fills Map with tileset & different img configs', () {
     setUp(() {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(
+        map = TiledMap.parseTmx(
           xml,
-          tsxList: [CustomTsxProvider.parse('tileset.tsx')],
+          tsxProviders: [FixtureTsxProvider.all('./test/fixtures')],
         );
       });
     });
@@ -313,9 +314,9 @@ void main() {
       return File('./test/fixtures/external_tileset_map.tmx')
           .readAsString()
           .then((xml) {
-        final map = TileMapParser.parseTmx(
+        final map = TiledMap.parseTmx(
           xml,
-          tsxList: [CustomTsxProvider.parse('tileid_over_tilecount.tsx')],
+          tsxProviders: [FixtureTsxProvider.all('./test/fixtures')],
         );
         expect(map.tilesets[0].tileCount, 137);
         final tile = map.tileByGid(1)!;
@@ -328,9 +329,9 @@ void main() {
   group('Parser.parse with tsx provider', () {
     test('it loads external tsx', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(
+        map = TiledMap.parseTmx(
           xml,
-          tsxList: [CustomTsxProvider.parse('tileset.tsx')],
+          tsxProviders: [FixtureTsxProvider.all('./test/fixtures')],
         );
         expect(
           map.tilesetByName('external').image!.source,
@@ -343,9 +344,9 @@ void main() {
   group('Parser.parse with multiple layers', () {
     test('it has 2 layers', () {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
-        map = TileMapParser.parseTmx(
+        map = TiledMap.parseTmx(
           xml,
-          tsxList: [CustomTsxProvider.parse('tileset.tsx')],
+          tsxProviders: [FixtureTsxProvider.all('./test/fixtures')],
         );
         expect(map.layers.length, equals(2));
       });
@@ -358,19 +359,9 @@ void main() {
       return File('./test/fixtures/map_with_multiple_tilesets.tmx')
           .readAsString()
           .then((xml) {
-        final tilemapXml = XmlDocument.parse(xml).rootElement;
-        final tsxSourcePaths = tilemapXml.children
-            .whereType<XmlElement>()
-            .where((element) => element.name.local == 'tileset')
-            .map((tsx) => tsx.getAttribute('source'));
-
-        final tsxProviders = tsxSourcePaths
-            .where((key) => key != null)
-            .map((key) => CustomTsxProvider.parse(key!));
-
-        map = TileMapParser.parseTmx(
+        map = TiledMap.parseTmx(
           xml,
-          tsxList: tsxProviders.isEmpty ? null : tsxProviders.toList(),
+          tsxProviders: [FixtureTsxProvider.all('./test/fixtures')],
         );
         return;
       });
@@ -428,7 +419,7 @@ void main() {
     test('support empty terrain values', () {
       final xml = File('./test/fixtures/map_with_empty_terrains.tmx')
           .readAsStringSync();
-      final tiledMap = TileMapParser.parseTmx(xml);
+      final tiledMap = TiledMap.parseTmx(xml);
 
       final tileset = tiledMap.tilesets.first;
       final tile = tileset.tiles.first;
@@ -437,28 +428,52 @@ void main() {
   });
 }
 
-class CustomTsxProvider extends TsxProvider {
-  final String _filename;
-  final String data;
+class FixtureTsxProvider extends ParserProvider {
+  final List<String> files;
+  final String root;
 
-  CustomTsxProvider._(this.data, this._filename);
+  FixtureTsxProvider(this.root, this.files);
 
-  factory CustomTsxProvider.parse(String filename) {
-    final xml = File('./test/fixtures/$filename').readAsStringSync();
-    return CustomTsxProvider._(xml, filename);
+  factory FixtureTsxProvider.all(String directory) {
+    final dir = Directory(directory);
+    if (!dir.existsSync()) {
+      throw '[FixtureTsxProvider] Supplied directory does not exist!';
+    }
+
+    final names = dir
+        .listSync()
+        .whereType<File>()
+        .where((e) => e.path.endsWith('.tsx'))
+        .map((e) => paths.basename(e.path))
+        .toList();
+
+    return FixtureTsxProvider(directory, names);
   }
 
-  @override
-  String get filename => _filename;
+  factory FixtureTsxProvider.file(String path) {
+    final file = File(path);
+    if (!file.existsSync()) {
+      throw '[FixtureTsxProvider] Supplied path does not match any file!';
+    }
 
-  @override
-  Parser getSource(String key) {
-    final node = XmlDocument.parse(data).rootElement;
-    return XmlParser(node);
+    return FixtureTsxProvider(paths.dirname(path), [paths.basename(path)]);
   }
 
+  final Map<String, String> cache = {};
+
   @override
-  Parser? getCachedSource() {
-    return getSource('');
+  bool canProvide(String filename) => true;
+
+  @override
+  Parser? getCachedSource(String filename) => cache.containsKey(filename)
+      ? XmlParser.fromString(cache[filename]!)
+      : null;
+
+  @override
+  Parser getSource(String filename) {
+    final content = File(paths.join(root, filename)).readAsStringSync();
+    cache[filename] = content;
+
+    return XmlParser.fromString(content);
   }
 }

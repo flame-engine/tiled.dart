@@ -5,12 +5,17 @@ class ParsingException implements Exception {
   final String name;
   final String? valueFound;
   final String reason;
+
   ParsingException(this.name, this.valueFound, this.reason);
 }
 
 class XmlParser extends Parser {
   final XmlElement element;
+
   XmlParser(this.element);
+
+  factory XmlParser.fromString(String string) =>
+      XmlParser(XmlDocument.parse(string).rootElement);
 
   @override
   String? getInnerTextOrNull() =>
@@ -49,7 +54,9 @@ class XmlParser extends Parser {
 
 class JsonParser extends Parser {
   final Map<String, dynamic> json;
+
   JsonParser(this.json);
+  factory JsonParser.fromString(String string) => JsonParser(jsonDecode(string) as Map<String, dynamic>);
 
   @override
   String? getInnerTextOrNull() => null;

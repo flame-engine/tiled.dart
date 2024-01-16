@@ -193,31 +193,30 @@ class TiledObject extends Exportable {
 
     return ExportFormatSpecific(
       xml: ExportElement(
-        'object',
-        common,
-        {
-          if (ellipse) 'ellipse': ExportElement('ellipse', {}, {}),
-          if (point) 'point': ExportElement('point', {}, {}),
-          if (polygon.isNotEmpty)
-            'polygon': ExportElement(
-              'polygon',
-              {
-                'points': polygon.toExport(),
-              },
-              {},
-            ),
-          if (polyline.isNotEmpty)
-            'polyline': ExportElement(
-              'polyline',
-              {
-                'points': polygon.toExport(),
-              },
-              {},
-            ),
-          if (text != null) 'text': text!.export(),
-        },
-        properties
-      ),
+          'object',
+          common,
+          {
+            if (ellipse) 'ellipse': ExportElement('ellipse', {}, {}),
+            if (point) 'point': ExportElement('point', {}, {}),
+            if (polygon.isNotEmpty)
+              'polygon': ExportElement(
+                'polygon',
+                {
+                  'points': polygon.toExport(),
+                },
+                {},
+              ),
+            if (polyline.isNotEmpty)
+              'polyline': ExportElement(
+                'polyline',
+                {
+                  'points': polygon.toExport(),
+                },
+                {},
+              ),
+            if (text != null) 'text': text!.export(),
+          },
+          properties),
       json: ExportElement(
         'object',
         {

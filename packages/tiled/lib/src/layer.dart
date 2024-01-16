@@ -144,13 +144,17 @@ abstract class Layer extends Exportable {
           (json) => null, // data is just a string or list of int on JSON
           (xml) => xml.getSingleChildOrNull('data'),
         );
-        final compression = parser.getCompressionOrNull('compression') ?? dataNode?.getCompressionOrNull('compression');
-        final encoding =
-            parser.getFileEncodingOrNull('encoding') ?? dataNode?.getFileEncodingOrNull('encoding') ?? FileEncoding.csv;
+        final compression = parser.getCompressionOrNull('compression') ??
+            dataNode?.getCompressionOrNull('compression');
+        final encoding = parser.getFileEncodingOrNull('encoding') ??
+            dataNode?.getFileEncodingOrNull('encoding') ??
+            FileEncoding.csv;
         Chunk parseChunk(Parser e) => Chunk.parse(e, encoding, compression);
-        final chunks =
-            parser.getChildrenAs('chunks', parseChunk) + (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
-        final data = dataNode != null ? parseLayerData(dataNode, encoding, compression) : null;
+        final chunks = parser.getChildrenAs('chunks', parseChunk) +
+            (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
+        final data = dataNode != null
+            ? parseLayerData(dataNode, encoding, compression)
+            : null;
         layer = TileLayer(
           id: id,
           name: name,
@@ -181,8 +185,10 @@ abstract class Layer extends Exportable {
           'draworder',
           defaults: DrawOrder.topDown,
         );
-        final colorHex = parser.getString('color', defaults: ObjectGroup.defaultColorHex);
-        final color = parser.getColor('color', defaults: ObjectGroup.defaultColor);
+        final colorHex =
+            parser.getString('color', defaults: ObjectGroup.defaultColorHex);
+        final color =
+            parser.getColor('color', defaults: ObjectGroup.defaultColor);
         final objects = parser.getChildrenAs('object', TiledObject.parse);
         layer = ObjectGroup(
           id: id,

@@ -276,8 +276,7 @@ class Tileset with Exportable {
           {},
         );
 
-  ExportResolver exportExternal() =>
-      _export(true);
+  ExportResolver exportExternal() => _export(true);
 
   ExportResolver _export(bool external) {
     final fields = {

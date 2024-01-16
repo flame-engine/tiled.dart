@@ -38,8 +38,10 @@ class Gid extends ExportValue<int> {
   static const int flippedDiagonallyFlag = 0x20000000;
   static const int flippedAntiDiagonallyFlag = 0x10000000;
 
-  static const int flagBits =
-      flippedHorizontallyFlag | flippedVerticallyFlag | flippedDiagonallyFlag | flippedAntiDiagonallyFlag;
+  static const int flagBits = flippedHorizontallyFlag |
+      flippedVerticallyFlag |
+      flippedDiagonallyFlag |
+      flippedAntiDiagonallyFlag;
 
   final int tile;
   final Flips flips;
@@ -48,13 +50,20 @@ class Gid extends ExportValue<int> {
 
   factory Gid.fromInt(int gid) {
     // get flips from id
-    final flippedHorizontally = (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
-    final flippedVertically = (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
-    final flippedDiagonally = (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
-    final flippedAntiDiagonally = gid & flippedAntiDiagonallyFlag == flippedAntiDiagonallyFlag;
+    final flippedHorizontally =
+        (gid & flippedHorizontallyFlag) == flippedHorizontallyFlag;
+    final flippedVertically =
+        (gid & flippedVerticallyFlag) == flippedVerticallyFlag;
+    final flippedDiagonally =
+        (gid & flippedDiagonallyFlag) == flippedDiagonallyFlag;
+    final flippedAntiDiagonally =
+        gid & flippedAntiDiagonallyFlag == flippedAntiDiagonallyFlag;
     // clear id from flips
-    final tileId =
-        gid & ~(flippedHorizontallyFlag | flippedVerticallyFlag | flippedDiagonallyFlag | flippedAntiDiagonallyFlag);
+    final tileId = gid &
+        ~(flippedHorizontallyFlag |
+            flippedVerticallyFlag |
+            flippedDiagonallyFlag |
+            flippedAntiDiagonallyFlag);
     final flip = Flips(
       flippedHorizontally,
       flippedVertically,

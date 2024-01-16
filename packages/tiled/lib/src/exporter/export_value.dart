@@ -55,10 +55,12 @@ class _ExportablePointList extends ExportValue<List<Map<String, double>>> {
   _ExportablePointList(this.points);
 
   @override
-  List<Map<String, double>> get json => points.map((e) => {
-        'x': e.x,
-        'y': e.y,
-      }).toList();
+  List<Map<String, double>> get json => points
+      .map((e) => {
+            'x': e.x,
+            'y': e.y,
+          })
+      .toList();
 
   @override
   String get xml => points.map((e) => '${e.x},${e.y}').join(' ');

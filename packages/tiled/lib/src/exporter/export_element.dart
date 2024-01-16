@@ -98,8 +98,10 @@ class ExportFormatSpecific implements ExportResolver {
   XmlNode exportXml() => xml.exportXml();
 }
 
-class ExportList extends DelegatingList<ExportResolver> implements ExportObject {
+class ExportList extends DelegatingList<ExportResolver>
+    implements ExportObject {
   ExportList(Iterable<ExportResolver> base) : super(base.toList());
 
-  ExportList.from(Iterable<Exportable> source) : super(source.map((e) => e.export()).toList());
+  ExportList.from(Iterable<Exportable> source)
+      : super(source.map((e) => e.export()).toList());
 }

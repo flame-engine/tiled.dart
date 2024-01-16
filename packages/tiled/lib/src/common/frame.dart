@@ -25,7 +25,7 @@ class Frame extends Exportable {
 
   @override
   ExportResolver export() => ExportElement('frame', {
-    'tileid': tileId.toExport(),
-    'duration': duration.toExport(),
-  }, {});
+        'tileid': tileId.toExport(),
+        'duration': duration.toExport(),
+      }, {});
 }

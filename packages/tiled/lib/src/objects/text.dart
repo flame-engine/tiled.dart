@@ -86,8 +86,7 @@ class Text extends Exportable {
         );
 
   @override
-  ExportElement export() =>
-      ExportElement('text', {
+  ExportElement export() => ExportElement('text', {
         'fontfamily': fontFamily.toExport(),
         'pixelsize': pixelSize.toExport(),
         'wrap': wrap.toExport(),
@@ -100,6 +99,6 @@ class Text extends Exportable {
         'halign': hAlign.name.toExport(),
         'valign': vAlign.name.toExport(),
       }, {
-          'text': text.toExport(),
+        'text': text.toExport(),
       });
 }

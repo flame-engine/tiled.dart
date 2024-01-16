@@ -19,17 +19,17 @@ void main() {
     expect(properties.length, equals(byName.length));
 
     for (final property in properties) {
-      final match = byName.where((e) => e.name == property.name && e.value == property.value);
+      final match = byName
+          .where((e) => e.name == property.name && e.value == property.value);
       expect(match.length, equals(1));
     }
   }
 
   group('Exporter - CustomProperties', () {
-    test('Xml',
-        () => testSuite(XmlParser(export.exportXml() as XmlElement)));
+    test('Xml', () => testSuite(XmlParser(export.exportXml() as XmlElement)));
     test(
         'Json',
-        () => testSuite(
-            JsonParser(export.exportJson() as Map<String, dynamic>)));
+        () =>
+            testSuite(JsonParser(export.exportJson() as Map<String, dynamic>)));
   });
 }

@@ -5,10 +5,12 @@ class XmlDeepMatcher extends Matcher {
   final XmlElement expected;
 
   XmlDeepMatcher(this.expected);
-  XmlDeepMatcher.parse(String xml) : expected = XmlDocument.parse(xml).rootElement..normalize();
+  XmlDeepMatcher.parse(String xml)
+      : expected = XmlDocument.parse(xml).rootElement..normalize();
 
   @override
-  Description describe(Description description) => description..add(expected.toString());
+  Description describe(Description description) =>
+      description..add(expected.toString());
 
   @override
   bool matches(dynamic item, Map matchState) {

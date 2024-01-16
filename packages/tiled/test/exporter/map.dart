@@ -14,7 +14,7 @@ void main() {
         hexSideLength: 24,
         staggerAxis: StaggerAxis.y,
         staggerIndex: StaggerIndex.even,
-        backgroundColor: Color.hex(0xaa252627),
+        backgroundColor: ColorData.hex(0xaa252627),
         nextLayerId: 24,
         nextObjectId: 56,
         infinite: false,
@@ -36,8 +36,7 @@ void main() {
     );
     test(
       'Json',
-      () => testSuite(
-          JsonParser(export.exportJson() as Map<String, dynamic>)),
+      () => testSuite(JsonParser(export.exportJson() as Map<String, dynamic>)),
     );
   });
 }

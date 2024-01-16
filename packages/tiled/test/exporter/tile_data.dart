@@ -29,7 +29,6 @@ void main() {
       expect(unencoded, orderedEquals(testData));
     }
 
-
     test("base64-uncompressed", () => _test(testData, null));
     test("base64-gzip", () => _test(testData, Compression.gzip));
     test("base64-zlib", () => _test(testData, Compression.zlib));

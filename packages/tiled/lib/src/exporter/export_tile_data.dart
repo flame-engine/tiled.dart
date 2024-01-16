@@ -39,14 +39,12 @@ class ExportTileData with Exportable {
     );
   }
 
-  ExportList exportTiles() =>
-      ExportList(data.map(
-            (gid) =>
-            ExportElement(
-              'tile',
-              {'gid': gid.toExport()},
-              {},
-            ),
+  ExportList exportTiles() => ExportList(data.map(
+        (gid) => ExportElement(
+          'tile',
+          {'gid': gid.toExport()},
+          {},
+        ),
       ));
 
   String encodeCsv() => data.join(', ');

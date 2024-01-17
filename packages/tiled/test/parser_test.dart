@@ -88,7 +88,9 @@ void main() {
             equals('test_value'),
           );
           expect(
-            properties.getValue<String>('multiline string'),
+            properties
+                .getValue<String>('multiline string')
+                ?.replaceAll('\r\n', '\n'),
             equals('Hello,\nWorld'),
           );
           expect(

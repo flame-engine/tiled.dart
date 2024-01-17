@@ -74,7 +74,8 @@ class Text {
           fontFamily: parser.getString('fontFamily', defaults: 'sans-serif'),
           pixelSize: parser.getInt('pixelSize', defaults: 16),
           color: parser.getString('color', defaults: '#000000'),
-          text: parser.getString('text', defaults: ''),
+          text: parser.getInnerTextOrNull() ??
+              parser.getString('text', defaults: ''),
           hAlign: parser.getHAlign('hAlign', defaults: HAlign.left),
           vAlign: parser.getVAlign('vAlign', defaults: VAlign.top),
           bold: parser.getBool('bold', defaults: false),

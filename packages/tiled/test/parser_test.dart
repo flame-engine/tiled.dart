@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math' show Rectangle;
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
@@ -236,6 +237,15 @@ void main() {
 
       test('has the right class_', () {
         expect(og.class_, equals('objectLayer1Class'));
+      });
+
+      test('has the right text object with ID 5', () {
+        final textObject = (og as ObjectGroup)
+            .objects
+            .firstWhereOrNull((element) => element.id == 5);
+        final text = textObject?.text;
+        expect(text?.wrap, equals(true));
+        expect(text?.text, equals('Hello World'));
       });
     });
   });

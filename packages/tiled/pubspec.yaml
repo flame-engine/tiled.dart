@@ -5,6 +5,7 @@ homepage: https://github.com/flame-engine/tiled.dart
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
+
 dependencies:
   archive: ^3.3.0
   collection: ^1.16.0
@@ -15,6 +16,6 @@ dependencies:
 
 dev_dependencies:
   dartdoc: ^6.0.1
-  flame_lint: ^1.1.1
+  flame_lint: ^1.1.2
   flutter_test:
     sdk: flutter

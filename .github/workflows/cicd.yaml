@@ -38,7 +38,7 @@ jobs:
           cache: true
       - uses: bluefireteam/melos-action@v3
       - name: Run format
-        run: melos format
+        run: melos format-check
   # END LINTING STAGE
 
   # BEGIN TESTING STAGE

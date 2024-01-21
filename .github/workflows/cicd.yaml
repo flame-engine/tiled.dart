@@ -18,33 +18,38 @@ jobs:
           channel: 'stable'
       - uses: flame-engine/flame-dartdoc-action@v2
 
-  format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
-      - uses: flame-engine/flame-format-action@v1
-
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+      - uses: bluefireteam/melos-action@v3
+      - name: "Analyze with latest stable"
+        uses: invertase/github-action-dart-analyzer@v2.0.0
         with:
-          channel: 'stable'
-      - uses: flame-engine/flame-analyze-action@v2
+          fatal-infos: true
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          cache: true
+      - uses: bluefireteam/melos-action@v3
+      - name: Run format
+        run: melos format
   # END LINTING STAGE
 
   # BEGIN TESTING STAGE
   test:
-    needs: [dartdoc, format, analyze]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-      - uses: flame-engine/flame-test-action@v1
+          cache: true
+      - uses: bluefireteam/melos-action@v3
+      - name: Run tests
+        run: melos test
   # END TESTING STAGE

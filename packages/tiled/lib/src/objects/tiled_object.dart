@@ -44,7 +44,7 @@ part of tiled;
 /// Can contain at most one: <properties>, <ellipse> (since 0.9),
 /// <point> (since 1.1), <polygon>, <polyline>, <text> (since 1.0)
 class TiledObject {
-  int id;
+  int? id;
   String name;
   String type;
   int? gid;
@@ -59,7 +59,7 @@ class TiledObject {
   bool point;
   bool rectangle;
 
-  Template? template;
+  Future<Template?>? template;
   Text? text;
   bool visible;
 
@@ -72,7 +72,7 @@ class TiledObject {
   String get class_ => type;
 
   TiledObject({
-    required this.id,
+    this.id,
     this.name = '',
     this.type = '',
     this.gid,
@@ -105,7 +105,7 @@ class TiledObject {
     final width = parser.getDouble('width', defaults: 0);
     final rotation = parser.getDouble('rotation', defaults: 0);
     final visible = parser.getBool('visible', defaults: true);
-    final id = parser.getInt('id');
+    final id = parser.getIntOrNull('id');
     final gid = parser.getIntOrNull('gid');
     final name = parser.getString('name', defaults: '');
 
@@ -126,7 +126,8 @@ class TiledObject {
       (xml) => xml.getChildren('point').isNotEmpty,
     );
     final text = parser.getSingleChildOrNullAs('text', Text.parse);
-    final template = parser.getSingleChildOrNullAs('template', Template.parse);
+    final template =
+        parser.getExternalPropertyOrNull('template', Template.parse);
     final properties = parser.getProperties();
 
     final polygon = parsePointList(parser, 'polygon');

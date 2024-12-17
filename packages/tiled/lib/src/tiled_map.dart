@@ -148,6 +148,7 @@ class TiledMap {
     return TileMapParser.parseTmx(
       contents,
       tsxList: tsxProviders.isEmpty ? null : tsxProviders,
+      tsxProviderFunction: tsxProviderFunction,
     );
   }
 

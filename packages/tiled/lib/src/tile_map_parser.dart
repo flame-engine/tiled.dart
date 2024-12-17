@@ -1,4 +1,4 @@
-part of tiled;
+part of '../tiled.dart';
 
 class TileMapParser {
   static TiledMap parseJson(String json) {

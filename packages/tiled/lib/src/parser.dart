@@ -1,4 +1,4 @@
-part of tiled;
+part of '../tiled.dart';
 
 class ParsingException implements Exception {
   final String name;

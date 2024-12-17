@@ -1,4 +1,4 @@
-part of tiled;
+part of '../../tiled.dart';
 
 enum MapOrientation { orthogonal, isometric, staggered, hexagonal }
 

@@ -7,7 +7,7 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
-  archive: ^3.3.0
+  archive: ">=3.3.0 <5.0.0"
   collection: ^1.16.0
   flutter:
     sdk: flutter
@@ -15,7 +15,7 @@ dependencies:
   xml: ^6.1.0
 
 dev_dependencies:
-  dartdoc: ^6.0.1
+  dartdoc: ^8.3.1
   flame_lint: ^1.1.2
   flutter_test:
     sdk: flutter

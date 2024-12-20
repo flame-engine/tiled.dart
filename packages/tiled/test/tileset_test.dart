@@ -57,7 +57,9 @@ void main() {
     test(
       'first objectgroup object = ellipsis',
       () => expect(
-        ((tileset.tiles.first.objectGroup as ObjectGroup?)!.objects.first)
+        (tileset.tiles.first.objectGroup as ObjectGroup?)!
+            .objects
+            .first
             .isEllipse,
         true,
       ),

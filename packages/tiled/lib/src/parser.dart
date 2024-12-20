@@ -1,4 +1,4 @@
-part of tiled;
+part of '../tiled.dart';
 
 class ParsingException implements Exception {
   final String name;
@@ -10,6 +10,10 @@ class ParsingException implements Exception {
 class XmlParser extends Parser {
   final XmlElement element;
   XmlParser(this.element);
+
+  @override
+  String? getInnerTextOrNull() =>
+      element.innerText.isEmpty ? null : element.innerText;
 
   @override
   String? getStringOrNull(String name, {String? defaults}) {
@@ -47,6 +51,9 @@ class JsonParser extends Parser {
   JsonParser(this.json);
 
   @override
+  String? getInnerTextOrNull() => null;
+
+  @override
   String? getStringOrNull(String name, {String? defaults}) {
     return json[name]?.toString() ?? defaults;
   }
@@ -75,6 +82,8 @@ class JsonParser extends Parser {
 }
 
 abstract class Parser {
+  String? getInnerTextOrNull();
+
   String? getStringOrNull(String name, {String? defaults});
 
   List<Parser> getChildren(String name);

@@ -1,4 +1,4 @@
-part of tiled;
+part of '../../tiled.dart';
 
 /// A [Gid], Global Tile ID is a Tiled concept to represent the tiles inside
 /// int matrices. This wrapper is used by [Layer] and [Chunk] to provide

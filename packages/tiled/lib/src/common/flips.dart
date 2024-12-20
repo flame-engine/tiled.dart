@@ -1,4 +1,4 @@
-part of tiled;
+part of '../../tiled.dart';
 
 class Flips {
   final bool horizontally;

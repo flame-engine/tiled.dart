@@ -1,4 +1,4 @@
-part of tiled;
+part of '../tiled.dart';
 
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
@@ -247,6 +247,7 @@ class TiledMap {
             (tileset) =>
                 [tileset.image, ...tileset.tiles.map((tile) => tile.image)],
           )
+          // ignore: deprecated_member_use
           .whereNotNull()
           .toList();
     }

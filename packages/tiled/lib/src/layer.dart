@@ -1,4 +1,4 @@
-part of tiled;
+part of '../tiled.dart';
 
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
@@ -328,7 +328,7 @@ abstract class Layer {
         decompressed = const ZLibDecoder().decodeBytes(decodedString);
         break;
       case Compression.gzip:
-        decompressed = GZipDecoder().decodeBytes(decodedString);
+        decompressed = const GZipDecoder().decodeBytes(decodedString);
         break;
       case Compression.zstd:
         throw UnsupportedError('zstd is an unsupported compression');

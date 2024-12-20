@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'dart:math' show Rectangle;
-import 'dart:ui';
 
+import 'package:test/test.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
@@ -45,7 +44,7 @@ void main() {
       expect(map.backgroundColorHex, equals('#ccddaaff'));
       expect(
         map.backgroundColor,
-        equals(Color(int.parse('0xccddaaff'))),
+        equals(ColorData.hex(int.parse('0xccddaaff'))),
       );
     });
 
@@ -89,10 +88,8 @@ void main() {
             equals('test_value'),
           );
           expect(
-            properties
-                .getValue<String>('multiline string')
-                ?.replaceAll('\r\n', '\n'),
-            equals('Hello,\nWorld'),
+            properties.getValue<String>('multiline string'),
+            equals('Hello,\r\nWorld'),
           );
           expect(
             properties.getValue<int>('integer property'),
@@ -103,8 +100,8 @@ void main() {
             equals('#00112233'),
           );
           expect(
-            properties.getValue<Color>('color property'),
-            equals(const Color(0x00112233)),
+            properties.getValue<ColorData>('color property'),
+            equals(ColorData.hex(0x00112233)),
           );
           expect(
             properties.getValue<double>('float property'),

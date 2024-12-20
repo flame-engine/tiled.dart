@@ -4,7 +4,6 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math' show Rectangle;
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:archive/archive.dart';
 import 'package:collection/collection.dart';
@@ -19,6 +18,7 @@ part 'src/common/gid.dart';
 part 'src/common/point.dart';
 part 'src/common/property.dart';
 part 'src/common/tiled_image.dart';
+part 'src/common/color.dart';
 part 'src/editor_setting/chunk_size.dart';
 part 'src/editor_setting/editor_setting.dart';
 part 'src/editor_setting/export.dart';

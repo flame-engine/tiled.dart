@@ -230,7 +230,7 @@ class Tileset {
     final tiles = <Tile>[];
 
     for (var i = 0; i < tileCount; ++i) {
-      Rect? imageRect;
+      Rectangle? imageRect;
 
       if (columns != null &&
           columns != 0 &&
@@ -239,7 +239,7 @@ class Tileset {
         final x = (i % columns) * tileWidth;
         final y = i ~/ columns * tileHeight;
 
-        imageRect = Rect.fromLTWH(
+        imageRect = Rectangle(
           x.toDouble(),
           y.toDouble(),
           tileWidth.toDouble(),

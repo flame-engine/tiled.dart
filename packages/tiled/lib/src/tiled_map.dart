@@ -74,12 +74,12 @@ class TiledMap {
   /// behind all other layers (optional).
   String? backgroundColorHex;
 
-  /// [Color] to be rendered as a solid color behind all other layers
+  /// [ColorData] to be rendered as a solid color behind all other layers
   /// (optional).
   ///
   /// Parsed from [backgroundColorHex], will be null if parsing fails for any
   /// reason.
-  Color? backgroundColor;
+  ColorData? backgroundColor;
 
   int compressionLevel;
 

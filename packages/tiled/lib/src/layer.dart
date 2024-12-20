@@ -333,7 +333,7 @@ abstract class Layer {
         decompressed = const ZLibDecoder().decodeBytes(decodedString);
         break;
       case Compression.gzip:
-        decompressed = const GZipDecoder().decodeBytes(decodedString);
+        decompressed = GZipDecoder().decodeBytes(decodedString);
         break;
       case Compression.zstd:
         throw UnsupportedError('zstd is an unsupported compression');

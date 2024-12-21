@@ -2,6 +2,7 @@ part of tiled;
 
 /// Basic data class holding a Color in ARGB format.
 /// This can be converted to dart:ui's Color using the flame_tiled package
+@immutable
 class ColorData {
   static int _sub(int hex, int index) => (hex >> index * 8) & 0x000000ff;
 
@@ -33,4 +34,13 @@ class ColorData {
         assert(alpha >= 0 && alpha <= 255),
         _hex = (alpha << 3 * 8) + (red << 2 * 8) + (green << 1 * 8) +
             (blue << 0 * 8);
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! ColorData) return false;
+    return _hex == other._hex;
+  }
+
+  @override
+  int get hashCode => _hex.hashCode;
 }

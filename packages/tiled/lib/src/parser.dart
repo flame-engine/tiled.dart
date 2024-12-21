@@ -14,16 +14,10 @@ class XmlParser extends Parser {
 
   XmlParser(this.element, {super.tsxProviders, super.templateProviders});
 
-  factory XmlParser.fromString(
-    String string, {
-    List<ParserProvider>? tsxProviders,
-    List<ParserProvider>? templateProviders,
-  }) =>
-      XmlParser(
-        XmlDocument.parse(string).rootElement,
-        tsxProviders: tsxProviders,
-        templateProviders: templateProviders,
-      );
+  XmlParser.fromString(String string, {
+    super.tsxProviders,
+    super.templateProviders,
+  }) : element = XmlDocument.parse(string).rootElement;
 
   @override
   String? getInnerTextOrNull() =>
@@ -62,7 +56,7 @@ class XmlParser extends Parser {
   @override
   T formatSpecificParsing<T>(
     T Function(JsonParser) json,
-    T Function(XmlParser) xml,
+    T Function(XmlParser) xml
   ) {
     return xml(this);
   }
@@ -73,16 +67,9 @@ class JsonParser extends Parser {
 
   JsonParser(this.json, {super.tsxProviders, super.templateProviders});
 
-  factory JsonParser.fromString(
-    String string, {
-    List<ParserProvider>? tsxProviders,
-    List<ParserProvider>? templateProviders,
-  }) =>
-      JsonParser(
-        jsonDecode(string) as Map<String, dynamic>,
-        tsxProviders: tsxProviders,
-        templateProviders: templateProviders,
-      );
+  JsonParser.fromString(String string, {
+    super.tsxProviders, super.templateProviders,
+  }) : json = jsonDecode(string) as Map<String, dynamic>;
 
   @override
   String? getInnerTextOrNull() => null;

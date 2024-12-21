@@ -26,14 +26,19 @@ Load a TMX file into a string by any means, and then pass the string to TileMapP
 
 ```dart
     final String tmxBody = /* ... */;
-    final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody);
+    final TiledMap mapTmx = TiledMap.parseTmx(tmxBody);
 ```
 
-If your tmx file includes a external tsx reference, you have to add a CustomParser. This can either be done by using extending the TsxProviderBase, which can match multiple files, or by extending TsxProvider, which only matches on file by its name.
+If your tmx file includes external reference, e.g. for .tsx files, you have to add providers.
+These providers are then used to find these files and load their contents as a string, 
+as well as maybe caching them.
+
+To construct a provider for tsx files for example you can just extend the Provider<Parser>
+or ParserProvider class, which is just a type alias.
 ```dart
-class MultipleTsxProvider extends TsxProviderBase {
+class MultipleTsxProvider extends ParserProvider {
   @override
-  bool checkProvidable(String filename) => ["external1.tsx", "external2.tsx"].contains(filename);
+  bool canProvide(String filename) => ["external1.tsx", "external2.tsx"].contains(filename);
   
   @override
   Parser? getCachedSource(String filename) => null;
@@ -47,34 +52,64 @@ class MultipleTsxProvider extends TsxProviderBase {
 }
 ```
 
+If, for example, all your tsx files are in one directory, 
+adding only one RelativeTsxProvider can allow the Parser to find all of them.
+
 ```dart
-class SingleTsxProvider extends TsxProvider {
+class RelativeTsxProvider extends TsxProviderBase {
+  final String root;
+
+  RelativeTsxProvider(this.root);
+
   @override
-  String get filename => "external.tsx";
-  
+  bool canProvide(String filename) {
+    if (cache.containsKey(filename)) return true;
+
+    final exists = File(paths.join(root, filename)).existsSync();
+    if (exists) cache[filename] = null;
+
+    return exists;
+  }
+
+  Map<String, Parser?> cache = {};
+
   @override
-  Parser? getCachedSource() => null;
-  
+  Parser? getCachedSource(String filename) => cache[filename];
+
   @override
-  Parser getSource(String _) {
-    final xml = File(filename).readAsStringSync();
-    final node = XmlDocument.parse(xml).rootElement;
-    return XmlParser(node);
+  Parser getSource(String filename) {
+    final xml = XmlDocument.parse(File(paths.join(root, filename)).readAsStringSync());
+    final element = xml.getElement("tileset");
+    if (element == null) {
+      throw ParsingException(
+        "tileset",
+        null,
+        "This tsx file does not seem to contain a top-level tileset tag",
+      );
+    }
+
+    cache[filename] = XmlParser(element);
+    return cache[filename]!;
   }
 }
 ```
-And use it in the parseTmx method. Keep in mind that the first TsxProvider that can provide a source is used!
+
+These providers are passed to the parseTmx or parseJson method. 
+Keep in mind that the first Provider that can provide a source is used!
+
 ```dart
     final String tmxBody = /* ... */;
-    final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody, tsxProviders: [SingleTsxProvider(), MultipleTsxProvider()]);
-
+    final TiledMap mapTmx = TiledMap.parseTmx(
+        tmxBody, 
+        tsxProviders: [SingleTsxProvider(), MultipleTsxProvider()],
+    );
 ```
 
 ### Load Json Files
 Alternatively load a json file.
 ```dart
     final String jsonBody = /* ... */;
-    final TiledMap mapTmx = TileMapParser.parseJson(jsonBody);
+    final TiledMap mapTmx = TiledMap.parseJson(jsonBody);
 ```
 
 ### Implementation

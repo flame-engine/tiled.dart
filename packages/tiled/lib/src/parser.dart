@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
@@ -14,7 +16,8 @@ class XmlParser extends Parser {
 
   XmlParser(this.element, {super.tsxProviders, super.templateProviders});
 
-  XmlParser.fromString(String string, {
+  XmlParser.fromString(
+    String string, {
     super.tsxProviders,
     super.templateProviders,
   }) : element = XmlDocument.parse(string).rootElement;
@@ -55,9 +58,7 @@ class XmlParser extends Parser {
 
   @override
   T formatSpecificParsing<T>(
-    T Function(JsonParser) json,
-    T Function(XmlParser) xml
-  ) {
+      T Function(JsonParser) json, T Function(XmlParser) xml) {
     return xml(this);
   }
 }
@@ -67,8 +68,10 @@ class JsonParser extends Parser {
 
   JsonParser(this.json, {super.tsxProviders, super.templateProviders});
 
-  JsonParser.fromString(String string, {
-    super.tsxProviders, super.templateProviders,
+  JsonParser.fromString(
+    String string, {
+    super.tsxProviders,
+    super.templateProviders,
   }) : json = jsonDecode(string) as Map<String, dynamic>;
 
   @override

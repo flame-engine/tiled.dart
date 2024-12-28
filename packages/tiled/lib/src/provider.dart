@@ -1,4 +1,4 @@
-part of tiled;
+import 'package:tiled/tiled.dart';
 
 abstract class Provider<T> {
   bool canProvide(String path);

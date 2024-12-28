@@ -336,7 +336,7 @@ abstract class Layer {
         decompressed = const ZLibDecoder().decodeBytes(decodedString);
         break;
       case Compression.gzip:
-        decompressed = GZipDecoder().decodeBytes(decodedString);
+        decompressed = const GZipDecoder().decodeBytes(decodedString);
         break;
       case Compression.zstd:
         throw UnsupportedError('zstd is an unsupported compression');
@@ -428,7 +428,7 @@ class TileLayer extends Layer {
 }
 
 class ObjectGroup extends Layer {
-  static const defaultColor = ColorData.rgb(160, 160, 164, 255);
+  static const defaultColor = ColorData.rgb(160, 160, 164);
   static const defaultColorHex = '%a0a0a4';
 
   /// topdown (default) or index (indexOrder).

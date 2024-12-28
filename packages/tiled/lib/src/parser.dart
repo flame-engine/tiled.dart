@@ -36,11 +36,13 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => e.name.local == name)
-        .map((e) => XmlParser(
-              e,
-              templateProviders: templateProviders,
-              tsxProviders: tsxProviders,
-            ))
+        .map(
+          (e) => XmlParser(
+            e,
+            templateProviders: templateProviders,
+            tsxProviders: tsxProviders,
+          ),
+        )
         .toList();
   }
 
@@ -48,17 +50,21 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => names.contains(e.name.local))
-        .map((e) => XmlParser(
-              e,
-              tsxProviders: tsxProviders,
-              templateProviders: templateProviders,
-            ))
+        .map(
+          (e) => XmlParser(
+            e,
+            tsxProviders: tsxProviders,
+            templateProviders: templateProviders,
+          ),
+        )
         .toList();
   }
 
   @override
   T formatSpecificParsing<T>(
-      T Function(JsonParser) json, T Function(XmlParser) xml) {
+    T Function(JsonParser) json,
+    T Function(XmlParser) xml,
+  ) {
     return xml(this);
   }
 }
@@ -88,11 +94,13 @@ class JsonParser extends Parser {
       return [];
     }
     return (json[name] as List<dynamic>)
-        .map((dynamic e) => JsonParser(
-              e as Map<String, dynamic>,
-              templateProviders: templateProviders,
-              tsxProviders: tsxProviders,
-            ))
+        .map(
+          (dynamic e) => JsonParser(
+            e as Map<String, dynamic>,
+            templateProviders: templateProviders,
+            tsxProviders: tsxProviders,
+          ),
+        )
         .toList();
   }
 

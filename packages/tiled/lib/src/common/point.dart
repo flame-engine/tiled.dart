@@ -1,4 +1,4 @@
-part of '../../tiled.dart';
+import 'package:tiled/src/parser.dart';
 
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:

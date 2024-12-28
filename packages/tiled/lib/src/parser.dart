@@ -1,4 +1,5 @@
-part of '../tiled.dart';
+import 'package:tiled/tiled.dart';
+import 'package:xml/xml.dart';
 
 class ParsingException implements Exception {
   final String name;

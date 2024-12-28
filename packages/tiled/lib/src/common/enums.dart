@@ -1,4 +1,4 @@
-part of '../../tiled.dart';
+import 'package:tiled/src/parser.dart';
 
 enum MapOrientation { orthogonal, isometric, staggered, hexagonal }
 

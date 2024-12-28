@@ -10,7 +10,12 @@ class ParsingException implements Exception {
 
 class XmlParser extends Parser {
   final XmlElement element;
-  XmlParser(this.element);
+  final Future<TsxProvider> Function(String key)? tsxProviderFunction;
+
+  XmlParser(
+    this.element, {
+    this.tsxProviderFunction,
+  });
 
   @override
   String? getInnerTextOrNull() =>
@@ -26,7 +31,7 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => e.name.local == name)
-        .map(XmlParser.new)
+        .map(_newChild)
         .toList();
   }
 
@@ -34,7 +39,7 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => names.contains(e.name.local))
-        .map(XmlParser.new)
+        .map(_newChild)
         .toList();
   }
 
@@ -45,6 +50,28 @@ class XmlParser extends Parser {
   ) {
     return xml(this);
   }
+
+  @override
+  Future<T?> getExternalPropertyOrNull<T>(
+    String name,
+    T Function(Parser) parser,
+  ) async {
+    final fileName = getStringOrNull(name);
+    if (fileName == null) {
+      return null;
+    }
+    final tsxProvider = await tsxProviderFunction?.call(fileName);
+    final result = tsxProvider?.getCachedSource() ?? tsxProvider?.getSource('');
+    if (result == null) {
+      return null;
+    }
+    return parser(result);
+  }
+
+  XmlParser _newChild(XmlElement element) => XmlParser(
+        element,
+        tsxProviderFunction: tsxProviderFunction,
+      );
 }
 
 class JsonParser extends Parser {
@@ -264,5 +291,12 @@ abstract class Parser {
       throw ParsingException(name, null, 'Missing required enum field');
     }
     return result;
+  }
+
+  Future<T?> getExternalPropertyOrNull<T>(
+    String name,
+    T Function(Parser) parser,
+  ) async {
+    return null;
   }
 }

@@ -105,8 +105,7 @@ class TiledObject {
 
   bool get isRectangle => rectangle;
 
-  factory TiledObject.parse(
-    Parser parser) {
+  factory TiledObject.parse(Parser parser) {
     final x = parser.getDouble('x', defaults: 0);
     final y = parser.getDouble('y', defaults: 0);
     final height = parser.getDouble('height', defaults: 0);
@@ -137,7 +136,8 @@ class TiledObject {
     final templatePath = parser.getStringOrNull('template');
     final templateProvider = templatePath == null
         ? null
-        : parser.templateProviders?.firstWhere((e) => e.canProvide(templatePath));
+        : parser.templateProviders
+            ?.firstWhere((e) => e.canProvide(templatePath));
     final template = templateProvider == null
         ? null
         : Template.parse(

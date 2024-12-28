@@ -1,4 +1,8 @@
-part of '../tiled.dart';
+import 'dart:collection';
+
+import 'package:collection/collection.dart';
+import 'package:tiled/tiled.dart';
+import 'package:xml/xml.dart';
 
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
@@ -74,12 +78,12 @@ class TiledMap {
   /// behind all other layers (optional).
   String? backgroundColorHex;
 
-  /// [Color] to be rendered as a solid color behind all other layers
+  /// [ColorData] to be rendered as a solid color behind all other layers
   /// (optional).
   ///
   /// Parsed from [backgroundColorHex], will be null if parsing fails for any
   /// reason.
-  Color? backgroundColor;
+  ColorData? backgroundColor;
 
   int compressionLevel;
 

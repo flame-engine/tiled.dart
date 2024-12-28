@@ -1,4 +1,7 @@
-part of '../tiled.dart';
+import 'dart:convert';
+
+import 'package:tiled/tiled.dart';
+import 'package:xml/xml.dart';
 
 class TileMapParser {
   static TiledMap parseJson(String json) {

@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'dart:ui';
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 
 void main() {
@@ -75,7 +74,7 @@ void main() {
       expect(layer.tintColorHex, equals('#ffaabb'));
       expect(
         layer.tintColor,
-        equals(Color(int.parse('0xffffaabb'))),
+        equals(ColorData.hex(int.parse('0xffffaabb'))),
       );
     });
   });

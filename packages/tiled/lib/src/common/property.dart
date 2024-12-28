@@ -1,4 +1,6 @@
-part of '../../tiled.dart';
+import 'package:collection/collection.dart';
+import 'package:tiled/tiled.dart';
+import 'package:xml/xml.dart';
 
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
@@ -37,7 +39,10 @@ class Property<T> {
       case PropertyType.color:
         return ColorProperty(
           name: name,
-          value: parser.getColor('value', defaults: const Color(0x00000000)),
+          value: parser.getColor(
+            'value',
+            defaults: const ColorData.hex(0x00000000),
+          ),
           hexValue: parser.getString('value', defaults: '#00000000'),
         );
 
@@ -156,7 +161,7 @@ class ObjectProperty extends Property<int> {
 }
 
 /// [value] is the color
-class ColorProperty extends Property<Color> {
+class ColorProperty extends Property<ColorData> {
   final String hexValue;
 
   ColorProperty({

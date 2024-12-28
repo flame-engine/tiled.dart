@@ -1,4 +1,4 @@
-part of '../tiled.dart';
+import 'package:tiled/tiled.dart';
 
 /// abstract class to be implemented for an external tileset data provider.
 abstract class TsxProvider {

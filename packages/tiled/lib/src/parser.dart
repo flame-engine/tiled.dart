@@ -1,4 +1,5 @@
-part of '../tiled.dart';
+import 'package:tiled/tiled.dart';
+import 'package:xml/xml.dart';
 
 class ParsingException implements Exception {
   final String name;
@@ -206,7 +207,7 @@ abstract class Parser {
     return result;
   }
 
-  Color? getColorOrNull(String name, {Color? defaults}) {
+  ColorData? getColorOrNull(String name, {ColorData? defaults}) {
     final tiledColor = getStringOrNull(name);
 
     // Tiled colors are stored as either ARGB or RGB hex values, so we can
@@ -221,13 +222,13 @@ abstract class Parser {
     }
 
     if (colorValue != null) {
-      return Color(colorValue);
+      return ColorData.hex(colorValue);
     } else {
       return defaults;
     }
   }
 
-  Color getColor(String name, {Color? defaults}) {
+  ColorData getColor(String name, {ColorData? defaults}) {
     final result = getColorOrNull(name, defaults: defaults);
     if (result == null) {
       throw ParsingException(name, null, 'Missing required color field');

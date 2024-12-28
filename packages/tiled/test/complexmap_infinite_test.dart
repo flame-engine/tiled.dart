@@ -10,7 +10,7 @@ void main() {
     return File('./test/fixtures/complexmap_infinite.tmx')
         .readAsString()
         .then((xml) {
-      complexMapInfinite = TileMapParser.parseTmx(xml);
+      complexMapInfinite = TiledMap.parseTmx(xml);
     });
   });
 

@@ -11,11 +11,7 @@ void main() {
     setUp(() {
       return File('./test/fixtures/testoverflow_csv.tmx').readAsString().then(
         (mapString) {
-          return TiledMap.fromString(mapString, TsxProvider.parse).then(
-            (parsedMap) {
-              map = parsedMap;
-            },
-          );
+          map = TiledMap.parseTmx(mapString);
         },
       );
     });

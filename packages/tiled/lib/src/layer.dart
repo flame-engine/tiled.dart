@@ -146,7 +146,7 @@ abstract class Layer {
         final width = parser.getInt('width');
         final height = parser.getInt('height');
         final dataNode = parser.formatSpecificParsing(
-          (json) => null, // data is just a string or list of int on JSON
+          (json) => json, // data is just a string or list of int on JSON
           (xml) => xml.getSingleChildOrNull('data'),
         );
         final compression = parser.getCompressionOrNull('compression') ??

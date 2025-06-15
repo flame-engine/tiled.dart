@@ -55,10 +55,10 @@ import 'package:xml/xml.dart';
 ///
 /// The staggered orientation refers to an isometric map using staggered axes.
 ///
-/// Can contain at most one: `<properties>
+/// Can contain at most one: `<properties>`
 ///
-/// Can contain any number: `<tileset>, `<layer>, `<objectgroup>, `<imagelayer>,
-/// `<group> (since 1.0), `<editorsettings> (since 1.3)
+/// Can contain any number: `<tileset>`, `<layer>`, `<objectgroup>`,
+/// `<imagelayer>`, `<group> (since 1.0), `<editorsettings>` (since 1.3)
 class TiledMap {
   TileMapType type;
   String version;

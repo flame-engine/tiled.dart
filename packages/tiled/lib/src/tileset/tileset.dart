@@ -11,9 +11,9 @@ import 'package:tiled/tiled.dart';
 ///   to the first tile in this tileset).
 /// * source: If this tileset is stored in an external TSX (Tile Set XML) file,
 ///   this attribute refers to that file. That TSX file has the same structure
-///   as the <tileset> element described here. (There is the firstgid attribute
-///   missing and this source attribute is also not there. These two attributes
-///   are kept in the TMX map, since they are map specific.)
+///   as the `<tileset>` element described here. (There is the firstgid
+///   attribute missing and this source attribute is also not there. These two
+///   attributes are kept in the TMX map, since they are map specific.)
 /// * name: The name of this tileset.
 /// * tilewidth: The (maximum) width of the tiles in this tileset.
 /// * tileheight: The (maximum) height of the tiles in this tileset.

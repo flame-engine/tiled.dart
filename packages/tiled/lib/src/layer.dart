@@ -377,10 +377,11 @@ class TileLayer extends Layer {
   /// See [tileData] for a better representation.
   List<int>? data;
 
-  /// This is not part of the tiled definitions; this is just a convinient
+  /// This is not part of the tiled definitions; this is just a convenience
   /// wrapper over the [data] field that simplifies two things:
   ///
-  /// * represents the matrix as a matrix (List<List<X>>) instead of a flat list
+  /// * represents the matrix as a matrix (`List<List<X>>`) instead of a flat
+  ///   list
   /// * wraps the gid integer into the [Gid] class for easy access of properties
   List<List<Gid>>? tileData;
 

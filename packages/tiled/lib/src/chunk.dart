@@ -26,7 +26,7 @@ class Chunk {
   int width;
   int height;
 
-  /// This is not part of the tiled definitions; this is just a convenient
+  /// This is not part of the tiled definitions; this is just a convenience
   /// wrapper over the [data] field that simplifies two things:
   ///
   /// * represents the matrix as a matrix (`List<List<X>>`) instead of a flat

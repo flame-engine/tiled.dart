@@ -3,7 +3,7 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <chunk>
+/// `<chunk>`
 ///
 /// * x: The x coordinate of the chunk in tiles.
 /// * y: The y coordinate of the chunk in tiles.
@@ -26,10 +26,11 @@ class Chunk {
   int width;
   int height;
 
-  /// This is not part of the tiled definitions; this is just a convinient
+  /// This is not part of the tiled definitions; this is just a convenient
   /// wrapper over the [data] field that simplifies two things:
   ///
-  /// * represents the matrix as a matrix (List<List<X>>) instead of a flat list
+  /// * represents the matrix as a matrix (`List<List<X>>`) instead of a flat
+  /// list
   /// * wraps the gid integer into the [Gid] class for easy access of properties
   List<List<Gid>> tileData;
 

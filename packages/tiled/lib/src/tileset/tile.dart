@@ -5,7 +5,7 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <tile>
+/// `<tile>`
 ///
 /// * id: The local tile ID within its tileset.
 /// * type: The type of the tile. Refers to an object type and is used by tile
@@ -18,8 +18,8 @@ import 'package:tiled/tiled.dart';
 ///   chosen when it competes with others while editing with the terrain tool.
 ///   (defaults to 0)
 ///
-/// Can contain at most one: <properties>, <image> (since 0.9), <objectgroup>,
-/// <animation>.
+/// Can contain at most one: `<properties>`, `<image>` (since 0.9),
+/// `<objectgroup>`, `<animation>`.
 class Tile {
   int localId;
   String? type;

@@ -195,7 +195,7 @@ class IntProperty extends Property<int> {
   }) : super(type: PropertyType.int);
 }
 
-/// [value] is the double-percision floating-point number
+/// [value] is the double-precision floating-point number
 class FloatProperty extends Property<double> {
   FloatProperty({
     required super.name,

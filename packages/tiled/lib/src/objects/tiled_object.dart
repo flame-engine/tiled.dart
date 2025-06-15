@@ -109,7 +109,7 @@ class TiledObject {
     final gid = parser.getIntOrNull('gid');
     final name = parser.getString('name', defaults: '');
 
-    // Tiled 1.9 and above versions running in compatibilty mode set to
+    // Tiled 1.9 and above versions running in compatibility mode set to
     // "Tiled 1.8" will still write out "Class" property as "type". So try both
     // before using default value.
     final type = parser.getString(

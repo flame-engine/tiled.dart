@@ -125,14 +125,14 @@ void main() {
 
     test('errors if tile phrase is not in the correct format', () {
       expect(
-        () => map.tileByPhrase('Nonexistant Tile'),
+        () => map.tileByPhrase('Nonexistent Tile'),
         throwsArgumentError,
       );
     });
 
     test('errors if tileset is not present', () {
       expect(
-        () => map.tileByPhrase('Nonexistant Tile|0'),
+        () => map.tileByPhrase('Nonexistent Tile|0'),
         throwsArgumentError,
       );
     });

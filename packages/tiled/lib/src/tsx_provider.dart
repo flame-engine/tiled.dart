@@ -10,7 +10,7 @@ abstract class TsxProvider {
   Parser getSource(String filename);
 
   /// Used when provider implementations cache the data. Returns the cached
-  /// data for the exernal tileset.
+  /// data for the external tileset.
   Parser? getCachedSource();
 
   /// Parses a file returning a [TsxProvider].

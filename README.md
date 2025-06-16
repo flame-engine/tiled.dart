@@ -6,7 +6,7 @@ A Dart Tiled library.
 
 ## Install from Dart Pub Repository
 
-To include the package as a depencency in your `pubspec.yaml`, run the following (or add it manually):
+To include the package as a dependency in your `pubspec.yaml`, run the following (or add it manually):
 
 ```sh
 dart pub add tiled
@@ -29,7 +29,7 @@ Load a TMX file into a string by any means, and then pass the string to TileMapP
     final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody);
 ```
 
-If your tmx file includes a external tsx reference, you have to add a CustomParser
+If your tmx file includes an external tsx reference, you have to add a CustomParser
 ```dart
 class CustomTsxProvider extends TsxProvider {
   @override

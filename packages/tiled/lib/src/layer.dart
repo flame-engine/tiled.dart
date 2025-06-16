@@ -8,8 +8,8 @@ import 'package:xml/xml.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// All <tileset> tags shall occur before the first <layer> tag so that parsers
-/// may rely on having the tilesets before needing to resolve tiles.
+/// All `<tileset>` tags shall occur before the first `<layer>` tag so that
+/// parsers may rely on having the tilesets before needing to resolve tiles.
 ///
 /// * id: Unique ID of the layer. Each layer that added to a map gets a unique
 ///   id. Even if a layer is deleted, no layer ever gets the same ID.
@@ -36,7 +36,7 @@ import 'package:xml/xml.dart';
 /// * parallaxy: Vertical parallax factor for this layer.
 ///   Defaults to 1. (since 1.5)
 ///
-/// Can contain at most one: <properties>, <data>
+/// Can contain at most one: `<properties>`, `<data>`
 abstract class Layer {
   /// Incremental ID - unique across all layers
   int? id;
@@ -377,10 +377,11 @@ class TileLayer extends Layer {
   /// See [tileData] for a better representation.
   List<int>? data;
 
-  /// This is not part of the tiled definitions; this is just a convinient
+  /// This is not part of the tiled definitions; this is just a convenience
   /// wrapper over the [data] field that simplifies two things:
   ///
-  /// * represents the matrix as a matrix (List<List<X>>) instead of a flat list
+  /// * represents the matrix as a matrix (`List<List<X>>`) instead of a flat
+  ///   list
   /// * wraps the gid integer into the [Gid] class for easy access of properties
   List<List<Gid>>? tileData;
 

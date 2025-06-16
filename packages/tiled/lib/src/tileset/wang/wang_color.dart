@@ -3,7 +3,7 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <wangcolor>
+/// `<wangcolor>`
 /// A color that can be used to define the corner and/or edge of a Wang tile.
 ///
 /// * name: The name of this color.
@@ -12,7 +12,7 @@ import 'package:tiled/tiled.dart';
 /// * probability: The relative probability that this color is chosen over
 ///   others in case of multiple options. (defaults to 0)
 ///
-/// Can contain at most one: <properties>
+/// Can contain at most one: `<properties>`
 class WangColor {
   String name;
   String color;

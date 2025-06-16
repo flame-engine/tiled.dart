@@ -58,7 +58,7 @@ import 'package:xml/xml.dart';
 /// Can contain at most one: `<properties>`
 ///
 /// Can contain any number: `<tileset>`, `<layer>`, `<objectgroup>`,
-/// `<imagelayer>`, `<group> (since 1.0), `<editorsettings>` (since 1.3)
+/// `<imagelayer>`, `<group>` (since 1.0), `<editorsettings>` (since 1.3)
 class TiledMap {
   TileMapType type;
   String version;

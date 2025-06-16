@@ -42,7 +42,7 @@ import 'package:tiled/tiled.dart';
 /// priority, i.e. they will override the template properties.
 ///
 /// Can contain at most one: `<properties>`, `<ellipse>` (since 0.9),
-/// `<point>` (since 1.1), `<polygon>`, `<polyline>, `<text>` (since 1.0)
+/// `<point>` (since 1.1), `<polygon>`, `<polyline>`, `<text>` (since 1.0)
 class TiledObject {
   int id;
   String name;

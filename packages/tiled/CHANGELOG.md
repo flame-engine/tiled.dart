@@ -1,3 +1,7 @@
+## 0.11.1
+
+ - **FIX**: Data section of Layers was null (when loading from JSON) ([#84](https://github.com/flame-engine/tiled.dart/issues/84)). ([00dbd13c](https://github.com/flame-engine/tiled.dart/commit/00dbd13c6c5bd7a6268ebec51c43c1bf9121f06a))
+
 ## 0.11.0
 
 > Note: This release has breaking changes.

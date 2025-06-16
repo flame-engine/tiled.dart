@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-06-16
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`tiled` - `v0.11.1`](#tiled---v0111)
+
+---
+
+#### `tiled` - `v0.11.1`
+
+ - **FIX**: Data section of Layers was null (when loading from JSON) ([#84](https://github.com/flame-engine/tiled.dart/issues/84)). ([00dbd13c](https://github.com/flame-engine/tiled.dart/commit/00dbd13c6c5bd7a6268ebec51c43c1bf9121f06a))
+
+
 ## 2025-02-04
 
 ### Changes

@@ -4,7 +4,7 @@ import 'package:tiled/src/parser.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <image>
+/// `<image>`
 ///
 /// * format: Used for embedded images, in combination with a data child
 ///   element.

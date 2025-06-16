@@ -3,7 +3,7 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <object>
+/// `<object>`
 ///
 /// * id: Unique ID of the object. Each object that is placed on a map gets a
 ///   unique id. Even if an object was deleted, no object gets the same ID.
@@ -41,8 +41,8 @@ import 'package:tiled/tiled.dart';
 /// the specified template, properties saved with the object will have higher
 /// priority, i.e. they will override the template properties.
 ///
-/// Can contain at most one: <properties>, <ellipse> (since 0.9),
-/// <point> (since 1.1), <polygon>, <polyline>, <text> (since 1.0)
+/// Can contain at most one: `<properties>`, `<ellipse>` (since 0.9),
+/// `<point>` (since 1.1), `<polygon>`, `<polyline>`, `<text>` (since 1.0)
 class TiledObject {
   int id;
   String name;
@@ -109,7 +109,7 @@ class TiledObject {
     final gid = parser.getIntOrNull('gid');
     final name = parser.getString('name', defaults: '');
 
-    // Tiled 1.9 and above versions running in compatibilty mode set to
+    // Tiled 1.9 and above versions running in compatibility mode set to
     // "Tiled 1.8" will still write out "Class" property as "type". So try both
     // before using default value.
     final type = parser.getString(

@@ -3,11 +3,11 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <editorsettings>
+/// `<editorsettings>`
 /// This element contains various editor-specific settings,
 /// which are generally not relevant when reading a map.
 ///
-/// Can contain: <chunksize>, <export>
+/// Can contain: `<chunksize>`, `<export>`
 class EditorSetting {
   ChunkSize? chunkSize;
   Export? export;

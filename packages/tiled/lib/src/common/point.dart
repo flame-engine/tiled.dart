@@ -3,7 +3,7 @@ import 'package:tiled/src/parser.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <point>
+/// `<point>`
 /// Used to mark an object as a point.
 /// The existing x and y attributes are used to determine the position of the
 /// point.

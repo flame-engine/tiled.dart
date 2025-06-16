@@ -3,7 +3,7 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <template>
+/// `<template>`
 ///
 /// The template root element contains the saved map object and a tileset
 /// element that points to an external tileset, if the object is a tile object.
@@ -18,7 +18,7 @@ import 'package:tiled/tiled.dart';
 ///   </template>
 /// ```
 ///
-/// Can contain at most one: <tileset>, <object>
+/// Can contain at most one: `<tileset>`, `<object>`
 class Template {
   Tileset? tileSet;
   TiledObject? object;

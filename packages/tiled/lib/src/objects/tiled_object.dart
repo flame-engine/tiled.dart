@@ -118,11 +118,11 @@ class TiledObject {
     );
 
     final ellipse = parser.formatSpecificParsing(
-      (json) => json.getBool('ellipse'),
+      (json) => json.getBool('ellipse', defaults: false),
       (xml) => xml.getChildren('ellipse').isNotEmpty,
     );
     final point = parser.formatSpecificParsing(
-      (json) => json.getBool('point'),
+      (json) => json.getBool('point', defaults: false),
       (xml) => xml.getChildren('point').isNotEmpty,
     );
     final text = parser.getSingleChildOrNullAs('text', Text.parse);

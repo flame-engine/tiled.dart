@@ -194,7 +194,12 @@ abstract class Layer {
             parser.getString('color', defaults: ObjectGroup.defaultColorHex);
         final color =
             parser.getColor('color', defaults: ObjectGroup.defaultColor);
-        final objects = parser.getChildrenAs('object', TiledObject.parse);
+
+        final objects = parser.formatSpecificParsing(
+          (json) => json.getChildrenAs('objects', TiledObject.parse),
+          (xml) => xml.getChildrenAs('object', TiledObject.parse),
+        );
+
         layer = ObjectGroup(
           id: id,
           name: name,

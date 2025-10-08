@@ -56,4 +56,4 @@ Alternatively load a json file.
 
 ### Implementation
 
-For further information and more usage examples, please take a look at the examples in [flame_tiled](https://github.com/flame-engine/flame_tiled).
+For further information and more usage examples, please take a look at the examples in [flame_tiled](https://github.com/flame-engine/flame/tree/main/packages/flame_tiled).

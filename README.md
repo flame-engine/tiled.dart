@@ -1,6 +1,6 @@
 # Tiled Dart
 
-[![Pub](https://img.shields.io/pub/v/tiled.svg?style=popout)](https://pub.dartlang.org/packages/tiled) ![cicd](https://github.com/flame-engine/tiled.dart/workflows/cicd/badge.svg?branch=main&event=push) [![Discord](https://img.shields.io/discord/509714518008528896.svg)](https://discord.gg/pxrBmy4)
+[![Pub](https://img.shields.io/pub/v/tiled.svg?style=popout)](https://pub.dartlang.org/packages/tiled) [![cicd](https://github.com/flame-engine/tiled.dart/actions/workflows/cicd.yaml/badge.svg)](https://github.com/flame-engine/tiled.dart/actions/workflows/cicd.yaml) [![Discord](https://img.shields.io/discord/509714518008528896.svg)](https://discord.gg/pxrBmy4)
 
 A Dart Tiled library.
 

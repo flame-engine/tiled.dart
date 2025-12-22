@@ -52,7 +52,7 @@ class Tile {
   /// Will be same as [type].
   String? get class_ => type;
 
-  Tile.parse(Parser parser)
+  Tile.parse(Parser parser, {List<ParserProvider>? templateProviders})
       : this(
           localId: parser.getInt('id'),
 
@@ -74,8 +74,10 @@ class Tile {
             parser.getDoubleOrNull('width') ?? 0,
             parser.getDoubleOrNull('height') ?? 0,
           ),
-          objectGroup:
-              parser.getSingleChildOrNullAs('objectgroup', Layer.parse),
+          objectGroup: parser.getSingleChildOrNullAs(
+            'objectgroup',
+            (e) => Layer.parse(e, templateProviders: templateProviders),
+          ),
           animation: parser.formatSpecificParsing(
             (json) => json.getChildrenAs('animation', Frame.parse),
             (xml) =>

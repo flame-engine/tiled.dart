@@ -7,7 +7,7 @@ void main() {
   late TiledMap map;
   setUp(() {
     return File('./test/fixtures/objectgroup.tmx').readAsString().then((xml) {
-      map = TileMapParser.parseTmx(xml);
+      map = TiledMap.parseTmx(xml);
     });
   });
 

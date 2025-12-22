@@ -9,11 +9,11 @@ void main() {
 
   setUp(() {
     final f1 = File('./test/fixtures/test.tmx').readAsString().then((xml) {
-      mapTmx = TileMapParser.parseTmx(xml);
+      mapTmx = TiledMap.parseTmx(xml);
     });
     final f2 =
         File('./test/fixtures/test_base64_gzip.tmx').readAsString().then((xml) {
-      mapTmxBase64Gzip = TileMapParser.parseTmx(xml);
+      mapTmxBase64Gzip = TiledMap.parseTmx(xml);
     });
 
     return Future.wait([f1, f2]);

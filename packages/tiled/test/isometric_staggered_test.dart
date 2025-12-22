@@ -11,14 +11,14 @@ void main() {
     return File('./test/fixtures/isometric_staggered_grass_and_water.json')
         .readAsString()
         .then((xml) {
-      mapIsoStaggeredJson = TileMapParser.parseJson(xml);
+      mapIsoStaggeredJson = TiledMap.parseJson(xml);
     });
   });
   setUp(() {
     return File('./test/fixtures/isometric_staggered_grass_and_water.tmx')
         .readAsString()
         .then((xml) {
-      mapIsoStaggeredTmx = TileMapParser.parseTmx(xml);
+      mapIsoStaggeredTmx = TiledMap.parseTmx(xml);
     });
   });
 

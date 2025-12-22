@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
@@ -5,12 +7,20 @@ class ParsingException implements Exception {
   final String name;
   final String? valueFound;
   final String reason;
+
   ParsingException(this.name, this.valueFound, this.reason);
 }
 
 class XmlParser extends Parser {
   final XmlElement element;
-  XmlParser(this.element);
+
+  XmlParser(this.element, {super.tsxProviders, super.templateProviders});
+
+  XmlParser.fromString(
+    String string, {
+    super.tsxProviders,
+    super.templateProviders,
+  }) : element = XmlDocument.parse(string).rootElement;
 
   @override
   String? getInnerTextOrNull() =>
@@ -26,7 +36,13 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => e.name.local == name)
-        .map(XmlParser.new)
+        .map(
+          (e) => XmlParser(
+            e,
+            templateProviders: templateProviders,
+            tsxProviders: tsxProviders,
+          ),
+        )
         .toList();
   }
 
@@ -34,7 +50,13 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => names.contains(e.name.local))
-        .map(XmlParser.new)
+        .map(
+          (e) => XmlParser(
+            e,
+            tsxProviders: tsxProviders,
+            templateProviders: templateProviders,
+          ),
+        )
         .toList();
   }
 
@@ -49,7 +71,14 @@ class XmlParser extends Parser {
 
 class JsonParser extends Parser {
   final Map<String, dynamic> json;
-  JsonParser(this.json);
+
+  JsonParser(this.json, {super.tsxProviders, super.templateProviders});
+
+  JsonParser.fromString(
+    String string, {
+    super.tsxProviders,
+    super.templateProviders,
+  }) : json = jsonDecode(string) as Map<String, dynamic>;
 
   @override
   String? getInnerTextOrNull() => null;
@@ -65,7 +94,13 @@ class JsonParser extends Parser {
       return [];
     }
     return (json[name] as List<dynamic>)
-        .map((dynamic e) => JsonParser(e as Map<String, dynamic>))
+        .map(
+          (dynamic e) => JsonParser(
+            e as Map<String, dynamic>,
+            templateProviders: templateProviders,
+            tsxProviders: tsxProviders,
+          ),
+        )
         .toList();
   }
 
@@ -83,6 +118,11 @@ class JsonParser extends Parser {
 }
 
 abstract class Parser {
+  final List<ParserProvider>? templateProviders;
+  final List<ParserProvider>? tsxProviders;
+
+  Parser({this.tsxProviders, this.templateProviders});
+
   String? getInnerTextOrNull();
 
   String? getStringOrNull(String name, {String? defaults});

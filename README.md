@@ -101,7 +101,10 @@ Keep in mind that the first Provider that can provide a source is used!
     final String tmxBody = /* ... */;
     final TiledMap mapTmx = TiledMap.parseTmx(
         tmxBody, 
-        tsxProviders: [SingleTsxProvider(), MultipleTsxProvider()],
+        tsxProviders: [
+          SingleTsxProvider(), 
+          MultipleTsxProvider(),
+        ],
     );
 ```
 

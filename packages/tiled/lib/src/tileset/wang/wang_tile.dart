@@ -5,7 +5,7 @@ import 'package:tiled/src/parser.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <wangtile>
+/// `<wangtile>`
 ///
 /// Defines a Wang tile, by referring to a tile in the tileset and associating
 /// it with a certain Wang ID.

@@ -5,7 +5,7 @@ import 'package:xml/xml.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <property>
+/// `<property>`
 /// * name: The name of the property.
 /// * type: The type of the property.
 ///   Can be string (default), int, float, bool, color, file or object
@@ -79,7 +79,7 @@ class Property<T> {
             return attrString;
           } else {
             // In tmx files, multi-line text property values can be stored
-            // inside the <property> node itself instead of in the 'value'
+            // inside the `<property>` node itself instead of in the 'value'
             // attribute
             return xml.element.innerText;
           }
@@ -195,7 +195,7 @@ class IntProperty extends Property<int> {
   }) : super(type: PropertyType.int);
 }
 
-/// [value] is the double-percision floating-point number
+/// [value] is the double-precision floating-point number
 class FloatProperty extends Property<double> {
   FloatProperty({
     required super.name,

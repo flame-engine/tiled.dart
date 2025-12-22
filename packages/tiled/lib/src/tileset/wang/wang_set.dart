@@ -3,18 +3,18 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <wangset>
+/// `<wangset>`
 ///
 /// Defines a list of corner colors and a list of edge colors, and any number
 /// of Wang tiles using these colors.
 ///
 /// name: The name of the Wang set.
 /// tile: The tile ID of the tile representing this Wang set.
-/// Can contain at most one: <properties>
+/// Can contain at most one: `<properties>`
 ///
-/// Can contain up to 255: <wangcolor> (since Tiled 1.5)
+/// Can contain up to 255: `<wangcolor>` (since Tiled 1.5)
 ///
-/// Can contain any number: <wangtile>
+/// Can contain any number: `<wangtile>`
 class WangSet {
   String name;
   int tile;

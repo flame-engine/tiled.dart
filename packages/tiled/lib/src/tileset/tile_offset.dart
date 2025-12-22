@@ -3,7 +3,7 @@ import 'package:tiled/src/parser.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <tileoffset>
+/// `<tileoffset>`
 ///
 /// x: Horizontal offset in pixels. (defaults to 0)
 /// y: Vertical offset in pixels (positive is down, defaults to 0)

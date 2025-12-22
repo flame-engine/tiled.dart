@@ -3,7 +3,7 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <grid>
+/// `<grid>`
 ///
 /// * orientation: Orientation of the grid for the tiles in this tileset
 ///   (orthogonal or isometric, defaults to orthogonal)

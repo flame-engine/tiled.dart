@@ -3,7 +3,7 @@ import 'package:tiled/src/parser.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <export>
+/// `<export>`
 ///
 /// * target: The last file this map was exported to.
 /// * format: The short name of the last format this map was exported as.

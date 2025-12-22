@@ -5,15 +5,15 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <tileset>
+/// `<tileset>`
 ///
 /// * firstgid: The first global tile ID of this tileset (this global ID maps
 ///   to the first tile in this tileset).
 /// * source: If this tileset is stored in an external TSX (Tile Set XML) file,
 ///   this attribute refers to that file. That TSX file has the same structure
-///   as the <tileset> element described here. (There is the firstgid attribute
-///   missing and this source attribute is also not there. These two attributes
-///   are kept in the TMX map, since they are map specific.)
+///   as the `<tileset>` element described here. (There is the firstgid
+///   attribute missing and this source attribute is also not there. These two
+///   attributes are kept in the TMX map, since they are map specific.)
 /// * name: The name of this tileset.
 /// * tilewidth: The (maximum) width of the tiles in this tileset.
 /// * tileheight: The (maximum) height of the tiles in this tileset.
@@ -31,19 +31,19 @@ import 'package:tiled/tiled.dart';
 ///   compatibility reasons. When unspecified, tile objects use bottomleft in
 ///   orthogonal mode and bottom in isometric mode. (since 1.4)
 ///
-/// If there are multiple <tileset> elements, they are in ascending order of
+/// If there are multiple `<tileset>` elements, they are in ascending order of
 /// their firstgid attribute. The first tileset always has a firstgid value of
 /// 1. Since Tiled 0.15, image collection tilesets do not necessarily number
 /// their tiles consecutively since gaps can occur when removing tiles.
 ///
-/// Image collection tilesets have no <image> tag. Instead, each tile has an
-/// <image> tag.
+/// Image collection tilesets have no `<image>` tag. Instead, each tile has an
+/// `<image>` tag.
 ///
-/// Can contain at most one: <image>, <tileoffset>, <grid> (since 1.0),
-/// <properties>, <terraintypes>, <wangsets> (since 1.1), <transformations>
-/// (since 1.5)
+/// Can contain at most one: `<image>`, `<tileoffset>`, `<grid>` (since 1.0),
+/// `<properties>`, `<terraintypes>`, `<wangsets>` (since 1.1),
+/// `<transformations>` (since 1.5)
 ///
-/// Can contain any number: <tile>
+/// Can contain any number: `<tile>`
 class Tileset {
   int? firstGid;
   String? source;

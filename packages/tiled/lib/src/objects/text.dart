@@ -3,7 +3,7 @@ import 'package:tiled/tiled.dart';
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
 ///
-/// <text>
+/// `<text>`
 ///
 /// * fontfamily: The font family used (defaults to "sans-serif")
 /// * pixelsize: The size of the font in pixels (not using points, because

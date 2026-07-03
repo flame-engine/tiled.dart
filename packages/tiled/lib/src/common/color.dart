@@ -21,24 +21,26 @@ class ColorData {
   const ColorData.hex(this._hex);
 
   const ColorData.rgb(int red, int green, int blue, [int alpha = 255])
-      : assert(red >= 0 && red <= 255),
-        assert(green >= 0 && green <= 255),
-        assert(blue >= 0 && blue <= 255),
-        assert(alpha >= 0 && alpha <= 255),
-        _hex = (alpha << 3 * 8) +
-            (red << 2 * 8) +
-            (green << 1 * 8) +
-            (blue << 0 * 8);
+    : assert(red >= 0 && red <= 255),
+      assert(green >= 0 && green <= 255),
+      assert(blue >= 0 && blue <= 255),
+      assert(alpha >= 0 && alpha <= 255),
+      _hex =
+          (alpha << 3 * 8) +
+          (red << 2 * 8) +
+          (green << 1 * 8) +
+          (blue << 0 * 8);
 
   const ColorData.argb(int alpha, int red, int green, int blue)
-      : assert(red >= 0 && red <= 255),
-        assert(green >= 0 && green <= 255),
-        assert(blue >= 0 && blue <= 255),
-        assert(alpha >= 0 && alpha <= 255),
-        _hex = (alpha << 3 * 8) +
-            (red << 2 * 8) +
-            (green << 1 * 8) +
-            (blue << 0 * 8);
+    : assert(red >= 0 && red <= 255),
+      assert(green >= 0 && green <= 255),
+      assert(blue >= 0 && blue <= 255),
+      assert(alpha >= 0 && alpha <= 255),
+      _hex =
+          (alpha << 3 * 8) +
+          (red << 2 * 8) +
+          (green << 1 * 8) +
+          (blue << 0 * 8);
 
   @override
   bool operator ==(Object other) {

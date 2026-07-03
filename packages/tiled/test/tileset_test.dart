@@ -25,9 +25,9 @@ void main() {
   group('Tileset.fromXML', () {
     late Tileset tileset;
     setUp(() {
-      return File('./test/fixtures/map_with_spacing_margin.tmx')
-          .readAsString()
-          .then((xml) {
+      return File(
+        './test/fixtures/map_with_spacing_margin.tmx',
+      ).readAsString().then((xml) {
         final xmlRoot = XmlDocument.parse(xml).rootElement;
         final tilesetXml = xmlRoot.findAllElements('tileset').first;
         tileset = Tileset.parse(XmlParser(tilesetXml));
@@ -40,9 +40,9 @@ void main() {
   group('Standalone Tileset with ObjectGroups', () {
     late Tileset tileset;
     setUp(() {
-      return File('./test/fixtures/map_with_tile_collision.tsx')
-          .readAsString()
-          .then((xml) {
+      return File(
+        './test/fixtures/map_with_tile_collision.tsx',
+      ).readAsString().then((xml) {
         final tilesetXml = XmlDocument.parse(xml).rootElement;
         tileset = Tileset.parse(XmlParser(tilesetXml));
       });

@@ -71,19 +71,22 @@ class Property<T> {
         );
 
       case PropertyType.string:
-        final value = parser.formatSpecificParsing((json) {
-          return json.getString('value', defaults: '');
-        }, (xml) {
-          final attrString = parser.getStringOrNull('value');
-          if (attrString != null) {
-            return attrString;
-          } else {
-            // In tmx files, multi-line text property values can be stored
-            // inside the `<property>` node itself instead of in the 'value'
-            // attribute
-            return xml.element.innerText;
-          }
-        });
+        final value = parser.formatSpecificParsing(
+          (json) {
+            return json.getString('value', defaults: '');
+          },
+          (xml) {
+            final attrString = parser.getStringOrNull('value');
+            if (attrString != null) {
+              return attrString;
+            } else {
+              // In tmx files, multi-line text property values can be stored
+              // inside the `<property>` node itself instead of in the 'value'
+              // attribute
+              return xml.element.innerText;
+            }
+          },
+        );
 
         return StringProperty(
           name: name,
@@ -224,8 +227,10 @@ extension PropertiesParser on Parser {
 
     // NOTE: two properties should never have the same name, if they do
     // one will simply override the other
-    final byName =
-        properties.groupFoldBy((prop) => prop.name, (previous, element) {
+    final byName = properties.groupFoldBy((prop) => prop.name, (
+      previous,
+      element,
+    ) {
       return element;
     });
 

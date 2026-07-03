@@ -18,8 +18,8 @@ class Frame {
   });
 
   Frame.parse(Parser parser)
-      : this(
-          tileId: parser.getInt('tileid'),
-          duration: parser.getInt('duration'),
-        );
+    : this(
+        tileId: parser.getInt('tileid'),
+        duration: parser.getInt('duration'),
+      );
 }

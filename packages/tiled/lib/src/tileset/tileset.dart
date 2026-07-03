@@ -96,12 +96,12 @@ class Tileset {
     this.transparentColor,
     this.type = TilesetType.tileset,
   }) : tiles = _generateTiles(
-          tiles,
-          tileCount ?? 0,
-          columns,
-          tileWidth,
-          tileHeight,
-        ) {
+         tiles,
+         tileCount ?? 0,
+         columns,
+         tileWidth,
+         tileHeight,
+       ) {
     tileCount = this.tiles.length;
   }
 
@@ -126,8 +126,10 @@ class Tileset {
 
     final image = parser.getSingleChildOrNullAs('image', TiledImage.parse);
     final grid = parser.getSingleChildOrNullAs('grid', Grid.parse);
-    final tileOffset =
-        parser.getSingleChildOrNullAs('tileoffset', TileOffset.parse);
+    final tileOffset = parser.getSingleChildOrNullAs(
+      'tileoffset',
+      TileOffset.parse,
+    );
     final properties = parser.getProperties();
     final terrains = parser.getChildrenAs('terrains', Terrain.parse);
     final tiles = parser.formatSpecificParsing(

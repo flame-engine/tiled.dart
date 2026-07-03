@@ -1,7 +1,71 @@
 name: tiled_workspace
+publish_to: none
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.11.0 <4.0.0"
+
+workspace:
+  - packages/tiled
 
 dev_dependencies:
-  melos: ^6.2.0
+  melos: ^8.0.0
+
+melos:
+  repository: https://github.com/flame-engine/tiled.dart
+
+  command:
+    version:
+      # Generate commit links in package changelogs.
+      linkToCommits: true
+      # Only allow versioning to happen on main branch.
+      branch: main
+      # Additionally build a changelog at the root of the workspace.
+      workspaceChangelog: true
+
+  scripts:
+    lint:all:
+      run: dart run melos run analyze && dart run melos run format
+      description: Run all static analysis checks.
+
+    analyze:
+      run: |
+        dart run melos exec -c 10 -- \
+          flutter analyze --fatal-infos
+      description: Run `flutter analyze` for all packages.
+
+    format:
+      run: dart run melos exec dart format . --fix
+      description: Run `dart format` for all packages.
+
+    format-check:
+      run: dart run melos exec dart format . --set-exit-if-changed
+      description: Run `dart format` checks for all packages.
+
+    dartdoc:
+      run: dart run melos exec flutter pub run dartdoc
+      description: Run dartdoc checks for all packages.
+
+    test:select:
+      run: dart run melos exec -- flutter test
+      packageFilters:
+        dirExists:
+          - test
+      description: Run `flutter test` for selected packages.
+
+    test:
+      run: dart run melos run test:select --no-select
+      description: Run all Flutter tests in this project.
+
+    coverage:
+      run: |
+        dart run melos exec -- flutter test --coverage &&
+        dart run melos exec -- genhtml coverage/lcov.info --output-directory=coverage/
+      packageFilters:
+        dirExists: test
+      description: Generate coverage for the selected package.
+
+    update-goldens:
+      run: dart run melos exec -- flutter test --update-goldens
+      packageFilters:
+        dirExists: test
+      description: Re-generate all golden test files

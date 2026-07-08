@@ -30,11 +30,11 @@ class WangColor {
   });
 
   WangColor.parse(Parser parser)
-      : this(
-          name: parser.getString('name'),
-          color: parser.getString('color'),
-          tile: parser.getInt('tile'),
-          probability: parser.getDouble('probability', defaults: 0),
-          properties: parser.getProperties(),
-        );
+    : this(
+        name: parser.getString('name'),
+        color: parser.getString('color'),
+        tile: parser.getInt('tile'),
+        probability: parser.getDouble('probability', defaults: 0),
+        properties: parser.getProperties(),
+      );
 }

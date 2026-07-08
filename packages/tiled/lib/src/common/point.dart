@@ -14,10 +14,10 @@ class Point {
   Point({required this.x, required this.y});
 
   Point.parse(Parser parser)
-      : this(
-          x: parser.getDouble('x'),
-          y: parser.getDouble('y'),
-        );
+    : this(
+        x: parser.getDouble('x'),
+        y: parser.getDouble('y'),
+      );
 
   factory Point.parseFromString(String point) {
     final split = point.split(',');

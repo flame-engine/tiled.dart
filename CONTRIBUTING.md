@@ -47,8 +47,8 @@ For a contribution to be accepted:
 - Examples should always be updated or added.*
 - Tests should always be updated or added.*
 - Format the Dart code accordingly with `flutter format`.
-- Your code should pass the analyzer checks `melos run analyze`.
-- Your code should pass all tests `melos run test`.
+- Your code should pass the analyzer checks `melos analyze`.
+- Your code should pass all tests `melos test`.
 - Start your PR title with a [conventional commit] type
   (`feat:`, `fix:` etc).
 

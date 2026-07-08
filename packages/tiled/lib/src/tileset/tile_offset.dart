@@ -21,8 +21,8 @@ class TileOffset {
   });
 
   TileOffset.parse(Parser parser)
-      : this(
-          x: parser.getInt('x', defaults: 0),
-          y: parser.getInt('y', defaults: 0),
-        );
+    : this(
+        x: parser.getInt('x', defaults: 0),
+        y: parser.getInt('y', defaults: 0),
+      );
 }

@@ -11,10 +11,11 @@ void main() {
     final f1 = File('./test/fixtures/test.tmx').readAsString().then((xml) {
       mapTmx = TileMapParser.parseTmx(xml);
     });
-    final f2 =
-        File('./test/fixtures/test_base64_gzip.tmx').readAsString().then((xml) {
-      mapTmxBase64Gzip = TileMapParser.parseTmx(xml);
-    });
+    final f2 = File('./test/fixtures/test_base64_gzip.tmx').readAsString().then(
+      (xml) {
+        mapTmxBase64Gzip = TileMapParser.parseTmx(xml);
+      },
+    );
 
     return Future.wait([f1, f2]);
   });

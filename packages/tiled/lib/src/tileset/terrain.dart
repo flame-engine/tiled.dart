@@ -21,9 +21,9 @@ class Terrain {
   });
 
   Terrain.parse(Parser parser)
-      : this(
-          name: parser.getString('name'),
-          tile: parser.getInt('name'),
-          properties: parser.getProperties(),
-        );
+    : this(
+        name: parser.getString('name'),
+        tile: parser.getInt('name'),
+        properties: parser.getProperties(),
+      );
 }

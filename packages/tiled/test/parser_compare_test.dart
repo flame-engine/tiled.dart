@@ -34,9 +34,9 @@ void main() {
 
   late TiledMap map4;
   setUp(() {
-    return File('./test/fixtures/testbase64only.json')
-        .readAsString()
-        .then((xml) {
+    return File('./test/fixtures/testbase64only.json').readAsString().then((
+      xml,
+    ) {
       map4 = TileMapParser.parseJson(xml);
     });
   });

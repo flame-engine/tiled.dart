@@ -149,13 +149,16 @@ abstract class Layer {
           (json) => json, // data is just a string or list of int on JSON
           (xml) => xml.getSingleChildOrNull('data'),
         );
-        final compression = parser.getCompressionOrNull('compression') ??
+        final compression =
+            parser.getCompressionOrNull('compression') ??
             dataNode?.getCompressionOrNull('compression');
-        final encoding = parser.getFileEncodingOrNull('encoding') ??
+        final encoding =
+            parser.getFileEncodingOrNull('encoding') ??
             dataNode?.getFileEncodingOrNull('encoding') ??
             FileEncoding.csv;
         Chunk parseChunk(Parser e) => Chunk.parse(e, encoding, compression);
-        final chunks = parser.getChildrenAs('chunks', parseChunk) +
+        final chunks =
+            parser.getChildrenAs('chunks', parseChunk) +
             (dataNode?.getChildrenAs('chunk', parseChunk) ?? []);
         final data = dataNode != null
             ? parseLayerData(dataNode, encoding, compression)
@@ -184,16 +187,19 @@ abstract class Layer {
           chunks: chunks,
           data: data,
         );
-        break;
       case LayerType.objectGroup:
         final drawOrder = parser.getDrawOrder(
           'draworder',
           defaults: DrawOrder.topDown,
         );
-        final colorHex =
-            parser.getString('color', defaults: ObjectGroup.defaultColorHex);
-        final color =
-            parser.getColor('color', defaults: ObjectGroup.defaultColor);
+        final colorHex = parser.getString(
+          'color',
+          defaults: ObjectGroup.defaultColorHex,
+        );
+        final color = parser.getColor(
+          'color',
+          defaults: ObjectGroup.defaultColor,
+        );
 
         final objects = parser.formatSpecificParsing(
           (json) => json.getChildrenAs('objects', TiledObject.parse),
@@ -222,7 +228,6 @@ abstract class Layer {
           colorHex: colorHex,
           color: color,
         );
-        break;
       case LayerType.imageLayer:
         final transparentColorHex = parser.getStringOrNull('transparentcolor');
         final transparentColor = parser.getColorOrNull('transparentcolor');
@@ -252,7 +257,6 @@ abstract class Layer {
           transparentColorHex: transparentColorHex,
           transparentColor: transparentColor,
         );
-        break;
       case LayerType.group:
         final layers = parseLayers(parser);
         layer = Group(
@@ -274,7 +278,6 @@ abstract class Layer {
           properties: properties,
           layers: layers,
         );
-        break;
     }
 
     return layer;
@@ -336,15 +339,12 @@ abstract class Layer {
     switch (compression) {
       case Compression.zlib:
         decompressed = const ZLibDecoder().decodeBytes(decodedString);
-        break;
       case Compression.gzip:
         decompressed = const GZipDecoder().decodeBytes(decodedString);
-        break;
       case Compression.zstd:
         throw UnsupportedError('zstd is an unsupported compression');
       case null:
         decompressed = decodedString;
-        break;
     }
 
     // From the tiled documentation:
@@ -413,10 +413,10 @@ class TileLayer extends Layer {
     this.encoding = FileEncoding.csv,
     this.chunks,
     this.data,
-  })  : tileData = maybeGenerate(data, width, height),
-        super(
-          type: LayerType.tileLayer,
-        );
+  }) : tileData = maybeGenerate(data, width, height),
+       super(
+         type: LayerType.tileLayer,
+       );
 
   static List<List<Gid>>? maybeGenerate(
     List<int>? data,
@@ -473,8 +473,8 @@ class ObjectGroup extends Layer {
     this.colorHex = defaultColorHex,
     this.color = defaultColor,
   }) : super(
-          type: LayerType.objectGroup,
-        );
+         type: LayerType.objectGroup,
+       );
 }
 
 class ImageLayer extends Layer {
@@ -520,8 +520,8 @@ class ImageLayer extends Layer {
     this.transparentColorHex,
     this.transparentColor,
   }) : super(
-          type: LayerType.imageLayer,
-        );
+         type: LayerType.imageLayer,
+       );
 }
 
 class Group extends Layer {
@@ -547,6 +547,6 @@ class Group extends Layer {
     super.visible,
     super.properties,
   }) : super(
-          type: LayerType.imageLayer,
-        );
+         type: LayerType.imageLayer,
+       );
 }

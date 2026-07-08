@@ -12,12 +12,12 @@ class Flips {
   });
 
   const Flips.defaults()
-      : this(
-          horizontally: false,
-          vertically: false,
-          diagonally: false,
-          antiDiagonally: false,
-        );
+    : this(
+        horizontally: false,
+        vertically: false,
+        diagonally: false,
+        antiDiagonally: false,
+      );
 
   Flips copyWith({
     bool? horizontally,

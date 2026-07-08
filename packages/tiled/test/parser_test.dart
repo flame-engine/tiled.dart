@@ -239,9 +239,9 @@ void main() {
       });
 
       test('has the right text object with ID 5', () {
-        final textObject = (og as ObjectGroup)
-            .objects
-            .firstWhereOrNull((element) => element.id == 5);
+        final textObject = (og as ObjectGroup).objects.firstWhereOrNull(
+          (element) => element.id == 5,
+        );
         final text = textObject?.text;
         expect(text?.wrap, equals(true));
         expect(text?.text, equals('Hello World'));
@@ -310,9 +310,9 @@ void main() {
 
   group('External tileset tile parsing', () {
     test('it parsed the first tile', () {
-      return File('./test/fixtures/external_tileset_map.tmx')
-          .readAsString()
-          .then((xml) {
+      return File(
+        './test/fixtures/external_tileset_map.tmx',
+      ).readAsString().then((xml) {
         final map = TileMapParser.parseTmx(
           xml,
           tsxList: [CustomTsxProvider.parse('tileid_over_tilecount.tsx')],
@@ -355,9 +355,9 @@ void main() {
   group('Map Parses Multiple Tilesets', () {
     late TiledMap map;
     setUp(() {
-      return File('./test/fixtures/map_with_multiple_tilesets.tmx')
-          .readAsString()
-          .then((xml) {
+      return File(
+        './test/fixtures/map_with_multiple_tilesets.tmx',
+      ).readAsString().then((xml) {
         final tilemapXml = XmlDocument.parse(xml).rootElement;
         final tsxSourcePaths = tilemapXml.children
             .whereType<XmlElement>()
@@ -426,8 +426,9 @@ void main() {
 
   group('Parser tiles', () {
     test('support empty terrain values', () {
-      final xml = File('./test/fixtures/map_with_empty_terrains.tmx')
-          .readAsStringSync();
+      final xml = File(
+        './test/fixtures/map_with_empty_terrains.tmx',
+      ).readAsStringSync();
       final tiledMap = TileMapParser.parseTmx(xml);
 
       final tileset = tiledMap.tilesets.first;

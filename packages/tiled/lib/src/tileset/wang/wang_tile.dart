@@ -37,19 +37,18 @@ class WangTile {
   });
 
   WangTile.parse(Parser parser)
-      : this(
-          tileId: parser.getInt('tileid'),
-          wangId: parseWangIds(
-            parser.formatSpecificParsing(
-              (json) => json.getIntList('wangid'),
-              (xml) =>
-                  xml.getString('wangid').split(',').map(int.parse).toList(),
-            ),
+    : this(
+        tileId: parser.getInt('tileid'),
+        wangId: parseWangIds(
+          parser.formatSpecificParsing(
+            (json) => json.getIntList('wangid'),
+            (xml) => xml.getString('wangid').split(',').map(int.parse).toList(),
           ),
-          hFlip: parser.getBool('hflip', defaults: false),
-          vFlip: parser.getBool('vflip', defaults: false),
-          dFlip: parser.getBool('dflip', defaults: false),
-        );
+        ),
+        hFlip: parser.getBool('hflip', defaults: false),
+        vFlip: parser.getBool('vflip', defaults: false),
+        dFlip: parser.getBool('dflip', defaults: false),
+      );
 
   static List<int> parseWangIds(List<int> value) {
     final bytes = Uint8List.fromList(value);

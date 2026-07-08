@@ -136,9 +136,7 @@ class TiledMap {
     String contents,
     Future<TsxProvider> Function(String key) tsxProviderFunction,
   ) async {
-    final tsxSourcePaths = XmlDocument.parse(contents)
-        .rootElement
-        .children
+    final tsxSourcePaths = XmlDocument.parse(contents).rootElement.children
         .whereType<XmlElement>()
         .where((element) => element.name.local == 'tileset')
         .map((e) => e.getAttribute('source'));
@@ -248,8 +246,10 @@ class TiledMap {
           .map(tilesetByTileGId)
           .toSet() // The different gid can be in the same tileset
           .expand(
-            (tileset) =>
-                [tileset.image, ...tileset.tiles.map((tile) => tile.image)],
+            (tileset) => [
+              tileset.image,
+              ...tileset.tiles.map((tile) => tile.image),
+            ],
           )
           // ignore: deprecated_member_use
           .whereNotNull()

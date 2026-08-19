@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
@@ -362,6 +363,12 @@ abstract class Layer {
   }
 }
 
+/// Called for each cell of a [TileLayer] in Tiled world tile coordinates.
+///
+/// The [x] and [y] parameters are the Tiled world tile coordinates.
+/// The [gid] parameter is the GID of the tile at the given coordinates.
+typedef TileVisitor = void Function(int x, int y, Gid gid);
+
 class TileLayer extends Layer {
   /// Column count. Same as map width for fixed-size maps.
   int width;
@@ -427,6 +434,144 @@ class TileLayer extends Layer {
       return null;
     }
     return Gid.generate(data, width, height);
+  }
+
+  /// Inclusive-exclusive tile bounds of this layer in Tiled world coordinates.
+  ///
+  /// Finite layers use `[0, width) × [0, height)`. Infinite layers use the
+  /// axis-aligned bounds of all chunks (`left`/`top` are the minimum tile
+  /// indices, which may be negative). Returns `null` when there is no tile
+  /// matrix and no chunks.
+  Rectangle<int>? get contentBounds {
+    if (tileData != null) {
+      return Rectangle(0, 0, width, height);
+    }
+
+    final layerChunks = chunks;
+    if (layerChunks == null || layerChunks.isEmpty) {
+      return null;
+    }
+
+    var minX = layerChunks.first.x;
+    var minY = layerChunks.first.y;
+    var maxX = minX + layerChunks.first.width;
+    var maxY = minY + layerChunks.first.height;
+
+    for (var i = 1; i < layerChunks.length; i++) {
+      final chunk = layerChunks[i];
+      if (chunk.x < minX) {
+        minX = chunk.x;
+      }
+      if (chunk.y < minY) {
+        minY = chunk.y;
+      }
+      final chunkMaxX = chunk.x + chunk.width;
+      final chunkMaxY = chunk.y + chunk.height;
+      if (chunkMaxX > maxX) {
+        maxX = chunkMaxX;
+      }
+      if (chunkMaxY > maxY) {
+        maxY = chunkMaxY;
+      }
+    }
+
+    return Rectangle(minX, minY, maxX - minX, maxY - minY);
+  }
+
+  /// Walks every cell in Tiled world tile coordinates
+  /// and calls the [action] function with the x, y, and gid of the tile.
+  void forEachTile(TileVisitor action) {
+    final data = tileData;
+    if (data != null) {
+      for (var ty = 0; ty < data.length; ty++) {
+        final row = data[ty];
+        for (var tx = 0; tx < row.length; tx++) {
+          action(tx, ty, row[tx]);
+        }
+      }
+      return;
+    }
+
+    final layerChunks = chunks;
+    if (layerChunks == null) {
+      return;
+    }
+
+    for (final chunk in layerChunks) {
+      for (var localY = 0; localY < chunk.tileData.length; localY++) {
+        final row = chunk.tileData[localY];
+        for (var localX = 0; localX < row.length; localX++) {
+          action(chunk.x + localX, chunk.y + localY, row[localX]);
+        }
+      }
+    }
+  }
+
+  /// Returns the GID at Tiled tile `(x, y)` if it exists, otherwise returns
+  /// null.
+  Gid? tileAt(int x, int y) {
+    final data = tileData;
+    if (data != null) {
+      if (y < 0 || x < 0 || y >= data.length || x >= data[y].length) {
+        return null;
+      }
+      return data[y][x];
+    }
+
+    final chunk = _chunkAt(x, y);
+    if (chunk == null) {
+      return null;
+    }
+    return chunk.tileData[y - chunk.y][x - chunk.x];
+  }
+
+  /// Writes [gid] at Tiled tile `(x, y)` if that cell already exists.
+  ///
+  /// Does not allocate new chunks. Returns `true` when the stored GID changed.
+  bool setTileAt(int x, int y, Gid gid) {
+    final current = tileAt(x, y);
+    if (current == null || !_gidChanged(current, gid)) {
+      return false;
+    }
+
+    final data = tileData;
+    if (data != null) {
+      data[y][x] = gid;
+      return true;
+    }
+
+    final chunk = _chunkAt(x, y);
+    if (chunk == null) {
+      return false;
+    }
+    chunk.tileData[y - chunk.y][x - chunk.x] = gid;
+    return true;
+  }
+
+  /// Returns the chunk at Tiled tile `(x, y)` if it exists, otherwise returns
+  /// null.
+  Chunk? _chunkAt(int x, int y) {
+    final layerChunks = chunks;
+    if (layerChunks == null) {
+      return null;
+    }
+    for (final chunk in layerChunks) {
+      if (x >= chunk.x &&
+          x < chunk.x + chunk.width &&
+          y >= chunk.y &&
+          y < chunk.y + chunk.height) {
+        return chunk;
+      }
+    }
+    return null;
+  }
+
+  /// Returns true if the GID has changed, otherwise returns false.
+  static bool _gidChanged(Gid current, Gid gid) {
+    return current.tile != gid.tile ||
+        current.flips.horizontally != gid.flips.horizontally ||
+        current.flips.vertically != gid.flips.vertically ||
+        current.flips.diagonally != gid.flips.diagonally;
   }
 }
 

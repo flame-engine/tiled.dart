@@ -42,6 +42,21 @@ void main() {
       expect(layer.setTileAt(5, 5, const Gid(1, Flips.defaults())), isFalse);
     });
 
+    test('setTileAt treats flip changes as a change', () {
+      const flipped = Gid(
+        1,
+        Flips(
+          horizontally: true,
+          vertically: false,
+          diagonally: false,
+          antiDiagonally: false,
+        ),
+      );
+      expect(layer.setTileAt(0, 0, flipped), isTrue);
+      expect(layer.tileAt(0, 0)!.tile, 1);
+      expect(layer.tileAt(0, 0)!.flips.horizontally, isTrue);
+    });
+
     test('forEachTile visits every cell', () {
       final visited = <(int, int, int)>[];
       layer.forEachTile((x, y, gid) {

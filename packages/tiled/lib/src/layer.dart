@@ -443,39 +443,16 @@ class TileLayer extends Layer {
   /// indices, which may be negative). Returns `null` when there is no tile
   /// matrix and no chunks.
   Rectangle<int>? get contentBounds {
-    if (tileData != null) {
-      return Rectangle(0, 0, width, height);
+    final data = tileData;
+    if (data != null) {
+      return _finiteContentBounds(data);
     }
 
     final layerChunks = chunks;
-    if (layerChunks == null || layerChunks.isEmpty) {
-      return null;
+    if (layerChunks != null && layerChunks.isNotEmpty) {
+      return _infiniteContentBounds(layerChunks);
     }
-
-    var minX = layerChunks.first.x;
-    var minY = layerChunks.first.y;
-    var maxX = minX + layerChunks.first.width;
-    var maxY = minY + layerChunks.first.height;
-
-    for (var i = 1; i < layerChunks.length; i++) {
-      final chunk = layerChunks[i];
-      if (chunk.x < minX) {
-        minX = chunk.x;
-      }
-      if (chunk.y < minY) {
-        minY = chunk.y;
-      }
-      final chunkMaxX = chunk.x + chunk.width;
-      final chunkMaxY = chunk.y + chunk.height;
-      if (chunkMaxX > maxX) {
-        maxX = chunkMaxX;
-      }
-      if (chunkMaxY > maxY) {
-        maxY = chunkMaxY;
-      }
-    }
-
-    return Rectangle(minX, minY, maxX - minX, maxY - minY);
+    return null;
   }
 
   /// Walks every cell in Tiled world tile coordinates
@@ -518,43 +495,107 @@ class TileLayer extends Layer {
       return data[y][x];
     }
 
-    final chunk = _chunkAt(x, y);
-    if (chunk == null) {
-      return null;
+    final layerChunks = chunks;
+    if (layerChunks != null && layerChunks.isNotEmpty) {
+      final chunk = _chunkAt(layerChunks, x, y);
+      if (chunk == null) {
+        return null;
+      }
+      return chunk.tileData[y - chunk.y][x - chunk.x];
     }
-    return chunk.tileData[y - chunk.y][x - chunk.x];
+    return null;
   }
 
   /// Writes [gid] at Tiled tile `(x, y)` if that cell already exists.
   ///
   /// Does not allocate new chunks. Returns `true` when the stored GID changed.
   bool setTileAt(int x, int y, Gid gid) {
-    final current = tileAt(x, y);
-    if (current == null || !_gidChanged(current, gid)) {
-      return false;
-    }
-
     final data = tileData;
     if (data != null) {
-      data[y][x] = gid;
-      return true;
+      return _setFiniteTileAt(data, x, y, gid);
     }
 
-    final chunk = _chunkAt(x, y);
-    if (chunk == null) {
+    final layerChunks = chunks;
+    if (layerChunks != null && layerChunks.isNotEmpty) {
+      return _setInfiniteTileAt(layerChunks, x, y, gid);
+    }
+    return false;
+  }
+
+  static bool _setFiniteTileAt(
+    List<List<Gid>> data,
+    int x,
+    int y,
+    Gid gid,
+  ) {
+    // World (x, y) indexes the dense matrix directly.
+    if (y < 0 || x < 0 || y >= data.length || x >= data[y].length) {
       return false;
     }
-    chunk.tileData[y - chunk.y][x - chunk.x] = gid;
+    if (_gidsEqual(data[y][x], gid)) {
+      return false;
+    }
+    data[y][x] = gid;
     return true;
+  }
+
+  static bool _setInfiniteTileAt(
+    List<Chunk> layerChunks,
+    int x,
+    int y,
+    Gid gid,
+  ) {
+    // World (x, y) maps into whichever chunk covers that cell.
+    final chunk = _chunkAt(layerChunks, x, y);
+    if (chunk == null) {
+      // No existing chunk contains this cell; we do not grow the map.
+      return false;
+    }
+    final localX = x - chunk.x;
+    final localY = y - chunk.y;
+    if (_gidsEqual(chunk.tileData[localY][localX], gid)) {
+      return false;
+    }
+    chunk.tileData[localY][localX] = gid;
+    return true;
+  }
+
+  static Rectangle<int> _finiteContentBounds(List<List<Gid>> data) {
+    final height = data.length;
+    final width = height == 0 ? 0 : data.first.length;
+    return Rectangle(0, 0, width, height);
+  }
+
+  static Rectangle<int> _infiniteContentBounds(List<Chunk> layerChunks) {
+    var minX = layerChunks.first.x;
+    var minY = layerChunks.first.y;
+    var maxX = minX + layerChunks.first.width;
+    var maxY = minY + layerChunks.first.height;
+
+    for (var i = 1; i < layerChunks.length; i++) {
+      final chunk = layerChunks[i];
+      if (chunk.x < minX) {
+        minX = chunk.x;
+      }
+      if (chunk.y < minY) {
+        minY = chunk.y;
+      }
+      final chunkMaxX = chunk.x + chunk.width;
+      final chunkMaxY = chunk.y + chunk.height;
+      if (chunkMaxX > maxX) {
+        maxX = chunkMaxX;
+      }
+      if (chunkMaxY > maxY) {
+        maxY = chunkMaxY;
+      }
+    }
+
+    return Rectangle(minX, minY, maxX - minX, maxY - minY);
   }
 
   /// Returns the chunk at Tiled tile `(x, y)` if it exists, otherwise returns
   /// null.
-  Chunk? _chunkAt(int x, int y) {
-    final layerChunks = chunks;
-    if (layerChunks == null) {
-      return null;
-    }
+  static Chunk? _chunkAt(List<Chunk> layerChunks, int x, int y) {
     for (final chunk in layerChunks) {
       if (x >= chunk.x &&
           x < chunk.x + chunk.width &&
@@ -566,12 +607,11 @@ class TileLayer extends Layer {
     return null;
   }
 
-  /// Returns true if the GID has changed, otherwise returns false.
-  static bool _gidChanged(Gid current, Gid gid) {
-    return current.tile != gid.tile ||
-        current.flips.horizontally != gid.flips.horizontally ||
-        current.flips.vertically != gid.flips.vertically ||
-        current.flips.diagonally != gid.flips.diagonally;
+  static bool _gidsEqual(Gid current, Gid gid) {
+    return current.tile == gid.tile &&
+        current.flips.horizontally == gid.flips.horizontally &&
+        current.flips.vertically == gid.flips.vertically &&
+        current.flips.diagonally == gid.flips.diagonally;
   }
 }
 

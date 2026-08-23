@@ -611,7 +611,8 @@ class TileLayer extends Layer {
     return current.tile == gid.tile &&
         current.flips.horizontally == gid.flips.horizontally &&
         current.flips.vertically == gid.flips.vertically &&
-        current.flips.diagonally == gid.flips.diagonally;
+        current.flips.diagonally == gid.flips.diagonally &&
+        current.flips.antiDiagonally == gid.flips.antiDiagonally;
   }
 }
 

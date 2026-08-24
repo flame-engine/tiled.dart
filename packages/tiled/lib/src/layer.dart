@@ -509,6 +509,13 @@ class TileLayer extends Layer {
   /// Writes [gid] at Tiled tile `(x, y)` if that cell already exists.
   ///
   /// Does not allocate new chunks. Returns `true` when the stored GID changed.
+  ///
+  /// NOTE: Only the [Gid] matrix is updated: [tileData] on finite layers, or
+  /// [Chunk.tileData] on infinite layers. The parsed int lists ([data] and
+  /// [Chunk.data]) are left unchanged, so they can disagree with the matrix
+  /// after a write. Runtime reads go through [tileData] / [Chunk.tileData].
+  /// `flame_tiled`'s `RenderableTiledMap.setTileData` already has this split:
+  /// it assigns into `layer.tileData` and never rewrites `layer.data`.
   bool setTileAt(int x, int y, Gid gid) {
     final data = tileData;
     if (data != null) {

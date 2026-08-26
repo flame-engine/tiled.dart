@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
@@ -362,6 +363,12 @@ abstract class Layer {
   }
 }
 
+/// Called for each cell of a [TileLayer] in Tiled world tile coordinates.
+///
+/// The [x] and [y] parameters are the Tiled world tile coordinates.
+/// The [gid] parameter is the GID of the tile at the given coordinates.
+typedef TileVisitor = void Function(int x, int y, Gid gid);
+
 class TileLayer extends Layer {
   /// Column count. Same as map width for fixed-size maps.
   int width;
@@ -427,6 +434,192 @@ class TileLayer extends Layer {
       return null;
     }
     return Gid.generate(data, width, height);
+  }
+
+  /// Inclusive-exclusive tile bounds of this layer in Tiled world coordinates.
+  ///
+  /// Finite layers use `[0, width) × [0, height)`. Infinite layers use the
+  /// axis-aligned bounds of all chunks (`left`/`top` are the minimum tile
+  /// indices, which may be negative). Returns `null` when there is no tile
+  /// matrix and no chunks.
+  Rectangle<int>? get contentBounds {
+    final data = tileData;
+    if (data != null) {
+      return _finiteContentBounds(data);
+    }
+
+    final layerChunks = chunks;
+    if (layerChunks != null && layerChunks.isNotEmpty) {
+      return _infiniteContentBounds(layerChunks);
+    }
+    return null;
+  }
+
+  /// Walks every cell in Tiled world tile coordinates
+  /// and calls the [action] function with the x, y, and gid of the tile.
+  void forEachTile(TileVisitor action) {
+    final data = tileData;
+    if (data != null) {
+      for (var ty = 0; ty < data.length; ty++) {
+        final row = data[ty];
+        for (var tx = 0; tx < row.length; tx++) {
+          action(tx, ty, row[tx]);
+        }
+      }
+      return;
+    }
+
+    final layerChunks = chunks;
+    if (layerChunks == null) {
+      return;
+    }
+
+    for (final chunk in layerChunks) {
+      for (var localY = 0; localY < chunk.tileData.length; localY++) {
+        final row = chunk.tileData[localY];
+        for (var localX = 0; localX < row.length; localX++) {
+          action(chunk.x + localX, chunk.y + localY, row[localX]);
+        }
+      }
+    }
+  }
+
+  /// Returns the GID at Tiled tile `(x, y)` if it exists, otherwise returns
+  /// null.
+  Gid? tileAt(int x, int y) {
+    final data = tileData;
+    if (data != null) {
+      if (y < 0 || x < 0 || y >= data.length || x >= data[y].length) {
+        return null;
+      }
+      return data[y][x];
+    }
+
+    final layerChunks = chunks;
+    if (layerChunks != null && layerChunks.isNotEmpty) {
+      final chunk = _chunkAt(layerChunks, x, y);
+      if (chunk == null) {
+        return null;
+      }
+      return chunk.tileData[y - chunk.y][x - chunk.x];
+    }
+    return null;
+  }
+
+  /// Writes [gid] at Tiled tile `(x, y)` if that cell already exists.
+  ///
+  /// Does not allocate new chunks. Returns `true` when the stored GID changed.
+  ///
+  /// NOTE: Only the [Gid] matrix is updated: [tileData] on finite layers, or
+  /// [Chunk.tileData] on infinite layers. The parsed int lists ([data] and
+  /// [Chunk.data]) are left unchanged, so they can disagree with the matrix
+  /// after a write. Runtime reads go through [tileData] / [Chunk.tileData].
+  /// `flame_tiled`'s `RenderableTiledMap.setTileData` already has this split:
+  /// it assigns into `layer.tileData` and never rewrites `layer.data`.
+  bool setTileAt(int x, int y, Gid gid) {
+    final data = tileData;
+    if (data != null) {
+      return _setFiniteTileAt(data, x, y, gid);
+    }
+
+    final layerChunks = chunks;
+    if (layerChunks != null && layerChunks.isNotEmpty) {
+      return _setInfiniteTileAt(layerChunks, x, y, gid);
+    }
+    return false;
+  }
+
+  static bool _setFiniteTileAt(
+    List<List<Gid>> data,
+    int x,
+    int y,
+    Gid gid,
+  ) {
+    // World (x, y) indexes the dense matrix directly.
+    if (y < 0 || x < 0 || y >= data.length || x >= data[y].length) {
+      return false;
+    }
+    if (_gidsEqual(data[y][x], gid)) {
+      return false;
+    }
+    data[y][x] = gid;
+    return true;
+  }
+
+  static bool _setInfiniteTileAt(
+    List<Chunk> layerChunks,
+    int x,
+    int y,
+    Gid gid,
+  ) {
+    // World (x, y) maps into whichever chunk covers that cell.
+    final chunk = _chunkAt(layerChunks, x, y);
+    if (chunk == null) {
+      // No existing chunk contains this cell; we do not grow the map.
+      return false;
+    }
+    final localX = x - chunk.x;
+    final localY = y - chunk.y;
+    if (_gidsEqual(chunk.tileData[localY][localX], gid)) {
+      return false;
+    }
+    chunk.tileData[localY][localX] = gid;
+    return true;
+  }
+
+  static Rectangle<int> _finiteContentBounds(List<List<Gid>> data) {
+    final height = data.length;
+    final width = height == 0 ? 0 : data.first.length;
+    return Rectangle(0, 0, width, height);
+  }
+
+  static Rectangle<int> _infiniteContentBounds(List<Chunk> layerChunks) {
+    var minX = layerChunks.first.x;
+    var minY = layerChunks.first.y;
+    var maxX = minX + layerChunks.first.width;
+    var maxY = minY + layerChunks.first.height;
+
+    for (var i = 1; i < layerChunks.length; i++) {
+      final chunk = layerChunks[i];
+      if (chunk.x < minX) {
+        minX = chunk.x;
+      }
+      if (chunk.y < minY) {
+        minY = chunk.y;
+      }
+      final chunkMaxX = chunk.x + chunk.width;
+      final chunkMaxY = chunk.y + chunk.height;
+      if (chunkMaxX > maxX) {
+        maxX = chunkMaxX;
+      }
+      if (chunkMaxY > maxY) {
+        maxY = chunkMaxY;
+      }
+    }
+
+    return Rectangle(minX, minY, maxX - minX, maxY - minY);
+  }
+
+  /// Returns the chunk at Tiled tile `(x, y)` if it exists, otherwise returns
+  /// null.
+  static Chunk? _chunkAt(List<Chunk> layerChunks, int x, int y) {
+    for (final chunk in layerChunks) {
+      if (x >= chunk.x &&
+          x < chunk.x + chunk.width &&
+          y >= chunk.y &&
+          y < chunk.y + chunk.height) {
+        return chunk;
+      }
+    }
+    return null;
+  }
+
+  static bool _gidsEqual(Gid current, Gid gid) {
+    return current.tile == gid.tile &&
+        current.flips.horizontally == gid.flips.horizontally &&
+        current.flips.vertically == gid.flips.vertically &&
+        current.flips.diagonally == gid.flips.diagonally &&
+        current.flips.antiDiagonally == gid.flips.antiDiagonally;
   }
 }
 

@@ -166,19 +166,24 @@ There are a few things to think about when doing a release:
  - Search through the codebase for `@Deprecated` methods/fields and remove the ones that are marked
    for removal in the version that you are intending to release.
  - Create a PR containing the changes for removing the deprecated entities.
- - Run `melos version -V <package1>:<version> -V <package2>:<version>` for Melos to generate
-   `CHANGELOG.md` files.
- - Go through the PRs with breaking changes and add migration documentation to the changelog.
-   There should be migration docs on each PR, if they haven't been copied to the commit message.
- - Run `melos publish` to make sure that there aren't any problems with any of the packages and make
-   sure that all the versions are correct.
- - Once you are satisfied with the result of the dry run, run `melos publish --no-dry-run`
- - Create a PR containing the updated changelog and `pubspec.yaml` files.
+ - Run the [Prepare release] workflow on GitHub. It runs `melos version`, does a dry run of
+   `melos publish` and opens a PR with the updated `CHANGELOG.md` and `pubspec.yaml` files.
+ - Go through the PRs with breaking changes and add migration documentation to the changelog in the
+   release PR. There should be migration docs on each PR, if they haven't been copied to the commit
+   message.
+ - Once the release PR is merged, the [Tag release] workflow creates the git tags and triggers the
+   [Publish packages] workflow for each unpublished package, which publishes it to pub.dev and
+   creates a GitHub release.
+
+The same steps can be done manually with `melos version` and `melos publish` if needed.
 
 
 [GitHub issue]: https://github.com/flame-engine/tiled.dart/issues/new
 [GitHub issues]: https://github.com/flame-engine/tiled.dart/issues/new
 [PRs]: https://github.com/flame-engine/tiled.dart/pulls
+[Prepare release]: https://github.com/flame-engine/tiled.dart/actions/workflows/release-prepare.yml
+[Tag release]: https://github.com/flame-engine/tiled.dart/actions/workflows/release-tag.yml
+[Publish packages]: https://github.com/flame-engine/tiled.dart/actions/workflows/release-publish.yml
 [fork guide]: https://guides.github.com/activities/forking/#fork
 [Discord]: https://discord.gg/pxrBmy4
 [Melos]: https://github.com/invertase/melos

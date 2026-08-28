@@ -59,7 +59,12 @@ class TiledObject {
   bool point;
   bool rectangle;
 
+  /// The path of the template file this object references, if any, exactly
+  /// as it is written in the map file.
   String? templatePath;
+
+  /// The parsed template of this object, if [templatePath] is set and one of
+  /// the [Parser.providers] was able to provide the template file.
   Template? template;
 
   Text? text;
@@ -96,13 +101,9 @@ class TiledObject {
   });
 
   bool get isPolyline => polyline.isNotEmpty;
-
   bool get isPolygon => polygon.isNotEmpty;
-
   bool get isPoint => point;
-
   bool get isEllipse => ellipse;
-
   bool get isRectangle => rectangle;
 
   factory TiledObject.parse(Parser parser) {
@@ -112,7 +113,7 @@ class TiledObject {
     final width = parser.getDouble('width', defaults: 0);
     final rotation = parser.getDouble('rotation', defaults: 0);
     final visible = parser.getBool('visible', defaults: true);
-    final id = parser.getInt('id');
+    final id = parser.getInt('id', defaults: 0);
     final gid = parser.getIntOrNull('gid');
     final name = parser.getString('name', defaults: '');
 
@@ -134,17 +135,12 @@ class TiledObject {
     );
     final text = parser.getSingleChildOrNullAs('text', Text.parse);
     final templatePath = parser.getStringOrNull('template');
-    final templateProvider = templatePath == null
+    final templateParser = templatePath == null
         ? null
-        : parser.templateProviders
-            ?.firstWhere((e) => e.canProvide(templatePath));
-    final template = templateProvider == null
+        : parser.getExternalOrNull(templatePath);
+    final template = templateParser == null
         ? null
-        : Template.parse(
-            templateProvider.getCachedSource(templatePath!) ??
-                templateProvider.getSource(templatePath),
-          );
-
+        : Template.parse(templateParser);
     final properties = parser.getProperties();
 
     final polygon = parsePointList(parser, 'polygon');

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
 
@@ -14,13 +15,10 @@ class ParsingException implements Exception {
 class XmlParser extends Parser {
   final XmlElement element;
 
-  XmlParser(this.element, {super.tsxProviders, super.templateProviders});
+  XmlParser(this.element, {super.providers});
 
-  XmlParser.fromString(
-    String string, {
-    super.tsxProviders,
-    super.templateProviders,
-  }) : element = XmlDocument.parse(string).rootElement;
+  XmlParser.fromString(String string, {super.providers})
+    : element = XmlDocument.parse(string).rootElement;
 
   @override
   String? getInnerTextOrNull() =>
@@ -36,13 +34,7 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => e.name.local == name)
-        .map(
-          (e) => XmlParser(
-            e,
-            templateProviders: templateProviders,
-            tsxProviders: tsxProviders,
-          ),
-        )
+        .map((e) => XmlParser(e, providers: providers))
         .toList();
   }
 
@@ -50,13 +42,7 @@ class XmlParser extends Parser {
     return element.children
         .whereType<XmlElement>()
         .where((e) => names.contains(e.name.local))
-        .map(
-          (e) => XmlParser(
-            e,
-            tsxProviders: tsxProviders,
-            templateProviders: templateProviders,
-          ),
-        )
+        .map((e) => XmlParser(e, providers: providers))
         .toList();
   }
 
@@ -67,18 +53,20 @@ class XmlParser extends Parser {
   ) {
     return xml(this);
   }
+
+  @override
+  XmlParser withProviders(List<ParserProvider> providers) {
+    return XmlParser(element, providers: providers);
+  }
 }
 
 class JsonParser extends Parser {
   final Map<String, dynamic> json;
 
-  JsonParser(this.json, {super.tsxProviders, super.templateProviders});
+  JsonParser(this.json, {super.providers});
 
-  JsonParser.fromString(
-    String string, {
-    super.tsxProviders,
-    super.templateProviders,
-  }) : json = jsonDecode(string) as Map<String, dynamic>;
+  JsonParser.fromString(String string, {super.providers})
+    : json = jsonDecode(string) as Map<String, dynamic>;
 
   @override
   String? getInnerTextOrNull() => null;
@@ -90,16 +78,17 @@ class JsonParser extends Parser {
 
   @override
   List<Parser> getChildren(String name) {
-    if (json[name] == null) {
+    final value = json[name];
+    if (value == null) {
       return [];
     }
-    return (json[name] as List<dynamic>)
+    if (value is Map<String, dynamic>) {
+      return [JsonParser(value, providers: providers)];
+    }
+    return (value as List<dynamic>)
         .map(
-          (dynamic e) => JsonParser(
-            e as Map<String, dynamic>,
-            templateProviders: templateProviders,
-            tsxProviders: tsxProviders,
-          ),
+          (dynamic e) =>
+              JsonParser(e as Map<String, dynamic>, providers: providers),
         )
         .toList();
   }
@@ -112,16 +101,36 @@ class JsonParser extends Parser {
     return json(this);
   }
 
+  @override
+  JsonParser withProviders(List<ParserProvider> providers) {
+    return JsonParser(json, providers: providers);
+  }
+
   List<int> getIntList(String name) {
     return json[name] as List<int>;
   }
 }
 
 abstract class Parser {
-  final List<ParserProvider>? templateProviders;
-  final List<ParserProvider>? tsxProviders;
+  /// The providers used to resolve external files, like external tilesets and
+  /// object templates, that are referenced from the parsed content.
+  ///
+  /// See [ParserProvider].
+  final List<ParserProvider> providers;
 
-  Parser({this.tsxProviders, this.templateProviders});
+  Parser({this.providers = const []});
+
+  /// Creates an [XmlParser] or a [JsonParser] for [contents], depending on
+  /// whether the contents are a json object or an xml document.
+  factory Parser.fromString(
+    String contents, {
+    List<ParserProvider> providers = const [],
+  }) {
+    if (contents.trimLeft().startsWith('{')) {
+      return JsonParser.fromString(contents, providers: providers);
+    }
+    return XmlParser.fromString(contents, providers: providers);
+  }
 
   String? getInnerTextOrNull();
 
@@ -133,6 +142,20 @@ abstract class Parser {
     T Function(JsonParser) json,
     T Function(XmlParser) xml,
   );
+
+  /// Returns a parser for the same content as this one, but with the given
+  /// [providers].
+  Parser withProviders(List<ParserProvider> providers);
+
+  /// Resolves the external file at [path] with the first of the [providers]
+  /// that can provide it, or returns null when no provider can.
+  ///
+  /// The returned parser inherits the [providers] of this parser, so that
+  /// references inside the external file can be resolved as well.
+  Parser? getExternalOrNull(String path) {
+    final provider = providers.firstWhereOrNull((p) => p.canProvide(path));
+    return provider?.getSource(path).withProviders(providers);
+  }
 
   List<T> getChildrenAs<T>(String name, T Function(Parser) mapper) {
     return getChildren(name).map(mapper).toList();

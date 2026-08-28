@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:tiled/tiled.dart';
@@ -222,8 +221,10 @@ class TiledMap {
           .map(tilesetByTileGId)
           .toSet() // The different gid can be in the same tileset
           .expand(
-            (tileset) =>
-                [tileset.image, ...tileset.tiles.map((tile) => tile.image)],
+            (tileset) => [
+              tileset.image,
+              ...tileset.tiles.map((tile) => tile.image),
+            ],
           )
           // ignore: deprecated_member_use
           .whereNotNull()
@@ -289,42 +290,119 @@ class TiledMap {
     );
   }
 
-  /// Parses the provided json.
+  /// Parses the provided map [json].
   ///
-  /// Accepts an optional list of external TsxProviders for external tilesets
-  /// referenced in the map file.
+  /// External files that are referenced from the map, like external tilesets
+  /// and object templates, are resolved with the given [providers].
+  /// See [ParserProvider].
   factory TiledMap.parseJson(
     String json, {
-    List<ParserProvider>? tsxProviders,
-    List<ParserProvider>? templateProviders,
+    List<ParserProvider> providers = const [],
   }) {
-    final parser = JsonParser(
-      jsonDecode(json) as Map<String, dynamic>,
-      templateProviders: templateProviders,
-      tsxProviders: tsxProviders,
-    );
-    return TiledMap.parse(parser);
+    return TiledMap.parse(JsonParser.fromString(json, providers: providers));
   }
 
-  /// Parses the provided map xml.
+  /// Parses the provided map [xml].
   ///
-  /// Accepts an optional list of external TsxProviders for external tilesets
-  /// referenced in the map file.
+  /// External files that are referenced from the map, like external tilesets
+  /// and object templates, are resolved with the given [providers].
+  /// See [ParserProvider].
   factory TiledMap.parseTmx(
     String xml, {
-    List<ParserProvider>? tsxProviders,
-    List<ParserProvider>? templateProviders,
+    List<ParserProvider> providers = const [],
   }) {
     final xmlElement = XmlDocument.parse(xml).rootElement;
     if (xmlElement.name.local != 'map') {
       throw 'XML is not in TMX format';
     }
-    final parser = XmlParser(
-      xmlElement,
-      tsxProviders: tsxProviders,
-      templateProviders: templateProviders,
-    );
-    return TiledMap.parse(parser);
+    return TiledMap.parse(XmlParser(xmlElement, providers: providers));
+  }
+
+  /// Parses the map in [contents], which can be either tmx or json, and
+  /// asynchronously loads every external file that it references with
+  /// [loadFile].
+  ///
+  /// External tilesets and object templates are loaded recursively, so files
+  /// referenced from other external files are loaded as well. Every file is
+  /// loaded at most once and [loadFile] is called with the path exactly as it
+  /// is written in the referencing file.
+  ///
+  /// This is the entry point to use when the files can only be loaded
+  /// asynchronously, for example from an asset bundle.
+  static Future<TiledMap> fromString(
+    String contents,
+    Future<String> Function(String path) loadFile,
+  ) async {
+    final provider = _LoadedFilesProvider();
+    final parser = Parser.fromString(contents, providers: [provider]);
+    while (true) {
+      final map = TiledMap.parse(parser);
+      final unresolved = map._externalReferences().where(
+        (path) => !provider.canProvide(path),
+      );
+      if (unresolved.isEmpty) {
+        return map;
+      }
+      await Future.wait(
+        unresolved.toSet().map((path) async {
+          provider.files[path] = Parser.fromString(await loadFile(path));
+        }),
+      );
+    }
+  }
+
+  /// The paths of all external files referenced from this map, including the
+  /// ones referenced from already resolved external files.
+  Iterable<String> _externalReferences() sync* {
+    for (final tileset in tilesets) {
+      yield* _tilesetReferences(tileset);
+    }
+    for (final layer in layers) {
+      yield* _layerReferences(layer);
+    }
+  }
+
+  static Iterable<String> _tilesetReferences(Tileset tileset) sync* {
+    final source = tileset.source;
+    if (source != null) {
+      yield source;
+    }
+    for (final tile in tileset.tiles) {
+      final objectGroup = tile.objectGroup;
+      if (objectGroup != null) {
+        yield* _layerReferences(objectGroup);
+      }
+    }
+  }
+
+  static Iterable<String> _layerReferences(Layer layer) sync* {
+    if (layer is Group) {
+      for (final child in layer.layers) {
+        yield* _layerReferences(child);
+      }
+    } else if (layer is ObjectGroup) {
+      for (final object in layer.objects) {
+        yield* _objectReferences(object);
+      }
+    }
+  }
+
+  static Iterable<String> _objectReferences(TiledObject object) sync* {
+    final templatePath = object.templatePath;
+    if (templatePath != null) {
+      yield templatePath;
+    }
+    final template = object.template;
+    if (template != null) {
+      final tileset = template.tileSet;
+      if (tileset != null) {
+        yield* _tilesetReferences(tileset);
+      }
+      final templateObject = template.object;
+      if (templateObject != null) {
+        yield* _objectReferences(templateObject);
+      }
+    }
   }
 
   factory TiledMap.parse(Parser parser) {
@@ -350,23 +428,9 @@ class TiledMap {
     final version = parser.getString('version', defaults: '1.0');
     final width = parser.getInt('width');
 
-    final tilesets = parser.getChildrenAs(
-      'tileset',
-      (tilesetData) {
-        final tilesetSource = tilesetData.getStringOrNull('source');
-        if (tilesetSource == null || parser.tsxProviders == null) {
-          return Tileset.parse(tilesetData);
-        }
-
-        final matchingTsx = parser.tsxProviders!.where(
-          (tsx) => tsx.canProvide(tilesetSource),
-        );
-
-        return Tileset.parse(
-          tilesetData,
-          tsx: matchingTsx.isNotEmpty ? matchingTsx.first : null,
-        );
-      },
+    final tilesets = parser.formatSpecificParsing(
+      (json) => json.getChildrenAs('tilesets', Tileset.parse),
+      (xml) => xml.getChildrenAs('tileset', Tileset.parse),
     );
     final layers = Layer.parseLayers(parser);
     final properties = parser.getProperties();
@@ -400,4 +464,15 @@ class TiledMap {
       properties: properties,
     );
   }
+}
+
+/// Provides the files that were loaded by [TiledMap.fromString].
+class _LoadedFilesProvider extends ParserProvider {
+  final Map<String, Parser> files = {};
+
+  @override
+  bool canProvide(String path) => files.containsKey(path);
+
+  @override
+  Parser getSource(String path) => files[path]!;
 }

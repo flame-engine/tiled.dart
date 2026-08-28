@@ -118,7 +118,7 @@ abstract class Layer {
     this.properties = CustomProperties.empty,
   });
 
-  static Layer parse(Parser parser, {List<ParserProvider>? templateProviders}) {
+  static Layer parse(Parser parser) {
     final type = parser.formatSpecificParsing(
       (json) => json.getLayerType('type'),
       (xml) => LayerTypeExtension.parseFromTmx(xml.element.name.toString()),
@@ -286,10 +286,7 @@ abstract class Layer {
 
   static List<Layer> parseLayers(Parser parser) {
     return parser.formatSpecificParsing(
-      (json) => json.getChildrenAs(
-        'layers',
-        Layer.parse,
-      ),
+      (json) => json.getChildrenAs('layers', Layer.parse),
       (xml) {
         // It's very important not change the order of the layers
         // during parsing!

@@ -1,0 +1,23 @@
+{ "object":
+    {
+     "gid":5,
+     "height":16,
+     "name":"Templated",
+     "properties":[
+            {
+             "name":"health",
+             "type":"int",
+             "value":10
+            }],
+     "rotation":0,
+     "type":"enemy",
+     "visible":true,
+     "width":16
+    },
+ "tileset":
+    {
+     "firstgid":1,
+     "source":"tileset.tsx"
+    },
+ "type":"template"
+}

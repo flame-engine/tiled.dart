@@ -34,9 +34,9 @@ void main() {
 
   late TiledMap map4;
   setUp(() {
-    return File('./test/fixtures/testbase64only.json')
-        .readAsString()
-        .then((xml) {
+    return File('./test/fixtures/testbase64only.json').readAsString().then((
+      xml,
+    ) {
       map4 = TiledMap.parseJson(xml);
     });
   });
@@ -122,5 +122,19 @@ void main() {
       'toString should be equal',
       () => expect(tileMapEllipse.type, equals(tileMapComplex.type)),
     );
+
+    test('tilesets should be equal', () {
+      expect(map5.tilesets.length, equals(tileMapComplex.tilesets.length));
+      for (var i = 0; i < map5.tilesets.length; i++) {
+        final jsonTileset = map5.tilesets[i];
+        final tmxTileset = tileMapComplex.tilesets[i];
+        expect(jsonTileset.name, equals(tmxTileset.name));
+        expect(jsonTileset.firstGid, equals(tmxTileset.firstGid));
+        expect(jsonTileset.tileCount, equals(tmxTileset.tileCount));
+        expect(jsonTileset.image?.source, equals(tmxTileset.image?.source));
+        expect(jsonTileset.image?.width, equals(tmxTileset.image?.width));
+        expect(jsonTileset.image?.height, equals(tmxTileset.image?.height));
+      }
+    });
   });
 }

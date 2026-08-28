@@ -2,10 +2,11 @@ import 'dart:io';
 import 'dart:math' show Rectangle;
 
 import 'package:collection/collection.dart';
-import 'package:path/path.dart' as paths;
 import 'package:test/test.dart';
 import 'package:tiled/tiled.dart';
 import 'package:xml/xml.dart';
+
+import 'fixture_provider.dart';
 
 void main() {
   late TiledMap map;
@@ -240,9 +241,9 @@ void main() {
       });
 
       test('has the right text object with ID 5', () {
-        final textObject = (og as ObjectGroup)
-            .objects
-            .firstWhereOrNull((element) => element.id == 5);
+        final textObject = (og as ObjectGroup).objects.firstWhereOrNull(
+          (element) => element.id == 5,
+        );
         final text = textObject?.text;
         expect(text?.wrap, equals(true));
         expect(text?.text, equals('Hello World'));
@@ -255,7 +256,7 @@ void main() {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
         map = TiledMap.parseTmx(
           xml,
-          tsxProviders: [FixtureTsxProvider.all()],
+          providers: [FixtureProvider()],
         );
       });
     });
@@ -311,12 +312,12 @@ void main() {
 
   group('External tileset tile parsing', () {
     test('it parsed the first tile', () {
-      return File('./test/fixtures/external_tileset_map.tmx')
-          .readAsString()
-          .then((xml) {
+      return File(
+        './test/fixtures/external_tileset_map.tmx',
+      ).readAsString().then((xml) {
         final map = TiledMap.parseTmx(
           xml,
-          tsxProviders: [FixtureTsxProvider.all()],
+          providers: [FixtureProvider()],
         );
         expect(map.tilesets[0].tileCount, 137);
         final tile = map.tileByGid(1)!;
@@ -331,7 +332,7 @@ void main() {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
         map = TiledMap.parseTmx(
           xml,
-          tsxProviders: [FixtureTsxProvider.all()],
+          providers: [FixtureProvider()],
         );
         expect(
           map.tilesetByName('external').image!.source,
@@ -346,7 +347,7 @@ void main() {
       return File('./test/fixtures/map_images.tmx').readAsString().then((xml) {
         map = TiledMap.parseTmx(
           xml,
-          tsxProviders: [FixtureTsxProvider.all()],
+          providers: [FixtureProvider()],
         );
         expect(map.layers.length, equals(2));
       });
@@ -356,12 +357,12 @@ void main() {
   group('Map Parses Multiple Tilesets', () {
     late TiledMap map;
     setUp(() {
-      return File('./test/fixtures/map_with_multiple_tilesets.tmx')
-          .readAsString()
-          .then((xml) {
+      return File(
+        './test/fixtures/map_with_multiple_tilesets.tmx',
+      ).readAsString().then((xml) {
         map = TiledMap.parseTmx(
           xml,
-          tsxProviders: [FixtureTsxProvider.all()],
+          providers: [FixtureProvider()],
         );
         return;
       });
@@ -417,8 +418,9 @@ void main() {
 
   group('Parser tiles', () {
     test('support empty terrain values', () {
-      final xml = File('./test/fixtures/map_with_empty_terrains.tmx')
-          .readAsStringSync();
+      final xml = File(
+        './test/fixtures/map_with_empty_terrains.tmx',
+      ).readAsStringSync();
       final tiledMap = TiledMap.parseTmx(xml);
 
       final tileset = tiledMap.tilesets.first;
@@ -426,49 +428,4 @@ void main() {
       expect(tile.terrain, anyElement(isNull));
     });
   });
-}
-
-class FixtureTsxProvider extends ParserProvider {
-  final List<String> files;
-  final String root;
-
-  FixtureTsxProvider(this.root, this.files);
-
-  factory FixtureTsxProvider.all([String directory = './test/fixtures']) {
-    final dir = Directory(directory);
-    if (!dir.existsSync()) {
-      throw '[FixtureTsxProvider] Supplied directory does not exist!';
-    }
-
-    final names = dir
-        .listSync()
-        .whereType<File>()
-        .where((e) => e.path.endsWith('.tsx'))
-        .map((e) => paths.basename(e.path))
-        .toList();
-
-    return FixtureTsxProvider(paths.absolute(directory), names);
-  }
-
-  final Map<String, String> cache = {};
-
-  @override
-  bool canProvide(String filename) {
-    return files.contains(filename);
-  }
-
-  @override
-  Parser? getCachedSource(String filename) {
-    return cache.containsKey(filename)
-        ? XmlParser.fromString(cache[filename]!)
-        : null;
-  }
-
-  @override
-  Parser getSource(String filename) {
-    final content = File(paths.join(root, filename)).readAsStringSync();
-    cache[filename] = content;
-
-    return XmlParser.fromString(content);
-  }
 }

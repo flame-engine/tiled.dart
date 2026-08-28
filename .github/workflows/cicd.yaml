@@ -12,8 +12,8 @@ jobs:
   dartdoc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
       - uses: flame-engine/flame-dartdoc-action@v2
@@ -21,7 +21,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
       - uses: bluefireteam/melos-action@v3
       - name: Run analysis
@@ -30,7 +30,7 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           cache: true
@@ -43,7 +43,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - uses: subosito/flutter-action@v2
         with:
           cache: true

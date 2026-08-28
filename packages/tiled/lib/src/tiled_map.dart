@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:tiled/tiled.dart';
@@ -345,6 +346,77 @@ class TiledMap {
     }
   }
 
+  /// Translates the tile of every object that inherits it from a template,
+  /// which is referenced relative to the tileset of the template file, to the
+  /// tilesets of the map. Adds the tileset of the template to [tilesets] when
+  /// the map does not contain it yet, like Tiled does.
+  static void _resolveTemplateGids(List<Tileset> tilesets, List<Layer> layers) {
+    for (final layer in layers) {
+      if (layer is Group) {
+        _resolveTemplateGids(tilesets, layer.layers);
+      } else if (layer is ObjectGroup) {
+        for (final object in layer.objects) {
+          _resolveTemplateGid(tilesets, object);
+        }
+      }
+    }
+  }
+
+  static void _resolveTemplateGid(List<Tileset> tilesets, TiledObject object) {
+    final template = object.template;
+    final templateGid = template?.object?.gid;
+    final templateTileset = template?.tileSet;
+    if (object.gid != null || templateGid == null || templateTileset == null) {
+      return;
+    }
+    final localId =
+        Gid.fromInt(templateGid).tile - (templateTileset.firstGid ?? 1);
+    final flags = templateGid & Gid.flagMask;
+    final tileset =
+        tilesets.firstWhereOrNull(
+          (tileset) =>
+              tileset.source != null &&
+              tileset.source == templateTileset.source,
+        ) ??
+        _addTileset(tilesets, templateTileset);
+    object.gid = flags | ((tileset.firstGid ?? 0) + localId);
+  }
+
+  static Tileset _addTileset(List<Tileset> tilesets, Tileset template) {
+    final nextGids = tilesets.map<int>((tileset) {
+      final nextLocalId =
+          (tileset.tiles.map((tile) => tile.localId).maxOrNull ?? -1) + 1;
+      return (tileset.firstGid ?? 0) + max(nextLocalId, tileset.tileCount ?? 0);
+    });
+    final firstGid = max(1, nextGids.maxOrNull ?? 1);
+    final tileset = Tileset(
+      firstGid: firstGid,
+      source: template.source,
+      name: template.name,
+      tileWidth: template.tileWidth,
+      tileHeight: template.tileHeight,
+      spacing: template.spacing,
+      margin: template.margin,
+      tileCount: template.tileCount,
+      columns: template.columns,
+      objectAlignment: template.objectAlignment,
+      tiles: template.tiles,
+      image: template.image,
+      tileOffset: template.tileOffset,
+      grid: template.grid,
+      properties: template.properties,
+      terrains: template.terrains,
+      wangSets: template.wangSets,
+      version: template.version,
+      tiledVersion: template.tiledVersion,
+      backgroundColor: template.backgroundColor,
+      transparentColor: template.transparentColor,
+      type: template.type,
+    );
+    tilesets.add(tileset);
+    return tileset;
+  }
+
   factory TiledMap.parse(Parser parser) {
     if (parser is XmlParser && parser.element.name.local != 'map') {
       throw 'XML is not in TMX format';
@@ -376,6 +448,7 @@ class TiledMap {
       (xml) => xml.getChildrenAs('tileset', Tileset.parse),
     );
     final layers = Layer.parseLayers(parser);
+    _resolveTemplateGids(tilesets, layers);
     final properties = parser.getProperties();
     final editorSettings = parser.getChildrenAs(
       'editorsettings',

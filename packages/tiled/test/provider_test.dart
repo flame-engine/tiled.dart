@@ -69,6 +69,16 @@ void main() {
       expect(tileset.tiles, isEmpty);
     });
 
+    test('external tilesets provide their version and type', () {
+      final map = TiledMap.parseTmx(
+        readFixture('map_images.tmx'),
+        providers: [FixtureProvider()],
+      );
+      final tileset = map.tilesetByName('external');
+      expect(tileset.version, equals('1.2'));
+      expect(tileset.type, equals(TilesetType.tileset));
+    });
+
     test('external tilesets are resolved for json maps', () {
       final map = TiledMap.parseJson(
         readFixture('map_with_template.json'),

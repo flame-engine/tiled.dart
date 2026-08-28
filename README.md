@@ -45,8 +45,8 @@ If your map references external files, like external tilesets (`.tsx`) or object
 parser encounters a reference to an external file, the first provider that `canProvide` the
 referenced path is asked for a `Parser` of its contents through `getSource`.
 
-The path is passed exactly as it is written in the referencing file, so a single provider can
-resolve any number of files, for example everything below a directory:
+The path is always relative to the map file, also for files referenced from other external files,
+so a single provider can resolve any number of files, for example everything below a directory:
 
 ```dart
 class DirectoryProvider extends ParserProvider {
@@ -64,8 +64,8 @@ class DirectoryProvider extends ParserProvider {
 }
 ```
 
-`Parser.fromString` creates an `XmlParser` or a `JsonParser` depending on the contents. Caching, if
-desired, is the responsibility of the provider.
+`Parser.fromString` creates an `XmlParser` or a `JsonParser` depending on the contents. Every file
+is requested at most once per parsed map.
 
 The providers are passed to `parseTmx` or `parseJson`:
 

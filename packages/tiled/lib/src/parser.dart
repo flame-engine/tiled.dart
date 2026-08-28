@@ -20,6 +20,8 @@ class XmlParser extends Parser {
   XmlParser.fromString(String string, {super.providers})
     : element = XmlDocument.parse(string).rootElement;
 
+  XmlParser._(this.element, super.externalFiles, super.directory) : super._();
+
   @override
   String? getInnerTextOrNull() =>
       element.innerText.isEmpty ? null : element.innerText;
@@ -30,19 +32,13 @@ class XmlParser extends Parser {
   }
 
   @override
-  List<Parser> getChildren(String name) {
-    return element.children
-        .whereType<XmlElement>()
-        .where((e) => e.name.local == name)
-        .map((e) => XmlParser(e, providers: providers))
-        .toList();
-  }
+  List<Parser> getChildren(String name) => getChildrenWithNames({name});
 
   List<Parser> getChildrenWithNames(Set<String> names) {
     return element.children
         .whereType<XmlElement>()
         .where((e) => names.contains(e.name.local))
-        .map((e) => XmlParser(e, providers: providers))
+        .map((e) => XmlParser._(e, _externalFiles, _directory))
         .toList();
   }
 
@@ -55,8 +51,8 @@ class XmlParser extends Parser {
   }
 
   @override
-  XmlParser withProviders(List<ParserProvider> providers) {
-    return XmlParser(element, providers: providers);
+  XmlParser _inScope(_ExternalFiles externalFiles, String directory) {
+    return XmlParser._(element, externalFiles, directory);
   }
 }
 
@@ -67,6 +63,8 @@ class JsonParser extends Parser {
 
   JsonParser.fromString(String string, {super.providers})
     : json = jsonDecode(string) as Map<String, dynamic>;
+
+  JsonParser._(this.json, super.externalFiles, super.directory) : super._();
 
   @override
   String? getInnerTextOrNull() => null;
@@ -79,16 +77,27 @@ class JsonParser extends Parser {
   @override
   List<Parser> getChildren(String name) {
     final value = json[name];
+    final List<dynamic> values;
     if (value == null) {
       return [];
+    } else if (value is Map<String, dynamic>) {
+      values = [value];
+    } else if (value is List<dynamic>) {
+      values = value;
+    } else {
+      throw ParsingException(
+        name,
+        value.toString(),
+        'Expected an object or a list',
+      );
     }
-    if (value is Map<String, dynamic>) {
-      return [JsonParser(value, providers: providers)];
-    }
-    return (value as List<dynamic>)
+    return values
         .map(
-          (dynamic e) =>
-              JsonParser(e as Map<String, dynamic>, providers: providers),
+          (dynamic e) => JsonParser._(
+            e as Map<String, dynamic>,
+            _externalFiles,
+            _directory,
+          ),
         )
         .toList();
   }
@@ -102,8 +111,8 @@ class JsonParser extends Parser {
   }
 
   @override
-  JsonParser withProviders(List<ParserProvider> providers) {
-    return JsonParser(json, providers: providers);
+  JsonParser _inScope(_ExternalFiles externalFiles, String directory) {
+    return JsonParser._(json, externalFiles, directory);
   }
 
   List<int> getIntList(String name) {
@@ -112,13 +121,23 @@ class JsonParser extends Parser {
 }
 
 abstract class Parser {
+  final _ExternalFiles _externalFiles;
+
+  /// The directory, relative to the map, of the file this parser was created
+  /// from. Empty for the map itself.
+  final String _directory;
+
+  Parser({List<ParserProvider> providers = const []})
+    : _externalFiles = _ExternalFiles(providers),
+      _directory = '';
+
+  Parser._(this._externalFiles, this._directory);
+
   /// The providers used to resolve external files, like external tilesets and
   /// object templates, that are referenced from the parsed content.
   ///
   /// See [ParserProvider].
-  final List<ParserProvider> providers;
-
-  Parser({this.providers = const []});
+  List<ParserProvider> get providers => _externalFiles.providers;
 
   /// Creates an [XmlParser] or a [JsonParser] for [contents], depending on
   /// whether the contents are a json object or an xml document.
@@ -143,18 +162,29 @@ abstract class Parser {
     T Function(XmlParser) xml,
   );
 
-  /// Returns a parser for the same content as this one, but with the given
-  /// [providers].
-  Parser withProviders(List<ParserProvider> providers);
+  /// Returns a parser for the same content as this one that resolves external
+  /// files through [externalFiles], relative to [directory].
+  Parser _inScope(_ExternalFiles externalFiles, String directory);
 
-  /// Resolves the external file at [path] with the first of the [providers]
-  /// that can provide it, or returns null when no provider can.
+  /// Parses the external file referenced by [path] with [parse], or returns
+  /// null when [path] is null or no provider can provide the file.
   ///
-  /// The returned parser inherits the [providers] of this parser, so that
-  /// references inside the external file can be resolved as well.
-  Parser? getExternalOrNull(String path) {
-    final provider = providers.firstWhereOrNull((p) => p.canProvide(path));
-    return provider?.getSource(path).withProviders(providers);
+  /// [path] is written relative to the file this parser was created from and
+  /// is resolved to a path relative to the map before it is passed to the
+  /// [providers]. References inside the external file are resolved the same
+  /// way, so external files can reference other external files.
+  ///
+  /// Every file is requested from the providers and parsed at most once per
+  /// map, and a file that references itself, directly or through other files,
+  /// is left unresolved at the point where the cycle would start.
+  T? getExternalOrNullAs<T extends Object>(
+    String? path,
+    T Function(Parser) parse,
+  ) {
+    if (path == null) {
+      return null;
+    }
+    return _externalFiles.parse(_resolvePath(_directory, path), parse);
   }
 
   List<T> getChildrenAs<T>(String name, T Function(Parser) mapper) {
@@ -328,4 +358,59 @@ abstract class Parser {
     }
     return result;
   }
+}
+
+/// The external files of one map, shared by every parser created while parsing
+/// it.
+class _ExternalFiles {
+  final List<ParserProvider> providers;
+  final Map<String, Object> parsed = {};
+  final Set<String> parsing = {};
+
+  _ExternalFiles(this.providers);
+
+  T? parse<T extends Object>(String path, T Function(Parser) parse) {
+    final cached = parsed[path];
+    if (cached is T) {
+      return cached;
+    }
+    if (parsing.contains(path)) {
+      return null;
+    }
+    final provider = providers.firstWhereOrNull(
+      (provider) => provider.canProvide(path),
+    );
+    if (provider == null) {
+      return null;
+    }
+    parsing.add(path);
+    try {
+      final parser = provider.getSource(path)._inScope(this, _dirname(path));
+      return parsed[path] = parse(parser);
+    } finally {
+      parsing.remove(path);
+    }
+  }
+}
+
+String _dirname(String path) {
+  final index = path.lastIndexOf('/');
+  return index == -1 ? '' : path.substring(0, index);
+}
+
+/// Resolves [path], written relative to [directory], to a path relative to
+/// the map.
+String _resolvePath(String directory, String path) {
+  if (directory.isEmpty || path.startsWith('/')) {
+    return path;
+  }
+  final segments = <String>[];
+  for (final segment in '$directory/$path'.split('/')) {
+    if (segment == '..' && segments.isNotEmpty && segments.last != '..') {
+      segments.removeLast();
+    } else if (segment != '.' && segment.isNotEmpty) {
+      segments.add(segment);
+    }
+  }
+  return segments.join('/');
 }

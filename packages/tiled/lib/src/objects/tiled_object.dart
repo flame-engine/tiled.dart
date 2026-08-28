@@ -106,14 +106,20 @@ class TiledObject {
   bool get isEllipse => ellipse;
   bool get isRectangle => rectangle;
 
-  factory TiledObject.parse(Parser parser) {
+  /// Parses an object.
+  ///
+  /// Set [inTemplate] when parsing the object of a template file, which has no
+  /// id.
+  factory TiledObject.parse(Parser parser, {bool inTemplate = false}) {
     final x = parser.getDouble('x', defaults: 0);
     final y = parser.getDouble('y', defaults: 0);
     final height = parser.getDouble('height', defaults: 0);
     final width = parser.getDouble('width', defaults: 0);
     final rotation = parser.getDouble('rotation', defaults: 0);
     final visible = parser.getBool('visible', defaults: true);
-    final id = parser.getInt('id', defaults: 0);
+    final id = inTemplate
+        ? parser.getInt('id', defaults: 0)
+        : parser.getInt('id');
     final gid = parser.getIntOrNull('gid');
     final name = parser.getString('name', defaults: '');
 
@@ -135,12 +141,7 @@ class TiledObject {
     );
     final text = parser.getSingleChildOrNullAs('text', Text.parse);
     final templatePath = parser.getStringOrNull('template');
-    final templateParser = templatePath == null
-        ? null
-        : parser.getExternalOrNull(templatePath);
-    final template = templateParser == null
-        ? null
-        : Template.parse(templateParser);
+    final template = parser.getExternalOrNullAs(templatePath, Template.parse);
     final properties = parser.getProperties();
 
     final polygon = parsePointList(parser, 'polygon');

@@ -232,7 +232,7 @@ abstract class Layer {
       case LayerType.imageLayer:
         final transparentColorHex = parser.getStringOrNull('transparentcolor');
         final transparentColor = parser.getColorOrNull('transparentcolor');
-        final image = parser.getSingleChildAs('image', TiledImage.parse);
+        final image = TiledImage.parseOrNull(parser) ?? const TiledImage();
         final repeatX = parser.getBool('repeatx', defaults: false);
         final repeatY = parser.getBool('repeaty', defaults: false);
         layer = ImageLayer(

@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:collection/collection.dart';
 import 'package:tiled/tiled.dart';
-import 'package:xml/xml.dart';
 
 /// Below is Tiled's documentation about how this structure is represented
 /// on XML files:
@@ -311,11 +310,7 @@ class TiledMap {
     String xml, {
     List<ParserProvider> providers = const [],
   }) {
-    final xmlElement = XmlDocument.parse(xml).rootElement;
-    if (xmlElement.name.local != 'map') {
-      throw 'XML is not in TMX format';
-    }
-    return TiledMap.parse(XmlParser(xmlElement, providers: providers));
+    return TiledMap.parse(XmlParser.fromString(xml, providers: providers));
   }
 
   /// Parses the map in [contents], which can be either tmx or json, and
@@ -324,8 +319,8 @@ class TiledMap {
   ///
   /// External tilesets and object templates are loaded recursively, so files
   /// referenced from other external files are loaded as well. Every file is
-  /// loaded at most once and [loadFile] is called with the path exactly as it
-  /// is written in the referencing file.
+  /// loaded at most once and [loadFile] is called with the path relative to
+  /// the map, see [Parser.getExternalOrNullAs].
   ///
   /// This is the entry point to use when the files can only be loaded
   /// asynchronously, for example from an asset bundle.
@@ -334,78 +329,26 @@ class TiledMap {
     Future<String> Function(String path) loadFile,
   ) async {
     final provider = _LoadedFilesProvider();
-    final parser = Parser.fromString(contents, providers: [provider]);
     while (true) {
-      final map = TiledMap.parse(parser);
-      final unresolved = map._externalReferences().where(
-        (path) => !provider.canProvide(path),
+      provider.missing.clear();
+      final map = TiledMap.parse(
+        Parser.fromString(contents, providers: [provider]),
       );
-      if (unresolved.isEmpty) {
+      if (provider.missing.isEmpty) {
         return map;
       }
       await Future.wait(
-        unresolved.toSet().map((path) async {
+        provider.missing.map((path) async {
           provider.files[path] = Parser.fromString(await loadFile(path));
         }),
       );
     }
   }
 
-  /// The paths of all external files referenced from this map, including the
-  /// ones referenced from already resolved external files.
-  Iterable<String> _externalReferences() sync* {
-    for (final tileset in tilesets) {
-      yield* _tilesetReferences(tileset);
-    }
-    for (final layer in layers) {
-      yield* _layerReferences(layer);
-    }
-  }
-
-  static Iterable<String> _tilesetReferences(Tileset tileset) sync* {
-    final source = tileset.source;
-    if (source != null) {
-      yield source;
-    }
-    for (final tile in tileset.tiles) {
-      final objectGroup = tile.objectGroup;
-      if (objectGroup != null) {
-        yield* _layerReferences(objectGroup);
-      }
-    }
-  }
-
-  static Iterable<String> _layerReferences(Layer layer) sync* {
-    if (layer is Group) {
-      for (final child in layer.layers) {
-        yield* _layerReferences(child);
-      }
-    } else if (layer is ObjectGroup) {
-      for (final object in layer.objects) {
-        yield* _objectReferences(object);
-      }
-    }
-  }
-
-  static Iterable<String> _objectReferences(TiledObject object) sync* {
-    final templatePath = object.templatePath;
-    if (templatePath != null) {
-      yield templatePath;
-    }
-    final template = object.template;
-    if (template != null) {
-      final tileset = template.tileSet;
-      if (tileset != null) {
-        yield* _tilesetReferences(tileset);
-      }
-      final templateObject = template.object;
-      if (templateObject != null) {
-        yield* _objectReferences(templateObject);
-      }
-    }
-  }
-
   factory TiledMap.parse(Parser parser) {
+    if (parser is XmlParser && parser.element.name.local != 'map') {
+      throw 'XML is not in TMX format';
+    }
     final backgroundColorHex = parser.getStringOrNull('backgroundcolor');
     final backgroundColor = parser.getColorOrNull('backgroundcolor');
     final compressionLevel = parser.getInt('compressionlevel', defaults: -1);
@@ -466,12 +409,20 @@ class TiledMap {
   }
 }
 
-/// Provides the files that were loaded by [TiledMap.fromString].
+/// Provides the files that were loaded by [TiledMap.fromString] and records
+/// the paths that were requested but not loaded yet.
 class _LoadedFilesProvider extends ParserProvider {
   final Map<String, Parser> files = {};
+  final Set<String> missing = {};
 
   @override
-  bool canProvide(String path) => files.containsKey(path);
+  bool canProvide(String path) {
+    if (files.containsKey(path)) {
+      return true;
+    }
+    missing.add(path);
+    return false;
+  }
 
   @override
   Parser getSource(String path) => files[path]!;

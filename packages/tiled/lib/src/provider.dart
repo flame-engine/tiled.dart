@@ -8,12 +8,14 @@ import 'package:tiled/tiled.dart';
 /// first provider that [canProvide] the referenced path is asked for its
 /// [Parser] through [getSource].
 ///
-/// The path is passed exactly as it is written in the map file, which means
-/// that it is relative to the file that references it. A single provider can
-/// therefore resolve any number of files, for example everything below a
+/// The path is always relative to the map file: a path written in the map is
+/// passed exactly as it is written there, and a path written in an external
+/// file is joined with the directory of that file first. A single provider
+/// can therefore resolve any number of files, for example everything below a
 /// directory or everything in an asset bundle.
 ///
-/// Caching, if desired, is the responsibility of the provider.
+/// Every file is requested at most once per parsed map, so providers only
+/// need to cache if the same files are shared between maps.
 abstract class ParserProvider {
   /// Whether this provider is able to provide a source for [path].
   bool canProvide(String path);

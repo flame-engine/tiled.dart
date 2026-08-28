@@ -109,7 +109,8 @@ class Tileset {
   ///
   /// If the tileset references an external file through its `source` and one
   /// of the [Parser.providers] can provide that file, the external tileset is
-  /// parsed and merged into the result.
+  /// parsed and merged into the result. The external tileset is parsed at most
+  /// once per map, however many tilesets and templates reference it.
   factory Tileset.parse(Parser parser) {
     final backgroundColor = parser.getStringOrNull('backgroundcolor');
     final columns = parser.getIntOrNull('columns');
@@ -174,11 +175,9 @@ class Tileset {
       transparentColor: transparentColor,
       type: type,
     );
-    final externalParser = source == null
-        ? null
-        : parser.getExternalOrNull(source);
-    if (externalParser != null) {
-      result._mergeExternalTileset(Tileset.parse(externalParser));
+    final external = parser.getExternalOrNullAs(source, Tileset.parse);
+    if (external != null) {
+      result._mergeExternalTileset(external);
     }
     return result;
   }

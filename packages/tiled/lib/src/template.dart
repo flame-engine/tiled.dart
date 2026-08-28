@@ -31,6 +31,9 @@ class Template {
   Template.parse(Parser parser)
     : this(
         tileSet: parser.getSingleChildOrNullAs('tileset', Tileset.parse),
-        object: parser.getSingleChildOrNullAs('object', TiledObject.parse),
+        object: parser.getSingleChildOrNullAs(
+          'object',
+          (parser) => TiledObject.parse(parser, inTemplate: true),
+        ),
       );
 }

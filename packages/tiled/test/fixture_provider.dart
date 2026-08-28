@@ -12,6 +12,10 @@ class FixtureProvider extends ParserProvider {
 
   FixtureProvider({this.files});
 
+  static String read(String path) {
+    return File('$directory/$path').readAsStringSync();
+  }
+
   @override
   bool canProvide(String path) {
     if (files != null) {
@@ -23,6 +27,6 @@ class FixtureProvider extends ParserProvider {
   @override
   Parser getSource(String path) {
     requestedPaths.add(path);
-    return Parser.fromString(File('$directory/$path').readAsStringSync());
+    return Parser.fromString(read(path));
   }
 }

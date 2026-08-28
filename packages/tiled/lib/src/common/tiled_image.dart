@@ -43,7 +43,8 @@ class TiledImage {
         trans: parser.getStringOrNull('trans'),
       );
 
-  /// Parses the image of a tileset or a tile from its [parent].
+  /// Parses the image of a tileset, a tile or an image layer from its
+  /// [parent].
   ///
   /// In xml the image is an `image` child element, while in json it is an
   /// `image` string with the dimensions in `imagewidth` and `imageheight`.

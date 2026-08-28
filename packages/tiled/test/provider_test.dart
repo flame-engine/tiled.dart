@@ -6,9 +6,7 @@ import 'package:tiled/tiled.dart';
 import 'fixture_provider.dart';
 
 void main() {
-  String readFixture(String name) {
-    return File('${FixtureProvider.directory}/$name').readAsStringSync();
-  }
+  const readFixture = FixtureProvider.read;
 
   void expectTemplatesResolved(TiledMap map) {
     final objects = (map.layers[1] as ObjectGroup).objects;
@@ -102,6 +100,61 @@ void main() {
       expect(templated.templatePath, equals('object_template.tx'));
       expect(templated.template, isNull);
     });
+
+    test('every external file is requested at most once per map', () {
+      final provider = FixtureProvider();
+      TiledMap.parseTmx(
+        readFixture('map_with_template.tmx'),
+        providers: [provider],
+      );
+      expect(
+        provider.requestedPaths,
+        unorderedEquals([
+          'tileset.tsx',
+          'tileset_with_template.tsx',
+          'object_template.tx',
+        ]),
+      );
+    });
+
+    test('paths in external files are resolved relative to that file', () {
+      final provider = FixtureProvider();
+      final map = TiledMap.parseTmx(
+        readFixture('map_nested.tmx'),
+        providers: [provider],
+      );
+      expect(
+        provider.requestedPaths,
+        equals([
+          'tilesets/nested_tileset.tsx',
+          'tilesets/templates/nested_template.tx',
+        ]),
+      );
+      final tileset = map.tilesetByName('nested');
+      final tileObjects =
+          (tileset.tiles.first.objectGroup! as ObjectGroup).objects;
+      expect(tileObjects.single.template!.object!.name, equals('Nested'));
+    });
+
+    test('cyclic references are left unresolved instead of recursing', () {
+      final map = TiledMap.parseTmx(
+        readFixture('map_nested.tmx'),
+        providers: [FixtureProvider()],
+      );
+      final tileset = map.tilesetByName('nested');
+      final tileObjects =
+          (tileset.tiles.first.objectGroup! as ObjectGroup).objects;
+      final templateTileset = tileObjects.single.template!.tileSet!;
+      expect(templateTileset.source, equals('../nested_tileset.tsx'));
+      expect(templateTileset.name, isNull);
+    });
+
+    test('objects outside of templates require an id', () {
+      expect(
+        () => TiledMap.parseTmx(readFixture('map_without_object_id.tmx')),
+        throwsA(isA<ParsingException>()),
+      );
+    });
   });
 
   group('TiledMap.fromString', () {
@@ -155,6 +208,29 @@ void main() {
       );
       expect(loaded, isEmpty);
       expect(map.tilesets, isNotEmpty);
+    });
+
+    test('loads files referenced from nested directories', () async {
+      final loaded = <String>[];
+      final map = await TiledMap.fromString(
+        readFixture('map_nested.tmx'),
+        recordingLoader(loaded),
+      );
+      expect(
+        loaded,
+        equals([
+          'tilesets/nested_tileset.tsx',
+          'tilesets/templates/nested_template.tx',
+        ]),
+      );
+      expect(map.tilesetByName('nested').tiles, hasLength(1));
+    });
+
+    test('rejects xml that is not a map', () {
+      expect(
+        TiledMap.fromString(readFixture('tileset.tsx'), (path) async => ''),
+        throwsA(equals('XML is not in TMX format')),
+      );
     });
 
     test('propagates errors from the loader', () {

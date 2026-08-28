@@ -54,7 +54,8 @@ class Gid {
     final flippedAntiDiagonally =
         gid & flippedAntiDiagonallyFlag == flippedAntiDiagonallyFlag;
     // clear id from flips
-    final tileId = gid &
+    final tileId =
+        gid &
         ~(flippedHorizontallyFlag |
             flippedVerticallyFlag |
             flippedDiagonallyFlag |

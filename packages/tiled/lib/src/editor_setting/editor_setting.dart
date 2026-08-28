@@ -15,9 +15,8 @@ class EditorSetting {
   EditorSetting({required this.chunkSize, required this.export});
 
   EditorSetting.parse(Parser parser)
-      : this(
-          chunkSize:
-              parser.getSingleChildOrNullAs('chunksize', ChunkSize.parse),
-          export: parser.getSingleChildOrNullAs('export', Export.parse),
-        );
+    : this(
+        chunkSize: parser.getSingleChildOrNullAs('chunksize', ChunkSize.parse),
+        export: parser.getSingleChildOrNullAs('export', Export.parse),
+      );
 }

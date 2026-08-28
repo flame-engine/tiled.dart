@@ -35,13 +35,13 @@ class TiledImage {
   });
 
   TiledImage.parse(Parser parser)
-      : this(
-          source: parser.getStringOrNull('source'),
-          format: parser.getStringOrNull('format'),
-          width: parser.getIntOrNull('width'),
-          height: parser.getIntOrNull('height'),
-          trans: parser.getStringOrNull('trans'),
-        );
+    : this(
+        source: parser.getStringOrNull('source'),
+        format: parser.getStringOrNull('format'),
+        width: parser.getIntOrNull('width'),
+        height: parser.getIntOrNull('height'),
+        trans: parser.getStringOrNull('trans'),
+      );
 
   /// Needed for getTiledImages in TileMap;
   /// Images are equal if their source is equal.

@@ -24,9 +24,9 @@ class Grid {
   });
 
   Grid.parse(Parser parser)
-      : this(
-          width: parser.getInt('width'),
-          height: parser.getInt('height'),
-          orientation: parser.getGridOrientation('orientation'),
-        );
+    : this(
+        width: parser.getInt('width'),
+        height: parser.getInt('height'),
+        orientation: parser.getGridOrientation('orientation'),
+      );
 }

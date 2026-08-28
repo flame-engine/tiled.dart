@@ -29,8 +29,8 @@ class Template {
   });
 
   Template.parse(Parser parser)
-      : this(
-          tileSet: parser.getSingleChildOrNullAs('tileset', Tileset.parse),
-          object: parser.getSingleChildOrNullAs('object', TiledObject.parse),
-        );
+    : this(
+        tileSet: parser.getSingleChildOrNullAs('tileset', Tileset.parse),
+        object: parser.getSingleChildOrNullAs('object', TiledObject.parse),
+      );
 }

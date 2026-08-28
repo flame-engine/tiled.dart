@@ -40,16 +40,16 @@ void main() {
         final f1 = File('./test/fixtures/multi_image_tileset.tsx')
             .readAsString()
             .then((xml) {
-          final tilesetXml = XmlDocument.parse(xml).rootElement;
-          tileset1 = Tileset.parse(XmlParser(tilesetXml));
-        });
+              final tilesetXml = XmlDocument.parse(xml).rootElement;
+              tileset1 = Tileset.parse(XmlParser(tilesetXml));
+            });
 
         final f2 = File('./test/fixtures/tileid_over_tilecount.tsx')
             .readAsString()
             .then((xml) {
-          final tilesetXml = XmlDocument.parse(xml).rootElement;
-          tileset2 = Tileset.parse(XmlParser(tilesetXml));
-        });
+              final tilesetXml = XmlDocument.parse(xml).rootElement;
+              tileset2 = Tileset.parse(XmlParser(tilesetXml));
+            });
 
         return Future.wait([f1, f2]);
       });

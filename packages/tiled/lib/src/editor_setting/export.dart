@@ -17,8 +17,8 @@ class Export {
   });
 
   Export.parse(Parser parser)
-      : this(
-          format: parser.getString('format'),
-          target: parser.getString('target'),
-        );
+    : this(
+        format: parser.getString('format'),
+        target: parser.getString('target'),
+      );
 }

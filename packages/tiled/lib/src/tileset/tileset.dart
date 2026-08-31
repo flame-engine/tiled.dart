@@ -183,7 +183,8 @@ class Tileset {
   }
 
   void _mergeExternalTileset(Tileset tileset) {
-    // Copy attributes if not null
+    version = tileset.version;
+    type = tileset.type;
     backgroundColor = tileset.backgroundColor ?? backgroundColor;
     columns = tileset.columns ?? columns;
     firstGid = tileset.firstGid ?? firstGid;
@@ -199,7 +200,6 @@ class Tileset {
     tileHeight = tileset.tileHeight ?? tileHeight;
     tileWidth = tileset.tileWidth ?? tileWidth;
     transparentColor = tileset.transparentColor ?? transparentColor;
-    // Add List-Attributes
     properties.byName.addAll(tileset.properties.byName);
     terrains.addAll(tileset.terrains);
     tiles.addAll(tileset.tiles);

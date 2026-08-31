@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.90" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <objectgroup id="1" name="Objects">
+  <object name="NoId" x="0" y="0" width="8" height="8"/>
+ </objectgroup>
+</map>

@@ -8,7 +8,7 @@ void main() {
 
   setUp(() {
     return File('./test/fixtures/rectangle.tmx').readAsString().then((xml) {
-      map = TileMapParser.parseTmx(xml);
+      map = TiledMap.parseTmx(xml);
     });
   });
 

@@ -67,7 +67,7 @@ class Tile {
                 .map((str) => str.isEmpty ? null : int.parse(str))
                 .toList() ??
             [],
-        image: parser.getSingleChildOrNullAs('image', TiledImage.parse),
+        image: TiledImage.parseOrNull(parser),
         imageRect: Rectangle(
           parser.getDoubleOrNull('x') ?? 0,
           parser.getDoubleOrNull('y') ?? 0,

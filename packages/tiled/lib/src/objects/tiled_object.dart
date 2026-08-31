@@ -59,7 +59,14 @@ class TiledObject {
   bool point;
   bool rectangle;
 
+  /// The path of the template file this object references, if any, exactly
+  /// as it is written in the map file.
+  String? templatePath;
+
+  /// The parsed template of this object, if [templatePath] is set and one of
+  /// the [Parser.providers] was able to provide the template file.
   Template? template;
+
   Text? text;
   bool visible;
 
@@ -84,6 +91,7 @@ class TiledObject {
     this.ellipse = false,
     this.point = false,
     this.rectangle = false,
+    this.templatePath,
     this.template,
     this.text,
     this.visible = true,
@@ -98,14 +106,20 @@ class TiledObject {
   bool get isEllipse => ellipse;
   bool get isRectangle => rectangle;
 
-  factory TiledObject.parse(Parser parser) {
+  /// Parses an object.
+  ///
+  /// Set [inTemplate] when parsing the object of a template file, which has no
+  /// id.
+  factory TiledObject.parse(Parser parser, {bool inTemplate = false}) {
     final x = parser.getDouble('x', defaults: 0);
     final y = parser.getDouble('y', defaults: 0);
     final height = parser.getDouble('height', defaults: 0);
     final width = parser.getDouble('width', defaults: 0);
     final rotation = parser.getDouble('rotation', defaults: 0);
     final visible = parser.getBool('visible', defaults: true);
-    final id = parser.getInt('id');
+    final id = inTemplate
+        ? parser.getInt('id', defaults: 0)
+        : parser.getInt('id');
     final gid = parser.getIntOrNull('gid');
     final name = parser.getString('name', defaults: '');
 
@@ -126,7 +140,8 @@ class TiledObject {
       (xml) => xml.getChildren('point').isNotEmpty,
     );
     final text = parser.getSingleChildOrNullAs('text', Text.parse);
-    final template = parser.getSingleChildOrNullAs('template', Template.parse);
+    final templatePath = parser.getStringOrNull('template');
+    final template = parser.getExternalOrNullAs(templatePath, Template.parse);
     final properties = parser.getProperties();
 
     final polygon = parsePointList(parser, 'polygon');
@@ -147,6 +162,7 @@ class TiledObject {
       ellipse: ellipse,
       point: point,
       rectangle: rectangle,
+      templatePath: templatePath,
       template: template,
       text: text,
       visible: visible,

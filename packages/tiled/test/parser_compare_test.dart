@@ -7,28 +7,28 @@ void main() {
   late TiledMap oldMap;
   setUp(() {
     return File('./test/fixtures/test_old.tmx').readAsString().then((xml) {
-      oldMap = TileMapParser.parseTmx(xml);
+      oldMap = TiledMap.parseTmx(xml);
     });
   });
 
   late TiledMap map;
   setUp(() {
     return File('./test/fixtures/testcsv.json').readAsString().then((xml) {
-      map = TileMapParser.parseJson(xml);
+      map = TiledMap.parseJson(xml);
     });
   });
 
   late TiledMap map2;
   setUp(() {
     return File('./test/fixtures/testzlib.json').readAsString().then((xml) {
-      map2 = TileMapParser.parseJson(xml);
+      map2 = TiledMap.parseJson(xml);
     });
   });
 
   late TiledMap map3;
   setUp(() {
     return File('./test/fixtures/testgzip.json').readAsString().then((xml) {
-      map3 = TileMapParser.parseJson(xml);
+      map3 = TiledMap.parseJson(xml);
     });
   });
 
@@ -37,49 +37,49 @@ void main() {
     return File('./test/fixtures/testbase64only.json').readAsString().then((
       xml,
     ) {
-      map4 = TileMapParser.parseJson(xml);
+      map4 = TiledMap.parseJson(xml);
     });
   });
 
   late TiledMap tileMapCsv;
   setUp(() {
     return File('./test/fixtures/test_csv.tmx').readAsString().then((xml) {
-      tileMapCsv = TileMapParser.parseTmx(xml);
+      tileMapCsv = TiledMap.parseTmx(xml);
     });
   });
 
   late TiledMap tileMap;
   setUp(() {
     return File('./test/fixtures/test.tmx').readAsString().then((xml) {
-      tileMap = TileMapParser.parseTmx(xml);
+      tileMap = TiledMap.parseTmx(xml);
     });
   });
 
   late TiledMap tileMapEllipse;
   setUp(() {
     return File('./test/fixtures/map.tmx').readAsString().then((xml) {
-      tileMapEllipse = TileMapParser.parseTmx(xml);
+      tileMapEllipse = TiledMap.parseTmx(xml);
     });
   });
 
   late TiledMap map5;
   setUp(() {
     return File('./test/fixtures/complexmap.json').readAsString().then((xml) {
-      map5 = TileMapParser.parseJson(xml);
+      map5 = TiledMap.parseJson(xml);
     });
   });
 
   late TiledMap map6;
   setUp(() {
     return File('./test/fixtures/complexmap.tmx').readAsString().then((xml) {
-      map6 = TileMapParser.parseTmx(xml);
+      map6 = TiledMap.parseTmx(xml);
     });
   });
 
   late TiledMap tileMapComplex;
   setUp(() {
     return File('./test/fixtures/complexmap.tmx').readAsString().then((xml) {
-      tileMapComplex = TileMapParser.parseTmx(xml);
+      tileMapComplex = TiledMap.parseTmx(xml);
     });
   });
 
@@ -122,5 +122,19 @@ void main() {
       'toString should be equal',
       () => expect(tileMapEllipse.type, equals(tileMapComplex.type)),
     );
+
+    test('tilesets should be equal', () {
+      expect(map5.tilesets.length, equals(tileMapComplex.tilesets.length));
+      for (var i = 0; i < map5.tilesets.length; i++) {
+        final jsonTileset = map5.tilesets[i];
+        final tmxTileset = tileMapComplex.tilesets[i];
+        expect(jsonTileset.name, equals(tmxTileset.name));
+        expect(jsonTileset.firstGid, equals(tmxTileset.firstGid));
+        expect(jsonTileset.tileCount, equals(tmxTileset.tileCount));
+        expect(jsonTileset.image?.source, equals(tmxTileset.image?.source));
+        expect(jsonTileset.image?.width, equals(tmxTileset.image?.width));
+        expect(jsonTileset.image?.height, equals(tmxTileset.image?.height));
+      }
+    });
   });
 }

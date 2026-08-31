@@ -22,36 +22,71 @@ Import the package like this:
 
 ### Load Tmx Files
 
-Load a TMX file into a string by any means, and then pass the string to TileMapParser.parseXml():
+Load a TMX file into a string by any means, and then pass the string to `TiledMap.parseTmx()`:
 
 ```dart
     final String tmxBody = /* ... */;
-    final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody);
-```
-
-If your tmx file includes an external tsx reference, you have to add a CustomParser
-```dart
-class CustomTsxProvider extends TsxProvider {
-  @override
-  Parser getSource(String fileName) {
-    final xml = File(fileName).readAsStringSync();
-    final node = XmlDocument.parse(xml).rootElement;
-    return XmlParser(node);
-  }
-}
-```
-And use it in the parseTmx method
-```dart
-    final String tmxBody = /* ... */;
-    final TiledMap mapTmx = TileMapParser.parseTmx(tmxBody, tsx: CustomTsxProvider());
-
+    final TiledMap mapTmx = TiledMap.parseTmx(tmxBody);
 ```
 
 ### Load Json Files
-Alternatively load a json file.
+
+Alternatively load a json file with `TiledMap.parseJson()`:
+
 ```dart
     final String jsonBody = /* ... */;
-    final TiledMap mapTmx = TileMapParser.parseJson(jsonBody);
+    final TiledMap mapJson = TiledMap.parseJson(jsonBody);
+```
+
+### External Files
+
+If your map references external files, like external tilesets (`.tsx`) or object templates
+(`.tx`), you have to pass one or more `ParserProvider`s that resolve these files. Every time the
+parser encounters a reference to an external file, the first provider that `canProvide` the
+referenced path is asked for a `Parser` of its contents through `getSource`.
+
+The path is always relative to the map file, also for files referenced from other external files,
+so a single provider can resolve any number of files, for example everything below a directory:
+
+```dart
+class DirectoryProvider extends ParserProvider {
+  final String root;
+
+  DirectoryProvider(this.root);
+
+  @override
+  bool canProvide(String path) => File('$root/$path').existsSync();
+
+  @override
+  Parser getSource(String path) {
+    return Parser.fromString(File('$root/$path').readAsStringSync());
+  }
+}
+```
+
+`Parser.fromString` creates an `XmlParser` or a `JsonParser` depending on the contents. Every file
+is requested at most once per parsed map.
+
+The providers are passed to `parseTmx` or `parseJson`:
+
+```dart
+    final TiledMap mapTmx = TiledMap.parseTmx(
+      tmxBody,
+      providers: [DirectoryProvider('assets/tiles')],
+    );
+```
+
+### Loading External Files Asynchronously
+
+When the external files can only be loaded asynchronously, for example from an asset bundle, use
+`TiledMap.fromString` instead. It parses either tmx or json and loads every referenced file, also
+the ones referenced from other external files, with the given loader before returning the map:
+
+```dart
+    final TiledMap map = await TiledMap.fromString(
+      contents,
+      (path) => rootBundle.loadString('assets/tiles/$path'),
+    );
 ```
 
 ### Implementation

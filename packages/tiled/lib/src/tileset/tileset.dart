@@ -105,7 +105,13 @@ class Tileset {
     tileCount = this.tiles.length;
   }
 
-  factory Tileset.parse(Parser parser, {TsxProvider? tsx}) {
+  /// Parses a tileset.
+  ///
+  /// If the tileset references an external file through its `source` and one
+  /// of the [Parser.providers] can provide that file, the external tileset is
+  /// parsed and merged into the result. The external tileset is parsed at most
+  /// once per map, however many tilesets and templates reference it.
+  factory Tileset.parse(Parser parser) {
     final backgroundColor = parser.getStringOrNull('backgroundcolor');
     final columns = parser.getIntOrNull('columns');
     final firstGid = parser.getIntOrNull('firstgid');
@@ -124,7 +130,7 @@ class Tileset {
     final type = parser.getTilesetType('type', defaults: TilesetType.tileset);
     final version = parser.getString('version', defaults: '1.0');
 
-    final image = parser.getSingleChildOrNullAs('image', TiledImage.parse);
+    final image = TiledImage.parseOrNull(parser);
     final grid = parser.getSingleChildOrNullAs('grid', Grid.parse);
     final tileOffset = parser.getSingleChildOrNullAs(
       'tileoffset',
@@ -169,37 +175,35 @@ class Tileset {
       transparentColor: transparentColor,
       type: type,
     );
-    result._checkIfExternalTsx(source, tsx);
+    final external = parser.getExternalOrNullAs(source, Tileset.parse);
+    if (external != null) {
+      result._mergeExternalTileset(external);
+    }
     return result;
   }
 
-  void _checkIfExternalTsx(String? source, TsxProvider? tsx) {
-    if (tsx != null && source != null) {
-      final tileset = Tileset.parse(
-        tsx.getCachedSource() ?? tsx.getSource(source),
-      );
-      // Copy attributes if not null
-      backgroundColor = tileset.backgroundColor ?? backgroundColor;
-      columns = tileset.columns ?? columns;
-      firstGid = tileset.firstGid ?? firstGid;
-      grid = tileset.grid ?? grid;
-      image = tileset.image ?? image;
-      name = tileset.name ?? name;
-      objectAlignment = tileset.objectAlignment;
-      spacing = tileset.spacing;
-      margin = tileset.margin;
-      tileCount = tileset.tileCount ?? tileCount;
-      tiledVersion = tileset.tiledVersion ?? tiledVersion;
-      tileOffset = tileset.tileOffset ?? tileOffset;
-      tileHeight = tileset.tileHeight ?? tileHeight;
-      tileWidth = tileset.tileWidth ?? tileWidth;
-      transparentColor = tileset.transparentColor ?? transparentColor;
-      // Add List-Attributes
-      properties.byName.addAll(tileset.properties.byName);
-      terrains.addAll(tileset.terrains);
-      tiles.addAll(tileset.tiles);
-      wangSets.addAll(tileset.wangSets);
-    }
+  void _mergeExternalTileset(Tileset tileset) {
+    // Copy attributes if not null
+    backgroundColor = tileset.backgroundColor ?? backgroundColor;
+    columns = tileset.columns ?? columns;
+    firstGid = tileset.firstGid ?? firstGid;
+    grid = tileset.grid ?? grid;
+    image = tileset.image ?? image;
+    name = tileset.name ?? name;
+    objectAlignment = tileset.objectAlignment;
+    spacing = tileset.spacing;
+    margin = tileset.margin;
+    tileCount = tileset.tileCount ?? tileCount;
+    tiledVersion = tileset.tiledVersion ?? tiledVersion;
+    tileOffset = tileset.tileOffset ?? tileOffset;
+    tileHeight = tileset.tileHeight ?? tileHeight;
+    tileWidth = tileset.tileWidth ?? tileWidth;
+    transparentColor = tileset.transparentColor ?? transparentColor;
+    // Add List-Attributes
+    properties.byName.addAll(tileset.properties.byName);
+    terrains.addAll(tileset.terrains);
+    tiles.addAll(tileset.tiles);
+    wangSets.addAll(tileset.wangSets);
   }
 
   Rectangle computeDrawRect(Tile tile) {

@@ -32,6 +32,49 @@ void main() {
     );
   });
 
+  group('ParsingException', () {
+    test('has a descriptive message', () {
+      final exception = ParsingException(
+        'image',
+        null,
+        'Required child missing',
+      );
+      expect(
+        exception.toString(),
+        equals('ParsingException: Required child missing (field: "image")'),
+      );
+    });
+
+    test('includes the found value in the message', () {
+      final exception = ParsingException('width', 'abc', 'Not an integer');
+      expect(
+        exception.toString(),
+        equals(
+          'ParsingException: Not an integer (field: "width", found: "abc")',
+        ),
+      );
+    });
+
+    test('is thrown with a descriptive message for a missing field', () {
+      const missingWidth = '''
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" orientation="orthogonal" renderorder="right-down"
+ height="1" tilewidth="16" tileheight="16" infinite="0">
+</map>
+''';
+      expect(
+        () => TiledMap.parseTmx(missingWidth),
+        throwsA(
+          isA<ParsingException>().having(
+            (e) => e.toString(),
+            'toString',
+            contains('field: "width"'),
+          ),
+        ),
+      );
+    });
+  });
+
   group('Parser.parse returns a populated Map that', () {
     test('has its tileWidth = 32', () => expect(map.tileWidth, equals(32)));
     test('has its tileHeight = 32', () => expect(map.tileHeight, equals(32)));

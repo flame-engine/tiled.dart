@@ -67,6 +67,11 @@ class DirectoryProvider extends ParserProvider {
 `Parser.fromString` creates an `XmlParser` or a `JsonParser` depending on the contents. Every file
 is requested at most once per parsed map.
 
+Objects that use a template inherit every value they do not specify themselves from the object of
+the template, and their `gid` is translated to the tilesets of the map. When the map does not
+contain the tileset of the template it is added to `TiledMap.tilesets`, like Tiled does when loading
+the map.
+
 The providers are passed to `parseTmx` or `parseJson`:
 
 ```dart

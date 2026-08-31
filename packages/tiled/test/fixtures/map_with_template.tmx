@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.90" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.90" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="137" source="tileset_with_template.tsx"/>
  <layer id="1" name="Tile Layer 1" width="5" height="5">
@@ -14,5 +14,12 @@
  <objectgroup id="2" name="Objects">
   <object id="1" template="object_template.tx" x="32" y="48"/>
   <object id="2" name="Plain" x="16" y="16" width="8" height="8"/>
+  <object id="3" template="object_template.tx" name="Overridden" x="0" y="0" width="32">
+   <properties>
+    <property name="health" type="int" value="3"/>
+    <property name="speed" type="float" value="1.5"/>
+   </properties>
+  </object>
+  <object id="4" template="object_template.tx" gid="2" x="0" y="0"/>
  </objectgroup>
 </map>

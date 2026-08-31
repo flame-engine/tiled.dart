@@ -64,4 +64,37 @@ void main() {
     expect(layer.image.width, equals(64));
     expect(layer.image.height, equals(32));
   });
+
+  test('parses an image layer without an image from xml', () {
+    final map = TiledMap.parseTmx('''
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal"
+ renderorder="right-down" width="1" height="1" tilewidth="16" tileheight="16"
+ infinite="0" nextlayerid="4" nextobjectid="1">
+ <imagelayer id="3" name="Image Layer 1"/>
+</map>
+''');
+    final layer = map.layerByName('Image Layer 1') as ImageLayer;
+    expect(layer.image.source, isNull);
+    expect(layer.image.width, isNull);
+    expect(layer.image.height, isNull);
+  });
+
+  test('parses an image layer without an image from json', () {
+    final map = TiledMap.parseJson('''
+{
+ "height":1, "width":1, "tileheight":16, "tilewidth":16,
+ "orientation":"orthogonal", "renderorder":"right-down", "version":"1.8",
+ "layers":[
+  {
+   "type":"imagelayer", "id":1, "name":"Background", "opacity":1,
+   "visible":true, "x":0, "y":0
+  }
+ ],
+ "tilesets":[]
+}
+''');
+    final layer = map.layerByName('Background') as ImageLayer;
+    expect(layer.image.source, isNull);
+  });
 }

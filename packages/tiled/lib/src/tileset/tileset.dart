@@ -46,6 +46,9 @@ import 'package:tiled/tiled.dart';
 /// Can contain any number: `<tile>`
 class Tileset {
   int? firstGid;
+
+  /// The path of the external tileset file, relative to the map, also when
+  /// the tileset is referenced from a template file.
   String? source;
   String? name;
   int? tileWidth;
@@ -153,7 +156,7 @@ class Tileset {
 
     final result = Tileset(
       firstGid: firstGid,
-      source: source,
+      source: source == null ? null : parser.resolvePath(source),
       name: name,
       tileWidth: tileWidth,
       tileHeight: tileHeight,

@@ -155,7 +155,7 @@ void main() {
       final tileObjects =
           (tileset.tiles.first.objectGroup! as ObjectGroup).objects;
       final templateTileset = tileObjects.single.template!.tileSet!;
-      expect(templateTileset.source, equals('../nested_tileset.tsx'));
+      expect(templateTileset.source, equals('tilesets/nested_tileset.tsx'));
       expect(templateTileset.name, isNull);
     });
 

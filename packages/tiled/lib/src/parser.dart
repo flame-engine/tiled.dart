@@ -190,8 +190,12 @@ abstract class Parser {
     if (path == null) {
       return null;
     }
-    return _externalFiles.parse(_resolvePath(_directory, path), parse);
+    return _externalFiles.parse(resolvePath(path), parse);
   }
+
+  /// Resolves [path], written relative to the file this parser was created
+  /// from, to a path relative to the map.
+  String resolvePath(String path) => _resolvePath(_directory, path);
 
   List<T> getChildrenAs<T>(String name, T Function(Parser) mapper) {
     return getChildren(name).map(mapper).toList();

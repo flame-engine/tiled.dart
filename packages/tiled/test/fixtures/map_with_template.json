@@ -39,6 +39,32 @@
                  "width":8,
                  "x":16,
                  "y":16
+                },
+                {
+                 "id":3,
+                 "name":"Overridden",
+                 "properties":[
+                        {
+                         "name":"health",
+                         "type":"int",
+                         "value":3
+                        },
+                        {
+                         "name":"speed",
+                         "type":"float",
+                         "value":1.5
+                        }],
+                 "template":"object_template.tj",
+                 "width":32,
+                 "x":0,
+                 "y":0
+                },
+                {
+                 "gid":2,
+                 "id":4,
+                 "template":"object_template.tj",
+                 "x":0,
+                 "y":0
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -47,7 +73,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":3,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.90",

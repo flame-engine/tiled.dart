@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.90" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="3">
+ <tileset firstgid="1" name="other" tilewidth="32" tileheight="32" tilecount="2" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="0">
+   <image width="32" height="32" source="image1.png"/>
+  </tile>
+  <tile id="1">
+   <image width="32" height="32" source="image2.png"/>
+  </tile>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="1" height="1">
+  <data encoding="csv">
+0
+</data>
+ </layer>
+ <objectgroup id="2" name="Objects">
+  <object id="1" template="object_template.tx" x="0" y="0"/>
+  <object id="2" template="object_template_flipped.tx" x="16" y="0"/>
+ </objectgroup>
+</map>

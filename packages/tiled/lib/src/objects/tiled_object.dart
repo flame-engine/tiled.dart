@@ -59,8 +59,8 @@ class TiledObject {
   bool point;
   bool rectangle;
 
-  /// The path of the template file this object references, if any, exactly
-  /// as it is written in the map file.
+  /// The path of the template file this object references, if any, relative
+  /// to the map.
   String? templatePath;
 
   /// The parsed template of this object, if [templatePath] is set and one of
@@ -108,44 +108,74 @@ class TiledObject {
 
   /// Parses an object.
   ///
+  /// An object that references a template through its `template` attribute
+  /// inherits every value it does not specify itself from the object of that
+  /// template, and its properties are merged with the ones of the template.
+  /// The tile of the template is referenced relative to the tileset of the
+  /// template file, so [gid] stays null when it is inherited until
+  /// [TiledMap.parse] translates it to the tilesets of the map.
+  ///
   /// Set [inTemplate] when parsing the object of a template file, which has no
   /// id.
   factory TiledObject.parse(Parser parser, {bool inTemplate = false}) {
-    final x = parser.getDouble('x', defaults: 0);
-    final y = parser.getDouble('y', defaults: 0);
-    final height = parser.getDouble('height', defaults: 0);
-    final width = parser.getDouble('width', defaults: 0);
-    final rotation = parser.getDouble('rotation', defaults: 0);
-    final visible = parser.getBool('visible', defaults: true);
+    final templatePath = parser.getStringOrNull('template');
+    final template = parser.getExternalOrNullAs(templatePath, Template.parse);
+    final templateObject = template?.object;
+
     final id = inTemplate
         ? parser.getInt('id', defaults: 0)
         : parser.getInt('id');
+    final x = parser.getDouble('x', defaults: 0);
+    final y = parser.getDouble('y', defaults: 0);
+    final height =
+        parser.getDoubleOrNull('height') ?? templateObject?.height ?? 0;
+    final width = parser.getDoubleOrNull('width') ?? templateObject?.width ?? 0;
+    final rotation =
+        parser.getDoubleOrNull('rotation') ?? templateObject?.rotation ?? 0;
+    final visible =
+        parser.getBoolOrNull('visible') ?? templateObject?.visible ?? true;
     final gid = parser.getIntOrNull('gid');
-    final name = parser.getString('name', defaults: '');
+    final name = parser.getStringOrNull('name') ?? templateObject?.name ?? '';
 
     // Tiled 1.9 and above versions running in compatibility mode set to
     // "Tiled 1.8" will still write out "Class" property as "type". So try both
     // before using default value.
-    final type = parser.getString(
-      'class',
-      defaults: parser.getString('type', defaults: ''),
-    );
+    final type =
+        parser.getStringOrNull('class') ??
+        parser.getStringOrNull('type') ??
+        templateObject?.type ??
+        '';
 
-    final ellipse = parser.formatSpecificParsing(
-      (json) => json.getBool('ellipse', defaults: false),
-      (xml) => xml.getChildren('ellipse').isNotEmpty,
-    );
-    final point = parser.formatSpecificParsing(
-      (json) => json.getBool('point', defaults: false),
-      (xml) => xml.getChildren('point').isNotEmpty,
-    );
-    final text = parser.getSingleChildOrNullAs('text', Text.parse);
-    final templatePath = parser.getStringOrNull('template');
-    final template = parser.getExternalOrNullAs(templatePath, Template.parse);
-    final properties = parser.getProperties();
+    final ellipse =
+        parser.formatSpecificParsing(
+          (json) => json.getBoolOrNull('ellipse'),
+          (xml) => xml.getChildren('ellipse').isNotEmpty ? true : null,
+        ) ??
+        templateObject?.ellipse ??
+        false;
+    final point =
+        parser.formatSpecificParsing(
+          (json) => json.getBoolOrNull('point'),
+          (xml) => xml.getChildren('point').isNotEmpty ? true : null,
+        ) ??
+        templateObject?.point ??
+        false;
+    final text =
+        parser.getSingleChildOrNullAs('text', Text.parse) ??
+        templateObject?.text;
+    final properties = CustomProperties({
+      ...?templateObject?.properties.byName,
+      ...parser.getProperties().byName,
+    });
 
-    final polygon = parsePointList(parser, 'polygon');
-    final polyline = parsePointList(parser, 'polyline');
+    final ownPolygon = parsePointList(parser, 'polygon');
+    final ownPolyline = parsePointList(parser, 'polyline');
+    final polygon = ownPolygon.isNotEmpty
+        ? ownPolygon
+        : templateObject?.polygon ?? [];
+    final polyline = ownPolyline.isNotEmpty
+        ? ownPolyline
+        : templateObject?.polyline ?? [];
 
     final rectangle = polyline.isEmpty && polygon.isEmpty && !ellipse && !point;
 
@@ -162,7 +192,9 @@ class TiledObject {
       ellipse: ellipse,
       point: point,
       rectangle: rectangle,
-      templatePath: templatePath,
+      templatePath: templatePath == null
+          ? null
+          : parser.resolvePath(templatePath),
       template: template,
       text: text,
       visible: visible,

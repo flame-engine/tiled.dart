@@ -38,6 +38,13 @@ class Gid {
   static const int flippedDiagonallyFlag = 0x20000000;
   static const int flippedAntiDiagonallyFlag = 0x10000000;
 
+  /// The bits of a gid that hold the flips instead of the tile.
+  static const int flagMask =
+      flippedHorizontallyFlag |
+      flippedVerticallyFlag |
+      flippedDiagonallyFlag |
+      flippedAntiDiagonallyFlag;
+
   final int tile;
   final Flips flips;
 
@@ -54,12 +61,7 @@ class Gid {
     final flippedAntiDiagonally =
         gid & flippedAntiDiagonallyFlag == flippedAntiDiagonallyFlag;
     // clear id from flips
-    final tileId =
-        gid &
-        ~(flippedHorizontallyFlag |
-            flippedVerticallyFlag |
-            flippedDiagonallyFlag |
-            flippedAntiDiagonallyFlag);
+    final tileId = gid & ~flagMask;
     final flip = Flips(
       horizontally: flippedHorizontally,
       vertically: flippedVertically,

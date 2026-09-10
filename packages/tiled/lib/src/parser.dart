@@ -10,6 +10,12 @@ class ParsingException implements Exception {
   final String reason;
 
   ParsingException(this.name, this.valueFound, this.reason);
+
+  @override
+  String toString() {
+    final found = valueFound == null ? '' : ', found: "$valueFound"';
+    return 'ParsingException: $reason (field: "$name"$found)';
+  }
 }
 
 class XmlParser extends Parser {

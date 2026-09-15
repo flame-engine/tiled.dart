@@ -22,7 +22,11 @@ Packages with other changes:
 #### `tiled` - `v0.12.0`
 
  - **FIX**: Add descriptive `toString` to `ParsingException` and test empty image layers ([#99](https://github.com/flame-engine/tiled.dart/issues/99)). ([d15379d8](https://github.com/flame-engine/tiled.dart/commit/d15379d86ef7e0a18c377d5a251c380e7a74b8d8))
+ - **FIX**: Object layer parsing for JSON format ([#88](https://github.com/flame-engine/tiled.dart/issues/88)). ([305418d6](https://github.com/flame-engine/tiled.dart/commit/305418d6eee41e15079333d140f2adf04aa16abc))
  - **FEAT**: Inherit template values, translate template gids and copy external tileset version ([#98](https://github.com/flame-engine/tiled.dart/issues/98)). ([47850e37](https://github.com/flame-engine/tiled.dart/commit/47850e3766adf5abc9902d0f00778e5cffcbbe68))
+ - **FEAT**: Add tile access APIs to `TileLayer` ([#94](https://github.com/flame-engine/tiled.dart/issues/94)). ([7018c40a](https://github.com/flame-engine/tiled.dart/commit/7018c40a525efbf4a0c4408909c1e4b403733e3f))
+ - **DOCS**: Fix broken CI badge on readme ([#91](https://github.com/flame-engine/tiled.dart/issues/91)). ([71ba1427](https://github.com/flame-engine/tiled.dart/commit/71ba1427ef48931f1a5fcac6425c2a070cd2dc01))
+ - **DOCS**: Update link to flame_tiled examples ([#90](https://github.com/flame-engine/tiled.dart/issues/90)). ([7966bc1b](https://github.com/flame-engine/tiled.dart/commit/7966bc1b31de5a8ae7350f77bdeae040ad475b23))
  - **BREAKING** **FEAT**: Resolve external tilesets and templates through `ParserProvider` and add async `TiledMap.fromString` ([#72](https://github.com/flame-engine/tiled.dart/issues/72)). ([63d3866b](https://github.com/flame-engine/tiled.dart/commit/63d3866b3d2ecc1a7a9787025191e24d70174926))
 
 

@@ -79,4 +79,37 @@ void main() {
       );
     });
   });
+
+  // JSON tile layers put GIDs in a `data` array (csv encoding by default).
+  // That array used to be dropped during parse, leaving `data` and `tileData`
+  // null.
+  group('Layer.fromJSON', () {
+    test('populates tile data from an uncompressed JSON array', () {
+      final map = TiledMap.parseJson(
+        File('./test/fixtures/json_csv_tilelayer.json').readAsStringSync(),
+      );
+
+      expect(map.layers, hasLength(1));
+
+      final layer = map.layers.single as TileLayer;
+      expect(layer.name, equals('Tile Layer 1'));
+      expect(layer.width, equals(64));
+      expect(layer.height, equals(6));
+      expect(layer.encoding, equals(FileEncoding.csv));
+      expect(layer.data, isNotNull);
+      expect(layer.data, hasLength(64 * 6));
+      expect(layer.tileData, isNotNull);
+      expect(layer.tileData, hasLength(6));
+      expect(layer.tileData!.first, hasLength(64));
+
+      expect(layer.tileAt(46, 0)!.tile, equals(157));
+      expect(layer.tileAt(50, 0)!.tile, equals(20));
+      expect(layer.tileAt(0, 5)!.tile, equals(27));
+      expect(layer.tileAt(63, 5)!.tile, equals(29));
+
+      final flipped = layer.tileAt(13, 3)!;
+      expect(flipped.tile, equals(104));
+      expect(flipped.flips.horizontally, isTrue);
+    });
+  });
 }

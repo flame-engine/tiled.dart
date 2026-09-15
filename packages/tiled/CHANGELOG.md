@@ -1,3 +1,11 @@
+## 0.12.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: Add descriptive `toString` to `ParsingException` and test empty image layers ([#99](https://github.com/flame-engine/tiled.dart/issues/99)). ([d15379d8](https://github.com/flame-engine/tiled.dart/commit/d15379d86ef7e0a18c377d5a251c380e7a74b8d8))
+ - **FEAT**: Inherit template values, translate template gids and copy external tileset version ([#98](https://github.com/flame-engine/tiled.dart/issues/98)). ([47850e37](https://github.com/flame-engine/tiled.dart/commit/47850e3766adf5abc9902d0f00778e5cffcbbe68))
+ - **BREAKING** **FEAT**: Resolve external tilesets and templates through `ParserProvider` and add async `TiledMap.fromString` ([#72](https://github.com/flame-engine/tiled.dart/issues/72)). ([63d3866b](https://github.com/flame-engine/tiled.dart/commit/63d3866b3d2ecc1a7a9787025191e24d70174926))
+
 ## 0.11.1
 
  - **FIX**: Data section of Layers was null (when loading from JSON) ([#84](https://github.com/flame-engine/tiled.dart/issues/84)). ([00dbd13c](https://github.com/flame-engine/tiled.dart/commit/00dbd13c6c5bd7a6268ebec51c43c1bf9121f06a))
